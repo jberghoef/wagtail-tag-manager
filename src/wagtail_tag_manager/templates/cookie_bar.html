@@ -1,0 +1,66 @@
+{% if functional or analytical or traceable %}
+    <style>
+        #wtm_cookie_bar {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            box-sizing: border-box;
+            padding: 12px 24px;
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        #wtm_cookie_bar p {margin: 0 0 6px 0}
+        #wtm_cookie_bar p.strong {font-weight: bold}
+
+        #wtm_cookie_bar .button-container {
+            display: flex;
+            margin-top: 12px;
+        }
+        #wtm_cookie_bar .button {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 24px;
+            color: white;
+            border-radius: 3px;
+        }
+        #wtm_cookie_bar .button:hover {text-decoration: none}
+        #wtm_cookie_bar .button:not(:first-child) {margin: 0 0 0 12px}
+        #wtm_cookie_bar .button--green {background-color: rgb(0, 150, 0)}
+        #wtm_cookie_bar .button--green:hover {background-color: rgb(0, 175, 0)}
+        #wtm_cookie_bar .button--red {background-color: rgb(150, 0, 0)}
+        #wtm_cookie_bar .button--red:hover {background-color: rgb(175, 0, 0)}
+    </style>
+
+    <div id="wtm_cookie_bar" style="display: none;">
+        <div>
+            <p class="strong">Cookies</p>
+            <p>
+                {% if functional or analytical %}
+                    This website uses cookies and local storage for
+                    {% if functional %} functional{% endif %}
+                    {% if functional and analytical %} and{% endif %}
+                    {% if analytical %} analytical{% endif %}
+                    purposes.
+                {% endif %}
+
+                {% if traceable %}
+                    In order to present you with content relevant to your interests,
+                    we would also like to place tracking cookies.
+                {% endif %}
+            </p>
+
+            {% if traceable %}
+                <a href="https://ec.europa.eu/digital-single-market/en/proposal-eprivacy-regulation" target="_blank">European ePrivacy Regulation</a>
+            {% endif %}
+        </div>
+        <div class="button-container">
+            {% if traceable %}
+                <a class="button button--green js-cookie-choice" data-choice="accept" href="#">Accept</a>
+                <a class="button button--red js-cookie-choice" data-choice="reject" href="#">Reject</a>
+            {% else %}
+                <a class="button button--red js-cookie-choice" data-choice="close" href="#">Close</a>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
