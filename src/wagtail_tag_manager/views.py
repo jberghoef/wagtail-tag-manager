@@ -1,16 +1,15 @@
 import json
 from django.http import JsonResponse
 
-from .models import Constant, Tag
+from .models import Tag
 
 
 def lazy_view(request):
-    context = Constant.create_context()
     data = {'tags': []}
     response = JsonResponse(data)
 
     def process_tag(t):
-        for element in t.get_contents(context):
+        for element in t.get_contents(request):
             data['tags'].append({
                 'name': element.name,
                 'string': element.string,

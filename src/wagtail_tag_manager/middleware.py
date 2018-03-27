@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from django.template import loader
 from django.templatetags.static import static
 
-from .models import Constant, Tag
+from .models import Tag
 
 
 class TagManagerMiddleware:
@@ -12,10 +12,9 @@ class TagManagerMiddleware:
     def __call__(self, request):
         self.request = request
         self.response = self.get_response(request)
-        self.cookies = request.COOKIES
-        self.context = Constant.create_context()
 
-        if self.response.status_code is 200:
+        if self.request.method == 'GET' and self.response.status_code is 200:
+            self.cookies = request.COOKIES
             self._add_instant_tags()
             self._add_lazy_tags()
 
@@ -25,7 +24,7 @@ class TagManagerMiddleware:
         doc = BeautifulSoup(self.response.content, 'html.parser')
 
         def handle_tag(tag):
-            contents = tag.get_contents(self.context)
+            contents = tag.get_contents(self.request)
             for element in contents:
                 if tag.tag_location == Tag.TOP_HEAD and doc.head:
                     doc.head.insert(1, element)

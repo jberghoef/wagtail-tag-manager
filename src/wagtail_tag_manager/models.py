@@ -1,3 +1,6 @@
+import random
+import operator
+
 from bs4 import BeautifulSoup
 from django.db import models
 from django.template import Context, Template
@@ -131,7 +134,11 @@ class Tag(models.Model):
 
         return doc
 
-    def get_contents(self, context=None):
+    def get_contents(self, request):
+        context = {
+            **Constant.create_context(),
+            **Variable.create_context(request),
+        }
         doc = self.get_doc(context)
         return doc.contents
 
@@ -163,6 +170,79 @@ class Constant(models.Model):
 
         for constant in cls.objects.all():
             context[constant.key] = constant.value
+
+        return context
+
+    def __str__(self):
+        return self.name
+
+
+class Variable(models.Model):
+    TYPE_CHOICES = (
+        (_("HTTP"), (
+            ('path', _('Path')),
+        )),
+        (_("User"), (
+            ('user.pk', _("User")),
+            ('session.session_key', _("Session")),
+        )),
+        (_("Wagtail"), (
+            ('site', _("Site")),
+        )),
+        (_("Other"), (
+            ('_cookie+', _("Cookie")),
+            ('_random', _("Random number")),
+        )),
+    )
+
+    # TODO: Create edited edit/create view for values, based on '+' symbol.
+
+    name = models.CharField(max_length=100)
+    description = models.TextField(null=True, blank=True)
+
+    key = models.CharField(max_length=255, unique=True)
+    variable_type = models.CharField(max_length=255, choices=TYPE_CHOICES)
+    value = models.CharField(max_length=255, null=True, blank=True)
+
+    panels = [
+        FieldPanel('name', classname='full title'),
+        FieldPanel('description', classname='full'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('key'),
+                FieldPanel('variable_type')
+            ]),
+            FieldPanel('value'),
+        ], heading="Data"),
+    ]
+
+    def get_cookie(self, request):
+        return request.COOKIES[self.value]
+
+    def get_random(self, request):
+        return int(random.random() * 2147483647)
+
+    def get_value(self, request):
+        variable_type = self.variable_type
+
+        if variable_type.endswith('+'):
+            variable_type = variable_type[:-1]
+
+        if variable_type.startswith('_'):
+            method = getattr(self, f'get{variable_type}')
+            return method(request)
+
+        if '.' in self.variable_type:
+            return operator.attrgetter(str(self.variable_type))(request)
+
+        return getattr(request, str(self.variable_type))
+
+    @classmethod
+    def create_context(cls, request):
+        context = {}
+
+        for variable in cls.objects.all():
+            context[variable.key] = variable.get_value(request)
 
         return context
 
