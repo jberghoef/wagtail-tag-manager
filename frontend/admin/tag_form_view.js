@@ -1,4 +1,4 @@
-class FormView {
+class TagFormView {
     constructor() {
         this.loadSelect = document.getElementById('id_tag_loading');
         this.locationSelect = document.getElementById('id_tag_location');
@@ -18,10 +18,10 @@ class FormView {
     handleLoadChange(event) {
         const value = this.loadSelect.options[this.loadSelect.selectedIndex].value;
 
-        if (value == 'lazy_load') {
+        if (value === 'lazy_load') {
             this.locationSelect.disabled = true;
             for (let option of this.locationSelect) {
-                if (option.value == 'top_head') {
+                if (option.value === 'top_head') {
                     option.selected = true;
                 }
             }
@@ -41,6 +41,6 @@ class FormView {
 
 document.onreadystatechange = function () {
     if (document.readyState === "complete") {
-        new FormView()
+        new TagFormView()
     }
  }

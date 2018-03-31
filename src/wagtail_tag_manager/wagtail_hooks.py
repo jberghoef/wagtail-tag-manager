@@ -17,8 +17,9 @@ class VariableModelAdmin(ModelAdmin):
     model = Variable
     menu_icon = 'snippet'
     list_display = ('name', 'key', 'variable_type',)
-    search_fields = ('name', 'key', 'description',)
     list_filter = ('variable_type',)
+    search_fields = ('name', 'key', 'description',)
+    form_view_extra_js = [static('variable_form_view.bundle.js')]
 
 
 class TagModelAdmin(ModelAdmin):

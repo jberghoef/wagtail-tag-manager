@@ -66,19 +66,19 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./frontend/admin/tag_form_view.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./frontend/admin/variable_form_view.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./frontend/admin/tag_form_view.js":
-/*!*****************************************!*\
-  !*** ./frontend/admin/tag_form_view.js ***!
-  \*****************************************/
+/***/ "./frontend/admin/variable_form_view.js":
+/*!**********************************************!*\
+  !*** ./frontend/admin/variable_form_view.js ***!
+  \**********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("class TagFormView {\n    constructor() {\n        this.loadSelect = document.getElementById('id_tag_loading');\n        this.locationSelect = document.getElementById('id_tag_location');\n\n        this.initialize = this.initialize.bind(this);\n        this.handleLoadChange = this.handleLoadChange.bind(this);\n\n        this.loadSelect.addEventListener('change', this.handleLoadChange);\n\n        this.initialize();\n    }\n\n    initialize() {\n        this.handleLoadChange();\n    }\n\n    handleLoadChange(event) {\n        const value = this.loadSelect.options[this.loadSelect.selectedIndex].value;\n\n        if (value === 'lazy_load') {\n            this.locationSelect.disabled = true;\n            for (let option of this.locationSelect) {\n                if (option.value === 'top_head') {\n                    option.selected = true;\n                }\n            }\n\n            this.hiddenInput = document.createElement('input');\n            this.hiddenInput.id = this.locationSelect.id;\n            this.hiddenInput.name = this.locationSelect.name;\n            this.hiddenInput.type = 'hidden';\n            this.hiddenInput.value = 'top_head';\n            this.locationSelect.parentNode.insertBefore(this.hiddenInput, this.locationSelect.parentNode.childNodes[0]);\n        } else {\n            this.locationSelect.disabled = false;\n            this.hiddenInput.remove();\n        }\n    }\n}\n\ndocument.onreadystatechange = function () {\n    if (document.readyState === \"complete\") {\n        new TagFormView();\n    }\n};\n\n//# sourceURL=webpack:///./frontend/admin/tag_form_view.js?");
+eval("class VariableFormView {\n    constructor() {\n        this.variableSelect = document.getElementById('id_variable_type');\n        this.valueInput = document.getElementById('id_value');\n\n        this.initialize = this.initialize.bind(this);\n        this.handleVariableChange = this.handleVariableChange.bind(this);\n\n        this.variableSelect.addEventListener('change', this.handleVariableChange);\n\n        this.initialize();\n    }\n\n    initialize() {\n        this.handleVariableChange();\n    }\n\n    handleVariableChange(event) {\n        const value = this.variableSelect.options[this.variableSelect.selectedIndex].value;\n\n        if (value.slice(-1) !== '+') {\n            this.valueInput.disabled = true;\n            this.valueInput.value = '';\n        } else {\n            this.valueInput.disabled = false;\n        }\n    }\n}\n\ndocument.onreadystatechange = function () {\n    if (document.readyState === \"complete\") {\n        new VariableFormView();\n    }\n};\n\n//# sourceURL=webpack:///./frontend/admin/variable_form_view.js?");
 
 /***/ })
 

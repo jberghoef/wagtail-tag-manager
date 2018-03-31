@@ -150,7 +150,7 @@ class Constant(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
 
-    key = models.CharField(max_length=255, unique=True)
+    key = models.SlugField(max_length=255, unique=True)
     value = models.CharField(max_length=255)
 
     panels = [
@@ -195,12 +195,10 @@ class Variable(models.Model):
         )),
     )
 
-    # TODO: Create edited edit/create view for values, based on '+' symbol.
-
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
 
-    key = models.CharField(max_length=255, unique=True)
+    key = models.SlugField(max_length=255, unique=True)
     variable_type = models.CharField(max_length=255, choices=TYPE_CHOICES)
     value = models.CharField(max_length=255, null=True, blank=True)
 
@@ -245,6 +243,14 @@ class Variable(models.Model):
             context[variable.key] = variable.get_value(request)
 
         return context
+
+    def clean(self):
+        cleaned = super().clean()
+
+        if not self.variable_type.endswith('+'):
+            self.value = ''
+
+        return cleaned
 
     def __str__(self):
         return self.name
