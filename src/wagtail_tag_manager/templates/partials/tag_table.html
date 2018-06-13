@@ -1,0 +1,20 @@
+{% load i18n %}
+
+<table>
+    <thead>
+        <tr>
+            <td>{% trans "Name" %}</td>
+            <td>{% trans "Description" %}</td>
+            <td>{% trans "Active" %}</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tag in tags %}
+            <tr>
+                <td>{{ tag.name }}</td>
+                <td>{{ tag.description }}</td>
+                <td>{{ state|yesno:"Yes,No" }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

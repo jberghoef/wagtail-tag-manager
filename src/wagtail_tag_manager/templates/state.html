@@ -1,0 +1,6 @@
+<script>
+    window.wtm_url = "{% url 'wtm:lazy' %}";
+    window.wtm_functional = {{ functional|yesno:"true,false" }};
+    window.wtm_analytical = {{ analytical|yesno:"true,false" }};
+    window.wtm_traceable = {{ traceable|yesno:"true,false" }};
+</script>

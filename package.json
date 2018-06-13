@@ -1,0 +1,33 @@
+{
+  "name": "wagtail-tag-manager",
+  "version": "0.0.1",
+  "description": "A Wagtail add-on for managing tags.",
+  "main": "webpack.config.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development",
+    "watch": "webpack --mode development --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/jberghoef/wagtail-tag-manager"
+  },
+  "author": "Jasper Berghoef",
+  "license": "GPLv3",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.9.1",
+    "mini-css-extract-plugin": "^0.4.0",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.3"
+  },
+  "dependencies": {
+    "js-cookie": "^2.2.0"
+  }
+}

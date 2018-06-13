@@ -1,0 +1,185 @@
+Wagtail Tag Manager
+===================
+
+Wagtail Tag Manager (WTM for short) is a Wagtail_ addon that allows for easier
+and GDPR compliant administration of scripts and tags.
+
+.. _Wagtail: https://wagtail.io/
+
+Disclaimer
+----------
+
+This package attempts to ease the implementation of tags by the new ePrivacy
+rules as defined by the European Union. I urge you to read about these new rules
+and ensure you are properly configuring your tags for both the analytical and
+traceable variants. This package is free and the author can not be held
+responsible for the correctness of your implementation, or the assumptions made
+in this package to comply with the new ePrivacy regulation.
+
+Read more about the `ePrivacy Regulation`_.
+
+.. _ePrivacy Regulation: https://ec.europa.eu/digital-single-market/en/proposal-eprivacy-regulation
+
+Included in this package is a cookie bar which admittedly provides too little
+information to end users regarding the purpose of the scripts you are placing
+on the website. For compliance, please use this package's settings to change
+the text shown in the cookie bar.
+
+Requirements
+------------
+
++---------+----------+
+| Django  | 2.0      |
++---------+----------+
+| Wagtail | 2.0, 2.1 |
++---------+----------+
+
+Instructions
+------------
+
+Installation::
+
+    pip install wagtail-tag-manager
+
+Add the application to your `INSTALLED_APPS`:
+
+.. code-block:: python
+
+    INSTALLED_APPS = [
+        # ...
+        'wagtail.contrib.modeladmin',
+        'wagtail_tag_manager',
+        # ...
+    ]
+
+Include the middleware:
+
+.. code-block:: python
+
+    MIDDLEWARE = [
+        # ...
+        'wagtail_tag_manager.middleware.TagManagerMiddleware',
+        # ...
+    ]
+
+Include the urls:
+
+.. code-block:: python
+
+    from django.urls import include, path
+    from wagtail_tag_manager import urls as wtm_urls
+
+    urlpatterns = [
+        # ...
+        path('wtm/', include(wtm_urls)),
+        # ...
+    ]
+
+To enable the included "Manage" view, add this to your settings:
+
+.. code-block:: python
+
+    WTM_MANAGE_VIEW = True
+
+You can also use the following provided template tags to render a tag status
+overview and a form.
+
+.. code-block:: django
+
+    {% wtm_status_table %}
+
+    {% wtm_manage_form %}
+
+Sandbox
+-------
+
+To experiment with the package you can use the sandbox provided in this
+repository. To install this you will need to create and activate a
+virtualenv and then run ``make sandbox``. This will start a fresh Wagtail
+install, with the tag manager module enabled, on http://localhost:8000
+and http://localhost:8000/cms/. The superuser credentials are
+``superuser@example.com`` with the password ``testing``.
+
+Various types of tags, constants and variables are enabled out of the box.
+Check out the console in your browser to see them in action.
+
+Todo
+----
+
+[ ] Optimize the middleware for performance.
+
+[ ] Add selenium tests for proper lazy tag testing.
+
+[ ] Ensure the cookie bar and manage view are accessible.
+
+[ ] Write user and developer documentation.
+
+Concept
+-------
+
++--------------------------------+------------+------------+-----------+
+| State                          | Functional | Analytical | Traceable |
++--------------------------------+------------+------------+-----------+
+| No cookies accepted.           | yes        | no         | no        |
++--------------------------------+------------+------------+-----------+
+| Cookies implicitly accepted    | yes        | yes        | no        |
+| through browser settings.      |            |            |           |
++--------------------------------+------------+------------+-----------+
+| Cookies explicitly accepted,   | yes        | yes        | yes       |
+| noting tracking functionality. |            |            |           |
++--------------------------------+------------+------------+-----------+
+
+Note that in the case of analytical cookies or local storage, you are obliged to
+still show a notification at least once, noting that you are using cookies for
+analytical and performance measurement purposes.
+
+When implementing tracking cookies, the user has to explicitly give permission
+for you to enable them for their session. When asking for permission, you must
+explicitly state the tracking functionality of the script you are using.
+
+To ease the implementation by this concept, Wagtail Tag Manager allows you to
+define a tag as functional, analytical of traceable. When properly configured,
+it'll take care of loading the correct tag at the correct time, taking in
+account the following scenario's:
+
+**1. The user has not accepted cookies.**
+
++---------+------------+------------+-----------+
+|         | Functional | Analytical | Traceable |
++---------+------------+------------+-----------+
+| Instant | Yes        | No         | No        |
++---------+------------+------------+-----------+
+| Lazy    | Yes        | No         | No        |
++---------+------------+------------+-----------+
+
+**2. The user has accepted cookies through browser settings.**
+
++---------+------------+------------+-----------+
+|         | Functional | Analytical | Traceable |
++---------+------------+------------+-----------+
+| Instant | Yes        | Yes*       | No        |
++---------+------------+------------+-----------+
+| Lazy    | Yes        | Yes        | No        |
++---------+------------+------------+-----------+
+
+As the acceptance of analytical tags can only be verified client side, we'll
+first load all the analytical tags lazy (whether they are instant or not).
+On the next request we are able to instantly load the analytical tags marked as
+'instant'.
+
+Please note that we still have to show a message stating that we are using
+analytical tags.
+
+**3. The user has explicitly accepted tracking cookies for your site.**
+
++---------+------------+------------+-----------+
+|         | Functional | Analytical | Traceable |
++---------+------------+------------+-----------+
+| Instant | Yes        | Yes        | Yes*      |
++---------+------------+------------+-----------+
+| Lazy    | Yes        | Yes        | Yes       |
++---------+------------+------------+-----------+
+
+We'll load the traceable tags marked 'instant', after the user accepting the
+usage of these tags, together with the lazy tags. On the next request we are
+able to instantly load the traceable tags marked as 'instant'.

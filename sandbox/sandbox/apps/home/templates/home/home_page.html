@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block content %}
+    <h1>Wagtail Tag Manager</h1>
+    <hr>
+    <h2>{{ self.title }}</h2>
+
+    {{ self.content|richtext }}
+
+    <a href="{% url 'wtm:manage' %}">Manage privacy settings</a>
+
+{% endblock %}

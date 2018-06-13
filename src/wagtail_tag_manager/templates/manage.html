@@ -1,0 +1,13 @@
+<!DOCTYPE html>{% load i18n wtm_tags %}
+<html>
+    <head>
+        <title>{% trans "Manage your preferences" %}</title>
+    </head>
+    <body>
+        <h1>{% trans "Privacy settings" %}</h1>
+
+        {% wtm_status_table %}
+
+        {% wtm_manage_form %}
+    </body>
+</html>

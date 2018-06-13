@@ -1,0 +1,10 @@
+{% load i18n %}
+
+<h2>{% trans "Functional" %}</h2>
+{% include "partials/tag_table.html" with tags=tags.functional state=functional %}
+
+<h2>{% trans "Analytical" %}</h2>
+{% include "partials/tag_table.html" with tags=tags.analytical state=analytical %}
+
+<h2>{% trans "Traceable" %}</h2>
+{% include "partials/tag_table.html" with tags=tags.traceable state=traceable %}

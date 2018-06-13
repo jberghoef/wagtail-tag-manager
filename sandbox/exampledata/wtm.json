@@ -1,0 +1,127 @@
+[
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 1,
+    "fields": {
+      "name": "Instant functional",
+      "description": "Loads instantly, is functional",
+      "active": true,
+      "tag_type": "functional",
+      "tag_location": "bottom_head",
+      "tag_loading": "instant_load",
+      "content": "<script>\n console.info('instant functional')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 2,
+    "fields": {
+      "name": "Instant analytical",
+      "description": "Loads instantly, is analytical",
+      "active": true,
+      "tag_type": "analytical",
+      "tag_location": "bottom_head",
+      "tag_loading": "instant_load",
+      "content": "<script>\n console.info('instant analytical')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 3,
+    "fields": {
+      "name": "Instant traceable",
+      "description": "Loads instantly, is traceable",
+      "active": true,
+      "tag_type": "traceable",
+      "tag_location": "bottom_head",
+      "tag_loading": "instant_load",
+      "content": "<script>\n console.info('instant traceable')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 4,
+    "fields": {
+      "name": "Lazy functional",
+      "description": "Loads lazily, is functional",
+      "active": true,
+      "tag_type": "functional",
+      "tag_location": "top_head",
+      "tag_loading": "lazy_load",
+      "content": "<script>\n console.info('lazy functional')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 5,
+    "fields": {
+      "name": "Lazy analytical",
+      "description": "Loads lazily, is analytical",
+      "active": true,
+      "tag_type": "analytical",
+      "tag_location": "top_head",
+      "tag_loading": "lazy_load",
+      "content": "<script>\n console.info('lazy analytical')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 6,
+    "fields": {
+      "name": "Lazy traceable",
+      "description": "Loads lazily, is traceable",
+      "active": true,
+      "tag_type": "traceable",
+      "tag_location": "top_head",
+      "tag_loading": "lazy_load",
+      "content": "<script>\n console.info('lazy traceable')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 7,
+    "fields": {
+      "name": "Thank You",
+      "description": "This logs a \"thank you message\" using a constant.",
+      "active": true,
+      "tag_type": "functional",
+      "tag_location": "bottom_body",
+      "tag_loading": "instant_load",
+      "content": "<script>\n console.log('{{ thnx }}')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 8,
+    "fields": {
+      "name": "A random number",
+      "description": "This will log a random number.",
+      "active": true,
+      "tag_type": "analytical",
+      "tag_location": "top_head",
+      "tag_loading": "lazy_load",
+      "content": "<script>\n console.log('Here you go: {{ rand }}')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.constant",
+    "pk": 1,
+    "fields": {
+      "name": "Thank You",
+      "description": "This is a thank you message!",
+      "key": "thnx",
+      "value": "Thank you for using WTM!"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.variable",
+    "pk": 2,
+    "fields": {
+      "name": "A random number",
+      "description": "This will return a random number!",
+      "key": "rand",
+      "variable_type": "_random",
+      "value": ""
+    }
+  }
+]
