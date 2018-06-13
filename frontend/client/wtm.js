@@ -10,14 +10,6 @@ class TagManager {
             traceable: undefined,
         };
 
-        this.initialize = this.initialize.bind(this);
-        this.validate = this.validate.bind(this);
-        this.set = this.set.bind(this);
-        this.has = this.has.bind(this);
-        this.allows = this.allows.bind(this);
-        this.loadData = this.loadData.bind(this);
-        this.handleLoad = this.handleLoad.bind(this);
-
         this.initialize();
     }
 

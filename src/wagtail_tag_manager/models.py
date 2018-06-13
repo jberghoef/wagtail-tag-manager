@@ -93,9 +93,12 @@ class Tag(models.Model):
     description = models.TextField(null=True, blank=True)
     active = models.BooleanField(default=True)
 
-    tag_type = models.CharField(max_length=10, choices=TYPE_CHOICES, default=FUNCTIONAL)
-    tag_location = models.CharField(max_length=12, choices=LOCATION_CHOICES, default=TOP_HEAD)
-    tag_loading = models.CharField(max_length=12, choices=LOAD_CHOICES, default=INSTANT_LOAD)
+    tag_type = models.CharField(
+        max_length=10, choices=TYPE_CHOICES, default=FUNCTIONAL)
+    tag_location = models.CharField(
+        max_length=12, choices=LOCATION_CHOICES, default=TOP_HEAD)
+    tag_loading = models.CharField(
+        max_length=12, choices=LOAD_CHOICES, default=INSTANT_LOAD)
 
     content = models.TextField()
 
