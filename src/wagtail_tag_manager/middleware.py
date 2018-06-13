@@ -34,9 +34,10 @@ class TagManagerMiddleware:
 
     def _add_instant_tags(self):
         doc = BeautifulSoup(self.response.content, 'html.parser')
+        context = Tag.create_context(self.request)
 
         def handle_tag(tag):
-            contents = tag.get_contents(self.request)
+            contents = tag.get_contents(self.request, context)
             for element in contents:
                 if tag.tag_location == Tag.TOP_HEAD and doc.head:
                     doc.head.insert(1, element)
@@ -49,13 +50,13 @@ class TagManagerMiddleware:
 
         tags = Tag.objects.active().instant()
 
-        for tag_type in Tag.get_types():
-            if (
-                    f'wtm_{tag_type}' in self.cookies and
-                    self.cookies[f'wtm_{tag_type}'] != 'false'
-            ):
-                for tag in tags.filter(tag_type=tag_type):
-                    handle_tag(tag)
+        enabled_tags = [
+            tag_type for tag_type in Tag.get_types()
+            if f'wtm_{tag_type}' in self.cookies and
+            self.cookies[f'wtm_{tag_type}'] != 'false']
+
+        for tag in tags.filter(tag_type__in=enabled_tags):
+            handle_tag(tag)
 
         self.response.content = doc.prettify()
 

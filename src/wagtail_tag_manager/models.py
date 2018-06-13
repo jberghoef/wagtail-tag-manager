@@ -137,13 +137,18 @@ class Tag(models.Model):
 
         return BeautifulSoup(content, 'html.parser')
 
-    def get_contents(self, request):
-        context = {
+    def get_contents(self, request=None, context=None):
+        if request is not None and context is None:
+            context = self.create_context(request)
+        doc = self.get_doc(context)
+        return doc.contents
+
+    @classmethod
+    def create_context(cls, request):
+        return {
             **Constant.create_context(),
             **Variable.create_context(request),
         }
-        doc = self.get_doc(context)
-        return doc.contents
 
     @classmethod
     def get_types(cls):
@@ -183,7 +188,7 @@ class Constant(models.Model):
         context = {}
 
         for constant in cls.objects.all():
-            context[constant.key] = constant.value
+            context[constant.key] = constant.get_value()
 
         return context
 
