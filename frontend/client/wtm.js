@@ -80,7 +80,7 @@ class TagManager {
             }
         }
 
-        this._history.push({...this.client}));
+        this._history.push({...this.client});
 
         const xhttp = new XMLHttpRequest;
         xhttp.onreadystatechange = (event) => {
