@@ -14,7 +14,7 @@
     "url": "github.com/jberghoef/wagtail-tag-manager"
   },
   "author": "Jasper Berghoef",
-  "license": "GPLv3",
+  "license": "BSD-3-Clause",
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
