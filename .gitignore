@@ -12,6 +12,9 @@
 .tox/
 .vscode/
 
+build
+dist
+
 htmlcov/
 docs/_build
 coverage.xml
