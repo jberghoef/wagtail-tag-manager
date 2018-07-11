@@ -6,6 +6,8 @@ and GDPR compliant administration of scripts and tags.
 
 .. _Wagtail: https://wagtail.io/
 
+.. image:: screenshot.png
+
 Disclaimer
 ----------
 
