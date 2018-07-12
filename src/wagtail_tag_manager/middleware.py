@@ -3,8 +3,8 @@ from django.conf import settings
 from django.template import loader
 from django.templatetags.static import static
 
-from .utils import set_cookie
-from .models import Tag
+from wagtail_tag_manager.utils import set_cookie
+from wagtail_tag_manager.models import Tag
 
 
 class TagManagerMiddleware:

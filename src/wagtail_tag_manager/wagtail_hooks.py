@@ -3,7 +3,7 @@ from django.templatetags.static import static
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, ModelAdminGroup, modeladmin_register)
 
-from .models import Tag, Constant, Variable
+from wagtail_tag_manager.models import Tag, Constant, Variable
 
 
 class ConstantModelAdmin(ModelAdmin):

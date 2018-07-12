@@ -2,8 +2,8 @@ from django.conf import settings
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.views.generic import TemplateView
 
-from .forms import ConsentForm
-from .utils import set_cookie
+from wagtail_tag_manager.forms import ConsentForm
+from wagtail_tag_manager.utils import set_cookie
 
 
 class ManageView(TemplateView):

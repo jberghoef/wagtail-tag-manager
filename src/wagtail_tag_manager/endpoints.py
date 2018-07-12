@@ -2,8 +2,8 @@ import json
 
 from django.http import JsonResponse, HttpResponseBadRequest
 
-from .utils import set_cookie
-from .models import Tag
+from wagtail_tag_manager.utils import set_cookie
+from wagtail_tag_manager.models import Tag
 
 
 def lazy_endpoint(request):

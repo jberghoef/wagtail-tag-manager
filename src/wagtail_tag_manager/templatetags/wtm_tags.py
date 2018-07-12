@@ -1,8 +1,8 @@
 from django import template
 
-from ..forms import ConsentForm
-from ..models import Tag
-from ..utils import get_cookie_state
+from wagtail_tag_manager.forms import ConsentForm
+from wagtail_tag_manager.models import Tag
+from wagtail_tag_manager.utils import get_cookie_state
 
 register = template.Library()
 

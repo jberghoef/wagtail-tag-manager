@@ -2,7 +2,7 @@ import datetime
 
 from django.conf import settings
 
-from .models import Tag
+from wagtail_tag_manager.models import Tag
 
 
 def set_cookie(response, key, value, days_expire=None):
