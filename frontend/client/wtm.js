@@ -149,8 +149,12 @@ class CookieBar {
                 break;
 
             case 'reject':
+                this.manager.set('analytical', false);
                 this.manager.set('traceable', false);
                 this.manager.loadData();
+                break;
+
+            default:
                 break;
         }
 
