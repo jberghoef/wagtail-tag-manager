@@ -24,8 +24,8 @@ Read more about the `ePrivacy Regulation`_.
 
 Included in this package is a cookie bar which admittedly provides too little
 information to end users regarding the purpose of the scripts you are placing
-on the website. For compliance, please use this package's settings to change
-the text shown in the cookie bar.
+on the website. For compliance, please use the `cookie_bar.html` template to
+change the text shown in the cookie bar.
 
 Requirements
 ------------
