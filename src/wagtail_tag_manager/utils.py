@@ -19,10 +19,12 @@ def set_cookie(response, key, value, days_expire=None):
         domain=settings.SESSION_COOKIE_DOMAIN,
         secure=settings.SESSION_COOKIE_SECURE or None)
 
+    return response
+
 
 def get_cookie_state(request):
     cookies = request.COOKIES
     return {
-        tag_type: cookies.get(f'wtm_{tag_type}', 'false') != 'false'
+        tag_type: cookies.get(Tag.get_cookie_name(tag_type), 'false') != 'false'
         for tag_type in Tag.get_types()
     }

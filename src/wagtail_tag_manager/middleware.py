@@ -52,8 +52,8 @@ class TagManagerMiddleware:
 
         enabled_tags = [
             tag_type for tag_type in Tag.get_types()
-            if f'wtm_{tag_type}' in self.cookies and
-            self.cookies[f'wtm_{tag_type}'] != 'false']
+            if Tag.get_cookie_name(tag_type) in self.cookies and
+            self.cookies[Tag.get_cookie_name(tag_type)] != 'false']
 
         for tag in tags.filter(tag_type__in=enabled_tags):
             handle_tag(tag)
@@ -71,8 +71,7 @@ class TagManagerMiddleware:
                 for tag_type in Tag.get_types()
             }
 
-            if hasattr(settings, 'WTM_MANAGE_VIEW'):
-                context['manage_view'] = getattr(settings, 'WTM_MANAGE_VIEW')
+            context['manage_view'] = getattr(settings, 'WTM_MANAGE_VIEW', True)
 
             template = loader.get_template('state.html')
             element = BeautifulSoup(

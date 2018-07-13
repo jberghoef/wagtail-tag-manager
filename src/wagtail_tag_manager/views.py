@@ -10,7 +10,7 @@ class ManageView(TemplateView):
     template_name = "manage.html"
 
     def get(self, request, *args, **kwargs):
-        if hasattr(settings, 'WTM_MANAGE_VIEW') and getattr(settings, 'WTM_MANAGE_VIEW'):
+        if getattr(settings, 'WTM_MANAGE_VIEW', False):
             return super().get(request, *args, **kwargs)
         return HttpResponseNotFound()
 

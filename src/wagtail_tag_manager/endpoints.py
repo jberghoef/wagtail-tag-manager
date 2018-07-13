@@ -10,22 +10,8 @@ def lazy_endpoint(request):
     data = {'tags': []}
     response = JsonResponse(data)
 
-    def process_payload(tag_type):
-        cookie = cookies.get(f'wtm_{tag_type}', None)
-        value = str(payload[tag_type]).lower()
-        if cookie != value:
-            set_cookie(response, f'wtm_{tag_type}', value)
-
-        if payload[tag_type]:
-            for tag in tags.filter(tag_type=tag_type).lazy():
-                process_tag(tag)
-
-            if cookie != value:
-                for tag in tags.filter(tag_type=tag_type).instant():
-                    process_tag(tag)
-
     def process_tag(tag):
-        for element in tag.get_contents(request):
+        for element in tag.get_contents(request, context):
             data['tags'].append({
                 'name': element.name,
                 'string': element.string,
@@ -38,11 +24,28 @@ def lazy_endpoint(request):
             return HttpResponseBadRequest()
 
         cookies = request.COOKIES
-        tags = Tag.objects.active()
 
-        for tag_type in Tag.get_types():
-            if tag_type in payload:
-                process_payload(tag_type)
+        tag_types = [tag_type for tag_type in payload if payload[tag_type]]
+        tag_loads = [Tag.LAZY_LOAD]
+
+        if tag_types:
+            context = Tag.create_context(request)
+
+        for tag_type in payload:
+            cookie_name = Tag.get_cookie_name(tag_type)
+            cookie = cookies.get(cookie_name, None)
+            value = str(payload[tag_type]).lower()
+
+            if cookie != value:
+                response = set_cookie(response, cookie_name, value)
+
+            if payload[tag_type] and cookie != value:
+                tag_loads.append(Tag.INSTANT_LOAD)
+
+        for tag in Tag.objects.filter(
+            tag_type__in=tag_types, tag_loading__in=tag_loads
+        ).active():
+            process_tag(tag)
 
         response.content = json.dumps(data)
         return response

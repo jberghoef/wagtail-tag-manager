@@ -2,7 +2,10 @@ import random
 import operator
 
 from bs4 import BeautifulSoup
+from django.conf import settings
+from django.core.cache import cache
 from django.db import models
+from django.dispatch import receiver
 from django.template import Context, Template
 from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import (
@@ -185,15 +188,24 @@ class Constant(models.Model):
 
     @classmethod
     def create_context(cls):
-        context = {}
+        context = cache.get('wtm_constant_cache', {})
 
-        for constant in cls.objects.all():
-            context[constant.key] = constant.get_value()
+        if not context:
+            for constant in cls.objects.all():
+                context[constant.key] = constant.get_value()
+
+            timeout = getattr(settings, 'WTM_CACHE_TIMEOUT', 60 * 30)
+            cache.set('wtm_constant_cache', context, timeout)
 
         return context
 
     def __str__(self):
         return self.name
+
+
+@receiver(models.signals.post_save, sender=Constant)
+def handle_constant_save(sender, **kwargs):
+    sender.create_context()  # Update the cache
 
 
 class Variable(models.Model):
