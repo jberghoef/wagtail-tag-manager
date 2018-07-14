@@ -4,6 +4,7 @@ import operator
 from bs4 import BeautifulSoup
 from django.conf import settings
 from django.core.cache import cache
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.dispatch import receiver
 from django.template import Context, Template
@@ -199,6 +200,13 @@ class Constant(models.Model):
 
         return context
 
+    def clean(self):
+        if Variable.objects.filter(key=self.key).exists():
+            raise ValidationError(
+                f"A variable with the key '{ self.key }' already exists.")
+        else:
+            super().clean()
+
     def __str__(self):
         return self.name
 
@@ -276,10 +284,16 @@ class Variable(models.Model):
         return context
 
     def clean(self):
-        if not self.variable_type.endswith('+'):
-            self.value = ''
+        if Constant.objects.filter(key=self.key).exists():
+            raise ValidationError(
+                f"A constant with the key '{ self.key }' already exists.")
+        else:
+            super().clean()
 
-        return self
+            if not self.variable_type.endswith('+'):
+                self.value = ''
+
+            return self
 
     def __str__(self):
         return self.name
