@@ -7,10 +7,10 @@ from wagtail_tag_manager.utils import set_cookie
 
 
 class ManageView(TemplateView):
-    template_name = "manage.html"
+    template_name = "wagtail_tag_manager/manage.html"
 
     def get(self, request, *args, **kwargs):
-        if getattr(settings, 'WTM_MANAGE_VIEW', False):
+        if getattr(settings, 'WTM_MANAGE_VIEW', True):
             return super().get(request, *args, **kwargs)
         return HttpResponseNotFound()
 

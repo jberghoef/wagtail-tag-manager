@@ -7,7 +7,8 @@ from wagtail_tag_manager.utils import get_cookie_state
 register = template.Library()
 
 
-@register.inclusion_tag('templatetags/manage_form.html', takes_context=True)
+@register.inclusion_tag(
+    'wagtail_tag_manager/templatetags/manage_form.html', takes_context=True)
 def wtm_manage_form(context):
     request = context.get('request')
     return {
@@ -15,7 +16,8 @@ def wtm_manage_form(context):
     }
 
 
-@register.inclusion_tag('templatetags/status_table.html', takes_context=True)
+@register.inclusion_tag(
+    'wagtail_tag_manager/templatetags/status_table.html', takes_context=True)
 def wtm_status_table(context):
     request = context.get('request')
     return {

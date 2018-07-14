@@ -73,12 +73,12 @@ class TagManagerMiddleware:
 
             context['manage_view'] = getattr(settings, 'WTM_MANAGE_VIEW', True)
 
-            template = loader.get_template('state.html')
+            template = loader.get_template('wagtail_tag_manager/state.html')
             element = BeautifulSoup(
                 template.render(context, self.request), 'html.parser')
             doc.head.append(element)
 
-            template = loader.get_template('cookie_bar.html')
+            template = loader.get_template('wagtail_tag_manager/cookie_bar.html')
             element = BeautifulSoup(
                 template.render(context, self.request), 'html.parser')
             doc.head.append(element)
