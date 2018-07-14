@@ -122,13 +122,13 @@ Check out the console in your browser to see them in action.
 Todo
 ----
 
-[ ] Optimize the middleware for performance.
+[x] Optimize the middleware and endpoint for performance.
 
-[ ] Add selenium tests for proper lazy tag testing.
+[] Add selenium tests for proper lazy tag testing.
 
-[ ] Ensure the cookie bar and manage view are accessible.
+[] Ensure the cookie bar and manage view are accessible.
 
-[ ] Write user and developer documentation.
+[] Write user and developer documentation.
 
 Concept
 -------
