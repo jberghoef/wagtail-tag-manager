@@ -47,5 +47,4 @@ watch:
 release:
 	pip install twine wheel
 	rm -rf dist/*
-	python setup.py sdist bdist_wheel
-	twine upload -s dist/*
+	python setup.py sdist bdist_wheel upload -r pypi
