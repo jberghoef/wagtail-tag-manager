@@ -77,8 +77,8 @@ Include the urls:
         # ...
     ]
 
-You can also use the following provided template tags to render a tag status
-overview and a form.
+You can use the following provided template tags to render a tag status overview
+and a form.
 
 .. code-block:: django
 
@@ -91,6 +91,7 @@ Settings
 --------
 
 .. code-block:: python
+
     WTM_MANAGE_VIEW = True
 
 Allows you to enable or disable the included "manage" view allowing users to
@@ -98,6 +99,7 @@ get insight in the tags running on your site and adjust their preferences.
 The view is enabled by default.
 
 .. code-block:: python
+
     WTM_CACHE_TIMEOUT = 1800
 
 Sets the amount of microseconds the cache will be preserved. At the moment,
