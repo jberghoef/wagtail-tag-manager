@@ -77,12 +77,6 @@ Include the urls:
         # ...
     ]
 
-To enable the included "Manage" view, add this to your settings:
-
-.. code-block:: python
-
-    WTM_MANAGE_VIEW = True
-
 You can also use the following provided template tags to render a tag status
 overview and a form.
 
@@ -96,13 +90,15 @@ overview and a form.
 Settings
 --------
 
-``WTM_MANAGE_VIEW = True``
+.. code-block:: python
+    WTM_MANAGE_VIEW = True
 
 Allows you to enable or disable the included "manage" view allowing users to
 get insight in the tags running on your site and adjust their preferences.
 The view is enabled by default.
 
-``WTM_CACHE_TIMEOUT = 1800``
+.. code-block:: python
+    WTM_CACHE_TIMEOUT = 1800
 
 Sets the amount of microseconds the cache will be preserved. At the moment,
 caching is only applied to constants, which will refresh when a constant is
