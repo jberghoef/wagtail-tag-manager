@@ -1,0 +1,41 @@
+[
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 31,
+    "fields": {
+      "app_label": "home",
+      "model": "homepage"
+    }
+  },
+  {
+    "model": "wagtailcore.page",
+    "pk": 2,
+    "fields": {
+      "path": "00010001",
+      "depth": 2,
+      "numchild": 0,
+      "title": "Wagtail Tag Manager",
+      "draft_title": "Wagtail Tag Manager",
+      "slug": "wagtail-tag-manager",
+      "content_type": 31,
+      "live": true,
+      "has_unpublished_changes": false,
+      "url_path": "/wagtail-tag-manager/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false
+    }
+  },
+  {
+    "model": "home.homepage",
+    "pk": 2,
+    "fields": {
+      "content": "<p>Wagtail Tag Manager (WTM for short) is a <a href=\"https://wagtail.io/\">Wagtail</a> addon that allows for easier and GDPR compliant administration of scripts and tags.</p>"
+    }
+  }
+]

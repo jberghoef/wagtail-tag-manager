@@ -1,13 +1,13 @@
-<!DOCTYPE html>{% load i18n wtm_tags %}
-<html>
-    <head>
-        <title>{% trans "Manage your preferences" %}</title>
-    </head>
-    <body>
-        <h1>{% trans "Privacy settings" %}</h1>
+{% extends "base.html" %}
 
-        {% wtm_status_table %}
+{% load i18n wtm_tags %}
 
-        {% wtm_manage_form %}
-    </body>
-</html>
+{% block title %}{% trans "Manage your preferences" %}{% endblock title %}
+
+{% block content %}
+    <h1>{% trans "Privacy settings" %}</h1>
+
+    {% wtm_status_table %}
+
+    {% wtm_manage_form %}
+{% endblock content %}

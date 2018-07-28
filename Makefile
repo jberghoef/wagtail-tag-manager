@@ -34,6 +34,7 @@ sandbox:
 	pip install -r sandbox/requirements.txt
 	sandbox/manage.py migrate
 	sandbox/manage.py loaddata sandbox/exampledata/users.json
+	sandbox/manage.py loaddata sandbox/exampledata/cms.json
 	sandbox/manage.py loaddata sandbox/exampledata/wtm.json
 	sandbox/manage.py runserver
 
