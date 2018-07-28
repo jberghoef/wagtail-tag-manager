@@ -15,7 +15,7 @@ class ManageView(TemplateView):
         return HttpResponseNotFound()
 
     def post(self, request, *args, **kwargs):
-        response = HttpResponseRedirect('')
+        response = HttpResponseRedirect(request.get_full_path())
 
         form = ConsentForm(request.POST)
         if form.is_valid():
