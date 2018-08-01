@@ -3,12 +3,10 @@ import Cookies from 'js-cookie'
 
 class TagManager {
     constructor() {
-        this._history = [];
-        this.client = {
-            functional: true,
-            analytical: undefined,
-            traceable: undefined,
-        };
+        this._wtm_history = [];
+        this.client = {};
+        this.config = window.wtm_config;
+        this.show_cookiebar = false;
 
         this.initialize();
     }
@@ -26,21 +24,29 @@ class TagManager {
             enabled = Cookies.get('wtm_verification') !== undefined;
         }
 
-        if (enabled) {
-            if (!this.has('analytical')) {
-                // Cookies are enabled and no preference is set.
-                // Analytical cookies can be used until stated otherwise.
-                this.set('analytical', true);
+        Object.keys(this.config).forEach((tag_type) => {
+            if (this.config[tag_type]['exists'] && this.config[tag_type]['required']) {
+                this.client[tag_type] = true;
+            } else if (this.config[tag_type]['exists'] && this.config[tag_type]['initial'] && !this.has(tag_type)) {
+                this.client[tag_type] = enabled;
+                this.show_cookiebar = enabled;
             }
 
-            if (!this.has('analytical') || !this.has('traceable')) {
-                new CookieBar(this);
-            }
+            if (enabled) {
+                if (!(tag_type in this.client)) {
+                    this.set(tag_type, this.allows(tag_type));
+                }
 
-            // Set remaining states from cookies.
-            for (let key in this.client) {
-                if (!this.client[key]) this.set(key, this.allows(key));
+                if (!this.has(tag_type)) {
+                    this.show_cookiebar = true;
+                }
             }
+        });
+
+        console.log(this.client);
+
+        if (this.show_cookiebar) {
+            new CookieBar(this);
         }
     }
 
@@ -49,14 +55,14 @@ class TagManager {
     }
 
     has(type) {
-        if (window[`wtm_${type}`]) {
+        if (type in this.config) {
             return Cookies.get(`wtm_${type}`) !== undefined;
         }
         return true
     }
 
     allows(type) {
-        if (window[`wtm_${type}`]) {
+        if (type in this.config) {
             if (this.has(type)) {
                 return Cookies.get(`wtm_${type}`) === 'true';
             } else {
@@ -70,17 +76,17 @@ class TagManager {
         // Only send changed values.
         let data = {};
         for (let key in this.client) {
-            if (this._history.length === 0) {
+            if (this._wtm_history.length === 0) {
                 // For the initial load, only send `true` values.
                 if (this.client[key]) data[key] = this.client[key];
             } else {
                 // Otherwise, only send values that differ from the previous load.
-                const previous = this._history[this._history.length - 1];
+                const previous = this._wtm_history[this._wtm_history.length - 1];
                 if (this.client[key] !== previous[key]) data[key] = this.client[key];
             }
         }
 
-        this._history.push({...this.client});
+        this._wtm_history.push({...this.client});
 
         const xhttp = new XMLHttpRequest;
         xhttp.onreadystatechange = (event) => {

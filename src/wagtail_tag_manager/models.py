@@ -13,27 +13,64 @@ from wagtail.admin.edit_handlers import (
     FieldPanel, FieldRowPanel, MultiFieldPanel)
 
 
+class TagTypeSettings:
+    def __init__(self):
+        self.SETTINGS = {}
+
+    @staticmethod
+    def all():
+        return getattr(settings, 'WTM_TAG_TYPES', {
+            'functional': {
+                'required': True,
+                'initial': True,
+            },
+            'analytical': {
+                'required': False,
+                'initial': True,
+            },
+            'traceable': {
+                'required': False,
+                'initial': False,
+            }
+        })
+
+    def include(self, *args, **kwargs):
+        for key, value in kwargs.items():
+            self.SETTINGS.update({
+                k: v for k, v in self.all().items() if v.get(key) == value})
+
+        return self
+
+    def exclude(self, *args, **kwargs):
+        if not self.SETTINGS:
+            self.SETTINGS = self.all()
+
+        remove = []
+        for key, value in kwargs.items():
+            for k, v in self.SETTINGS.items():
+                if v.get(key) == value:
+                    remove.append(k)
+
+        for item in remove:
+            self.SETTINGS.pop(item, None)
+
+        return self
+
+    def result(self):
+        return self.SETTINGS
+
+
 class TagQuerySet(models.QuerySet):
     def active(self):
         return self.filter(active=True)
 
-    def functional(self, include=True):
-        if include:
-            return self.filter(tag_type=Tag.FUNCTIONAL)
+    def filter_type(self, tag_type=None, include=True):
+        if tag_type is not None and include:
+            return self.filter(tag_type=tag_type)
+        elif tag_type is not None:
+            return self.exclude(tag_type=tag_type)
         else:
-            return self.exclude(tag_type=Tag.FUNCTIONAL)
-
-    def analytical(self, include=True):
-        if include:
-            return self.filter(tag_type=Tag.ANALYTICAL)
-        else:
-            return self.exclude(tag_type=Tag.ANALYTICAL)
-
-    def traceable(self, include=True):
-        if include:
-            return self.filter(tag_type=Tag.TRACEABLE)
-        else:
-            return self.exclude(tag_type=Tag.TRACEABLE)
+            return self
 
     def instant(self):
         return self.filter(tag_loading=Tag.INSTANT_LOAD)
@@ -49,14 +86,8 @@ class TagManager(models.Manager):
     def active(self):
         return self.get_queryset().active()
 
-    def functional(self):
-        return self.get_queryset().functional()
-
-    def analytical(self):
-        return self.get_queryset().analytical()
-
-    def traceable(self):
-        return self.get_queryset().traceable()
+    def filter_type(self):
+        return self.get_queryset().filter_type()
 
     def instant(self):
         return self.get_queryset().instant()
@@ -66,15 +97,6 @@ class TagManager(models.Manager):
 
 
 class Tag(models.Model):
-    FUNCTIONAL = 'functional'
-    ANALYTICAL = 'analytical'
-    TRACEABLE = 'traceable'
-    TYPE_CHOICES = [
-        (FUNCTIONAL, _("Functional")),
-        (ANALYTICAL, _("Analytical")),
-        (TRACEABLE, _("Traceable")),
-    ]
-
     TOP_HEAD = 'top_head'
     BOTTOM_HEAD = 'bottom_head'
     TOP_BODY = 'top_body'
@@ -98,7 +120,9 @@ class Tag(models.Model):
     active = models.BooleanField(default=True)
 
     tag_type = models.CharField(
-        max_length=10, choices=TYPE_CHOICES, default=FUNCTIONAL)
+        max_length=10,
+        choices=[(key, _(key.title())) for key in TagTypeSettings.all().keys()],
+        default=list(TagTypeSettings.all())[0])
     tag_location = models.CharField(
         max_length=12, choices=LOCATION_CHOICES, default=TOP_HEAD)
     tag_loading = models.CharField(
@@ -156,7 +180,7 @@ class Tag(models.Model):
 
     @classmethod
     def get_types(cls):
-        return [tag_type[0] for tag_type in cls.TYPE_CHOICES]
+        return list(TagTypeSettings.all())
 
     @classmethod
     def get_cookie_name(cls, tag_type):

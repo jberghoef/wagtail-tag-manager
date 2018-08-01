@@ -1,83 +1,81 @@
 {% load i18n %}
 
-{% if functional or analytical or traceable %}
-    <style>
-        #wtm_cookie_bar {
-            display: block;
-            box-sizing: border-box;
-            padding: 12px 32px 12px 24px;
-            margin: 0;
-            width: 100%;
-            font-family: sans-serif;
-            background-color: #fff;
-            border-bottom: 1px solid #eee;
-        }
+<style>
+    #wtm_cookie_bar {
+        display: block;
+        box-sizing: border-box;
+        padding: 12px 32px 12px 24px;
+        margin: 0;
+        width: 100%;
+        font-family: sans-serif;
+        background-color: #fff;
+        border-bottom: 1px solid #eee;
+    }
 
-        #wtm_cookie_bar .inner {
-            max-width: 640px;
-            margin: 0 auto;
-        }
+    #wtm_cookie_bar .inner {
+        max-width: 640px;
+        margin: 0 auto;
+    }
 
-        #wtm_cookie_bar p {
-            margin: 0 0 6px 0;
-            line-height: 1.2;
-        }
+    #wtm_cookie_bar p {
+        margin: 0 0 6px 0;
+        line-height: 1.2;
+    }
 
-        #wtm_cookie_bar .button-container {
-            display: block;
-            margin-top: 12px;
-        }
+    #wtm_cookie_bar .button-container {
+        display: block;
+        margin-top: 12px;
+    }
 
-        #wtm_cookie_bar .button {
-            display: inline-block;
-            align-items: center;
-            padding: 8px 24px;
-            color: white;
-            text-decoration: none;
-            border-radius: 3px;
-        }
-        #wtm_cookie_bar .button:hover {text-decoration: none}
-        #wtm_cookie_bar .button:not(:first-child) {margin: 0 0 0 12px}
-        #wtm_cookie_bar .button--green {background-color: rgb(0, 150, 0)}
-        #wtm_cookie_bar .button--green:hover {background-color: rgb(0, 175, 0)}
-        #wtm_cookie_bar .button--red {background-color: rgb(150, 0, 0)}
-        #wtm_cookie_bar .button--red:hover {background-color: rgb(175, 0, 0)}
-        #wtm_cookie_bar .button--transparant {color: black}
-        #wtm_cookie_bar .button--transparant:hover {background-color: lightgray}
-    </style>
+    #wtm_cookie_bar .button {
+        display: inline-block;
+        align-items: center;
+        padding: 8px 24px;
+        color: white;
+        text-decoration: none;
+        border-radius: 3px;
+    }
+    #wtm_cookie_bar .button:hover {text-decoration: none}
+    #wtm_cookie_bar .button:not(:first-child) {margin: 0 0 0 12px}
+    #wtm_cookie_bar .button--green {background-color: rgb(0, 150, 0)}
+    #wtm_cookie_bar .button--green:hover {background-color: rgb(0, 175, 0)}
+    #wtm_cookie_bar .button--red {background-color: rgb(150, 0, 0)}
+    #wtm_cookie_bar .button--red:hover {background-color: rgb(175, 0, 0)}
+    #wtm_cookie_bar .button--transparant {color: black}
+    #wtm_cookie_bar .button--transparant:hover {background-color: lightgray}
+</style>
 
-    <div id="wtm_cookie_bar" style="display: none;">
-        <div class="inner">
-            <div class="content-container">
-                <p>
-                    {% if functional or analytical %}
-                        {% trans "This website uses cookies and other tracking technologies for" %}
-                        {% if functional %} {% trans "functional" %}{% endif %}
-                        {% if functional and analytical %} {% trans "and" %}{% endif %}
-                        {% if analytical %} {% trans "analytical" %}{% endif %}
-                        {% trans "purposes" %}.
-                    {% endif %}
-
-                    {% if traceable %}
-                        {% blocktrans %}
-                            To improve your browsing experience on our site,
-                            we would also like to place tracking cookies.
-                        {% endblocktrans %}
-                    {% endif %}
-                </p>
-            </div>
-            <div class="button-container">
-                {% if traceable %}
-                    <a class="button button--green js-cookie-choice" data-choice="accept" href="#" aria-label="Accept" role="button" tabindex="0">{% trans "Accept" %}</a>
-                    <a class="button button--red js-cookie-choice" data-choice="reject" href="#" aria-label="Reject" role="button" tabindex="0">{% trans "Reject" %}</a>
-                {% else %}
-                    <a class="button button--red js-cookie-choice" data-choice="close" href="#" aria-label="Close" role="button" tabindex="0">{% trans "Close" %}</a>
+<div id="wtm_cookie_bar" style="display: none;">
+    <div class="inner">
+        <div class="content-container">
+            <p>
+                {% if config.functional.exists or config.analytical.exists %}
+                    {% trans "This website uses cookies and other tracking technologies for" %}
+                    {% if config.functional.exists %} {% trans "functional" %}{% endif %}
+                    {% if config.functional.exists and config.analytical.exists %} {% trans "and" %}{% endif %}
+                    {% if config.analytical.exists %} {% trans "analytical" %}{% endif %}
+                    {% trans "purposes" %}.
                 {% endif %}
 
-                {% if manage_view %}
-                    <a class="button button--transparant" href="{% url 'wtm:manage' %}" aria-label="Manage settings" role="button" tabindex="0">{% trans "Manage settings" %}</a>
+                {% if config.traceable.exists %}
+                    {% blocktrans %}
+                        To improve your browsing experience on our site,
+                        we would also like to place tracking cookies.
+                    {% endblocktrans %}
                 {% endif %}
-            </div>
+            </p>
+        </div>
+        <div class="button-container">
+            {% if config.traceable.exists %}
+                <a class="button button--green js-cookie-choice" data-choice="accept" href="#" aria-label="Accept" role="button" tabindex="0">{% trans "Accept" %}</a>
+                <a class="button button--red js-cookie-choice" data-choice="reject" href="#" aria-label="Reject" role="button" tabindex="0">{% trans "Reject" %}</a>
+            {% else %}
+                <a class="button button--red js-cookie-choice" data-choice="close" href="#" aria-label="Close" role="button" tabindex="0">{% trans "Close" %}</a>
+            {% endif %}
+
+            {% if manage_view %}
+                <a class="button button--transparant" href="{% url 'wtm:manage' %}" aria-label="Manage settings" role="button" tabindex="0">{% trans "Manage settings" %}</a>
+            {% endif %}
         </div>
     </div>
-{% endif %}
+</div>
