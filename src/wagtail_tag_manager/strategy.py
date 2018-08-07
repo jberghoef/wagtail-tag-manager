@@ -4,18 +4,19 @@ from wagtail_tag_manager.models import Tag, TagTypeSettings
 
 
 class TagStrategy(object):
-    def __init__(self, request, consent=False):
+    def __init__(self, request, consent=None):
         self.cookies = request.COOKIES
         self.config = TagTypeSettings.all()
 
         self.include_tags = []
         self.include_cookies = []
+        self.exclude_cookies = []
 
         self.define_strategy(request=request, consent=consent)
         self.build_queryset()
 
     # https://gist.github.com/jberghoef/9ffa2b738cbb0aab624ff091dc6fe9a7
-    def define_strategy(self, request, consent=False):
+    def define_strategy(self, request, consent):
         for tag_type, tag_config in self.config.items():
             cookie_name = Tag.get_cookie_name(tag_type)
             cookie = self.cookies.get(cookie_name, None)
@@ -28,7 +29,7 @@ class TagStrategy(object):
                         # Include required cookie
                         self.include_cookies.append(cookie_name)
                 elif tag_config.get('initial', False):
-                    if cookie != 'false':
+                    if cookie == 'true':
                         # Include initial instant tags
                         self.include_tags.append((Tag.INSTANT_LOAD, tag_type))
                 else:
@@ -44,9 +45,14 @@ class TagStrategy(object):
                         # Include required cookie
                         self.include_cookies.append(cookie_name)
 
-                elif consent is False:
+                elif consent is None:
                     if tag_config.get('initial', False):
-                        if cookie != 'false':
+                        if cookie == 'unset':
+                            # Include initial lazy tags
+                            # Include initial instant tags
+                            self.include_tags.append((Tag.LAZY_LOAD, tag_type))
+                            self.include_tags.append((Tag.INSTANT_LOAD, tag_type))
+                        elif cookie == 'true':
                             # Include initial lazy tags
                             self.include_tags.append((Tag.LAZY_LOAD, tag_type))
                     else:
@@ -60,10 +66,9 @@ class TagStrategy(object):
                             # Include initial lazy tags
                             # Include initial instant tags
                             # Include initial cookie
-                            self.include_tags.append(
-                                (Tag.LAZY_LOAD, tag_type),
-                                (Tag.INSTANT_LOAD, tag_type))
-                            self.include_cookies.append(cookie_name)
+                            self.include_tags.append((Tag.LAZY_LOAD, tag_type))
+                            self.include_tags.append((Tag.INSTANT_LOAD, tag_type))
+                        self.include_cookies.append(cookie_name)
                     else:
                         if cookie == 'true':
                             pass
@@ -71,10 +76,12 @@ class TagStrategy(object):
                             # Include generic lazy tags
                             # Include generic instant tags
                             # Include generic cookie
-                            self.include_tags.append(
-                                (Tag.LAZY_LOAD, tag_type),
-                                (Tag.INSTANT_LOAD, tag_type))
+                            self.include_tags.append((Tag.LAZY_LOAD, tag_type))
+                            self.include_tags.append((Tag.INSTANT_LOAD, tag_type))
                             self.include_cookies.append(cookie_name)
+
+                elif consent is False:
+                    self.exclude_cookies.append(cookie_name)
 
     def build_queryset(self):
         self.queryset = Q()

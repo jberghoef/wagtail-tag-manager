@@ -5,9 +5,9 @@ from django.conf import settings
 from django.template import loader
 from django.templatetags.static import static
 
-from wagtail_tag_manager.utils import set_cookie
 from wagtail_tag_manager.models import Tag, TagTypeSettings
 from wagtail_tag_manager.strategy import TagStrategy
+from wagtail_tag_manager.utils import set_cookie
 
 
 class TagManagerMiddleware:
@@ -22,6 +22,8 @@ class TagManagerMiddleware:
             self.strategy = TagStrategy(request)
             for cookie_name in self.strategy.include_cookies:
                 set_cookie(self.response, cookie_name, 'true')
+            for cookie_name in self.strategy.exclude_cookies:
+                set_cookie(self.response, cookie_name, 'false')
 
             self._add_instant_tags()
             self._add_lazy_manager()
