@@ -1,30 +1,83 @@
+from django.db.models import Q
+
 from wagtail_tag_manager.models import Tag, TagTypeSettings
 
 
-def define_tags(request):
-    cookies = request.COOKIES
-    config = TagTypeSettings.all()
+class TagStrategy(object):
+    def __init__(self, request, consent=False):
+        self.cookies = request.COOKIES
+        self.config = TagTypeSettings.all()
 
-    tag_types = []
-    set_cookies = []
+        self.include_tags = []
+        self.include_cookies = []
 
-    for tag_type, tag_config in config.items():
-        cookie_name = Tag.get_cookie_name(tag_type)
-        cookie = cookies.get(cookie_name, None)
+        self.define_strategy(request=request, consent=consent)
+        self.build_queryset()
 
-        if tag_config.get('required', False):
-            if not cookie:
-                tag_types.append((Tag.INSTANT_LOAD, tag_type))
-                set_cookies.append(tag_type)
-            tag_types.append((Tag.LAZY_LOAD, tag_type))
-        else:
-            if tag_config.get('initial', False):
-                if not cookie:
-                    tag_types.append((Tag.INSTANT_LOAD, tag_type))
-                    tag_types.append((Tag.LAZY_LOAD, tag_type))
-                elif cookie == 'true':
-                    tag_types.append((Tag.LAZY_LOAD, tag_type))
-            elif cookie == 'true':
-                tag_types.append((Tag.LAZY_LOAD, tag_type))
+    # https://gist.github.com/jberghoef/9ffa2b738cbb0aab624ff091dc6fe9a7
+    def define_strategy(self, request, consent=False):
+        for tag_type, tag_config in self.config.items():
+            cookie_name = Tag.get_cookie_name(tag_type)
+            cookie = self.cookies.get(cookie_name, None)
 
-    return tag_types, set_cookies
+            if request.method == 'GET':  # Middleware logic
+                if tag_config.get('required', False):
+                    # Include required instant tags
+                    self.include_tags.append((Tag.INSTANT_LOAD, tag_type))
+                    if cookie != 'true':
+                        # Include required cookie
+                        self.include_cookies.append(cookie_name)
+                elif tag_config.get('initial', False):
+                    if cookie != 'false':
+                        # Include initial instant tags
+                        self.include_tags.append((Tag.INSTANT_LOAD, tag_type))
+                else:
+                    if cookie == 'true':
+                        # Include generic instant tags
+                        self.include_tags.append((Tag.INSTANT_LOAD, tag_type))
+
+            elif request.method == 'POST':  # Endpoint logic
+                if tag_config.get('required', False):
+                    # Include required lazy tags
+                    self.include_tags.append((Tag.LAZY_LOAD, tag_type))
+                    if cookie != 'true':
+                        # Include required cookie
+                        self.include_cookies.append(cookie_name)
+
+                elif consent is False:
+                    if tag_config.get('initial', False):
+                        if cookie != 'false':
+                            # Include initial lazy tags
+                            self.include_tags.append((Tag.LAZY_LOAD, tag_type))
+                    else:
+                        if cookie == 'true':
+                            # Include generic lazy tags
+                            self.include_tags.append((Tag.LAZY_LOAD, tag_type))
+
+                elif consent is True:
+                    if tag_config.get('initial', False):
+                        if cookie == 'false':
+                            # Include initial lazy tags
+                            # Include initial instant tags
+                            # Include initial cookie
+                            self.include_tags.append(
+                                (Tag.LAZY_LOAD, tag_type),
+                                (Tag.INSTANT_LOAD, tag_type))
+                            self.include_cookies.append(cookie_name)
+                    else:
+                        if cookie == 'true':
+                            pass
+                        else:
+                            # Include generic lazy tags
+                            # Include generic instant tags
+                            # Include generic cookie
+                            self.include_tags.append(
+                                (Tag.LAZY_LOAD, tag_type),
+                                (Tag.INSTANT_LOAD, tag_type))
+                            self.include_cookies.append(cookie_name)
+
+    def build_queryset(self):
+        self.queryset = Q()
+        for tag_type in self.include_tags:
+            self.queryset.add(
+                Q(tag_loading=tag_type[0]) & Q(tag_type=tag_type[1]), Q.OR)

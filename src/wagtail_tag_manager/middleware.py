@@ -7,6 +7,7 @@ from django.templatetags.static import static
 
 from wagtail_tag_manager.utils import set_cookie
 from wagtail_tag_manager.models import Tag, TagTypeSettings
+from wagtail_tag_manager.strategy import TagStrategy
 
 
 class TagManagerMiddleware:
@@ -18,18 +19,9 @@ class TagManagerMiddleware:
         self.response = self.get_response(request)
 
         if self.request.method == 'GET' and self.response.status_code is 200:
-            self.cookies = request.COOKIES
-
-            for tag_type, config in TagTypeSettings().all().items():
-                cookie_name = Tag.get_cookie_name(tag_type)
-
-                # Always enable required tags.
-                if (
-                    config.get('required', False) and
-                    (cookie_name not in self.cookies or self.cookies[cookie_name] == 'false')  # NOQA
-                ):
-                    self.cookies[cookie_name] = 'true'
-                    set_cookie(self.response, cookie_name, 'true')
+            self.strategy = TagStrategy(request)
+            for cookie_name in self.strategy.include_cookies:
+                set_cookie(self.response, cookie_name, 'true')
 
             self._add_instant_tags()
             self._add_lazy_manager()
@@ -40,7 +32,7 @@ class TagManagerMiddleware:
         doc = BeautifulSoup(self.response.content, 'html.parser')
         context = Tag.create_context(self.request)
 
-        def handle_tag(tag_instance):
+        def process_tag(tag_instance):
             contents = tag_instance.get_contents(self.request, context)
             for element in contents:
                 if tag_instance.tag_location == Tag.TOP_HEAD and doc.head:
@@ -52,15 +44,8 @@ class TagManagerMiddleware:
                 elif tag_instance.tag_location == Tag.BOTTOM_BODY and doc.body:
                     doc.body.append(element)
 
-        tags = Tag.objects.active().instant()
-
-        enabled_tags = [
-            tag_type for tag_type in Tag.get_types()
-            if Tag.get_cookie_name(tag_type) in self.cookies and
-            self.cookies[Tag.get_cookie_name(tag_type)] != 'false']
-
-        for tag in tags.filter(tag_type__in=enabled_tags):
-            handle_tag(tag)
+        for tag in Tag.objects.active().filter(self.strategy.queryset):
+            process_tag(tag)
 
         self.response.content = doc.prettify()
 
