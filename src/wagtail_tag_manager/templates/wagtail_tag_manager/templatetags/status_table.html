@@ -1,10 +1,6 @@
 {% load i18n %}
 
-<h2>{% trans "Functional" %}</h2>
-{% include "wagtail_tag_manager/partials/tag_table.html" with tags=tags.functional state=functional %}
-
-<h2>{% trans "Analytical" %}</h2>
-{% include "wagtail_tag_manager/partials/tag_table.html" with tags=tags.analytical state=analytical %}
-
-<h2>{% trans "Traceable" %}</h2>
-{% include "wagtail_tag_manager/partials/tag_table.html" with tags=tags.traceable state=traceable %}
+{% for tag_type, tags in tags.items %}
+    <h2>{{ tag_type|capfirst }}</h2>
+    {% include "wagtail_tag_manager/partials/tag_table.html" with tags=tags %}
+{% endfor %}

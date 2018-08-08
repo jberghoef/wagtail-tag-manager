@@ -49,29 +49,17 @@
     <div class="inner">
         <div class="content-container">
             <p>
-                {% if config.functional.exists or config.analytical.exists %}
-                    {% trans "This website uses cookies and other tracking technologies for" %}
-                    {% if config.functional.exists %} {% trans "functional" %}{% endif %}
-                    {% if config.functional.exists and config.analytical.exists %} {% trans "and" %}{% endif %}
-                    {% if config.analytical.exists %} {% trans "analytical" %}{% endif %}
-                    {% trans "purposes" %}.
-                {% endif %}
-
-                {% if config.traceable.exists %}
-                    {% blocktrans %}
-                        To improve your browsing experience on our site,
-                        we would also like to place tracking cookies.
-                    {% endblocktrans %}
-                {% endif %}
+                {% blocktrans %}
+                    This website uses cookies and other tracking technologies for
+                    functional and analytical purposes.
+                    To improve your browsing experience on our site,
+                    we would also like to place tracking cookies.
+                {% endblocktrans %}
             </p>
         </div>
         <div class="button-container">
-            {% if config.traceable.exists %}
-                <a class="button button--green js-cookie-choice" data-choice="accept" href="#" aria-label="Accept" role="button" tabindex="0">{% trans "Accept" %}</a>
-                <a class="button button--red js-cookie-choice" data-choice="reject" href="#" aria-label="Reject" role="button" tabindex="0">{% trans "Reject" %}</a>
-            {% else %}
-                <a class="button button--red js-cookie-choice" data-choice="close" href="#" aria-label="Close" role="button" tabindex="0">{% trans "Close" %}</a>
-            {% endif %}
+            <a class="button button--green js-cookie-choice" data-choice="accept" href="#" aria-label="Accept" role="button" tabindex="0">{% trans "Accept" %}</a>
+            <a class="button button--red js-cookie-choice" data-choice="reject" href="#" aria-label="Reject" role="button" tabindex="0">{% trans "Reject" %}</a>
 
             {% if manage_view %}
                 <a class="button button--transparant" href="{% url 'wtm:manage' %}" aria-label="Manage settings" role="button" tabindex="0">{% trans "Manage settings" %}</a>

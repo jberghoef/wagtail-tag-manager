@@ -19,8 +19,7 @@ def wtm_manage_form(context):
 @register.inclusion_tag(
     'wagtail_tag_manager/templatetags/status_table.html', takes_context=True)
 def wtm_status_table(context):
-    request = context.get('request')
-    return {
-        **get_cookie_state(request),
-        'tags': Tag.objects.active(),
-    }
+    context['tags'] = {}
+    for tag_type in Tag.get_types():
+        context['tags'][tag_type] = Tag.objects.filter(tag_type=tag_type)
+    return context
