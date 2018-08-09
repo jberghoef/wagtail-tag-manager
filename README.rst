@@ -100,6 +100,26 @@ Settings
 
 .. code-block:: python
 
+    WTM_TAG_TYPES = {
+        'functional': 'required',
+        'analytical': 'initial',
+        'traceable': '',
+    }
+
+Allows you to define the tag types available. This can be helpful if you'd like
+the change the terminology used, or when you'd prefer to split a type in
+multiple sections. Notice the two keywords (`required` and `initial`) used.
+
+Tags marked as `required` can not be disabled and will always be included on
+every page.
+
+Tags marked as `initial` will be included as long as no explicit consent has
+been given by the end user, provided the browser allows cookies. While no
+consent has been given, these tags will be loaded lazily to honor the browser
+settings (which we can only read using javascript).
+
+.. code-block:: python
+
     WTM_MANAGE_VIEW = True
 
 Allows you to enable or disable the included "manage" view allowing users to
