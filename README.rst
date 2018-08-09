@@ -4,6 +4,9 @@ Wagtail Tag Manager
 .. image:: https://circleci.com/gh/jberghoef/wagtail-tag-manager.svg?style=svg
     :target: https://circleci.com/gh/jberghoef/wagtail-tag-manager
 
+.. image:: https://codecov.io/gh/jberghoef/wagtail-tag-manager/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/jberghoef/wagtail-tag-manager
+
 Wagtail Tag Manager (WTM for short) is a Wagtail_ addon that allows for easier
 and GDPR compliant administration of scripts and tags.
 
