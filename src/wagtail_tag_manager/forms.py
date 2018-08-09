@@ -7,9 +7,9 @@ from wagtail_tag_manager.models import TagTypeSettings
 class ConsentForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for key, value in TagTypeSettings.all().items():
-            self.fields[key] = forms.BooleanField(
-                label=_(key.title()),
-                required=value.get('required'),
-                disabled=value.get('required'),
-                initial=value.get('initial') is True)
+        for tag_type, config in TagTypeSettings.all().items():
+            self.fields[tag_type] = forms.BooleanField(
+                label=_(tag_type.title()),
+                required=config == 'required',
+                disabled=config == 'required',
+                initial=config == 'initial' or config == 'required')

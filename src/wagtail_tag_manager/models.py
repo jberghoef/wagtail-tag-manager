@@ -20,18 +20,9 @@ class TagTypeSettings:
     @staticmethod
     def all():
         return getattr(settings, 'WTM_TAG_TYPES', {
-            'functional': {
-                'required': True,
-                'initial': True,
-            },
-            'analytical': {
-                'required': False,
-                'initial': True,
-            },
-            'traceable': {
-                'required': False,
-                'initial': False,
-            }
+            'functional': 'required',
+            'analytical': 'initial',
+            'traceable': '',
         })
 
     def include(self, *args, **kwargs):

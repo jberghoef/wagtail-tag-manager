@@ -26,12 +26,12 @@ class TagStrategy(object):
         cookie_name = Tag.get_cookie_name(tag_type)
         cookie = self.cookies.get(cookie_name, None)
 
-        if tag_config.get('required', False):
+        if tag_config == 'required':
             # Include required instant tags
             # Include required cookie
             self.include_tags.append((Tag.INSTANT_LOAD, tag_type))
             self.include_cookies.append(cookie_name)
-        elif tag_config.get('initial', False):
+        elif tag_config == 'initial':
             if cookie == 'true':
                 # Include initial instant tags
                 self.include_tags.append((Tag.INSTANT_LOAD, tag_type))
@@ -44,14 +44,14 @@ class TagStrategy(object):
         cookie_name = Tag.get_cookie_name(tag_type)
         cookie = self.cookies.get(cookie_name, None)
 
-        if tag_config.get('required', False):
+        if tag_config == 'required':
             # Include required lazy tags
             # Include required cookie
             self.include_tags.append((Tag.LAZY_LOAD, tag_type))
             self.include_cookies.append(cookie_name)
 
         elif consent is None:
-            if tag_config.get('initial', False):
+            if tag_config == 'initial':
                 if cookie == 'unset':
                     # Include initial lazy tags
                     # Include initial instant tags
@@ -66,7 +66,7 @@ class TagStrategy(object):
                     self.include_tags.append((Tag.LAZY_LOAD, tag_type))
 
         elif consent is True:
-            if tag_config.get('initial', False):
+            if tag_config == 'initial':
                 if cookie == 'false':
                     # Include initial lazy tags
                     # Include initial instant tags

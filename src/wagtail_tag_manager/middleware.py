@@ -59,10 +59,7 @@ class TagManagerMiddleware:
 
             context = {
                 'config': json.dumps({
-                    tag_type: {
-                        **config,
-                        'exists': tags.filter_type(tag_type).exists()
-                    }
+                    tag_type: config
                     for tag_type, config in TagTypeSettings.all().items()
                 }),
                 'manage_view': getattr(settings, 'WTM_MANAGE_VIEW', True)

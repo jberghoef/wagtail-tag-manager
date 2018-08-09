@@ -24,10 +24,10 @@ class TagManager {
 
     if (enabled) {
       Object.keys(this.config).forEach((tagType) => {
-        if (this.config[tagType]['initial'] && !this.has(tagType)) {
+        if (this.config[tagType] === 'initial' && !this.has(tagType)) {
           Cookies.set(`wtm_${tagType}`, 'unset', { expires: 365 });
           this.show_cookiebar = true;
-        } else if (!this.config[tagType]['required'] && !this.has(tagType)) {
+        } else if (!this.has(tagType)) {
           this.show_cookiebar = true;
         }
       });
