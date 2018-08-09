@@ -50,6 +50,12 @@ jobs:
             . venv/bin/activate
             py.test --nomigrations --reuse-db tests/
 
+      - run:
+          name: coverage
+          command: |
+            pip install codecov
+            codecov
+
       - store_artifacts:
           path: test-reports
           destination: test-reports
