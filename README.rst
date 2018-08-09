@@ -1,6 +1,8 @@
 Wagtail Tag Manager
 ===================
 
+[![CircleCI](https://circleci.com/gh/jberghoef/wagtail-tag-manager.svg?style=svg)](https://circleci.com/gh/jberghoef/wagtail-tag-manager)
+
 Wagtail Tag Manager (WTM for short) is a Wagtail_ addon that allows for easier
 and GDPR compliant administration of scripts and tags.
 
