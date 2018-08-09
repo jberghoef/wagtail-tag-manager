@@ -40,6 +40,7 @@ def test_lazy_cookies(client, site):
     assert 'wtm_analytical' not in response.cookies
     assert 'wtm_traceable' not in response.cookies
 
+    client.cookies['wtm_functional'] = 'false'
     response = client.post(
         '/wtm/lazy/',
         json.dumps({'consent': False}),
@@ -56,6 +57,7 @@ def test_lazy_cookies(client, site):
     assert 'wtm_traceable' in response.cookies
     assert response.cookies.get('wtm_traceable').value == 'false'
 
+    client.cookies['wtm_functional'] = 'false'
     response = client.post(
         '/wtm/lazy/',
         json.dumps({'consent': True}),
@@ -90,6 +92,7 @@ def test_required_lazy_cookies(client, site):
     assert 'wtm_functional' in response.cookies
     assert response.cookies.get('wtm_functional').value == 'true'
 
+    client.cookies['wtm_functional'] = 'false'
     response = client.post(
         '/wtm/lazy/',
         json.dumps({'consent': False}),

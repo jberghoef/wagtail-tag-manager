@@ -48,7 +48,8 @@ class TagStrategy(object):
             # Include required lazy tags
             # Include required cookie
             self.include_tags.append((Tag.LAZY_LOAD, tag_type))
-            self.include_cookies.append(cookie_name)
+            if cookie != 'true':
+                self.include_cookies.append(cookie_name)
 
         elif consent is None:
             if tag_config == 'initial':
