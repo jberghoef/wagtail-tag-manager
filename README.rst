@@ -108,6 +108,13 @@ The view is enabled by default.
 
 .. code-block:: python
 
+    WTM_COOKIE_EXPIRE = 365
+
+Sets the expiration time in days of WTM's cookies. Notice that this is only
+applicable to the consent cookies used by WTM, not any cookies placed by tags.
+
+.. code-block:: python
+
     WTM_CACHE_TIMEOUT = 1800
 
 Sets the amount of microseconds the cache will be preserved. At the moment,
