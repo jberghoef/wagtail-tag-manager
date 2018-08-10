@@ -14,6 +14,12 @@ def test_view(client, site):
     response = client.get('/')
     assert response.status_code == 200
 
+    tag_instant_functional(tag_location=Tag.TOP_HEAD)
+    client.cookies = SimpleCookie({'wtm_functional': 'true'})
+    response = client.get('/')
+    assert response.status_code == 200
+    assert b'console.log("functional instant")' in response.content
+
     tag_instant_functional(tag_location=Tag.BOTTOM_HEAD)
     client.cookies = SimpleCookie({'wtm_functional': 'true'})
     response = client.get('/')

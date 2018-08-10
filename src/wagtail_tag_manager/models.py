@@ -25,22 +25,20 @@ class TagTypeSettings:
             'traceable': '',
         })
 
-    def include(self, *args, **kwargs):
-        for key, value in kwargs.items():
-            self.SETTINGS.update({
-                k: v for k, v in self.all().items() if v.get(key) == value})
+    def include(self, value, *args, **kwargs):
+        self.SETTINGS.update({
+            k: v for k, v in self.all().items() if v == value})
 
         return self
 
-    def exclude(self, *args, **kwargs):
+    def exclude(self, value, *args, **kwargs):
         if not self.SETTINGS:
             self.SETTINGS = self.all()
 
         remove = []
-        for key, value in kwargs.items():
-            for k, v in self.SETTINGS.items():
-                if v.get(key) == value:
-                    remove.append(k)
+        for k, v in self.SETTINGS.items():
+            if v == value:
+                remove.append(k)
 
         for item in remove:
             self.SETTINGS.pop(item, None)
