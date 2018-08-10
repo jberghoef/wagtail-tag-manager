@@ -55,8 +55,6 @@ class TagManagerMiddleware:
         doc = BeautifulSoup(self.response.content, 'html.parser')
 
         if doc.head and doc.body:
-            tags = Tag.objects.active()
-
             context = {
                 'config': json.dumps({
                     tag_type: config
