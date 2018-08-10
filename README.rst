@@ -70,6 +70,23 @@ Include the middleware:
         # ...
     ]
 
+OR add these template tags to you're `base.html` file:
+
+.. code-block:: django+html
+
+    {% load wtm_tags %}
+
+    <head>
+        ...
+        {% wtm_instant_tags %}
+    </head>
+    <body>
+        {% wtm_lazy_manager %}
+        ...
+    </body>
+
+Please note that the tag location won't be applied.
+
 Include the urls:
 
 .. code-block:: python
