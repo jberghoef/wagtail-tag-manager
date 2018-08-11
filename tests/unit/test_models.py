@@ -1,6 +1,46 @@
 import pytest
 
-from wagtail_tag_manager.models import Tag, Constant, Variable
+from wagtail_tag_manager.models import (
+    Tag, Constant, Variable, TagTypeSettings)
+
+
+@pytest.mark.django_db
+def test_tag_type_settings():
+    config = TagTypeSettings().all()
+
+    assert 'functional' in config
+    assert 'analytical' in config
+    assert 'traceable' in config
+
+    config = TagTypeSettings().include('required').result()
+
+    assert 'functional' in config
+    assert 'analytical' not in config
+    assert 'traceable' not in config
+
+    config = TagTypeSettings().include('initial').result()
+
+    assert 'functional' not in config
+    assert 'analytical' in config
+    assert 'traceable' not in config
+
+    config = TagTypeSettings().exclude('initial').result()
+
+    assert 'functional' in config
+    assert 'analytical' not in config
+    assert 'traceable' in config
+
+    config = TagTypeSettings().exclude('required').exclude('initial').result()
+
+    assert 'functional' not in config
+    assert 'analytical' not in config
+    assert 'traceable' in config
+
+    config = TagTypeSettings().exclude('').result()
+
+    assert 'functional' in config
+    assert 'analytical' in config
+    assert 'traceable' not in config
 
 
 @pytest.mark.django_db

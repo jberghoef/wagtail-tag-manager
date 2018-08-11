@@ -2,8 +2,9 @@ import json
 
 from django.http import JsonResponse, HttpResponseBadRequest
 
-from wagtail_tag_manager.utils import set_cookie
 from wagtail_tag_manager.models import Tag
+from wagtail_tag_manager.strategy import TagStrategy
+from wagtail_tag_manager.utils import set_cookie
 
 
 def lazy_endpoint(request):
@@ -23,28 +24,21 @@ def lazy_endpoint(request):
         except json.JSONDecodeError:
             return HttpResponseBadRequest()
 
-        cookies = request.COOKIES
+        consent = None
+        if 'consent' in payload:
+            consent = payload['consent']
 
-        tag_types = [tag_type for tag_type in payload if payload[tag_type]]
-        tag_loads = [Tag.LAZY_LOAD]
+        strategy = TagStrategy(request, consent)
 
-        if tag_types:
+        for cookie_name in strategy.include_cookies:
+            set_cookie(response, cookie_name, 'true')
+        for cookie_name in strategy.exclude_cookies:
+            set_cookie(response, cookie_name, 'false')
+
+        if strategy.include_tags:
             context = Tag.create_context(request)
 
-        for tag_type in payload:
-            cookie_name = Tag.get_cookie_name(tag_type)
-            cookie = cookies.get(cookie_name, None)
-            value = str(payload[tag_type]).lower()
-
-            if cookie != value:
-                response = set_cookie(response, cookie_name, value)
-
-            if payload[tag_type] and cookie != value:
-                tag_loads.append(Tag.INSTANT_LOAD)
-
-        for tag in Tag.objects.filter(
-            tag_type__in=tag_types, tag_loading__in=tag_loads
-        ).active():
+        for tag in Tag.objects.active().filter(strategy.queryset):
             process_tag(tag)
 
         response.content = json.dumps(data)

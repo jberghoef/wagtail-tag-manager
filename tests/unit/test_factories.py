@@ -37,7 +37,7 @@ def test_tag_instant_analytical():
     produced_tag = tag_instant_analytical()
     tag = Tag(
         name='analytical instant',
-        tag_type=Tag.ANALYTICAL,
+        tag_type='analytical',
         content='<script>console.log("analytical instant")</script>')
 
     assert produced_tag.name == tag.name
@@ -50,7 +50,7 @@ def test_tag_instant_traceable():
     produced_tag = tag_instant_traceable()
     tag = Tag(
         name='traceable instant',
-        tag_type=Tag.TRACEABLE,
+        tag_type='traceable',
         content='<script>console.log("traceable instant")</script>')
 
     assert produced_tag.name == tag.name
@@ -75,7 +75,7 @@ def test_tag_lazy_analytical():
     produced_tag = tag_lazy_analytical()
     tag = Tag(
         name='analytical lazy',
-        tag_type=Tag.ANALYTICAL,
+        tag_type='analytical',
         content='<script>console.log("analytical lazy")</script>')
 
     assert produced_tag.name == tag.name
@@ -88,7 +88,7 @@ def test_tag_lazy_traceable():
     produced_tag = tag_lazy_traceable()
     tag = Tag(
         name='traceable lazy',
-        tag_type=Tag.TRACEABLE,
+        tag_type='traceable',
         content='<script>console.log("traceable lazy")</script>')
 
     assert produced_tag.name == tag.name

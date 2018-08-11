@@ -3,9 +3,8 @@
 <table>
     <thead>
         <tr>
-            <td>{% trans "Name" %}</td>
-            <td>{% trans "Description" %}</td>
-            <td>{% trans "Active" %}</td>
+            <th>{% trans "Name" %}</th>
+            <th>{% trans "Description" %}</th>
         </tr>
     </thead>
     <tbody>
@@ -13,7 +12,6 @@
             <tr>
                 <td>{{ tag.name }}</td>
                 <td>{{ tag.description }}</td>
-                <td>{{ state|yesno:"Yes,No" }}</td>
             </tr>
         {% endfor %}
     </tbody>
