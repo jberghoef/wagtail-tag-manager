@@ -34,10 +34,7 @@ def wtm_instant_tags(context):
 @register.inclusion_tag('wagtail_tag_manager/templatetags/lazy_manager.html')
 def wtm_lazy_manager():
     return {
-        'config': json.dumps({
-            tag_type: config
-            for tag_type, config in TagTypeSettings.all().items()
-        }),
+        'config': TagTypeSettings.all(),
         'manage_view': getattr(settings, 'WTM_MANAGE_VIEW', True)
     }
 
