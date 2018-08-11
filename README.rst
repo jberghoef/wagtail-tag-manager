@@ -122,7 +122,7 @@ Include the urls:
 You can use the following provided template tags to render a tag status overview
 and a consent form.
 
-.. code-block:: django
+.. code-block:: html+django
 
     {% wtm_status_table %}
 
