@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 
 install_requires = [
-    'wagtail>=2.1,<2.2',
+    'wagtail>=2.1,<2.3',
     'beautifulsoup4==4.6.0',
 ]
 
@@ -57,6 +57,7 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Framework :: Django :: 2.0',
         'Framework :: Django :: 2.1',
         'Framework :: Wagtail :: 2',
