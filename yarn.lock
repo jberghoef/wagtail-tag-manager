@@ -1025,9 +1025,9 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
 
-cacache@^10.0.4:
-  version "10.0.4"
-  resolved "https://registry.yarnpkg.com/cacache/-/cacache-10.0.4.tgz#6452367999eff9d4188aefd9a14e9d7c6a263460"
+cacache@^10.0.5:
+  version "10.0.5"
+  resolved "https://registry.yarnpkg.com/cacache/-/cacache-10.0.5.tgz#6452367999eff9d4188aefd9a14e9d7c6a263460"
   dependencies:
     bluebird "^3.5.1"
     chownr "^1.0.1"
@@ -2953,7 +2953,7 @@ node-libs-browser@^2.0.0:
     tty-browserify "0.0.0"
     url "^0.11.0"
     util "^0.10.3"
-    vm-browserify "0.0.4"
+    vm-browserify "0.0.5"
 
 node-pre-gyp@^0.6.39:
   version "0.6.39"
@@ -3513,7 +3513,7 @@ request@2.81.0:
     performance-now "^0.2.0"
     qs "~6.4.0"
     safe-buffer "^5.0.1"
-    stringstream "~0.0.4"
+    stringstream "~0.0.5"
     tough-cookie "~2.3.0"
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
@@ -3890,7 +3890,7 @@ string_decoder@~1.0.3:
   dependencies:
     safe-buffer "~5.1.0"
 
-stringstream@~0.0.4:
+stringstream@~0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/stringstream/-/stringstream-0.0.5.tgz#4e484cd4de5a0bbbee18e46307710a8a81621878"
 
@@ -4080,7 +4080,7 @@ uglifyjs-webpack-plugin@^1.2.4:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/uglifyjs-webpack-plugin/-/uglifyjs-webpack-plugin-1.2.5.tgz#2ef8387c8f1a903ec5e44fa36f9f3cbdcea67641"
   dependencies:
-    cacache "^10.0.4"
+    cacache "^10.0.5"
     find-cache-dir "^1.0.0"
     schema-utils "^0.4.5"
     serialize-javascript "^1.4.0"
@@ -4185,9 +4185,9 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vm-browserify@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-0.0.4.tgz#5d7ea45bbef9e4a6ff65f95438e0a87c357d5a73"
+vm-browserify@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-0.0.5.tgz#5d7ea45bbef9e4a6ff65f95438e0a87c357d5a73"
   dependencies:
     indexof "0.0.1"
 
