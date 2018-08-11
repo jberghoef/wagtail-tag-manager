@@ -82,7 +82,9 @@ class CookieBar {
     this.hideCookieBar = this.hideCookieBar.bind(this);
     this.handleClick = this.handleClick.bind(this);
 
-    this.initialize();
+    if (this.el) {
+      this.initialize();
+    }
   }
 
   initialize() {

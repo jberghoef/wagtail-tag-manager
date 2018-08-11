@@ -55,22 +55,10 @@ class TagManagerMiddleware:
         doc = BeautifulSoup(self.response.content, 'html.parser')
 
         if doc.head and doc.body:
-            context = {
-                'config': json.dumps({
-                    tag_type: config
-                    for tag_type, config in TagTypeSettings.all().items()
-                }),
-                'manage_view': getattr(settings, 'WTM_MANAGE_VIEW', True)
-            }
-
             template = loader.get_template('wagtail_tag_manager/state.html')
-            element = BeautifulSoup(
-                template.render(context, self.request), 'html.parser')
-            doc.head.append(element)
-
-            template = loader.get_template('wagtail_tag_manager/cookie_bar.html')
-            element = BeautifulSoup(
-                template.render(context, self.request), 'html.parser')
+            element = BeautifulSoup(template.render({
+                'config': TagTypeSettings.all(),
+            }, self.request), 'html.parser')
             doc.head.append(element)
 
             element = doc.new_tag('script')

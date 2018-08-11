@@ -60,15 +60,49 @@ Add the application to your `INSTALLED_APPS`:
         # ...
     ]
 
-Include the middleware:
+WTM offers two ways to implement it's functionality. You can either choose to
+use the middleware (which will rewrite the html on each request) or use the
+`{% wtm_instant_tags %}` and `{% wtm_lazy_manager %}` template tags.
 
-.. code-block:: python
+When using the template tags, you will lose the option to set a document
+location for your instant tags (top of `<head>`, bottom of `<head>`, top of
+`<body>` and bottom of `<body>`).
 
-    MIDDLEWARE = [
-        # ...
-        'wagtail_tag_manager.middleware.TagManagerMiddleware',
-        # ...
-    ]
+    Option 1: Include the middleware (preferred):
+
+    .. code-block:: python
+
+        MIDDLEWARE = [
+            # ...
+            'wagtail_tag_manager.middleware.TagManagerMiddleware',
+            # ...
+        ]
+
+    Option 2: Add these template tags to you're `base.html` file:
+
+    .. code-block:: html+django
+
+        {% load wtm_tags %}
+
+        <head>
+            ...
+            {% wtm_instant_tags %}
+        </head>
+        <body>
+            ...
+            {% wtm_lazy_manager %}
+        </body>
+
+Optionally, you can choose to include the cookie bar template tag:
+
+.. code-block:: html+django
+
+    {% load wtm_tags %}
+
+    <body>
+        {% wtm_cookie_bar %}
+        ...
+    </body>
 
 Include the urls:
 
@@ -86,7 +120,7 @@ Include the urls:
     ]
 
 You can use the following provided template tags to render a tag status overview
-and a form.
+and a consent form.
 
 .. code-block:: django
 

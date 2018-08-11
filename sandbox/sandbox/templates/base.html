@@ -1,4 +1,4 @@
-{% load static wagtailuserbar %}
+{% load static wagtailuserbar wtm_tags %}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -30,6 +30,7 @@
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
+        {% wtm_cookie_bar %}
         {% wagtailuserbar %}
 
         {% block content %}{% endblock %}
