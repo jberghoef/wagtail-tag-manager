@@ -8,6 +8,10 @@ from tests.factories.variable import VariableFactory
 from wagtail_tag_manager.models import Tag, Constant, Variable
 
 
+def get_expected_content(string):
+    return f'<script>\n console.log("{string}")\n</script>'
+
+
 @pytest.mark.django_db
 def test_tag_create():
     produced_tag = TagFactory()
@@ -17,7 +21,7 @@ def test_tag_create():
 
     assert produced_tag.name == tag.name
     assert produced_tag.tag_type == tag.tag_type
-    assert produced_tag.content == tag.content
+    assert produced_tag.content == get_expected_content(tag.name)
 
 
 @pytest.mark.django_db
@@ -29,7 +33,7 @@ def test_tag_instant_functional():
 
     assert produced_tag.name == tag.name
     assert produced_tag.tag_type == tag.tag_type
-    assert produced_tag.content == tag.content
+    assert produced_tag.content == get_expected_content(tag.name)
 
 
 @pytest.mark.django_db
@@ -42,7 +46,7 @@ def test_tag_instant_analytical():
 
     assert produced_tag.name == tag.name
     assert produced_tag.tag_type == tag.tag_type
-    assert produced_tag.content == tag.content
+    assert produced_tag.content == get_expected_content(tag.name)
 
 
 @pytest.mark.django_db
@@ -55,7 +59,7 @@ def test_tag_instant_traceable():
 
     assert produced_tag.name == tag.name
     assert produced_tag.tag_type == tag.tag_type
-    assert produced_tag.content == tag.content
+    assert produced_tag.content == get_expected_content(tag.name)
 
 
 @pytest.mark.django_db
@@ -67,7 +71,7 @@ def test_tag_lazy_functional():
 
     assert produced_tag.name == tag.name
     assert produced_tag.tag_type == tag.tag_type
-    assert produced_tag.content == tag.content
+    assert produced_tag.content == get_expected_content(tag.name)
 
 
 @pytest.mark.django_db
@@ -80,7 +84,7 @@ def test_tag_lazy_analytical():
 
     assert produced_tag.name == tag.name
     assert produced_tag.tag_type == tag.tag_type
-    assert produced_tag.content == tag.content
+    assert produced_tag.content == get_expected_content(tag.name)
 
 
 @pytest.mark.django_db
@@ -93,7 +97,7 @@ def test_tag_lazy_traceable():
 
     assert produced_tag.name == tag.name
     assert produced_tag.tag_type == tag.tag_type
-    assert produced_tag.content == tag.content
+    assert produced_tag.content == get_expected_content(tag.name)
 
 
 @pytest.mark.django_db
@@ -110,7 +114,7 @@ def test_constant_create():
 def test_variable_create():
     produced_variable = VariableFactory()
     variable = Variable(
-        name='Variable', key='key', variable_type='path', value='value')
+        name='Variable', key='key', variable_type='path', value='')
 
     assert produced_variable.name == variable.name
     assert produced_variable.key == variable.key

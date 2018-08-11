@@ -1,5 +1,8 @@
 import pytest
 
+from tests.factories.tag import (
+    tag_instant_functional, tag_lazy_functional)
+
 from wagtail_tag_manager.models import (
     Tag, Constant, Variable, TagTypeSettings)
 
@@ -44,10 +47,34 @@ def test_tag_type_settings():
 
 
 @pytest.mark.django_db
+def test_tag_queries():
+    tag_instant_functional()
+    tag_lazy_functional()
+
+    tags = Tag.objects.all()
+    assert len(tags) == 2
+
+    tags = Tag.objects.instant()
+    assert len(tags) == 1
+
+    tags = Tag.objects.lazy()
+    assert len(tags) == 1
+
+
+@pytest.mark.django_db
 def test_tag_create():
+    expected = '<script>\n console.log("functional instant")\n</script>'
+
     tag = Tag.objects.create(
         name='functional instant',
         content='<script>console.log("functional instant")</script>')
+    assert tag.content == expected
+    assert tag in Tag.objects.all()
+
+    tag = Tag.objects.create(
+        name='functional instant',
+        content='console.log("functional instant")')
+    assert tag.content == expected
     assert tag in Tag.objects.all()
 
 

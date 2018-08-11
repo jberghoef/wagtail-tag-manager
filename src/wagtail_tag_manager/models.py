@@ -53,14 +53,6 @@ class TagQuerySet(models.QuerySet):
     def active(self):
         return self.filter(active=True)
 
-    def filter_type(self, tag_type=None, include=True):
-        if tag_type is not None and include:
-            return self.filter(tag_type=tag_type)
-        elif tag_type is not None:
-            return self.exclude(tag_type=tag_type)
-        else:
-            return self
-
     def instant(self):
         return self.filter(tag_loading=Tag.INSTANT_LOAD)
 
@@ -74,9 +66,6 @@ class TagManager(models.Manager):
 
     def active(self):
         return self.get_queryset().active()
-
-    def filter_type(self):
-        return self.get_queryset().filter_type()
 
     def instant(self):
         return self.get_queryset().instant()
@@ -143,6 +132,10 @@ class Tag(models.Model):
             self.content, 'html.parser').prettify()
 
         return self
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
     def get_doc(self, context=None):
         content = self.content
@@ -219,6 +212,10 @@ class Constant(models.Model):
                 f"A variable with the key '{ self.key }' already exists.")
         else:
             super().clean()
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -307,6 +304,10 @@ class Variable(models.Model):
                 self.value = ''
 
             return self
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
