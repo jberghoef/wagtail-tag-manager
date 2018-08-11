@@ -89,9 +89,20 @@ location for your instant tags (top of `<head>`, bottom of `<head>`, top of
             {% wtm_instant_tags %}
         </head>
         <body>
-            {% wtm_lazy_manager %}
             ...
+            {% wtm_lazy_manager %}
         </body>
+
+Optionally, you can choose to include the cookie bar template tag:
+
+.. code-block:: html+django
+
+    {% load wtm_tags %}
+
+    <body>
+        {% wtm_cookie_bar %}
+        ...
+    </body>
 
 Include the urls:
 

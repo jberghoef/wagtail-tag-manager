@@ -5,7 +5,7 @@ from tests.factories.tag import (
 
 from wagtail_tag_manager.models import TagTypeSettings
 from wagtail_tag_manager.templatetags.wtm_tags import (
-    wtm_instant_tags, wtm_lazy_manager)
+    wtm_instant_tags, wtm_lazy_manager, wtm_cookie_bar)
 
 
 @pytest.mark.django_db
@@ -43,6 +43,11 @@ def test_wtm_lazy_manager():
     assert 'config' in context
     print(context.get('config'))
     assert context.get('config') == TagTypeSettings.all()
+
+
+@pytest.mark.django_db
+def test_wtm_cookie_bar():
+    context = wtm_cookie_bar()
 
     assert 'manage_view' in context
     assert context.get('manage_view') is True

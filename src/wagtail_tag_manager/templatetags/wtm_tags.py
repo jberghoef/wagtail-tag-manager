@@ -35,7 +35,13 @@ def wtm_instant_tags(context):
 def wtm_lazy_manager():
     return {
         'config': TagTypeSettings.all(),
-        'manage_view': getattr(settings, 'WTM_MANAGE_VIEW', True)
+    }
+
+
+@register.inclusion_tag('wagtail_tag_manager/templatetags/cookie_bar.html')
+def wtm_cookie_bar():
+    return {
+        'manage_view': getattr(settings, 'WTM_MANAGE_VIEW', True),
     }
 
 
