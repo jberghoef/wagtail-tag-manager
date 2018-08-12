@@ -30,7 +30,7 @@ Read more about the `ePrivacy Regulation`_.
 
 Included in this package is a cookie bar which admittedly provides too little
 information to end users regarding the purpose of the scripts you are placing
-on the website. For compliance, please use the `cookie_bar.html` template to
+on the website. For compliance, please use the ``cookie_bar.html`` template to
 change the text shown in the cookie bar.
 
 Requirements
@@ -49,7 +49,7 @@ Installation::
 
     pip install wagtail-tag-manager
 
-Add the application to your `INSTALLED_APPS`:
+Add the application to your ``INSTALLED_APPS``:
 
 .. code-block:: python
 
@@ -62,11 +62,11 @@ Add the application to your `INSTALLED_APPS`:
 
 WTM offers two ways to implement it's functionality. You can either choose to
 use the middleware (which will rewrite the html on each request) or use the
-`{% wtm_instant_tags %}` and `{% wtm_lazy_manager %}` template tags.
+``{% wtm_instant_tags %}`` and ``{% wtm_lazy_manager %}`` template tags.
 
 When using the template tags, you will lose the option to set a document
-location for your instant tags (top of `<head>`, bottom of `<head>`, top of
-`<body>` and bottom of `<body>`).
+location for your instant tags (top of ``<head>``, bottom of ``<head>``, top of
+``<body>`` and bottom of ``<body>``).
 
     Option 1: Include the middleware (preferred):
 
@@ -78,7 +78,7 @@ location for your instant tags (top of `<head>`, bottom of `<head>`, top of
             # ...
         ]
 
-    Option 2: Add these template tags to you're `base.html` file:
+    Option 2: Add these template tags to you're ``base.html`` file:
 
     .. code-block:: html+django
 
@@ -142,12 +142,12 @@ Settings
 
 Allows you to define the tag types available. This can be helpful if you'd like
 the change the terminology used, or when you'd prefer to split a type in
-multiple sections. Notice the two keywords (`required` and `initial`) used.
+multiple sections. Notice the two keywords (``required`` and ``initial``) used.
 
-Tags marked as `required` can not be disabled and will always be included on
+Tags marked as ``required`` can not be disabled and will always be included on
 every page.
 
-Tags marked as `initial` will be included as long as no explicit consent has
+Tags marked as ``initial`` will be included as long as no explicit consent has
 been given by the end user, provided the browser allows cookies. While no
 consent has been given, these tags will be loaded lazily to honor the browser
 settings (which we can only read using javascript).
