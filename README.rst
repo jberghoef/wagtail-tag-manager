@@ -171,7 +171,7 @@ applicable to the consent cookies used by WTM, not any cookies placed by tags.
 
     WTM_CACHE_TIMEOUT = 1800
 
-Sets the amount of microseconds the cache will be preserved. At the moment,
+Sets the amount of seconds the cache will be preserved. At the moment,
 caching is only applied to constants, which will refresh when a constant is
 saved. Default is 30 minutes.
 
