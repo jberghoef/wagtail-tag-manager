@@ -1,4 +1,5 @@
 import random
+import re
 import operator
 
 from bs4 import BeautifulSoup
@@ -230,6 +231,7 @@ class Variable(models.Model):
     TYPE_CHOICES = (
         (_("HTTP"), (
             ('path', _('Path')),
+            ('_repath+', _('Path with regex')),
         )),
         (_("User"), (
             ('user.pk', _("User")),
@@ -262,6 +264,16 @@ class Variable(models.Model):
             FieldPanel('value'),
         ], heading="Data"),
     ]
+
+    def get_repath(self, request):
+        path = request.path
+        if self.value:
+            regex = re.compile(self.value)
+            match = regex.search(request.get_full_path())
+            if match:
+                return match.group()
+            return ""
+        return path
 
     def get_cookie(self, request):
         return request.COOKIES[self.value]
