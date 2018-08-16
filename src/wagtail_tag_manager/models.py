@@ -3,9 +3,10 @@ import re
 import operator
 
 from bs4 import BeautifulSoup
+from django.apps import apps
 from django.conf import settings
 from django.core.cache import cache
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import models
 from django.dispatch import receiver
 from django.template import Context, Template
@@ -243,6 +244,7 @@ class Variable(models.Model):
         (_("Other"), (
             ('_cookie+', _("Cookie")),
             ('_random', _("Random number")),
+            ('_model+', _("Model")),
         )),
     )
 
@@ -272,7 +274,7 @@ class Variable(models.Model):
             match = regex.search(request.get_full_path())
             if match:
                 return match.group()
-            return ""
+            return None
         return path
 
     def get_cookie(self, request):
@@ -280,6 +282,28 @@ class Variable(models.Model):
 
     def get_random(self, request):
         return int(random.random() * 2147483647)
+
+    def get_model(self, request):
+        value = self.value.split(":")
+        try:
+            model = apps.get_model(value[0])
+        except LookupError:
+            return None
+        params = value[1]
+
+        context = Context({
+            **Constant.create_context(),
+            **Variable.create_context(request, exclude=self.pk),
+        })
+        template = Template(params)
+        params = eval("dict(%s)" % template.render(context).replace(" ", ","))
+
+        if params:
+            try:
+                return model.objects.get(**params)
+            except ObjectDoesNotExist:
+                pass
+        return None
 
     def get_value(self, request):
         variable_type = self.variable_type
@@ -297,10 +321,10 @@ class Variable(models.Model):
         return getattr(request, str(self.variable_type))
 
     @classmethod
-    def create_context(cls, request):
+    def create_context(cls, request, exclude=None):
         context = {}
 
-        for variable in cls.objects.all():
+        for variable in cls.objects.all().exclude(pk=exclude):
             context[variable.key] = variable.get_value(request)
 
         return context
