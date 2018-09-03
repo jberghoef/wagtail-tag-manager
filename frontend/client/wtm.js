@@ -97,11 +97,11 @@ class CookieBar {
   }
 
   showCookieBar() {
-    this.el.style.display = 'block';
+    this.el.classList.remove('hidden');
   }
 
   hideCookieBar() {
-    this.el.style.display = 'none';
+    this.el.classList.add('hidden');
   }
 
   handleClick(event) {

@@ -82,7 +82,7 @@
     "pk": 7,
     "fields": {
       "name": "Thank You",
-      "description": "This logs a \"thank you message\" using a constant.",
+      "description": "This logs a \"thank you\" message using a constant.",
       "active": true,
       "tag_type": "functional",
       "tag_location": "bottom_body",
