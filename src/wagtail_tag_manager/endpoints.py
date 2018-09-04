@@ -35,8 +35,9 @@ def lazy_endpoint(request):
 
         context = Tag.create_context(request)
 
-        for tag in Tag.objects.active().filter(strategy.queryset):
-            process_tag(tag)
+        if strategy.include_tags:
+            for tag in Tag.objects.active().filter(strategy.queryset):
+                process_tag(tag)
 
         response.content = json.dumps(data)
         return response

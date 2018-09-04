@@ -101,7 +101,7 @@ def test_required_lazy_cookies(client, site):
 
     assert response.status_code == 200
     assert 'tags' in data
-    assert len(data['tags']) == 1
+    assert len(data['tags']) == 0
 
     assert 'wtm_functional' in response.cookies
     assert response.cookies.get('wtm_functional').value == 'true'

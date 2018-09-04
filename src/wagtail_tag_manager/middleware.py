@@ -41,8 +41,9 @@ class TagManagerMiddleware:
                 elif tag_instance.tag_location == Tag.BOTTOM_BODY and doc.body:
                     doc.body.append(element)
 
-        for tag in Tag.objects.active().filter(self.strategy.queryset):
-            process_tag(tag)
+        if self.strategy.include_tags:
+            for tag in Tag.objects.active().filter(self.strategy.queryset):
+                process_tag(tag)
 
         self.response.content = doc.prettify()
 
