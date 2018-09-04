@@ -1,11 +1,11 @@
 import json
-
-import pytest
 from http.cookies import SimpleCookie
 
+import pytest
+
 from tests.factories.tag import (
-    tag_instant_traceable, tag_instant_analytical, tag_instant_functional,
-    tag_lazy_traceable, tag_lazy_analytical, tag_lazy_functional)
+    tag_lazy_traceable, tag_lazy_analytical, tag_lazy_functional,
+    tag_instant_traceable, tag_instant_analytical, tag_instant_functional)
 
 
 @pytest.mark.django_db

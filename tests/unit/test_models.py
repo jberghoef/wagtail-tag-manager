@@ -1,10 +1,7 @@
 import pytest
 
-from tests.factories.tag import (
-    tag_instant_functional, tag_lazy_functional)
-
-from wagtail_tag_manager.models import (
-    Tag, Constant, Variable, TagTypeSettings)
+from tests.factories.tag import tag_lazy_functional, tag_instant_functional
+from wagtail_tag_manager.models import Tag, Constant, Variable, TagTypeSettings
 
 
 @pytest.mark.django_db

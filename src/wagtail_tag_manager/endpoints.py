@@ -2,9 +2,9 @@ import json
 
 from django.http import JsonResponse, HttpResponseBadRequest
 
+from wagtail_tag_manager.utils import set_cookie
 from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.strategy import TagStrategy
-from wagtail_tag_manager.utils import set_cookie
 
 
 def lazy_endpoint(request):
@@ -35,8 +35,7 @@ def lazy_endpoint(request):
         for cookie_name in strategy.exclude_cookies:
             set_cookie(response, cookie_name, 'false')
 
-        if strategy.include_tags:
-            context = Tag.create_context(request)
+        context = Tag.create_context(request)
 
         for tag in Tag.objects.active().filter(strategy.queryset):
             process_tag(tag)

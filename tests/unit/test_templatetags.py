@@ -1,11 +1,10 @@
 import pytest
 
 from tests.factories.tag import (
-    tag_instant_functional, tag_instant_analytical, tag_instant_traceable)
-
+    tag_instant_traceable, tag_instant_analytical, tag_instant_functional)
 from wagtail_tag_manager.models import TagTypeSettings
 from wagtail_tag_manager.templatetags.wtm_tags import (
-    wtm_instant_tags, wtm_lazy_manager, wtm_cookie_bar)
+    wtm_cookie_bar, wtm_instant_tags, wtm_lazy_manager)
 
 
 @pytest.mark.django_db

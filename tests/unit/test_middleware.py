@@ -1,11 +1,10 @@
-import pytest
-
 from http.cookies import SimpleCookie
 
-from tests.factories.tag import (
-    tag_instant_functional, tag_instant_analytical, tag_instant_traceable,
-    tag_lazy_traceable, tag_lazy_analytical, tag_lazy_functional)
+import pytest
 
+from tests.factories.tag import (
+    tag_lazy_traceable, tag_lazy_analytical, tag_lazy_functional,
+    tag_instant_traceable, tag_instant_analytical, tag_instant_functional)
 from wagtail_tag_manager.models import Tag
 
 

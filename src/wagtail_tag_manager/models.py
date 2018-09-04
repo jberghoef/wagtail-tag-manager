@@ -1,14 +1,14 @@
-import random
 import re
+import random
 import operator
 
 from bs4 import BeautifulSoup
-from django.conf import settings
-from django.core.cache import cache
-from django.core.exceptions import ValidationError
 from django.db import models
+from django.conf import settings
 from django.dispatch import receiver
 from django.template import Context, Template
+from django.core.cache import cache
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import (
     FieldPanel, FieldRowPanel, MultiFieldPanel)

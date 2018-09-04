@@ -1,13 +1,10 @@
-import json
-
 from bs4 import BeautifulSoup
-from django.conf import settings
 from django.template import loader
 from django.templatetags.static import static
 
+from wagtail_tag_manager.utils import set_cookie
 from wagtail_tag_manager.models import Tag, TagTypeSettings
 from wagtail_tag_manager.strategy import TagStrategy
-from wagtail_tag_manager.utils import set_cookie
 
 
 class TagManagerMiddleware:
