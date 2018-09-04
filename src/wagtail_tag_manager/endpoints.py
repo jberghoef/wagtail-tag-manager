@@ -30,10 +30,8 @@ def lazy_endpoint(request):
 
         strategy = TagStrategy(request, consent)
 
-        for cookie_name in strategy.include_cookies:
-            set_cookie(response, cookie_name, 'true')
-        for cookie_name in strategy.exclude_cookies:
-            set_cookie(response, cookie_name, 'false')
+        for cookie_name, value in strategy.include_cookies.items():
+            set_cookie(response, cookie_name, value)
 
         context = Tag.create_context(request)
 

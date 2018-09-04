@@ -17,10 +17,8 @@ class TagManagerMiddleware:
 
         if self.request.method == 'GET' and self.response.status_code is 200:
             self.strategy = TagStrategy(request)
-            for cookie_name in self.strategy.include_cookies:
-                set_cookie(self.response, cookie_name, 'true')
-            for cookie_name in self.strategy.exclude_cookies:
-                set_cookie(self.response, cookie_name, 'false')
+            for cookie_name, value in self.strategy.include_cookies.items():
+                set_cookie(self.response, cookie_name, value)
 
             self._add_instant_tags()
             self._add_lazy_manager()

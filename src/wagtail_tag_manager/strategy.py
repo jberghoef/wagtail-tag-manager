@@ -9,8 +9,7 @@ class TagStrategy(object):
         self.config = TagTypeSettings.all()
 
         self.include_tags = []
-        self.include_cookies = []
-        self.exclude_cookies = []
+        self.include_cookies = {}
 
         self.define_strategy(request=request, consent=consent)
         self.build_queryset()
@@ -30,7 +29,7 @@ class TagStrategy(object):
             # Include required instant tags
             # Include required cookie
             self.include_tags.append((Tag.INSTANT_LOAD, tag_type))
-            self.include_cookies.append(cookie_name)
+            self.include_cookies[cookie_name] = 'true'
         elif tag_config == 'initial':
             if cookie == 'true':
                 # Include initial instant tags
@@ -49,7 +48,7 @@ class TagStrategy(object):
             # Include required cookie
             self.include_tags.append((Tag.LAZY_LOAD, tag_type))
             if cookie != 'true':
-                self.include_cookies.append(cookie_name)
+                self.include_cookies[cookie_name] = 'true'
 
         elif consent is None:
             if tag_config == 'initial':
@@ -74,7 +73,7 @@ class TagStrategy(object):
                     # Include initial cookie
                     self.include_tags.append((Tag.LAZY_LOAD, tag_type))
                     self.include_tags.append((Tag.INSTANT_LOAD, tag_type))
-                self.include_cookies.append(cookie_name)
+                self.include_cookies[cookie_name] = 'true'
             else:
                 if cookie == 'true':
                     pass
@@ -84,10 +83,10 @@ class TagStrategy(object):
                     # Include generic cookie
                     self.include_tags.append((Tag.LAZY_LOAD, tag_type))
                     self.include_tags.append((Tag.INSTANT_LOAD, tag_type))
-                    self.include_cookies.append(cookie_name)
+                    self.include_cookies[cookie_name] = 'true'
 
         elif consent is False:
-            self.exclude_cookies.append(cookie_name)
+            self.include_cookies[cookie_name] = 'false'
 
     def build_queryset(self):
         self.queryset = Q()
