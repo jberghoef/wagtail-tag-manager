@@ -10,6 +10,7 @@ from django.template import Context, Template
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from django.utils.html import mark_safe
 from wagtail.admin.edit_handlers import (
     FieldPanel, FieldRowPanel, MultiFieldPanel)
 
@@ -101,13 +102,23 @@ class Tag(models.Model):
     tag_type = models.CharField(
         max_length=10,
         choices=[(key, _(key.title())) for key in TagTypeSettings.all().keys()],
-        default=list(TagTypeSettings.all())[0])
+        default=list(TagTypeSettings.all())[0],
+        help_text=_(
+            "The purpose of this tag. Will decide if and when this tag is "
+            "loaded on a per-user basis."))
     tag_location = models.CharField(
-        max_length=12, choices=LOCATION_CHOICES, default=TOP_HEAD)
+        max_length=12, choices=LOCATION_CHOICES, default=TOP_HEAD,
+        help_text=_(
+            "Where in the document this tag will be inserted. Only applicable "
+            "for tags that load instantly."))
     tag_loading = models.CharField(
-        max_length=12, choices=LOAD_CHOICES, default=INSTANT_LOAD)
+        max_length=12, choices=LOAD_CHOICES, default=INSTANT_LOAD,
+        help_text=mark_safe(_(
+            "<b>Instant:</b> include this tag in the document when the initial "
+            "request is made.<br/>"
+            "<b>Lazy:</b> include this tag after the page has finished loading.")))
 
-    content = models.TextField()
+    content = models.TextField(help_text=_("The script to be executed."))
 
     objects = TagManager()
 
@@ -177,8 +188,15 @@ class Constant(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
 
-    key = models.SlugField(max_length=255, unique=True)
-    value = models.CharField(max_length=255)
+    key = models.SlugField(
+        max_length=255, unique=True,
+        help_text=mark_safe(_(
+            "The key that can be used in tags to include the value.<br/>"
+            "For example: <code>{{ ga_id }}</code>.")))
+    value = models.CharField(
+        max_length=255,
+        help_text=_(
+            "The value to be rendered when this constant is included."))
 
     panels = [
         FieldPanel('name', classname='full title'),
@@ -249,9 +267,27 @@ class Variable(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
 
-    key = models.SlugField(max_length=255, unique=True)
-    variable_type = models.CharField(max_length=255, choices=TYPE_CHOICES)
-    value = models.CharField(max_length=255, null=True, blank=True)
+    key = models.SlugField(
+        max_length=255, unique=True,
+        help_text=mark_safe(_(
+            "The key that can be used in tags to include the value.<br/>"
+            "For example: <code>{{ path }}</code>.")))
+    variable_type = models.CharField(
+        max_length=255, choices=TYPE_CHOICES,
+        help_text=mark_safe(_(
+            "<b>Path:</b> the path of the visited page.<br/>"
+            "<b>Path with regex:</b> the path of the visited page after "
+            "applying a regex search.<br/>"
+            "<b>User:</b> the ID of a user, when available.<br/>"
+            "<b>Session:</b> the session key.<br/>"
+            "<b>Site:</b> the name of the site.<br/>"
+            "<b>Cookie:</b> the value of a cookie, when available.<br/>"
+            "<b>Random number:</b> a random number.")))
+    value = models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text=mark_safe(_(
+            "<b>Path with regex:</b> the pattern to search the path with.<br/>"
+            "<b>Cookie:</b> the name of the cookie.")))
 
     panels = [
         FieldPanel('name', classname='full title'),
