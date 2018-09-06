@@ -57,7 +57,11 @@ class TagManager {
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.setRequestHeader('X-CSRFToken', Cookies.get('csrftoken'));
 
-    xhttp.send(JSON.stringify({ consent: consent }));
+    xhttp.send(JSON.stringify({
+      consent: consent,
+      path: window.location.pathname,
+      query: window.location.search,
+    }));
   }
 
   handleLoad() {

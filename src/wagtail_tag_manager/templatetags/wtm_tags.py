@@ -1,5 +1,3 @@
-import json
-
 from django import template
 from django.conf import settings
 from django.utils.safestring import mark_safe
@@ -20,13 +18,12 @@ def wtm_instant_tags(context):
 
     if request is not None:
         strategy = TagStrategy(request)
-        tag_context = Tag.create_context(request)
 
-        content = []
-        for tag in Tag.objects.active().filter(strategy.queryset):
-            content += tag.get_contents(request, tag_context)
+        contents = []
+        for item in strategy.result:
+            contents += item.get('content', [])
 
-        context['tags'] = [mark_safe(tag.prettify()) for tag in content]
+        context['tags'] = [mark_safe(tag.prettify()) for tag in contents]
 
     return context
 

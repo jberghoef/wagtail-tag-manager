@@ -5,7 +5,8 @@ from tests.factories.tag import (
     tag_instant_traceable, tag_instant_analytical, tag_instant_functional)
 from tests.factories.constant import ConstantFactory
 from tests.factories.variable import VariableFactory
-from wagtail_tag_manager.models import Tag, Constant, Variable
+from tests.factories.trigger import TriggerFactory
+from wagtail_tag_manager.models import Tag, Constant, Variable, Trigger
 
 
 def get_expected_content(string):
@@ -120,3 +121,12 @@ def test_variable_create():
     assert produced_variable.key == variable.key
     assert produced_variable.variable_type == variable.variable_type
     assert produced_variable.value == variable.value
+
+
+@pytest.mark.django_db
+def test_trigger_create():
+    produced_trigger = TriggerFactory()
+    trigger = Trigger(name='Trigger', pattern='[?&]state=(?P<state>\S+)')
+
+    assert produced_trigger.name == trigger.name
+    assert produced_trigger.pattern == trigger.pattern

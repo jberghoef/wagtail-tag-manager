@@ -18,7 +18,7 @@ class TagFormView {
     handleLoadChange(event) {
         const value = this.loadSelect.options[this.loadSelect.selectedIndex].value;
 
-        if (value === 'lazy_load') {
+        if (value !== 'instant_load') {
             this.locationSelect.disabled = true;
             for (let option of this.locationSelect) {
                 if (option.value === 'top_head') {

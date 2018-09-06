@@ -17,7 +17,7 @@ class TagManagerMiddleware:
 
         if self.request.method == 'GET' and self.response.status_code is 200:
             self.strategy = TagStrategy(request)
-            for cookie_name, value in self.strategy.include_cookies.items():
+            for cookie_name, value in self.strategy.cookies.items():
                 set_cookie(self.response, cookie_name, value)
 
             self._add_instant_tags()
@@ -27,23 +27,20 @@ class TagManagerMiddleware:
 
     def _add_instant_tags(self):
         doc = BeautifulSoup(self.response.content, 'html.parser')
-        context = Tag.create_context(self.request)
 
-        def process_tag(tag_instance):
-            contents = tag_instance.get_contents(self.request, context)
-            for element in contents:
-                if tag_instance.tag_location == Tag.TOP_HEAD and doc.head:
+        for item in self.strategy.result:
+            tag = item.get('tag', None)
+            content = item.get('content', [])
+
+            for element in content:
+                if tag.tag_location == Tag.TOP_HEAD and doc.head:
                     doc.head.insert(1, element)
-                elif tag_instance.tag_location == Tag.BOTTOM_HEAD and doc.head:
+                elif tag.tag_location == Tag.BOTTOM_HEAD and doc.head:
                     doc.head.append(element)
-                elif tag_instance.tag_location == Tag.TOP_BODY and doc.body:
+                elif tag.tag_location == Tag.TOP_BODY and doc.body:
                     doc.body.insert(1, element)
-                elif tag_instance.tag_location == Tag.BOTTOM_BODY and doc.body:
+                elif tag.tag_location == Tag.BOTTOM_BODY and doc.body:
                     doc.body.append(element)
-
-        if self.strategy.include_tags:
-            for tag in Tag.objects.active().filter(self.strategy.queryset):
-                process_tag(tag)
 
         self.response.content = doc.prettify()
 
