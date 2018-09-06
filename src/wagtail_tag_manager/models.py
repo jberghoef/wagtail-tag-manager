@@ -104,7 +104,11 @@ class Tag(models.Model):
 
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(
+        default=True,
+        help_text=_(
+            "Uncheck to disable this tag from being included, "
+            "or when using a trigger to include this tag."))
 
     tag_type = models.CharField(
         max_length=10,
