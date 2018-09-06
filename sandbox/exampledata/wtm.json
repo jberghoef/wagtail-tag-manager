@@ -104,6 +104,32 @@
     }
   },
   {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 9,
+    "fields": {
+      "name": "Passive lazy tag",
+      "description": "",
+      "active": false,
+      "tag_type": "traceable",
+      "tag_location": "top_head",
+      "tag_loading": "lazy_load",
+      "content": "<script>\n console.log(\"I'm a {{ state }} teapot.\")\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 10,
+    "fields": {
+      "name": "Passive instant tag",
+      "description": "",
+      "active": false,
+      "tag_type": "traceable",
+      "tag_location": "top_head",
+      "tag_loading": "instant_load",
+      "content": "<script>\n console.log(\"My state is {{ state }}\")\n</script>"
+    }
+  },
+  {
     "model": "wagtail_tag_manager.constant",
     "pk": 1,
     "fields": {
@@ -122,6 +148,17 @@
       "key": "rand",
       "variable_type": "_random",
       "value": ""
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.trigger",
+    "pk": 1,
+    "fields": {
+      "name": "State in query",
+      "description": "Render some awesome stuff",
+      "active": true,
+      "pattern": "[?&]state=(?P<state>\\S+)",
+      "tags": [9, 10]
     }
   }
 ]

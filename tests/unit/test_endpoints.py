@@ -5,7 +5,10 @@ import pytest
 
 from tests.factories.tag import (
     tag_lazy_traceable, tag_lazy_analytical, tag_lazy_functional,
-    tag_instant_traceable, tag_instant_analytical, tag_instant_functional)
+    tag_instant_traceable, tag_instant_analytical, TagFactory)
+from tests.factories.trigger import TriggerFactory
+
+from wagtail_tag_manager.models import Tag
 
 
 @pytest.mark.django_db
@@ -191,3 +194,74 @@ def test_generic_lazy_cookies(client, site):
 
     assert 'wtm_traceable' in response.cookies
     assert response.cookies.get('wtm_traceable').value == 'true'
+
+
+@pytest.mark.django_db
+def test_passive_tags(client, site):
+    tag_functional = TagFactory(
+        name='functional lazy',
+        active=False,
+        tag_loading=Tag.LAZY_LOAD,
+        content='<script>console.log("{{ state }}")</script>')
+    tag_analytical = TagFactory(
+        name='analytical lazy',
+        active=False,
+        tag_loading=Tag.LAZY_LOAD,
+        tag_type='analytical',
+        content='<script>console.log("{{ state }}")</script>')
+    tag_traceable = TagFactory(
+        name='traceable lazy',
+        active=False,
+        tag_loading=Tag.LAZY_LOAD,
+        tag_type='traceable',
+        content='<script>console.log("{{ state }}")</script>')
+
+    trigger = TriggerFactory(pattern='[?&]state=(?P<state>\S+)')
+    trigger.tags.add(tag_functional)
+    trigger.tags.add(tag_analytical)
+    trigger.tags.add(tag_traceable)
+
+    response = client.post(
+        '/wtm/lazy/',
+        json.dumps({'path': '/', 'query': ''}),
+        content_type="application/json")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert 'tags' in data
+    assert len(data['tags']) == 0
+
+    response = client.post(
+        '/wtm/lazy/',
+        json.dumps({'path': '/', 'query': '?state=1'}),
+        content_type="application/json")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert 'tags' in data
+    assert len(data['tags']) == 1
+    assert 'console.log("1")' in data['tags'][0]['string']
+
+    client.cookies = SimpleCookie({'wtm_analytical': 'unset'})
+
+    response = client.post(
+        '/wtm/lazy/',
+        json.dumps({'path': '/', 'query': '?state=2'}),
+        content_type="application/json")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert 'tags' in data
+    assert len(data['tags']) == 2
+    assert 'console.log("2")' in data['tags'][1]['string']
+
+    response = client.post(
+        '/wtm/lazy/',
+        json.dumps({'consent': 'true', 'path': '/', 'query': '?state=3'}),
+        content_type="application/json")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert 'tags' in data
+    assert len(data['tags']) == 3
+    assert 'console.log("3")' in data['tags'][2]['string']

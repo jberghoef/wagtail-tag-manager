@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
+from django.forms import widgets
 from django.template import Context, Template
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
@@ -55,6 +56,9 @@ class TagQuerySet(models.QuerySet):
     def active(self):
         return self.filter(active=True)
 
+    def passive(self):
+        return self.filter(active=False)
+
     def instant(self):
         return self.filter(tag_loading=Tag.INSTANT_LOAD)
 
@@ -68,6 +72,9 @@ class TagManager(models.Manager):
 
     def active(self):
         return self.get_queryset().active()
+
+    def passive(self):
+        return self.get_queryset().passive()
 
     def instant(self):
         return self.get_queryset().instant()
@@ -95,7 +102,7 @@ class Tag(models.Model):
         (LAZY_LOAD, _("Lazy")),
     ]
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
     active = models.BooleanField(default=True)
 
@@ -132,7 +139,7 @@ class Tag(models.Model):
                 FieldPanel('tag_location'),
             ]),
             FieldPanel('active'),
-        ], heading="Meta", classname="collapsible"),
+        ], heading=_("Meta"), classname="collapsible"),
         FieldPanel('content', classname='full'),
     ]
 
@@ -185,7 +192,7 @@ class Tag(models.Model):
 
 
 class Constant(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
 
     key = models.SlugField(
@@ -206,7 +213,7 @@ class Constant(models.Model):
                 FieldPanel('key'),
                 FieldPanel('value'),
             ])
-        ], heading="Data"),
+        ], heading=_("Data")),
     ]
 
     def get_value(self):
@@ -264,7 +271,7 @@ class Variable(models.Model):
         )),
     )
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
 
     key = models.SlugField(
@@ -298,7 +305,7 @@ class Variable(models.Model):
                 FieldPanel('variable_type')
             ]),
             FieldPanel('value'),
-        ], heading="Data"),
+        ], heading=_("Data")),
     ]
 
     def get_repath(self, request):
@@ -356,6 +363,52 @@ class Variable(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+class TriggerQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(active=True)
+
+
+class TriggerManager(models.Manager):
+    def get_queryset(self):
+        return TriggerQuerySet(self.model, using=self._db)
+
+    def active(self):
+        return self.get_queryset().active()
+
+
+class Trigger(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(null=True, blank=True)
+
+    active = models.BooleanField(
+        default=True, help_text=_(
+            "Uncheck to disable this trigger from firing."))
+    pattern = models.CharField(
+        max_length=255, help_text=_(
+            "The regex pattern to match the full url path with. "
+            "Groups will be added to the included tag's context."))
+    tags = models.ManyToManyField(Tag, help_text=_(
+        "The tags to include when this trigger is fired."))
+
+    objects = TriggerManager()
+
+    panels = [
+        FieldPanel('name', classname='full title'),
+        FieldPanel('description', classname='full'),
+        MultiFieldPanel([
+            FieldPanel('pattern'),
+            FieldPanel('active'),
+        ], heading=_("Configuration")),
+        FieldPanel('tags', widget=widgets.CheckboxSelectMultiple),
+    ]
+
+    def match(self, request):
+        return re.search(self.pattern, request.get_full_path())
 
     def __str__(self):
         return self.name
