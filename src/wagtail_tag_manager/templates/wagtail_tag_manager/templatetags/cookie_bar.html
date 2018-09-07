@@ -34,18 +34,27 @@
         display: inline-block !important;
         align-items: center !important;
         padding: 8px 24px !important;
+        font-size: 16px !important;
         color: white !important;
+        background: none !important;
+        border: none !important;
         text-decoration: none !important;
         border-radius: 3px !important;
+        transform: scale(1.0) !important;
+        transition: transform .1s, background-color .1s !important;
     }
+    #wtm_cookie_bar .button:focus {transform: scale(1.1) !important}
     #wtm_cookie_bar .button:hover {text-decoration: none !important}
     #wtm_cookie_bar .button:not(:first-child) {margin: 0 0 0 12px !important}
     #wtm_cookie_bar .button--green {background-color: rgb(0, 150, 0) !important}
-    #wtm_cookie_bar .button--green:hover {background-color: rgb(0, 175, 0) !important}
+    #wtm_cookie_bar .button--green:hover,
+    #wtm_cookie_bar .button--green:focus {background-color: rgb(0, 175, 0) !important}
     #wtm_cookie_bar .button--red {background-color: rgb(150, 0, 0) !important}
-    #wtm_cookie_bar .button--red:hover {background-color: rgb(175, 0, 0) !important}
+    #wtm_cookie_bar .button--red:hover,
+    #wtm_cookie_bar .button--red:focus {background-color: rgb(175, 0, 0) !important}
     #wtm_cookie_bar .button--transparant {color: black !important; background-color: rgb(240,240,240) !important}
-    #wtm_cookie_bar .button--transparant:hover {background-color: rgb(215,215,215) !important}
+    #wtm_cookie_bar .button--transparant:hover,
+    #wtm_cookie_bar .button--transparant:focus {background-color: rgb(215,215,215) !important}
 
     #wtm_cookie_bar.hidden {display: none !important}
 </style>
@@ -63,15 +72,15 @@
             </p>
         </div>
         <div class="button-container">
-            <a class="button button--green js-cookie-choice" data-choice="accept" href="#" aria-label="{% trans 'Accept' %}" role="button" tabindex="0">
+            <button type="button" class="button button--green js-cookie-choice" data-choice="accept" aria-label="{% trans 'Accept' %}" tabindex="0">
                 {% trans "Accept" %}
-            </a>
-            <a class="button button--red js-cookie-choice" data-choice="reject" href="#" aria-label="{% trans 'Reject' %}" role="button" tabindex="0">
+            </button>
+            <button type="button" class="button button--red js-cookie-choice" data-choice="reject" aria-label="{% trans 'Reject' %}" tabindex="0">
                 {% trans "Reject" %}
-            </a>
+            </button>
 
             {% if manage_view %}
-                <a class="button button--transparant" href="{% url 'wtm:manage' %}" aria-label="{% trans 'Manage settings' %}" role="button" tabindex="0">
+                <a role="button" class="button button--transparant" href="{% url 'wtm:manage' %}" aria-label="{% trans 'Manage settings' %}" tabindex="0">
                     {% trans "Manage settings" %}
                 </a>
             {% endif %}
