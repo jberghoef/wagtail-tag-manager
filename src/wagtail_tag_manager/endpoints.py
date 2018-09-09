@@ -7,19 +7,19 @@ from wagtail_tag_manager.strategy import TagStrategy
 
 
 def lazy_endpoint(request):
-    data = {'tags': []}
+    data = {"tags": []}
     response = JsonResponse(data)
 
-    if request.method == 'POST' and request.body:
+    if request.method == "POST" and request.body:
         try:
             payload = json.loads(request.body)
         except json.JSONDecodeError:
             return HttpResponseBadRequest()
 
-        consent = payload.get('consent', None)
+        consent = payload.get("consent", None)
 
-        request.path = payload.get('path', request.path)
-        request.META['QUERY_STRING'] = payload.get('query', '')
+        request.path = payload.get("path", request.path)
+        request.META["QUERY_STRING"] = payload.get("query", "")
 
         strategy = TagStrategy(request, consent)
 
@@ -27,13 +27,10 @@ def lazy_endpoint(request):
             set_cookie(response, cookie_name, value)
 
         for item in strategy.result:
-            content = item.get('content', [])
+            content = item.get("content", [])
 
             for element in content:
-                data['tags'].append({
-                    'name': element.name,
-                    'string': element.string,
-                })
+                data["tags"].append({"name": element.name, "string": element.string})
 
         response.content = json.dumps(data)
         return response

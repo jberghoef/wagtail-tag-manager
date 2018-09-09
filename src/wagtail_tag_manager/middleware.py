@@ -15,7 +15,7 @@ class TagManagerMiddleware:
         self.request = request
         self.response = self.get_response(request)
 
-        if self.request.method == 'GET' and self.response.status_code is 200:
+        if self.request.method == "GET" and self.response.status_code is 200:
             self.strategy = TagStrategy(request)
             for cookie_name, value in self.strategy.cookies.items():
                 set_cookie(self.response, cookie_name, value)
@@ -26,11 +26,11 @@ class TagManagerMiddleware:
         return self.response
 
     def _add_instant_tags(self):
-        doc = BeautifulSoup(self.response.content, 'html.parser')
+        doc = BeautifulSoup(self.response.content, "html.parser")
 
         for item in self.strategy.result:
-            tag = item.get('tag', None)
-            content = item.get('content', [])
+            tag = item.get("tag", None)
+            content = item.get("content", [])
 
             for element in content:
                 if tag.tag_location == Tag.TOP_HEAD and doc.head:
@@ -45,17 +45,18 @@ class TagManagerMiddleware:
         self.response.content = doc.prettify()
 
     def _add_lazy_manager(self):
-        doc = BeautifulSoup(self.response.content, 'html.parser')
+        doc = BeautifulSoup(self.response.content, "html.parser")
 
         if doc.head and doc.body:
-            template = loader.get_template('wagtail_tag_manager/state.html')
-            element = BeautifulSoup(template.render({
-                'config': TagTypeSettings.all(),
-            }, self.request), 'html.parser')
+            template = loader.get_template("wagtail_tag_manager/state.html")
+            element = BeautifulSoup(
+                template.render({"config": TagTypeSettings.all()}, self.request),
+                "html.parser",
+            )
             doc.head.append(element)
 
-            element = doc.new_tag('script')
-            element['src'] = static('wtm.bundle.js')
+            element = doc.new_tag("script")
+            element["src"] = static("wtm.bundle.js")
             doc.head.append(element)
 
         self.response.content = doc.prettify()

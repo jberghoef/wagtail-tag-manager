@@ -11,50 +11,47 @@ register = template.Library()
 
 
 @register.inclusion_tag(
-    'wagtail_tag_manager/templatetags/instant_tags.html', takes_context=True)
+    "wagtail_tag_manager/templatetags/instant_tags.html", takes_context=True
+)
 def wtm_instant_tags(context):
-    context['tags'] = []
-    request = context.get('request', None)
+    context["tags"] = []
+    request = context.get("request", None)
 
     if request is not None:
         strategy = TagStrategy(request)
 
         contents = []
         for item in strategy.result:
-            contents += item.get('content', [])
+            contents += item.get("content", [])
 
-        context['tags'] = [mark_safe(tag.prettify()) for tag in contents]
+        context["tags"] = [mark_safe(tag.prettify()) for tag in contents]
 
     return context
 
 
-@register.inclusion_tag('wagtail_tag_manager/templatetags/lazy_manager.html')
+@register.inclusion_tag("wagtail_tag_manager/templatetags/lazy_manager.html")
 def wtm_lazy_manager():
-    return {
-        'config': TagTypeSettings.all(),
-    }
+    return {"config": TagTypeSettings.all()}
 
 
-@register.inclusion_tag('wagtail_tag_manager/templatetags/cookie_bar.html')
+@register.inclusion_tag("wagtail_tag_manager/templatetags/cookie_bar.html")
 def wtm_cookie_bar():
-    return {
-        'manage_view': getattr(settings, 'WTM_MANAGE_VIEW', True),
-    }
+    return {"manage_view": getattr(settings, "WTM_MANAGE_VIEW", True)}
 
 
 @register.inclusion_tag(
-    'wagtail_tag_manager/templatetags/manage_form.html', takes_context=True)
+    "wagtail_tag_manager/templatetags/manage_form.html", takes_context=True
+)
 def wtm_manage_form(context):
-    request = context.get('request')
-    return {
-        'form': ConsentForm(initial=get_cookie_state(request)),
-    }
+    request = context.get("request")
+    return {"form": ConsentForm(initial=get_cookie_state(request))}
 
 
 @register.inclusion_tag(
-    'wagtail_tag_manager/templatetags/status_table.html', takes_context=True)
+    "wagtail_tag_manager/templatetags/status_table.html", takes_context=True
+)
 def wtm_status_table(context):
-    context['tags'] = {}
+    context["tags"] = {}
     for tag_type in Tag.get_types():
-        context['tags'][tag_type] = Tag.objects.filter(tag_type=tag_type)
+        context["tags"][tag_type] = Tag.objects.filter(tag_type=tag_type)
     return context

@@ -12,8 +12,7 @@ from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.utils.html import mark_safe
-from wagtail.admin.edit_handlers import (
-    FieldPanel, FieldRowPanel, MultiFieldPanel)
+from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, MultiFieldPanel
 
 
 class TagTypeSettings:
@@ -22,15 +21,14 @@ class TagTypeSettings:
 
     @staticmethod
     def all():
-        return getattr(settings, 'WTM_TAG_TYPES', {
-            'functional': 'required',
-            'analytical': 'initial',
-            'traceable': '',
-        })
+        return getattr(
+            settings,
+            "WTM_TAG_TYPES",
+            {"functional": "required", "analytical": "initial", "traceable": ""},
+        )
 
     def include(self, value, *args, **kwargs):
-        self.SETTINGS.update({
-            k: v for k, v in self.all().items() if v == value})
+        self.SETTINGS.update({k: v for k, v in self.all().items() if v == value})
 
         return self
 
@@ -84,10 +82,10 @@ class TagManager(models.Manager):
 
 
 class Tag(models.Model):
-    TOP_HEAD = 'top_head'
-    BOTTOM_HEAD = 'bottom_head'
-    TOP_BODY = 'top_body'
-    BOTTOM_BODY = 'bottom_body'
+    TOP_HEAD = "top_head"
+    BOTTOM_HEAD = "bottom_head"
+    TOP_BODY = "top_body"
+    BOTTOM_BODY = "bottom_body"
     LOCATION_CHOICES = [
         (TOP_HEAD, _("Top of head tag")),
         (BOTTOM_HEAD, _("Bottom of head tag")),
@@ -95,12 +93,9 @@ class Tag(models.Model):
         (BOTTOM_BODY, _("Bottom of body tag")),
     ]
 
-    INSTANT_LOAD = 'instant_load'
-    LAZY_LOAD = 'lazy_load'
-    LOAD_CHOICES = [
-        (INSTANT_LOAD, _("Instant")),
-        (LAZY_LOAD, _("Lazy")),
-    ]
+    INSTANT_LOAD = "instant_load"
+    LAZY_LOAD = "lazy_load"
+    LOAD_CHOICES = [(INSTANT_LOAD, _("Instant")), (LAZY_LOAD, _("Lazy"))]
 
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
@@ -108,7 +103,9 @@ class Tag(models.Model):
         default=True,
         help_text=_(
             "Uncheck to disable this tag from being included, "
-            "or when using a trigger to include this tag."))
+            "or when using a trigger to include this tag."
+        ),
+    )
 
     tag_type = models.CharField(
         max_length=10,
@@ -116,43 +113,55 @@ class Tag(models.Model):
         default=list(TagTypeSettings.all())[0],
         help_text=_(
             "The purpose of this tag. Will decide if and when this tag is "
-            "loaded on a per-user basis."))
+            "loaded on a per-user basis."
+        ),
+    )
     tag_location = models.CharField(
-        max_length=12, choices=LOCATION_CHOICES, default=TOP_HEAD,
+        max_length=12,
+        choices=LOCATION_CHOICES,
+        default=TOP_HEAD,
         help_text=_(
             "Where in the document this tag will be inserted. Only applicable "
-            "for tags that load instantly."))
+            "for tags that load instantly."
+        ),
+    )
     tag_loading = models.CharField(
-        max_length=12, choices=LOAD_CHOICES, default=INSTANT_LOAD,
-        help_text=mark_safe(_(
-            "<b>Instant:</b> include this tag in the document when the initial "
-            "request is made.<br/>"
-            "<b>Lazy:</b> include this tag after the page has finished loading.")))
+        max_length=12,
+        choices=LOAD_CHOICES,
+        default=INSTANT_LOAD,
+        help_text=mark_safe(
+            _(
+                "<b>Instant:</b> include this tag in the document when the initial "
+                "request is made.<br/>"
+                "<b>Lazy:</b> include this tag after the page has finished loading."
+            )
+        ),
+    )
 
     content = models.TextField(help_text=_("The script to be executed."))
 
     objects = TagManager()
 
     panels = [
-        FieldPanel('name', classname='full title'),
-        FieldPanel('description', classname='full'),
-        MultiFieldPanel([
-            FieldPanel('tag_type'),
-            FieldRowPanel([
-                FieldPanel('tag_loading'),
-                FieldPanel('tag_location'),
-            ]),
-            FieldPanel('active'),
-        ], heading=_("Meta"), classname="collapsible"),
-        FieldPanel('content', classname='full'),
+        FieldPanel("name", classname="full title"),
+        FieldPanel("description", classname="full"),
+        MultiFieldPanel(
+            [
+                FieldPanel("tag_type"),
+                FieldRowPanel([FieldPanel("tag_loading"), FieldPanel("tag_location")]),
+                FieldPanel("active"),
+            ],
+            heading=_("Meta"),
+            classname="collapsible",
+        ),
+        FieldPanel("content", classname="full"),
     ]
 
     def clean(self):
-        if '<script>' not in self.content:
-            self.content = f'<script>{self.content}</script>'
+        if "<script>" not in self.content:
+            self.content = f"<script>{self.content}</script>"
 
-        self.content = BeautifulSoup(
-            self.content, 'html.parser').prettify()
+        self.content = BeautifulSoup(self.content, "html.parser").prettify()
 
         return self
 
@@ -168,7 +177,7 @@ class Tag(models.Model):
             context = Context(context)
             content = template.render(context)
 
-        return BeautifulSoup(content, 'html.parser')
+        return BeautifulSoup(content, "html.parser")
 
     def get_contents(self, request=None, context=None):
         if request is not None and context is None:
@@ -178,10 +187,7 @@ class Tag(models.Model):
 
     @classmethod
     def create_context(cls, request):
-        return {
-            **Constant.create_context(),
-            **Variable.create_context(request),
-        }
+        return {**Constant.create_context(), **Variable.create_context(request)}
 
     @classmethod
     def get_types(cls):
@@ -189,7 +195,7 @@ class Tag(models.Model):
 
     @classmethod
     def get_cookie_name(cls, tag_type):
-        return f'wtm_{tag_type}'
+        return f"wtm_{tag_type}"
 
     def __str__(self):
         return self.name
@@ -200,24 +206,26 @@ class Constant(models.Model):
     description = models.TextField(null=True, blank=True)
 
     key = models.SlugField(
-        max_length=255, unique=True,
-        help_text=mark_safe(_(
-            "The key that can be used in tags to include the value.<br/>"
-            "For example: <code>{{ ga_id }}</code>.")))
+        max_length=255,
+        unique=True,
+        help_text=mark_safe(
+            _(
+                "The key that can be used in tags to include the value.<br/>"
+                "For example: <code>{{ ga_id }}</code>."
+            )
+        ),
+    )
     value = models.CharField(
         max_length=255,
-        help_text=_(
-            "The value to be rendered when this constant is included."))
+        help_text=_("The value to be rendered when this constant is included."),
+    )
 
     panels = [
-        FieldPanel('name', classname='full title'),
-        FieldPanel('description', classname='full'),
-        MultiFieldPanel([
-            FieldRowPanel([
-                FieldPanel('key'),
-                FieldPanel('value'),
-            ])
-        ], heading=_("Data")),
+        FieldPanel("name", classname="full title"),
+        FieldPanel("description", classname="full"),
+        MultiFieldPanel(
+            [FieldRowPanel([FieldPanel("key"), FieldPanel("value")])], heading=_("Data")
+        ),
     ]
 
     def get_value(self):
@@ -225,21 +233,22 @@ class Constant(models.Model):
 
     @classmethod
     def create_context(cls):
-        context = cache.get('wtm_constant_cache', {})
+        context = cache.get("wtm_constant_cache", {})
 
         if not context:
             for constant in cls.objects.all():
                 context[constant.key] = constant.get_value()
 
-            timeout = getattr(settings, 'WTM_CACHE_TIMEOUT', 60 * 30)
-            cache.set('wtm_constant_cache', context, timeout)
+            timeout = getattr(settings, "WTM_CACHE_TIMEOUT", 60 * 30)
+            cache.set("wtm_constant_cache", context, timeout)
 
         return context
 
     def clean(self):
         if Variable.objects.filter(key=self.key).exists():
             raise ValidationError(
-                f"A variable with the key '{ self.key }' already exists.")
+                f"A variable with the key '{ self.key }' already exists."
+            )
         else:
             super().clean()
 
@@ -258,58 +267,63 @@ def handle_constant_save(sender, **kwargs):
 
 class Variable(models.Model):
     TYPE_CHOICES = (
-        (_("HTTP"), (
-            ('path', _('Path')),
-            ('_repath+', _('Path with regex')),
-        )),
-        (_("User"), (
-            ('user.pk', _("User")),
-            ('session.session_key', _("Session")),
-        )),
-        (_("Wagtail"), (
-            ('site', _("Site")),
-        )),
-        (_("Other"), (
-            ('_cookie+', _("Cookie")),
-            ('_random', _("Random number")),
-        )),
+        (_("HTTP"), (("path", _("Path")), ("_repath+", _("Path with regex")))),
+        (_("User"), (("user.pk", _("User")), ("session.session_key", _("Session")))),
+        (_("Wagtail"), (("site", _("Site")),)),
+        (_("Other"), (("_cookie+", _("Cookie")), ("_random", _("Random number")))),
     )
 
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
 
     key = models.SlugField(
-        max_length=255, unique=True,
-        help_text=mark_safe(_(
-            "The key that can be used in tags to include the value.<br/>"
-            "For example: <code>{{ path }}</code>.")))
+        max_length=255,
+        unique=True,
+        help_text=mark_safe(
+            _(
+                "The key that can be used in tags to include the value.<br/>"
+                "For example: <code>{{ path }}</code>."
+            )
+        ),
+    )
     variable_type = models.CharField(
-        max_length=255, choices=TYPE_CHOICES,
-        help_text=mark_safe(_(
-            "<b>Path:</b> the path of the visited page.<br/>"
-            "<b>Path with regex:</b> the path of the visited page after "
-            "applying a regex search.<br/>"
-            "<b>User:</b> the ID of a user, when available.<br/>"
-            "<b>Session:</b> the session key.<br/>"
-            "<b>Site:</b> the name of the site.<br/>"
-            "<b>Cookie:</b> the value of a cookie, when available.<br/>"
-            "<b>Random number:</b> a random number.")))
+        max_length=255,
+        choices=TYPE_CHOICES,
+        help_text=mark_safe(
+            _(
+                "<b>Path:</b> the path of the visited page.<br/>"
+                "<b>Path with regex:</b> the path of the visited page after "
+                "applying a regex search.<br/>"
+                "<b>User:</b> the ID of a user, when available.<br/>"
+                "<b>Session:</b> the session key.<br/>"
+                "<b>Site:</b> the name of the site.<br/>"
+                "<b>Cookie:</b> the value of a cookie, when available.<br/>"
+                "<b>Random number:</b> a random number."
+            )
+        ),
+    )
     value = models.CharField(
-        max_length=255, null=True, blank=True,
-        help_text=mark_safe(_(
-            "<b>Path with regex:</b> the pattern to search the path with.<br/>"
-            "<b>Cookie:</b> the name of the cookie.")))
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text=mark_safe(
+            _(
+                "<b>Path with regex:</b> the pattern to search the path with.<br/>"
+                "<b>Cookie:</b> the name of the cookie."
+            )
+        ),
+    )
 
     panels = [
-        FieldPanel('name', classname='full title'),
-        FieldPanel('description', classname='full'),
-        MultiFieldPanel([
-            FieldRowPanel([
-                FieldPanel('key'),
-                FieldPanel('variable_type')
-            ]),
-            FieldPanel('value'),
-        ], heading=_("Data")),
+        FieldPanel("name", classname="full title"),
+        FieldPanel("description", classname="full"),
+        MultiFieldPanel(
+            [
+                FieldRowPanel([FieldPanel("key"), FieldPanel("variable_type")]),
+                FieldPanel("value"),
+            ],
+            heading=_("Data"),
+        ),
     ]
 
     def get_repath(self, request):
@@ -331,14 +345,14 @@ class Variable(models.Model):
     def get_value(self, request):
         variable_type = self.variable_type
 
-        if variable_type.endswith('+'):
+        if variable_type.endswith("+"):
             variable_type = variable_type[:-1]
 
-        if variable_type.startswith('_'):
-            method = getattr(self, f'get{variable_type}')
+        if variable_type.startswith("_"):
+            method = getattr(self, f"get{variable_type}")
             return method(request)
 
-        if '.' in self.variable_type:
+        if "." in self.variable_type:
             return operator.attrgetter(str(self.variable_type))(request)
 
         return getattr(request, str(self.variable_type))
@@ -355,12 +369,13 @@ class Variable(models.Model):
     def clean(self):
         if Constant.objects.filter(key=self.key).exists():
             raise ValidationError(
-                f"A constant with the key '{ self.key }' already exists.")
+                f"A constant with the key '{ self.key }' already exists."
+            )
         else:
             super().clean()
 
-            if not self.variable_type.endswith('+'):
-                self.value = ''
+            if not self.variable_type.endswith("+"):
+                self.value = ""
 
             return self
 
@@ -390,25 +405,28 @@ class Trigger(models.Model):
     description = models.TextField(null=True, blank=True)
 
     active = models.BooleanField(
-        default=True, help_text=_(
-            "Uncheck to disable this trigger from firing."))
+        default=True, help_text=_("Uncheck to disable this trigger from firing.")
+    )
     pattern = models.CharField(
-        max_length=255, help_text=_(
+        max_length=255,
+        help_text=_(
             "The regex pattern to match the full url path with. "
-            "Groups will be added to the included tag's context."))
-    tags = models.ManyToManyField(Tag, help_text=_(
-        "The tags to include when this trigger is fired."))
+            "Groups will be added to the included tag's context."
+        ),
+    )
+    tags = models.ManyToManyField(
+        Tag, help_text=_("The tags to include when this trigger is fired.")
+    )
 
     objects = TriggerManager()
 
     panels = [
-        FieldPanel('name', classname='full title'),
-        FieldPanel('description', classname='full'),
-        MultiFieldPanel([
-            FieldPanel('pattern'),
-            FieldPanel('active'),
-        ], heading=_("Configuration")),
-        FieldPanel('tags', widget=widgets.CheckboxSelectMultiple),
+        FieldPanel("name", classname="full title"),
+        FieldPanel("description", classname="full"),
+        MultiFieldPanel(
+            [FieldPanel("pattern"), FieldPanel("active")], heading=_("Configuration")
+        ),
+        FieldPanel("tags", widget=widgets.CheckboxSelectMultiple),
     ]
 
     def match(self, request):

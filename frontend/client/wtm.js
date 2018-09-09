@@ -1,5 +1,4 @@
-import Cookies from 'js-cookie';
-
+import Cookies from "js-cookie";
 
 class TagManager {
   constructor() {
@@ -18,14 +17,14 @@ class TagManager {
     // Verify the browser allows cookies.
     let enabled = navigator.cookieEnabled;
     if (!enabled) {
-      Cookies.set('wtm_verification');
-      enabled = Cookies.get('wtm_verification') !== undefined;
+      Cookies.set("wtm_verification");
+      enabled = Cookies.get("wtm_verification") !== undefined;
     }
 
     if (enabled) {
-      Object.keys(this.config).forEach((tagType) => {
-        if (this.config[tagType] === 'initial' && !this.has(tagType)) {
-          Cookies.set(`wtm_${tagType}`, 'unset', { expires: 365 });
+      Object.keys(this.config).forEach(tagType => {
+        if (this.config[tagType] === "initial" && !this.has(tagType)) {
+          Cookies.set(`wtm_${tagType}`, "unset", { expires: 365 });
           this.show_cookiebar = true;
         } else if (!this.has(tagType)) {
           this.show_cookiebar = true;
@@ -47,26 +46,28 @@ class TagManager {
 
   loadData(consent = undefined) {
     const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = (event) => {
+    xhttp.onreadystatechange = event => {
       if (event.target.readyState === 4 && event.target.status === 200) {
         this.data = JSON.parse(event.target.responseText);
         this.handleLoad();
       }
     };
-    xhttp.open('POST', window.wtm_url, true);
-    xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('X-CSRFToken', Cookies.get('csrftoken'));
+    xhttp.open("POST", window.wtm_url, true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.setRequestHeader("X-CSRFToken", Cookies.get("csrftoken"));
 
-    xhttp.send(JSON.stringify({
-      consent: consent,
-      path: window.location.pathname,
-      query: window.location.search,
-    }));
+    xhttp.send(
+      JSON.stringify({
+        consent,
+        path: window.location.pathname,
+        query: window.location.search
+      })
+    );
   }
 
   handleLoad() {
-    for (let i = 0; i < this.data['tags'].length; i++) {
-      const tag = this.data['tags'][i];
+    for (let i = 0; i < this.data["tags"].length; i++) {
+      const tag = this.data["tags"][i];
 
       const element = document.createElement(tag.name);
       element.appendChild(document.createTextNode(tag.string));
@@ -75,11 +76,10 @@ class TagManager {
   }
 }
 
-
 class CookieBar {
   constructor(manager) {
     this.manager = manager;
-    this.el = document.getElementById('wtm_cookie_bar');
+    this.el = document.getElementById("wtm_cookie_bar");
 
     this.initialize = this.initialize.bind(this);
     this.showCookieBar = this.showCookieBar.bind(this);
@@ -92,31 +92,31 @@ class CookieBar {
   }
 
   initialize() {
-    const buttons = this.el.querySelectorAll('.js-cookie-choice');
+    const buttons = this.el.querySelectorAll(".js-cookie-choice");
     for (let button of buttons) {
-      button.addEventListener('click', this.handleClick, false);
+      button.addEventListener("click", this.handleClick, false);
     }
 
     this.showCookieBar();
   }
 
   showCookieBar() {
-    this.el.classList.remove('hidden');
+    this.el.classList.remove("hidden");
   }
 
   hideCookieBar() {
-    this.el.classList.add('hidden');
+    this.el.classList.add("hidden");
   }
 
   handleClick(event) {
     event.preventDefault();
 
     switch (event.currentTarget.dataset.choice) {
-      case 'accept':
+      case "accept":
         this.manager.loadData(true);
         break;
 
-      case 'reject':
+      case "reject":
         this.manager.loadData(false);
         break;
 
@@ -128,9 +128,8 @@ class CookieBar {
   }
 }
 
-
 document.onreadystatechange = () => {
-  if (document.readyState === 'complete') {
+  if (document.readyState === "complete") {
     new TagManager();
   }
 };

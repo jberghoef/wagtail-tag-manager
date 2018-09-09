@@ -1,11 +1,9 @@
 import pytest
 
-pytest_plugins = [
-    'tests.fixtures'
-]
+pytest_plugins = ["tests.fixtures"]
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def django_db_setup(django_db_setup, django_db_blocker):
     from wagtail.core.models import Page, Site
 

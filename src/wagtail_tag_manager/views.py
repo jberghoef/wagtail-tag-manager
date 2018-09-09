@@ -10,7 +10,7 @@ class ManageView(TemplateView):
     template_name = "wagtail_tag_manager/manage.html"
 
     def get(self, request, *args, **kwargs):
-        if getattr(settings, 'WTM_MANAGE_VIEW', True):
+        if getattr(settings, "WTM_MANAGE_VIEW", True):
             return super().get(request, *args, **kwargs)
         return HttpResponseNotFound()
 
@@ -20,6 +20,6 @@ class ManageView(TemplateView):
         form = ConsentForm(request.POST)
         if form.is_valid():
             for key, value in form.cleaned_data.items():
-                set_cookie(response, f'wtm_{key}', str(value).lower())
+                set_cookie(response, f"wtm_{key}", str(value).lower())
 
         return response

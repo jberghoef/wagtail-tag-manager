@@ -7,12 +7,9 @@ from wagtail.documents import urls as wagtaildocs_urls
 from wagtail_tag_manager import urls as wtm_urls
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-
-    path('cms/', include(wagtailadmin_urls)),
-    path('documents/', include(wagtaildocs_urls)),
-
-    path('wtm/', include(wtm_urls)),
-
-    path('', include(wagtail_urls)),
+    path("admin/", admin.site.urls),
+    path("cms/", include(wagtailadmin_urls)),
+    path("documents/", include(wagtaildocs_urls)),
+    path("wtm/", include(wtm_urls)),
+    path("", include(wagtail_urls)),
 ]

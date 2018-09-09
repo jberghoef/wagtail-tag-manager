@@ -8,15 +8,15 @@ from tests.factories.page import ContentPageFactory
 from tests.factories.site import SiteFactory
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def site():
-    root_page = ContentPageFactory(parent=None, slug='')
+    root_page = ContentPageFactory(parent=None, slug="")
     site = SiteFactory(is_default_site=True, root_page=root_page)
 
-    page1 = ContentPageFactory(parent=root_page, slug='page-1')
-    page2 = ContentPageFactory(parent=root_page, slug='page-2')
-    ContentPageFactory(parent=page1, slug='page-1-1')
-    ContentPageFactory(parent=page2, slug='page-2-1')
+    page1 = ContentPageFactory(parent=root_page, slug="page-1")
+    page2 = ContentPageFactory(parent=root_page, slug="page-2")
+    ContentPageFactory(parent=page1, slug="page-1-1")
+    ContentPageFactory(parent=page2, slug="page-2-1")
 
     return site
 
@@ -28,7 +28,6 @@ def rf():
 
 
 class RequestFactory(BaseRequestFactory):
-
     def request(self, user=None, **request):
         request = super(RequestFactory, self).request(**request)
         request.user = AnonymousUser()
@@ -39,4 +38,4 @@ class RequestFactory(BaseRequestFactory):
 
 @pytest.fixture
 def user(django_user_model):
-    return django_user_model.objects.create(username='user')
+    return django_user_model.objects.create(username="user")

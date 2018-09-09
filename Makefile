@@ -30,6 +30,11 @@ isort:
 	pip install isort
 	isort --recursive src tests
 
+format:
+	black --py36 --verbose --exclude "/(\.git|\.hg|\.mypy_cache|\.tox|\.venv|_build|buck-out|build|dist|migrations)/" ./src
+	black --py36 --verbose --exclude "/(\.git|\.hg|\.mypy_cache|\.tox|\.venv|_build|buck-out|build|dist|migrations)/" ./tests
+	prettier --write ./frontend/**/*.js
+
 sandbox:
 	pip install -r sandbox/requirements.txt
 	sandbox/manage.py migrate

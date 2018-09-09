@@ -28,17 +28,17 @@ class TagStrategy(object):
         cookie_name = Tag.get_cookie_name(tag_type)
         cookie = self._cookies.get(cookie_name, None)
 
-        if tag_config == 'required':
+        if tag_config == "required":
             # Include required instant tags
             # Include required cookie
             self._tags.append((Tag.INSTANT_LOAD, tag_type))
-            self.cookies[cookie_name] = 'true'
-        elif tag_config == 'initial':
-            if cookie == 'true':
+            self.cookies[cookie_name] = "true"
+        elif tag_config == "initial":
+            if cookie == "true":
                 # Include initial instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
         else:
-            if cookie == 'true':
+            if cookie == "true":
                 # Include generic instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
 
@@ -46,40 +46,40 @@ class TagStrategy(object):
         cookie_name = Tag.get_cookie_name(tag_type)
         cookie = self._cookies.get(cookie_name, None)
 
-        if tag_config == 'required':
+        if tag_config == "required":
             # Include required lazy tags
             # Include required cookie
             if self._consent is None:
                 self._tags.append((Tag.LAZY_LOAD, tag_type))
-            if cookie != 'true':
-                self.cookies[cookie_name] = 'true'
+            if cookie != "true":
+                self.cookies[cookie_name] = "true"
 
         elif self._consent is None:
-            if tag_config == 'initial':
-                if cookie == 'unset':
+            if tag_config == "initial":
+                if cookie == "unset":
                     # Include initial lazy tags
                     # Include initial instant tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
                     self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                elif cookie == 'true':
+                elif cookie == "true":
                     # Include initial lazy tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
             else:
-                if cookie == 'true':
+                if cookie == "true":
                     # Include generic lazy tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
 
         elif self._consent is True:
-            if tag_config == 'initial':
-                if cookie == 'false':
+            if tag_config == "initial":
+                if cookie == "false":
                     # Include initial lazy tags
                     # Include initial instant tags
                     # Include initial cookie
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
                     self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                self.cookies[cookie_name] = 'true'
+                self.cookies[cookie_name] = "true"
             else:
-                if cookie == 'true':
+                if cookie == "true":
                     pass
                 else:
                     # Include generic lazy tags
@@ -87,17 +87,16 @@ class TagStrategy(object):
                     # Include generic cookie
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
                     self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                    self.cookies[cookie_name] = 'true'
+                    self.cookies[cookie_name] = "true"
 
         elif self._consent is False:
-            self.cookies[cookie_name] = 'false'
+            self.cookies[cookie_name] = "false"
 
     @property
     def queryset(self):
         queryset = Q()
         for tag_type in self._tags:
-            queryset.add(
-                Q(tag_loading=tag_type[0]) & Q(tag_type=tag_type[1]), Q.OR)
+            queryset.add(Q(tag_loading=tag_type[0]) & Q(tag_type=tag_type[1]), Q.OR)
         return queryset
 
     @property
@@ -109,20 +108,22 @@ class TagStrategy(object):
 
     @property
     def result(self):
-        result = [{
-            'tag': tag,
-            'content': tag.get_contents(self._request, self._context),
-        } for tag in self.tags]
+        result = [
+            {"tag": tag, "content": tag.get_contents(self._request, self._context)}
+            for tag in self.tags
+        ]
 
         for trigger in Trigger.objects.active():
             match = trigger.match(self._request)
             if match is not None:
                 for tag in trigger.tags.filter(self.queryset):
-                    result.append({
-                        'tag': tag,
-                        'content': tag.get_contents(
-                            self._request,
-                            {**self._context, **match.groupdict()})
-                    })
+                    result.append(
+                        {
+                            "tag": tag,
+                            "content": tag.get_contents(
+                                self._request, {**self._context, **match.groupdict()}
+                            ),
+                        }
+                    )
 
         return result
