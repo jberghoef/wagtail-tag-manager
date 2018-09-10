@@ -95,6 +95,40 @@ def test_variable_create():
 
 
 @pytest.mark.django_db
+def test_variable_types(rf):
+    request = rf.get("/wtm/")
+
+    path_variable = Variable.objects.create(
+        name="Path variable", key="path_variable", variable_type="path"
+    )
+    assert path_variable.get_value(request) == "/wtm/"
+
+    repath_variable = Variable.objects.create(
+        name="RePath variable",
+        key="repath_variable",
+        variable_type="_repath+",
+        value="(?:^\/)wtm(?:\/$)",
+    )
+    assert repath_variable.get_value(request) == "/wtm/"
+
+    request.COOKIES = {"wtm_test": "hello, world"}
+    cookie_variable = Variable.objects.create(
+        name="Cookie variable",
+        key="cookie_variable",
+        variable_type="_cookie+",
+        value="wtm_test",
+    )
+    assert cookie_variable.get_value(request) == "hello, world"
+
+    random_variable = Variable.objects.create(
+        name="Random variable",
+        key="random_variable",
+        variable_type="_random",
+    )
+    assert random_variable.get_value(request) > 0
+
+
+@pytest.mark.django_db
 def test_trigger_create():
     trigger = Trigger.objects.create(name="Trigger", pattern="[?&]state=(?P<state>\S+)")
     assert trigger in Trigger.objects.all()
