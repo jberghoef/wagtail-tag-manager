@@ -46,7 +46,14 @@ class VariableModelAdmin(ModelAdmin):
 class TagModelAdmin(ModelAdmin):
     model = Tag
     menu_icon = "code"
-    list_display = ("name_display", "tag_type", "tag_location", "tag_loading", "active")
+    list_display = (
+        "name_display",
+        "tag_type",
+        "tag_loading",
+        "tag_location",
+        "priority",
+        "active",
+    )
     list_filter = ("active", "tag_type", "tag_location", "tag_loading")
     search_fields = ("name", "description", "content")
     form_view_extra_js = [static("tag_form_view.bundle.js")]

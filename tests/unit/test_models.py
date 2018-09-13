@@ -121,9 +121,7 @@ def test_variable_types(rf):
     assert cookie_variable.get_value(request) == "hello, world"
 
     random_variable = Variable.objects.create(
-        name="Random variable",
-        key="random_variable",
-        variable_type="_random",
+        name="Random variable", key="random_variable", variable_type="_random"
     )
     assert random_variable.get_value(request) > 0
 

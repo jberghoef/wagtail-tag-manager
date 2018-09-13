@@ -82,10 +82,10 @@ class TagManager(models.Manager):
 
 
 class Tag(models.Model):
-    TOP_HEAD = "top_head"
-    BOTTOM_HEAD = "bottom_head"
-    TOP_BODY = "top_body"
-    BOTTOM_BODY = "bottom_body"
+    TOP_HEAD = "0_top_head"
+    BOTTOM_HEAD = "1_bottom_head"
+    TOP_BODY = "2_top_body"
+    BOTTOM_BODY = "3_bottom_body"
     LOCATION_CHOICES = [
         (TOP_HEAD, _("Top of head tag")),
         (BOTTOM_HEAD, _("Bottom of head tag")),
@@ -104,6 +104,19 @@ class Tag(models.Model):
         help_text=_(
             "Uncheck to disable this tag from being included, "
             "or when using a trigger to include this tag."
+        ),
+    )
+    priority = models.SmallIntegerField(
+        default=0,
+        help_text=mark_safe(
+            _(
+                "Define how early on this tag should load as compared to other tags. "
+                "A higher number will load sooner. For example:<br/>"
+                " - A tag with a priority of 3 will load before a tag with priority 1.<br/>"
+                " - A tag with a priority 0 will load before a tag with priority -1.<br/>"
+                "<em>Please note that with instanly loading tags, the priority is only "
+                "compared to tags that load in the same document location.</em>"
+            )
         ),
     )
 
@@ -149,6 +162,7 @@ class Tag(models.Model):
             [
                 FieldPanel("tag_type"),
                 FieldRowPanel([FieldPanel("tag_loading"), FieldPanel("tag_location")]),
+                FieldPanel("priority"),
                 FieldPanel("active"),
             ],
             heading=_("Meta"),
@@ -156,6 +170,9 @@ class Tag(models.Model):
         ),
         FieldPanel("content", classname="full"),
     ]
+
+    class Meta:
+        ordering = ["tag_loading", "-active", "tag_location", "-priority"]
 
     def clean(self):
         if "<script>" not in self.content:

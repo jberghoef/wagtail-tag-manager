@@ -7,7 +7,7 @@
       "description": "Loads instantly, is functional",
       "active": true,
       "tag_type": "functional",
-      "tag_location": "bottom_head",
+      "tag_location": "1_bottom_head",
       "tag_loading": "instant_load",
       "content": "<script>\n console.info('instant functional')\n</script>"
     }
@@ -20,7 +20,7 @@
       "description": "Loads instantly, is analytical",
       "active": true,
       "tag_type": "analytical",
-      "tag_location": "bottom_head",
+      "tag_location": "1_bottom_head",
       "tag_loading": "instant_load",
       "content": "<script>\n console.info('instant analytical')\n</script>"
     }
@@ -33,7 +33,7 @@
       "description": "Loads instantly, is traceable",
       "active": true,
       "tag_type": "traceable",
-      "tag_location": "bottom_head",
+      "tag_location": "1_bottom_head",
       "tag_loading": "instant_load",
       "content": "<script>\n console.info('instant traceable')\n</script>"
     }
@@ -46,7 +46,7 @@
       "description": "Loads lazily, is functional",
       "active": true,
       "tag_type": "functional",
-      "tag_location": "top_head",
+      "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
       "content": "<script>\n console.info('lazy functional')\n</script>"
     }
@@ -59,7 +59,7 @@
       "description": "Loads lazily, is analytical",
       "active": true,
       "tag_type": "analytical",
-      "tag_location": "top_head",
+      "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
       "content": "<script>\n console.info('lazy analytical')\n</script>"
     }
@@ -72,7 +72,7 @@
       "description": "Loads lazily, is traceable",
       "active": true,
       "tag_type": "traceable",
-      "tag_location": "top_head",
+      "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
       "content": "<script>\n console.info('lazy traceable')\n</script>"
     }
@@ -85,7 +85,7 @@
       "description": "This logs a \"thank you\" message using a constant.",
       "active": true,
       "tag_type": "functional",
-      "tag_location": "bottom_body",
+      "tag_location": "3_bottom_body",
       "tag_loading": "instant_load",
       "content": "<script>\n console.log('{{ thnx }}')\n</script>"
     }
@@ -98,7 +98,7 @@
       "description": "This will log a random number.",
       "active": true,
       "tag_type": "analytical",
-      "tag_location": "top_head",
+      "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
       "content": "<script>\n console.log('Here you go: {{ rand }}')\n</script>"
     }
@@ -111,7 +111,7 @@
       "description": "",
       "active": false,
       "tag_type": "traceable",
-      "tag_location": "top_head",
+      "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
       "content": "<script>\n console.log(\"I'm a {{ state }} teapot.\")\n</script>"
     }
@@ -124,7 +124,7 @@
       "description": "",
       "active": false,
       "tag_type": "traceable",
-      "tag_location": "top_head",
+      "tag_location": "0_top_head",
       "tag_loading": "instant_load",
       "content": "<script>\n console.log(\"My state is {{ state }}\")\n</script>"
     }
