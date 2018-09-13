@@ -130,7 +130,7 @@ class Tag(models.Model):
         ),
     )
     tag_location = models.CharField(
-        max_length=12,
+        max_length=14,
         choices=LOCATION_CHOICES,
         default=TOP_HEAD,
         help_text=_(
