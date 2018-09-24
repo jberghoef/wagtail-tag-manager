@@ -151,7 +151,12 @@ class Tag(models.Model):
         ),
     )
 
-    content = models.TextField(help_text=_("The script to be executed."))
+    content = models.TextField(
+        help_text=_(
+            "The tag to be added or script to be executed."
+            "Will assume the content is a script if no explicit tag has been added."
+        )
+    )
 
     objects = TagManager()
 
@@ -175,7 +180,7 @@ class Tag(models.Model):
         ordering = ["tag_loading", "-active", "tag_location", "-priority"]
 
     def clean(self):
-        if "<script>" not in self.content:
+        if not re.match("\<.+\/?\>", self.content):
             self.content = f"<script>{self.content}</script>"
 
         self.content = BeautifulSoup(self.content, "html.parser").prettify()

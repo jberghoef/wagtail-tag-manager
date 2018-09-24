@@ -6,7 +6,7 @@ from tests.factories.tag import (
     tag_lazy_functional,
     tag_instant_functional,
 )
-from tests.factories.trigger import TriggerFactory
+
 from wagtail_tag_manager.models import Tag, Trigger, Constant, Variable, TagTypeSettings
 
 
@@ -77,6 +77,15 @@ def test_tag_create():
 
     tag = Tag.objects.create(
         name="functional instant 2", content='console.log("functional instant")'
+    )
+    assert tag.content == expected
+    assert tag in Tag.objects.all()
+
+    expected = "<style>\n body { background-color: red; }\n</style>"
+
+    tag = Tag.objects.create(
+        name="functional instant 3",
+        content="<style>body { background-color: red; }</style>",
     )
     assert tag.content == expected
     assert tag in Tag.objects.all()
