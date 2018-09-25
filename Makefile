@@ -31,8 +31,10 @@ isort:
 	isort --recursive src tests
 
 format:
+	pip install black
 	black --py36 --verbose --exclude "/(\.git|\.hg|\.mypy_cache|\.tox|\.venv|_build|buck-out|build|dist|migrations)/" ./src
 	black --py36 --verbose --exclude "/(\.git|\.hg|\.mypy_cache|\.tox|\.venv|_build|buck-out|build|dist|migrations)/" ./tests
+	yarn install
 	prettier --write ./frontend/**/*.js
 
 sandbox: bundle

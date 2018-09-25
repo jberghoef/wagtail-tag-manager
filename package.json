@@ -9,27 +9,26 @@
     "watch": "webpack --mode development --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "github.com/jberghoef/wagtail-tag-manager"
-  },
+  "repository": "github.com/jberghoef/wagtail-tag-manager",
   "author": "Jasper Berghoef",
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "eslint": "^5.2.0",
-    "eslint-config-airbnb": "^17.0.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-react": "^7.10.0",
-    "mini-css-extract-plugin": "^0.4.1",
-    "webpack": "^4.16.3",
-    "webpack-cli": "^3.1.0"
+    "@babel/core": "^7.1.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "babel-loader": "^8.0.2",
+    "husky": "^1.0.0-rc.15",
+    "mini-css-extract-plugin": "^0.4.3",
+    "webpack": "^4.20.1",
+    "webpack-cli": "^3.1.1"
   },
   "dependencies": {
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
     "js-cookie": "^2.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "make format",
+      "pre-push": "make test"
+    }
   }
 }
