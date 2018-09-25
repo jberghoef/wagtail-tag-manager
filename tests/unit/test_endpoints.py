@@ -221,7 +221,7 @@ def test_passive_tags(client, site):
 
     response = client.post(
         "/wtm/lazy/",
-        json.dumps({"path": "/", "query": ""}),
+        json.dumps({"pathname": "/", "search": ""}),
         content_type="application/json",
     )
     data = response.json()
@@ -232,7 +232,7 @@ def test_passive_tags(client, site):
 
     response = client.post(
         "/wtm/lazy/",
-        json.dumps({"path": "/", "query": "?state=1"}),
+        json.dumps({"pathname": "/", "search": "?state=1"}),
         content_type="application/json",
     )
     data = response.json()
@@ -246,7 +246,7 @@ def test_passive_tags(client, site):
 
     response = client.post(
         "/wtm/lazy/",
-        json.dumps({"path": "/", "query": "?state=2"}),
+        json.dumps({"pathname": "/", "search": "?state=2"}),
         content_type="application/json",
     )
     data = response.json()
@@ -258,7 +258,7 @@ def test_passive_tags(client, site):
 
     response = client.post(
         "/wtm/lazy/",
-        json.dumps({"consent": "true", "path": "/", "query": "?state=3"}),
+        json.dumps({"consent": "true", "pathname": "/", "search": "?state=3"}),
         content_type="application/json",
     )
     data = response.json()
