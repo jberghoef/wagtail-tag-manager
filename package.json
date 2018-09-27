@@ -17,17 +17,21 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "babel-loader": "^8.0.2",
+    "css-loader": "^1.0.0",
     "husky": "^1.0.0-rc.15",
     "mini-css-extract-plugin": "^0.4.3",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.0",
     "webpack": "^4.20.1",
     "webpack-cli": "^3.1.1"
   },
   "dependencies": {
+    "codemirror": "^5.40.2",
     "js-cookie": "^2.2.0"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "make format",
       "pre-push": "make test"
     }
   }

@@ -173,7 +173,7 @@ class Tag(models.Model):
             heading=_("Meta"),
             classname="collapsible",
         ),
-        FieldPanel("content", classname="full"),
+        FieldPanel("content", classname="full code"),
     ]
 
     class Meta:

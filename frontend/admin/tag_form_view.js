@@ -1,3 +1,10 @@
+import "./tag_form_view.scss";
+
+import CodeMirror from "codemirror";
+import "codemirror/mode/django/django";
+
+const { document } = window;
+
 class TagFormView {
   constructor() {
     this.loadSelect = document.getElementById("id_tag_loading");
@@ -12,7 +19,13 @@ class TagFormView {
   }
 
   initialize() {
+    this.injectEditor();
     this.handleLoadChange();
+  }
+
+  injectEditor() {
+    this.textArea = document.querySelector(".code .input textarea");
+    this.editor = CodeMirror.fromTextArea(this.textArea, {mode: "django"});
   }
 
   handleLoadChange(event) {

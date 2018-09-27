@@ -1,0 +1,16 @@
+@import "~codemirror/lib/codemirror.css";
+
+.code .input {
+    border-right: 1px solid #e6e6e6;
+    padding: 2em 50px;
+
+    .CodeMirror {
+        height: auto;
+        min-height: 200px;
+
+        * {
+            font-size: 0.9rem;
+            line-height: 1.4rem;
+        }
+    }
+}
