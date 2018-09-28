@@ -2,6 +2,7 @@ import "./tag_form_view.scss";
 
 import CodeMirror from "codemirror";
 import "codemirror/mode/django/django";
+import "codemirror/addon/display/panel";
 
 const { document } = window;
 
@@ -25,7 +26,17 @@ class TagFormView {
 
   injectEditor() {
     this.textArea = document.querySelector(".code .input textarea");
-    this.editor = CodeMirror.fromTextArea(this.textArea, {mode: "django"});
+    this.editor = CodeMirror.fromTextArea(this.textArea, { mode: "django" });
+
+    // Create constant panel
+    const constantPanel = document.createElement("div");
+    constantPanel.appendChild(document.createTextNode("Constants!"));
+    this.editor.addPanel(constantPanel, { position: "before-bottom", stable: true });
+
+    // Create variable panel
+    const variablePanel = document.createElement("div");
+    variablePanel.appendChild(document.createTextNode("Variables!"));
+    this.editor.addPanel(variablePanel, { position: "before-bottom", stable: true });
   }
 
   handleLoadChange(event) {

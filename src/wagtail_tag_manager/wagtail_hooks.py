@@ -1,7 +1,10 @@
+import json
+
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.templatetags.static import static
 from django.template.defaultfilters import truncatechars
+from wagtail.contrib.modeladmin.views import EditView, CreateView
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin,
     ModelAdminGroup,
@@ -43,6 +46,26 @@ class VariableModelAdmin(ModelAdmin):
     name_display.short_description = _("Name")
 
 
+class TagCreateView(CreateView):
+    def get_context_data(self, **kwargs):
+        context = {
+            "constants": [constant.as_dict() for constant in Constant.objects.all()],
+            "variables": [variable.as_dict() for variable in Variable.objects.all()],
+        }
+        context.update(kwargs)
+        return super().get_context_data(**context)
+
+
+class TagEditView(EditView):
+    def get_context_data(self, **kwargs):
+        context = {
+            "constants": [constant.as_dict() for constant in Constant.objects.all()],
+            "variables": [variable.as_dict() for variable in Variable.objects.all()],
+        }
+        context.update(kwargs)
+        return super().get_context_data(**context)
+
+
 class TagModelAdmin(ModelAdmin):
     model = Tag
     menu_icon = "code"
@@ -58,6 +81,9 @@ class TagModelAdmin(ModelAdmin):
     search_fields = ("name", "description", "content")
     form_view_extra_css = [static("tag_form_view.css")]
     form_view_extra_js = [static("tag_form_view.bundle.js")]
+
+    create_view_class = TagCreateView
+    edit_view_class = TagEditView
 
     def name_display(self, obj):
         if obj.description:

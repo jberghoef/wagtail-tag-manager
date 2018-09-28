@@ -250,6 +250,14 @@ class Constant(models.Model):
         ),
     ]
 
+    def as_dict(self):
+        return {
+            "name": self.name,
+            "description": self.description,
+            "key": self.key,
+            "value": self.value,
+        }
+
     def get_value(self):
         return self.value
 
@@ -347,6 +355,15 @@ class Variable(models.Model):
             heading=_("Data"),
         ),
     ]
+
+    def as_dict(self):
+        return {
+            "name": self.name,
+            "description": self.description,
+            "key": self.key,
+            "variable_type": self.variable_type,
+            "value": self.value,
+        }
 
     def get_repath(self, request):
         path = request.path
