@@ -28,15 +28,40 @@ class TagFormView {
     this.textArea = document.querySelector(".code .input textarea");
     this.editor = CodeMirror.fromTextArea(this.textArea, { mode: "django" });
 
-    // Create constant panel
-    const constantPanel = document.createElement("div");
-    constantPanel.appendChild(document.createTextNode("Constants!"));
-    this.editor.addPanel(constantPanel, { position: "before-bottom", stable: true });
+    fetch("/wtm/variables/")
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        this.variables = data.constants.concat(data.variables);
+        this.addVariablePanel(this.variables);
+      });
+  }
 
-    // Create variable panel
-    const variablePanel = document.createElement("div");
-    variablePanel.appendChild(document.createTextNode("Variables!"));
-    this.editor.addPanel(variablePanel, { position: "before-bottom", stable: true });
+  addVariablePanel(items) {
+    const panel = document.createElement("div");
+    panel.classList.add("panel");
+
+    for (let item of items) {
+      const button = document.createElement("button");
+      button.classList.add("button", "button-small", "bicolor", "icon", "icon-plus");
+
+      button.appendChild(document.createTextNode(item.name));
+      button.type = "button";
+      button.title = item.description;
+      button.dataset.key = item.key;
+
+      button.addEventListener("click", event => {
+        event.preventDefault();
+        const target = event.currentTarget;
+        this.editor.doc.replaceSelection(`{{ ${target.dataset.key} }}`, "end");
+        this.editor.focus();
+      });
+
+      panel.appendChild(button);
+    }
+
+    this.editor.addPanel(panel, { position: "top", stable: true });
   }
 
   handleLoadChange(event) {
