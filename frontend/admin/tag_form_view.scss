@@ -2,15 +2,20 @@
 
 .code .input {
     border-right: 1px solid #e6e6e6;
-    padding: 2em 50px;
 
     .CodeMirror {
         height: auto;
         min-height: 200px;
+        padding: 2em 30px;
 
         * {
             font-size: 0.9rem;
             line-height: 1.4rem;
         }
     }
+}
+
+.code .panel {
+    border-bottom: 1px solid #e6e6e6;
+    padding: 1em 0.5rem;
 }

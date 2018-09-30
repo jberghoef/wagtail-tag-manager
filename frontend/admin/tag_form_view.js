@@ -2,6 +2,7 @@ import "./tag_form_view.scss";
 
 import CodeMirror from "codemirror";
 import "codemirror/mode/django/django";
+import "codemirror/addon/display/panel";
 
 const { document } = window;
 
@@ -25,7 +26,42 @@ class TagFormView {
 
   injectEditor() {
     this.textArea = document.querySelector(".code .input textarea");
-    this.editor = CodeMirror.fromTextArea(this.textArea, {mode: "django"});
+    this.editor = CodeMirror.fromTextArea(this.textArea, { mode: "django" });
+
+    fetch("/wtm/variables/")
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        this.variables = data.constants.concat(data.variables);
+        this.addVariablePanel(this.variables);
+      });
+  }
+
+  addVariablePanel(items) {
+    const panel = document.createElement("div");
+    panel.classList.add("panel");
+
+    for (let item of items) {
+      const button = document.createElement("button");
+      button.classList.add("button", "button-small", "bicolor", "icon", "icon-plus");
+
+      button.appendChild(document.createTextNode(item.name));
+      button.type = "button";
+      button.title = item.description;
+      button.dataset.key = item.key;
+
+      button.addEventListener("click", event => {
+        event.preventDefault();
+        const target = event.currentTarget;
+        this.editor.doc.replaceSelection(`{{ ${target.dataset.key} }}`, "end");
+        this.editor.focus();
+      });
+
+      panel.appendChild(button);
+    }
+
+    this.editor.addPanel(panel, { position: "top", stable: true });
   }
 
   handleLoadChange(event) {

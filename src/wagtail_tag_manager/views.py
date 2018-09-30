@@ -1,8 +1,9 @@
 from django.conf import settings
-from django.http import HttpResponseNotFound, HttpResponseRedirect
-from django.views.generic import TemplateView
+from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.views.generic import View, TemplateView
 
 from wagtail_tag_manager.forms import ConsentForm
+from wagtail_tag_manager.models import Constant, Variable
 from wagtail_tag_manager.utils import set_cookie
 
 
@@ -23,3 +24,19 @@ class ManageView(TemplateView):
                 set_cookie(response, f"wtm_{key}", str(value).lower())
 
         return response
+
+
+class VariableView(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_staff:
+            return JsonResponse(
+                {
+                    "constants": [
+                        constant.as_dict() for constant in Constant.objects.all()
+                    ],
+                    "variables": [
+                        variable.as_dict() for variable in Variable.objects.all()
+                    ],
+                }
+            )
+        return HttpResponseNotFound()
