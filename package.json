@@ -30,11 +30,5 @@
   "dependencies": {
     "codemirror": "^5.40.2",
     "js-cookie": "^2.2.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "make format",
-      "pre-push": "make test"
-    }
   }
 }
