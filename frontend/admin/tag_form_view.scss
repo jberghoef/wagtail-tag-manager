@@ -1,21 +1,36 @@
 @import "~codemirror/lib/codemirror.css";
 
 .code .input {
-    border-right: 1px solid #e6e6e6;
-
     .CodeMirror {
         height: auto;
         min-height: 200px;
         padding: 2em 30px;
+        background-color: #fafafa;
+        border-right: 1px solid #e6e6e6;
+        border-top: 1px solid #e6e6e6;
+        transition: background-color .2s ease;
+        overflow: hidden;
+
+        &-focused {
+            background-color: #f4fcfc;
+            border-color: #54d0d0;
+            outline: none;
+        }
 
         * {
             font-size: 0.9rem;
             line-height: 1.4rem;
         }
+
+        @media screen and (max-width: 799px) {
+            border: 1px solid #e6e6e6;
+        }
     }
 }
 
 .code .panel {
-    border-bottom: 1px solid #e6e6e6;
+    @media screen and (min-width: 800px) {
+        border-right: 1px solid #e6e6e6;
+    }
     padding: 1em 0.5rem;
 }
