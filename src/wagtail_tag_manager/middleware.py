@@ -1,9 +1,9 @@
 from bs4 import BeautifulSoup
-from django.template import loader
 from django.templatetags.static import static
+from django.urls import reverse
 
 from wagtail_tag_manager.utils import set_cookie
-from wagtail_tag_manager.models import Tag, TagTypeSettings
+from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.strategy import TagStrategy
 
 
@@ -48,12 +48,8 @@ class TagManagerMiddleware:
         doc = BeautifulSoup(self.response.content, "html.parser")
 
         if doc.head and doc.body:
-            template = loader.get_template("wagtail_tag_manager/state.html")
-            element = BeautifulSoup(
-                template.render({"config": TagTypeSettings.all()}, self.request),
-                "html.parser",
-            )
-            doc.head.append(element)
+            doc.body["data-wtm-state"] = reverse("wtm:state")
+            doc.body["data-wtm-lazy"] = reverse("wtm:lazy")
 
             element = doc.new_tag("script")
             element["src"] = static("wtm.bundle.js")

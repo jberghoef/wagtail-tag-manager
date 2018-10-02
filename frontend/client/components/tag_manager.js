@@ -3,15 +3,33 @@ import CookieBar from "./cookie_bar";
 
 export default class TagManager {
   constructor() {
-    this.config = window.wtm_config;
-    this.show_cookiebar = false;
+    const { body } = document;
+    this.state_url = body.getAttribute("data-wtm-state") || window.wtm.state_url;
+    this.lazy_url = body.getAttribute("data-wtm-lazy") || window.wtm.lazy_url;
 
+    this.show_cookiebar = false;
     this.initialize();
   }
 
   initialize() {
-    this.validate();
-    this.loadData();
+    fetch(this.state_url, {
+      method: "GET",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      redirect: "follow",
+      referrer: "no-referrer"
+    })
+      .then(response => response.json())
+      .then(json => {
+        this.config = json;
+
+        this.validate();
+        this.loadData();
+      });
   }
 
   validate() {
@@ -27,7 +45,7 @@ export default class TagManager {
         if (this.config[tagType] === "initial" && !this.has(tagType)) {
           Cookies.set(`wtm_${tagType}`, "unset", { expires: 365 });
           this.show_cookiebar = true;
-        } else if (!this.has(tagType)) {
+        } else if (Cookies.get(`wtm_${tagType}`) == "unset" || !this.has(tagType)) {
           this.show_cookiebar = true;
         }
       });
@@ -46,7 +64,7 @@ export default class TagManager {
   }
 
   loadData(consent = undefined) {
-    fetch(window.wtm_url, {
+    fetch(this.lazy_url, {
       method: "POST",
       mode: "cors",
       cache: "no-cache",
@@ -62,9 +80,7 @@ export default class TagManager {
         ...window.location
       })
     })
-      .then(response => {
-        return response.json();
-      })
+      .then(response => response.json())
       .then(json => {
         this.data = json;
         this.handleLoad();

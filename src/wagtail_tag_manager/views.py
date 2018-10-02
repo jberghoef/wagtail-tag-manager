@@ -3,8 +3,8 @@ from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.views.generic import View, TemplateView
 
 from wagtail_tag_manager.forms import ConsentForm
-from wagtail_tag_manager.models import Constant, Variable
 from wagtail_tag_manager.utils import set_cookie
+from wagtail_tag_manager.models import Constant, Variable, TagTypeSettings
 
 
 class ManageView(TemplateView):
@@ -24,6 +24,11 @@ class ManageView(TemplateView):
                 set_cookie(response, f"wtm_{key}", str(value).lower())
 
         return response
+
+
+class StateView(View):
+    def get(self, request, *args, **kwargs):
+        return JsonResponse(TagTypeSettings.all())
 
 
 class VariableView(View):

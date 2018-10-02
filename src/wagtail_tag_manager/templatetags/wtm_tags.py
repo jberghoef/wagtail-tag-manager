@@ -1,6 +1,7 @@
 from django import template
 from django.conf import settings
 from django.utils.safestring import mark_safe
+from django.urls import reverse
 
 from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.utils import get_cookie_state
@@ -31,7 +32,9 @@ def wtm_instant_tags(context):
 
 @register.inclusion_tag("wagtail_tag_manager/templatetags/lazy_manager.html")
 def wtm_lazy_manager():
-    return {"config": TagTypeSettings.all()}
+    return {
+        "config": {"state_url": reverse("wtm:state"), "lazy_url": reverse("wtm:lazy")}
+    }
 
 
 @register.inclusion_tag("wagtail_tag_manager/templatetags/cookie_bar.html")
