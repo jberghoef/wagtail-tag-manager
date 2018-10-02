@@ -45,8 +45,8 @@ def test_wtm_lazy_manager():
     context = wtm_lazy_manager()
 
     assert "config" in context
-    print(context.get("config"))
-    assert context.get("config") == TagTypeSettings.all()
+    assert "state_url" in context.get("config")
+    assert "lazy_url" in context.get("config")
 
 
 @pytest.mark.django_db
