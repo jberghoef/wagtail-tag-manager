@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.views.generic import View, TemplateView
+from django.utils.http import is_safe_url
 
 from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.utils import set_cookie
@@ -16,12 +17,22 @@ class ManageView(TemplateView):
         return HttpResponseNotFound()
 
     def post(self, request, *args, **kwargs):
-        response = HttpResponseRedirect(request.get_full_path())
+        response = HttpResponseRedirect("/")
+
+        redirect_url = request.META.get('HTTP_REFERER', request.build_absolute_uri())
+        url_is_safe = is_safe_url(
+            url=redirect_url,
+            allowed_hosts=settings.ALLOWED_HOSTS,
+            require_https=request.is_secure(),
+        )
+        if url_is_safe:
+            response = HttpResponseRedirect(redirect_url)
 
         form = ConsentForm(request.POST)
         if form.is_valid():
             for key, value in form.cleaned_data.items():
-                set_cookie(response, f"wtm_{key}", str(value).lower())
+                pass
+                # set_cookie(response, f"wtm_{key}", str(value).lower())
 
         return response
 

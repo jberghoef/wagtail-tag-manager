@@ -31,9 +31,16 @@ def wtm_lazy_manager():
     }
 
 
-@register.inclusion_tag("wagtail_tag_manager/templatetags/cookie_bar.html")
-def wtm_cookie_bar():
-    return {"manage_view": getattr(settings, "WTM_MANAGE_VIEW", True)}
+@register.inclusion_tag(
+    "wagtail_tag_manager/templatetags/cookie_bar.html", takes_context=True
+)
+def wtm_cookie_bar(context, include_form=False):
+    request = context.get("request")
+    return {
+        "manage_view": getattr(settings, "WTM_MANAGE_VIEW", True),
+        "include_form": include_form,
+        "form": ConsentForm(initial=get_cookie_state(request)),
+    }
 
 
 @register.inclusion_tag(

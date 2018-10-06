@@ -30,7 +30,7 @@
         line-height: 1.2 !important;
     }
 
-    #wtm_cookie_bar .button-container {
+    #wtm_cookie_bar .action-container {
         display: block !important;
         margin-top: 12px !important;
     }
@@ -75,19 +75,36 @@
                 {% endblocktrans %}
             </p>
         </div>
-        <div class="button-container">
-            <button type="button" class="button button--green js-cookie-choice" data-choice="accept" aria-label="{% trans 'Accept' %}" tabindex="0">
-                {% trans "Accept" %}
-            </button>
-            <button type="button" class="button button--red js-cookie-choice" data-choice="reject" aria-label="{% trans 'Reject' %}" tabindex="0">
-                {% trans "Reject" %}
-            </button>
 
-            {% if manage_view %}
-                <a role="button" class="button button--transparant" href="{% url 'wtm:manage' %}" aria-label="{% trans 'Manage settings' %}" tabindex="0">
-                    {% trans "Manage settings" %}
-                </a>
+        <div class="action-container">
+
+            {% if include_form %}
+                <form class="form" action="{% url 'wtm:manage' %}" method="POST">
+                    {% csrf_token %}
+                    {{ form.as_ul }}
+                    <input type="submit" class="button button--green" value="{% trans 'Save' %}" aria-label="{% trans 'Save' %}" tabindex="0" />
+
+                    {% if manage_view %}
+                        <a role="button" class="button button--transparant" href="{% url 'wtm:manage' %}" aria-label="{% trans 'Manage settings' %}" tabindex="0">
+                            {% trans "Manage settings" %}
+                        </a>
+                    {% endif %}
+                </form>
+            {% else %}
+                <button type="button" class="button button--green js-cookie-choice" data-choice="accept" aria-label="{% trans 'Accept' %}" tabindex="0">
+                    {% trans "Accept" %}
+                </button>
+                <button type="button" class="button button--red js-cookie-choice" data-choice="reject" aria-label="{% trans 'Reject' %}" tabindex="0">
+                    {% trans "Reject" %}
+                </button>
+
+                {% if manage_view %}
+                    <a role="button" class="button button--transparant" href="{% url 'wtm:manage' %}" aria-label="{% trans 'Manage settings' %}" tabindex="0">
+                        {% trans "Manage settings" %}
+                    </a>
+                {% endif %}
             {% endif %}
+
         </div>
     </div>
 </div>
