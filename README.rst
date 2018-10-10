@@ -1,6 +1,10 @@
 Wagtail Tag Manager
 ===================
 
+.. image:: https://api.codacy.com/project/badge/Grade/1e46af2eaff7469a8a569db8c3276324
+   :alt: Codacy Badge
+   :target: https://app.codacy.com/app/jberghoef/wagtail-tag-manager?utm_source=github.com&utm_medium=referral&utm_content=jberghoef/wagtail-tag-manager&utm_campaign=Badge_Grade_Dashboard
+
 .. image:: https://circleci.com/gh/jberghoef/wagtail-tag-manager.svg?style=svg
     :target: https://circleci.com/gh/jberghoef/wagtail-tag-manager
 
