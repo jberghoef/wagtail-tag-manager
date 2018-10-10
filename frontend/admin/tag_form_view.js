@@ -70,7 +70,7 @@ class TagFormView {
     if (value !== "instant_load") {
       this.locationSelect.disabled = true;
       for (let option of this.locationSelect) {
-        if (option.value === "top_head") {
+        if (option.value === "0_top_head") {
           option.selected = true;
         }
       }
@@ -79,7 +79,7 @@ class TagFormView {
       this.hiddenInput.id = this.locationSelect.id;
       this.hiddenInput.name = this.locationSelect.name;
       this.hiddenInput.type = "hidden";
-      this.hiddenInput.value = "top_head";
+      this.hiddenInput.value = "0_top_head";
       this.locationSelect.parentNode.insertBefore(
         this.hiddenInput,
         this.locationSelect.parentNode.childNodes[0]
