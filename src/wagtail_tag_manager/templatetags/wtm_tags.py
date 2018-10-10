@@ -1,11 +1,10 @@
 from django import template
 from django.conf import settings
-from django.utils.safestring import mark_safe
 from django.urls import reverse
 
 from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.utils import get_cookie_state
-from wagtail_tag_manager.models import Tag, TagTypeSettings
+from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.strategy import TagStrategy
 
 register = template.Library()
@@ -25,7 +24,7 @@ def wtm_instant_tags(context):
         for item in strategy.result:
             contents += item.get("content", [])
 
-        context["tags"] = [mark_safe(tag.prettify()) for tag in contents]
+        context["tags"] = [tag.prettify() for tag in contents]
 
     return context
 

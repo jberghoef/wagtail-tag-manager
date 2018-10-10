@@ -45,7 +45,7 @@ export default class TagManager {
         if (this.config[tagType] === "initial" && !this.has(tagType)) {
           Cookies.set(`wtm_${tagType}`, "unset", { expires: 365 });
           this.show_cookiebar = true;
-        } else if (Cookies.get(`wtm_${tagType}`) == "unset" || !this.has(tagType)) {
+        } else if (Cookies.get(`wtm_${tagType}`) === "unset" || !this.has(tagType)) {
           this.show_cookiebar = true;
         }
       });
@@ -88,12 +88,10 @@ export default class TagManager {
   }
 
   handleLoad() {
-    for (let i = 0; i < this.data["tags"].length; i++) {
-      const tag = this.data["tags"][i];
-
+    this.data.tags.forEach(tag => {
       const element = document.createElement(tag.name);
       element.appendChild(document.createTextNode(tag.string));
       document.head.appendChild(element);
-    }
+    });
   }
 }
