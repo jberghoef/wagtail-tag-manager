@@ -2,7 +2,7 @@ import re
 from setuptools import find_packages, setup
 
 
-install_requires = ["wagtail>=2.1,<2.3", "beautifulsoup4==4.6.0"]
+install_requires = ["wagtail>=2.1,<2.4", "beautifulsoup4==4.6.0"]
 
 tests_require = [
     "factory_boy==2.7.0",
