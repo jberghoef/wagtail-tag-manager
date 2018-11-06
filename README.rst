@@ -19,6 +19,9 @@ Wagtail Tag Manager
 Wagtail Tag Manager (WTM for short) is a Wagtail_ addon that allows for easier
 and GDPR compliant administration of scripts and tags.
 
+**Please note that this software is in beta and has not been extensively tested
+in practice.**
+
 .. _Wagtail: https://wagtail.io/
 
 .. image:: screenshot.png

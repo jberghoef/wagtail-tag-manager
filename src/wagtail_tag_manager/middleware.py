@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from django.http.response import HttpResponse
 from django.templatetags.static import static
 from django.urls import reverse
 
@@ -15,7 +16,16 @@ class TagManagerMiddleware:
         self.request = request
         self.response = self.get_response(request)
 
-        if self.request.method == "GET" and self.response.status_code is 200:
+        if (
+            not hasattr(self.request, "wtm_injected")  # Only once per request
+            and self.request.method == "GET"
+            and self.response.status_code == 200
+            and isinstance(self.response, HttpResponse)
+            and (
+                self.request.content_type == "text/plain"
+                or self.request.content_type == "text/html"
+            )
+        ):
             self.strategy = TagStrategy(request)
             for cookie_name, value in self.strategy.cookies.items():
                 set_cookie(self.response, cookie_name, value)
@@ -23,36 +33,40 @@ class TagManagerMiddleware:
             self._add_instant_tags()
             self._add_lazy_manager()
 
+            self.request.wtm_injected = True
+
         return self.response
 
     def _add_instant_tags(self):
-        doc = BeautifulSoup(self.response.content, "html.parser")
+        if hasattr(self.response, "content"):
+            doc = BeautifulSoup(self.response.content, "html.parser")
 
-        for item in self.strategy.result:
-            tag = item.get("tag", None)
-            content = item.get("content", [])
+            for item in self.strategy.result:
+                tag = item.get("tag", None)
+                content = item.get("content", [])
 
-            for element in content:
-                if tag.tag_location == Tag.TOP_HEAD and doc.head:
-                    doc.head.insert(1, element)
-                elif tag.tag_location == Tag.BOTTOM_HEAD and doc.head:
-                    doc.head.append(element)
-                elif tag.tag_location == Tag.TOP_BODY and doc.body:
-                    doc.body.insert(1, element)
-                elif tag.tag_location == Tag.BOTTOM_BODY and doc.body:
-                    doc.body.append(element)
+                for element in content:
+                    if tag.tag_location == Tag.TOP_HEAD and doc.head:
+                        doc.head.insert(1, element)
+                    elif tag.tag_location == Tag.BOTTOM_HEAD and doc.head:
+                        doc.head.append(element)
+                    elif tag.tag_location == Tag.TOP_BODY and doc.body:
+                        doc.body.insert(1, element)
+                    elif tag.tag_location == Tag.BOTTOM_BODY and doc.body:
+                        doc.body.append(element)
 
-        self.response.content = doc.prettify()
+            self.response.content = doc.prettify()
 
     def _add_lazy_manager(self):
-        doc = BeautifulSoup(self.response.content, "html.parser")
+        if hasattr(self.response, "content"):
+            doc = BeautifulSoup(self.response.content, "html.parser")
 
-        if doc.head and doc.body:
-            doc.body["data-wtm-state"] = reverse("wtm:state")
-            doc.body["data-wtm-lazy"] = reverse("wtm:lazy")
+            if doc.head and doc.body:
+                doc.body["data-wtm-state"] = reverse("wtm:state")
+                doc.body["data-wtm-lazy"] = reverse("wtm:lazy")
 
-            element = doc.new_tag("script")
-            element["src"] = static("wtm.bundle.js")
-            doc.head.append(element)
+                element = doc.new_tag("script")
+                element["src"] = static("wtm.bundle.js")
+                doc.head.append(element)
 
-        self.response.content = doc.prettify()
+            self.response.content = doc.prettify()
