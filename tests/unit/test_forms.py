@@ -26,8 +26,8 @@ def test_consent_form():
 
 
 @pytest.mark.django_db
-def test_consent_form_initial(rf):
-    request = rf.get("/")
+def test_consent_form_initial(rf, site):
+    request = rf.get(site.root_page.url)
     request.COOKIES = {
         "wtm_functional": "true",
         "wtm_analytical": "false",

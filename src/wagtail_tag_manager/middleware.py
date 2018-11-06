@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from django.http.response import HttpResponse
+from django.template.response import TemplateResponse
 from django.templatetags.static import static
 from django.urls import reverse
 
@@ -20,11 +20,7 @@ class TagManagerMiddleware:
             not hasattr(self.request, "wtm_injected")  # Only once per request
             and self.request.method == "GET"
             and self.response.status_code == 200
-            and isinstance(self.response, HttpResponse)
-            and (
-                self.request.content_type == "text/plain"
-                or self.request.content_type == "text/html"
-            )
+            and isinstance(self.response, TemplateResponse)
         ):
             self.strategy = TagStrategy(request)
             for cookie_name, value in self.strategy.cookies.items():

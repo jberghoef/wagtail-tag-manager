@@ -5,7 +5,6 @@ from tests.factories.tag import (
     tag_instant_analytical,
     tag_instant_functional,
 )
-from wagtail_tag_manager.models import TagTypeSettings
 from wagtail_tag_manager.templatetags.wtm_tags import (
     wtm_cookie_bar,
     wtm_instant_tags,
@@ -14,12 +13,12 @@ from wagtail_tag_manager.templatetags.wtm_tags import (
 
 
 @pytest.mark.django_db
-def test_wtm_instant_tags(rf):
+def test_wtm_instant_tags(rf, site):
     tag_instant_functional()
     tag_instant_analytical()
     tag_instant_traceable()
 
-    request = rf.get("/")
+    request = rf.get(site.root_page.url)
 
     context = wtm_instant_tags({"request": request})
     assert "tags" in context
