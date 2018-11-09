@@ -1,6 +1,6 @@
 {
   "name": "wagtail-tag-manager",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A Wagtail add-on for managing tags.",
   "main": "webpack.config.js",
   "scripts": {
