@@ -46,6 +46,7 @@ sandbox: bundle
 	sandbox/manage.py runserver
 
 bundle:
+	yarn install --force
 	yarn build
 
 watch:

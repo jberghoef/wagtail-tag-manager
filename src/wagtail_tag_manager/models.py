@@ -379,7 +379,7 @@ class Variable(models.Model):
         return request.COOKIES.get(self.value, "")
 
     def get_random(self, request):
-        return int(random.random() * 2147483647)
+        return int(random.random() * 2_147_483_647)
 
     def get_value(self, request):
         variable_type = self.variable_type
