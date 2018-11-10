@@ -86,7 +86,9 @@ class TagFormView {
       );
     } else {
       this.locationSelect.disabled = false;
-      this.hiddenInput.remove();
+      if (this.hiddenInput) {
+        this.hiddenInput.remove();
+      }
     }
   }
 }
