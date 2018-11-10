@@ -52,7 +52,7 @@ export default class TagManager {
     }
 
     if (this.showCookiebar) {
-      new CookieBar(this);
+      this.cookieBar = new CookieBar(this);
     }
   }
 

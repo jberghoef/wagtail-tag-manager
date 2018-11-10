@@ -30,10 +30,14 @@ isort:
 	pip install isort
 	isort --recursive src tests
 
-format:
+format: black prettier
+
+black:
 	pip install black
 	black --py36 --verbose --exclude "/(\.git|\.hg|\.mypy_cache|\.tox|\.venv|_build|buck-out|build|dist|migrations)/" ./src
 	black --py36 --verbose --exclude "/(\.git|\.hg|\.mypy_cache|\.tox|\.venv|_build|buck-out|build|dist|migrations)/" ./tests
+
+prettier:
 	yarn install
 	prettier --write ./frontend/**/*
 
@@ -45,7 +49,7 @@ sandbox: bundle
 	sandbox/manage.py loaddata sandbox/exampledata/wtm.json
 	sandbox/manage.py runserver
 
-bundle:
+bundle: prettier
 	yarn install --force
 	yarn build
 
