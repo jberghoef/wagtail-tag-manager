@@ -50,18 +50,18 @@ class TagManagerMiddleware:
                 elif obj.tag_location == Tag.BOTTOM_BODY and doc.body:
                     doc.body.append(element)
 
-            self.response.content = doc.prettify()
+            self.response.content = doc.decode()
 
     def _add_lazy_manager(self):
         if hasattr(self.response, "content"):
             doc = BeautifulSoup(self.response.content, "html.parser")
 
-            if doc.head and doc.body:
+            if hasattr(doc, 'body'):
                 doc.body["data-wtm-state"] = reverse("wtm:state")
                 doc.body["data-wtm-lazy"] = reverse("wtm:lazy")
 
                 element = doc.new_tag("script")
                 element["src"] = static("wtm.bundle.js")
-                doc.head.append(element)
+                doc.body.append(element)
 
-            self.response.content = doc.prettify()
+            self.response.content = doc.decode()

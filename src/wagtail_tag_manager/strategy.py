@@ -126,6 +126,4 @@ class TagStrategy(object):
                         }
                     )
 
-        print(result)
-
         return result

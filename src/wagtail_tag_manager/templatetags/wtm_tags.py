@@ -19,12 +19,7 @@ def wtm_instant_tags(context):
 
     if request is not None:
         strategy = TagStrategy(request)
-
-        contents = []
-        for tag in strategy.result:
-            contents += tag.get("element").contents
-
-        context["tags"] = [tag.prettify() for tag in contents]
+        context["tags"] = [tag.get("element").decode() for tag in strategy.result]
 
     return context
 
