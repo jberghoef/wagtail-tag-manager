@@ -23,3 +23,11 @@ def test_state_view(client):
     response = client.get(url)
     assert response.status_code == 200
     assert json.loads(response.content) == TagTypeSettings.all()
+
+
+@pytest.mark.django_db
+def test_variable_view(client, user):
+    url = reverse("wtm:variables")
+
+    response = client.get(url)
+    assert response.status_code == 404
