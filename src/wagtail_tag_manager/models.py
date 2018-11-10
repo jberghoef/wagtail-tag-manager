@@ -202,7 +202,9 @@ class Tag(models.Model):
         return BeautifulSoup(content, "html.parser")
 
     @classmethod
-    def create_context(cls, request, context={}):
+    def create_context(cls, request, context=None):
+        context = context or {}
+
         return {
             **Constant.create_context(),
             **Variable.create_context(request),
