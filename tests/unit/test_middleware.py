@@ -23,7 +23,7 @@ def test_view(client, site):
     assert response.status_code == 200
     assert b'console.log("functional instant")' in response.content
 
-    tag_instant_functional(name="instant functional 2", tag_location=Tag.TOP_HEAD)
+    tag_instant_functional(name="instant functional 2", tag_location=Tag.BOTTOM_HEAD)
     client.cookies = SimpleCookie({"wtm_functional": "true"})
     response = client.get(site.root_page.url)
     assert response.status_code == 200

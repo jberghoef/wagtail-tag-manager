@@ -4,15 +4,15 @@ import CookieBar from "./cookie_bar";
 export default class TagManager {
   constructor() {
     const { body } = document;
-    this.state_url = body.getAttribute("data-wtm-state") || window.wtm.state_url;
-    this.lazy_url = body.getAttribute("data-wtm-lazy") || window.wtm.lazy_url;
+    this.stateUrl = body.getAttribute("data-wtm-state") || window.wtm.state_url;
+    this.lazyUrl = body.getAttribute("data-wtm-lazy") || window.wtm.lazy_url;
 
-    this.show_cookiebar = false;
+    this.showCookiebar = false;
     this.initialize();
   }
 
   initialize() {
-    fetch(this.state_url, {
+    fetch(this.stateUrl, {
       method: "GET",
       mode: "cors",
       cache: "no-cache",
@@ -36,7 +36,7 @@ export default class TagManager {
     // Verify the browser allows cookies.
     let enabled = navigator.cookieEnabled;
     if (!enabled) {
-      Cookies.set("wtm_verification");
+      Cookies.set("wtm_verification", "verification");
       enabled = Cookies.get("wtm_verification") !== undefined;
     }
 
@@ -44,14 +44,14 @@ export default class TagManager {
       Object.keys(this.config).forEach(tagType => {
         if (this.config[tagType] === "initial" && !this.has(tagType)) {
           Cookies.set(`wtm_${tagType}`, "unset", { expires: 365 });
-          this.show_cookiebar = true;
+          this.showCookiebar = true;
         } else if (Cookies.get(`wtm_${tagType}`) === "unset" || !this.has(tagType)) {
-          this.show_cookiebar = true;
+          this.showCookiebar = true;
         }
       });
     }
 
-    if (this.show_cookiebar) {
+    if (this.showCookiebar) {
       new CookieBar(this);
     }
   }
@@ -64,7 +64,7 @@ export default class TagManager {
   }
 
   loadData(consent = undefined) {
-    fetch(this.lazy_url, {
+    fetch(this.lazyUrl, {
       method: "POST",
       mode: "cors",
       cache: "no-cache",
