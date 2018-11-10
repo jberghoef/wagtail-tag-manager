@@ -352,7 +352,7 @@ span.CodeMirror-selectedtext { background: none; }
   background-color: #fafafa;
   border-right: 1px solid #e6e6e6;
   border-top: 1px solid #e6e6e6;
-  transition: background-color .2s ease;
+  transition: background-color 0.2s ease;
   overflow: hidden; }
   .code .input .CodeMirror-focused {
     background-color: #f4fcfc;

@@ -26,11 +26,14 @@ def lazy_endpoint(request):
         for cookie_name, value in strategy.cookies.items():
             set_cookie(response, cookie_name, value)
 
-        for item in strategy.result:
-            content = item.get("content", [])
+        for tag in strategy.result:
+            element = tag.get("element")
 
-            for element in content:
-                data["tags"].append({"name": element.name, "string": element.string})
+            for content in element.contents:
+                if content.name:
+                    data["tags"].append(
+                        {"name": content.name, "string": content.string}
+                    )
 
         response.content = json.dumps(data)
         return response

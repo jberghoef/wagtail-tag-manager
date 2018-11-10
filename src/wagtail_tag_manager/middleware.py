@@ -37,32 +37,31 @@ class TagManagerMiddleware:
         if hasattr(self.response, "content"):
             doc = BeautifulSoup(self.response.content, "html.parser")
 
-            for item in self.strategy.result:
-                tag = item.get("tag", None)
-                content = item.get("content", [])
+            for tag in self.strategy.result:
+                obj = tag.get("object")
+                element = tag.get("element")
 
-                for element in content:
-                    if tag.tag_location == Tag.TOP_HEAD and doc.head:
-                        doc.head.insert(1, element)
-                    elif tag.tag_location == Tag.BOTTOM_HEAD and doc.head:
-                        doc.head.append(element)
-                    elif tag.tag_location == Tag.TOP_BODY and doc.body:
-                        doc.body.insert(1, element)
-                    elif tag.tag_location == Tag.BOTTOM_BODY and doc.body:
-                        doc.body.append(element)
+                if obj.tag_location == Tag.TOP_HEAD and doc.head:
+                    doc.head.insert(1, element)
+                elif obj.tag_location == Tag.BOTTOM_HEAD and doc.head:
+                    doc.head.append(element)
+                elif obj.tag_location == Tag.TOP_BODY and doc.body:
+                    doc.body.insert(1, element)
+                elif obj.tag_location == Tag.BOTTOM_BODY and doc.body:
+                    doc.body.append(element)
 
-            self.response.content = doc.prettify()
+            self.response.content = doc.decode()
 
     def _add_lazy_manager(self):
         if hasattr(self.response, "content"):
             doc = BeautifulSoup(self.response.content, "html.parser")
 
-            if doc.head and doc.body:
+            if doc.body:
                 doc.body["data-wtm-state"] = reverse("wtm:state")
                 doc.body["data-wtm-lazy"] = reverse("wtm:lazy")
 
                 element = doc.new_tag("script")
                 element["src"] = static("wtm.bundle.js")
-                doc.head.append(element)
+                doc.body.append(element)
 
-            self.response.content = doc.prettify()
+            self.response.content = doc.decode()
