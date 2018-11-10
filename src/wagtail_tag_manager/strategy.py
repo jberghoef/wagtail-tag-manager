@@ -109,7 +109,7 @@ class TagStrategy(object):
     @property
     def result(self):
         result = [
-            {"tag": tag, "content": tag.get_contents(self._request, self._context)}
+            {"object": tag, "element": tag.get_doc(self._request, self._context)}
             for tag in self.tags
         ]
 
@@ -119,11 +119,13 @@ class TagStrategy(object):
                 for tag in trigger.tags.filter(self.queryset):
                     result.append(
                         {
-                            "tag": tag,
-                            "content": tag.get_contents(
+                            "object": tag,
+                            "element": tag.get_doc(
                                 self._request, {**self._context, **match.groupdict()}
                             ),
                         }
                     )
+
+        print(result)
 
         return result

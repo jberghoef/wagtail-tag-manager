@@ -21,8 +21,8 @@ def wtm_instant_tags(context):
         strategy = TagStrategy(request)
 
         contents = []
-        for item in strategy.result:
-            contents += item.get("content", [])
+        for tag in strategy.result:
+            contents += tag.get("element").contents
 
         context["tags"] = [tag.prettify() for tag in contents]
 

@@ -191,25 +191,23 @@ class Tag(models.Model):
         self.full_clean()
         return super().save(*args, **kwargs)
 
-    def get_doc(self, context=None):
+    def get_doc(self, request=None, context=None):
         content = self.content
 
-        if context:
+        if request:
             template = Template(content)
-            context = Context(context)
+            context = Context(Tag.create_context(request, context))
             content = template.render(context)
 
         return BeautifulSoup(content, "html.parser")
 
-    def get_contents(self, request=None, context=None):
-        if request is not None and context is None:
-            context = self.create_context(request)
-        doc = self.get_doc(context)
-        return doc.contents
-
     @classmethod
-    def create_context(cls, request):
-        return {**Constant.create_context(), **Variable.create_context(request)}
+    def create_context(cls, request, context={}):
+        return {
+            **Constant.create_context(),
+            **Variable.create_context(request),
+            **context,
+        }
 
     @classmethod
     def get_types(cls):
