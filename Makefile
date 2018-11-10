@@ -35,7 +35,7 @@ format:
 	black --py36 --verbose --exclude "/(\.git|\.hg|\.mypy_cache|\.tox|\.venv|_build|buck-out|build|dist|migrations)/" ./src
 	black --py36 --verbose --exclude "/(\.git|\.hg|\.mypy_cache|\.tox|\.venv|_build|buck-out|build|dist|migrations)/" ./tests
 	yarn install
-	prettier --write ./frontend/**/*.js
+	prettier --write ./frontend/**/*
 
 sandbox: bundle
 	pip install -r sandbox/requirements.txt

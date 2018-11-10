@@ -56,7 +56,7 @@ class TagManagerMiddleware:
         if hasattr(self.response, "content"):
             doc = BeautifulSoup(self.response.content, "html.parser")
 
-            if hasattr(doc, 'body'):
+            if doc.body:
                 doc.body["data-wtm-state"] = reverse("wtm:state")
                 doc.body["data-wtm-lazy"] = reverse("wtm:lazy")
 
