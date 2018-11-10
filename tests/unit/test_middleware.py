@@ -13,7 +13,7 @@ from wagtail_tag_manager.models import Tag
 
 
 @pytest.mark.django_db
-def test_view(client, site):
+def test_view_functional(client, site):
     response = client.get(site.root_page.url)
     assert response.status_code == 200
 
@@ -29,24 +29,28 @@ def test_view(client, site):
     assert response.status_code == 200
     assert b'console.log("functional instant")' in response.content
 
+    client.cookies = SimpleCookie({"wtm_functional": "false"})
+    response = client.get(site.root_page.url)
+    assert response.status_code == 200
+    assert b'console.log("functional instant")' in response.content
+
+
+@pytest.mark.django_db
+def test_view_analytical(client, site):
     tag_instant_analytical(tag_location=Tag.TOP_BODY)
     client.cookies = SimpleCookie({"wtm_analytical": "true"})
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("analytical instant")' in response.content
 
+
+@pytest.mark.django_db
+def test_view_traceable(client, site):
     tag_instant_traceable(tag_location=Tag.BOTTOM_BODY)
     client.cookies = SimpleCookie({"wtm_traceable": "true"})
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("traceable instant")' in response.content
-
-    client.cookies = SimpleCookie({"wtm_functional": "false"})
-    response = client.get(site.root_page.url)
-    assert response.status_code == 200
-    assert b'console.log("functional instant")' in response.content
-    assert b'console.log("analytical instant")' not in response.content
-    assert b'console.log("traceable instant")' not in response.content
 
 
 @pytest.mark.django_db
