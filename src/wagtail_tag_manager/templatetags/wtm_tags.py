@@ -3,7 +3,6 @@ from django.conf import settings
 from django.urls import reverse
 
 from wagtail_tag_manager.forms import ConsentForm
-from wagtail_tag_manager.utils import get_cookie_state
 from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.strategy import TagStrategy
 
@@ -36,10 +35,12 @@ def wtm_lazy_manager():
 )
 def wtm_cookie_bar(context, include_form=False):
     request = context.get("request")
+    cookie_state = TagStrategy(request).cookie_state
+
     return {
         "manage_view": getattr(settings, "WTM_MANAGE_VIEW", True),
         "include_form": include_form,
-        "form": ConsentForm(initial=get_cookie_state(request)),
+        "form": ConsentForm(initial=cookie_state),
     }
 
 
@@ -48,7 +49,9 @@ def wtm_cookie_bar(context, include_form=False):
 )
 def wtm_manage_form(context):
     request = context.get("request")
-    return {"form": ConsentForm(initial=get_cookie_state(request))}
+    cookie_state = TagStrategy(request).cookie_state
+
+    return {"form": ConsentForm(initial=cookie_state)}
 
 
 @register.inclusion_tag(

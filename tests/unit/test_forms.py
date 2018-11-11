@@ -1,7 +1,7 @@
 import pytest
 
 from wagtail_tag_manager.forms import ConsentForm
-from wagtail_tag_manager.utils import get_cookie_state
+from wagtail_tag_manager.strategy import TagStrategy
 
 
 @pytest.mark.django_db
@@ -29,12 +29,13 @@ def test_consent_form():
 def test_consent_form_initial(rf, site):
     request = rf.get(site.root_page.url)
     request.COOKIES = {
+        **request.COOKIES,
         "wtm_functional": "true",
         "wtm_analytical": "false",
         "wtm_traceable": "true",
     }
 
-    cookie_state = get_cookie_state(request)
+    cookie_state = TagStrategy(request).cookie_state
     form = ConsentForm(initial=cookie_state)
 
     assert "functional" in form.fields

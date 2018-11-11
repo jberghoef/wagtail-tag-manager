@@ -19,7 +19,7 @@ class ManageView(TemplateView):
     def post(self, request, *args, **kwargs):
         response = HttpResponseRedirect("/")
 
-        redirect_url = request.META.get('HTTP_REFERER', request.build_absolute_uri())
+        redirect_url = request.META.get("HTTP_REFERER", request.build_absolute_uri())
         url_is_safe = is_safe_url(
             url=redirect_url,
             allowed_hosts=settings.ALLOWED_HOSTS,
@@ -31,8 +31,7 @@ class ManageView(TemplateView):
         form = ConsentForm(request.POST)
         if form.is_valid():
             for key, value in form.cleaned_data.items():
-                pass
-                # set_cookie(response, f"wtm_{key}", str(value).lower())
+                set_cookie(response, f"wtm_{key}", str(value).lower())
 
         return response
 

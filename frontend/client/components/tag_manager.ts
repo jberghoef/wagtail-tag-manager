@@ -64,10 +64,7 @@ export default class TagManager {
 
     if (enabled) {
       Object.keys(this.config).forEach(tagType => {
-        if (this.config[tagType] === "initial" && !this.has(tagType)) {
-          Cookies.set(`wtm_${tagType}`, "unset", { expires: 365 });
-          this.showCookiebar = true;
-        } else if (Cookies.get(`wtm_${tagType}`) === "unset" || !this.has(tagType)) {
+        if (Cookies.get(`wtm_${tagType}`) === "unset" || !this.has(tagType)) {
           this.showCookiebar = true;
         }
       });
