@@ -16,7 +16,7 @@ from wagtail_tag_manager.models import Tag, Constant, Variable, Trigger
 
 
 def get_expected_content(string):
-    return f'<script>console.log("{string}")</script>'
+    return f'<script>\n console.log("{string}")\n</script>'
 
 
 @pytest.mark.django_db
