@@ -1,5 +1,6 @@
 from django import template
 from django.conf import settings
+from django.templatetags.static import static
 from django.urls import reverse
 
 from wagtail_tag_manager.forms import ConsentForm
@@ -41,6 +42,7 @@ def wtm_cookie_bar(context, include_form=False):
         "manage_view": getattr(settings, "WTM_MANAGE_VIEW", True),
         "include_form": include_form,
         "form": ConsentForm(initial=cookie_state),
+        "style": static("wtm.bundle.css"),
     }
 
 
