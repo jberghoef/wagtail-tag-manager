@@ -1,5 +1,10 @@
+import TagManager from "./tag_manager";
+
 export default class CookieBar {
-  constructor(manager) {
+  manager: TagManager;
+  el: HTMLElement;
+
+  constructor(manager: TagManager) {
     this.manager = manager;
     this.el = document.getElementById("wtm_cookie_bar");
 
@@ -15,9 +20,9 @@ export default class CookieBar {
 
   initialize() {
     const buttons = this.el.querySelectorAll(".js-cookie-choice");
-    for (let button of buttons) {
+    [].forEach.call(buttons, (button: HTMLButtonElement) => {
       button.addEventListener("click", this.handleClick, false);
-    }
+    });
 
     this.showCookieBar();
   }
@@ -30,10 +35,12 @@ export default class CookieBar {
     this.el.classList.add("hidden");
   }
 
-  handleClick(event) {
+  handleClick(event: MouseEvent) {
     event.preventDefault();
 
-    switch (event.currentTarget.dataset.choice) {
+    const target = event.currentTarget as HTMLElement;
+
+    switch (target.dataset.choice) {
       case "accept":
         this.manager.loadData(true);
         break;

@@ -3,9 +3,9 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: {
-    tag_form_view: "./frontend/admin/tag_form_view.js",
-    variable_form_view: "./frontend/admin/variable_form_view.js",
-    wtm: "./frontend/client/wtm.js"
+    tag_form_view: "./frontend/admin/tag_form_view.ts",
+    variable_form_view: "./frontend/admin/variable_form_view.ts",
+    wtm: "./frontend/client/wtm.ts"
   },
   output: {
     path: path.resolve(__dirname, "src/wagtail_tag_manager/static/"),
@@ -14,7 +14,14 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.m?js$/,
+        test: /\.tsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: "ts-loader"
+        }
+      },
+      {
+        test: /\.m?jsx?$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: "babel-loader",
@@ -29,6 +36,9 @@ module.exports = {
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
       }
     ]
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".jsx", ".js"]
   },
   plugins: [
     new MiniCssExtractPlugin({

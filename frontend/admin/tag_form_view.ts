@@ -1,15 +1,33 @@
 import "./tag_form_view.scss";
 
-import CodeMirror from "codemirror";
+import * as CodeMirror from "codemirror";
 import "codemirror/mode/django/django";
 import "codemirror/addon/display/panel";
+
+interface VariableItem {
+  name: string;
+  description: string;
+  key: string;
+}
+
+interface Editor extends CodeMirror.EditorFromTextArea {
+  doc: CodeMirror.Doc;
+  addPanel(el: HTMLElement, options: object): void;
+}
 
 const { document } = window;
 
 class TagFormView {
+  loadSelect: HTMLSelectElement;
+  locationSelect: HTMLSelectElement;
+  textArea: HTMLTextAreaElement;
+  editor: Editor;
+  hiddenInput: HTMLInputElement;
+  variables: Array<VariableItem>;
+
   constructor() {
-    this.loadSelect = document.getElementById("id_tag_loading");
-    this.locationSelect = document.getElementById("id_tag_location");
+    this.loadSelect = document.getElementById("id_tag_loading") as HTMLSelectElement;
+    this.locationSelect = document.getElementById("id_tag_location") as HTMLSelectElement;
 
     this.initialize = this.initialize.bind(this);
     this.handleLoadChange = this.handleLoadChange.bind(this);
@@ -26,7 +44,7 @@ class TagFormView {
 
   injectEditor() {
     this.textArea = document.querySelector(".code .input textarea");
-    this.editor = CodeMirror.fromTextArea(this.textArea, { mode: "django" });
+    this.editor = CodeMirror.fromTextArea(this.textArea, { mode: "django" }) as Editor;
 
     fetch("/wtm/variables/")
       .then(response => {
@@ -38,7 +56,7 @@ class TagFormView {
       });
   }
 
-  addVariablePanel(items) {
+  addVariablePanel(items: Array<VariableItem>) {
     const panel = document.createElement("div");
     panel.classList.add("panel");
 
@@ -53,7 +71,7 @@ class TagFormView {
 
       button.addEventListener("click", event => {
         event.preventDefault();
-        const target = event.currentTarget;
+        const target = event.currentTarget as HTMLElement;
         this.editor.doc.replaceSelection(`{{ ${target.dataset.key} }}`, "end");
         this.editor.focus();
       });
@@ -64,16 +82,16 @@ class TagFormView {
     this.editor.addPanel(panel, { position: "top", stable: true });
   }
 
-  handleLoadChange(event) {
+  handleLoadChange(event: Event = null) {
     const value = this.loadSelect.options[this.loadSelect.selectedIndex].value;
 
     if (value !== "instant_load") {
       this.locationSelect.disabled = true;
-      for (let option of this.locationSelect) {
+      [].forEach.call(this.locationSelect, (option: HTMLOptionElement) => {
         if (option.value === "0_top_head") {
           option.selected = true;
         }
-      }
+      });
 
       this.hiddenInput = document.createElement("input");
       this.hiddenInput.id = this.locationSelect.id;
@@ -93,7 +111,7 @@ class TagFormView {
   }
 }
 
-document.onreadystatechange = function() {
+document.onreadystatechange = () => {
   if (document.readyState === "complete") {
     new TagFormView();
   }

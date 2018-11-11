@@ -1,7 +1,10 @@
 class VariableFormView {
+  variableSelect: HTMLSelectElement;
+  valueInput: HTMLInputElement;
+
   constructor() {
-    this.variableSelect = document.getElementById("id_variable_type");
-    this.valueInput = document.getElementById("id_value");
+    this.variableSelect = document.getElementById("id_variable_type") as HTMLSelectElement;
+    this.valueInput = document.getElementById("id_value") as HTMLInputElement;
 
     this.initialize = this.initialize.bind(this);
     this.handleVariableChange = this.handleVariableChange.bind(this);
@@ -15,7 +18,7 @@ class VariableFormView {
     this.handleVariableChange();
   }
 
-  handleVariableChange(event) {
+  handleVariableChange(event: Event = null) {
     const value = this.variableSelect.options[this.variableSelect.selectedIndex].value;
 
     if (value.slice(-1) !== "+") {
@@ -27,7 +30,7 @@ class VariableFormView {
   }
 }
 
-document.onreadystatechange = function() {
+document.onreadystatechange = () => {
   if (document.readyState === "complete") {
     new VariableFormView();
   }

@@ -1,11 +1,33 @@
-import Cookies from "js-cookie";
+import * as Cookies from "js-cookie";
 import CookieBar from "./cookie_bar";
 
+interface WTMWindow extends Window {
+  wtm: {
+    state_url: string;
+    lazy_url: string;
+  };
+}
+
+interface Tag {
+  name: string;
+  string: string;
+}
+
 export default class TagManager {
+  window: WTMWindow = window as WTMWindow;
+
+  stateUrl: string;
+  lazyUrl: string;
+
+  showCookiebar: boolean;
+  data: { [s: string]: any };
+  config: { [s: string]: any };
+
   constructor() {
     const { body } = document;
-    this.stateUrl = body.getAttribute("data-wtm-state") || window.wtm.state_url;
-    this.lazyUrl = body.getAttribute("data-wtm-lazy") || window.wtm.lazy_url;
+
+    this.stateUrl = body.getAttribute("data-wtm-state") || this.window.wtm.state_url;
+    this.lazyUrl = body.getAttribute("data-wtm-lazy") || this.window.wtm.lazy_url;
 
     this.showCookiebar = false;
     this.initialize();
@@ -52,18 +74,18 @@ export default class TagManager {
     }
 
     if (this.showCookiebar) {
-      this.cookieBar = new CookieBar(this);
+      new CookieBar(this);
     }
   }
 
-  has(type) {
+  has(type: string) {
     if (type in this.config) {
       return Cookies.get(`wtm_${type}`) !== undefined;
     }
     return true;
   }
 
-  loadData(consent = undefined) {
+  loadData(consent: boolean = undefined) {
     fetch(this.lazyUrl, {
       method: "POST",
       mode: "cors",
@@ -88,7 +110,7 @@ export default class TagManager {
   }
 
   handleLoad() {
-    this.data.tags.forEach(tag => {
+    this.data.tags.forEach((tag: Tag) => {
       const element = document.createElement(tag.name);
       element.appendChild(document.createTextNode(tag.string));
       document.head.appendChild(element);
