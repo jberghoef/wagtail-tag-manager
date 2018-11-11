@@ -60,8 +60,13 @@ class TagManagerMiddleware:
                 doc.body["data-wtm-state"] = reverse("wtm:state")
                 doc.body["data-wtm-lazy"] = reverse("wtm:lazy")
 
-                element = doc.new_tag("script")
-                element["src"] = static("wtm.bundle.js")
-                doc.body.append(element)
+                link = doc.new_tag("link")
+                link["href"] = static("wtm.bundle.css")
+                link["rel"] = "stylesheet"
+                doc.body.append(link)
+
+                script = doc.new_tag("script")
+                script["src"] = static("wtm.bundle.js")
+                doc.body.append(script)
 
             self.response.content = doc.decode()

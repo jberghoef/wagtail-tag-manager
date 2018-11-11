@@ -49,8 +49,9 @@ def test_wtm_lazy_manager():
 
 
 @pytest.mark.django_db
-def test_wtm_cookie_bar():
-    context = wtm_cookie_bar()
+def test_wtm_cookie_bar(rf, site):
+    request = rf.get(site.root_page.url)
+    context = wtm_cookie_bar(context={"request": request})
 
     assert "manage_view" in context
     assert context.get("manage_view") is True

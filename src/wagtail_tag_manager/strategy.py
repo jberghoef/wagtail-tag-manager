@@ -34,13 +34,18 @@ class TagStrategy(object):
             self._tags.append((Tag.INSTANT_LOAD, tag_type))
             self.cookies[cookie_name] = "true"
         elif tag_config == "initial":
-            if cookie == "true":
+            if not cookie or cookie == "unset":
+                # Include initial cookie
+                self.cookies[cookie_name] = "unset"
+            elif cookie == "true":
                 # Include initial instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
+                self.cookies[cookie_name] = "true"
         else:
             if cookie == "true":
                 # Include generic instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
+                self.cookies[cookie_name] = "true"
 
     def post(self, tag_type, tag_config):
         cookie_name = Tag.get_cookie_name(tag_type)
@@ -127,3 +132,11 @@ class TagStrategy(object):
                     )
 
         return result
+
+    @property
+    def cookie_state(self):
+        return {
+            tag_type: self.cookies.get(Tag.get_cookie_name(tag_type), "false")
+            != "false"
+            for tag_type in Tag.get_types()
+        }

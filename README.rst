@@ -105,17 +105,6 @@ location for your instant tags (top of ``<head>``, bottom of ``<head>``, top of
             {% wtm_lazy_manager %}
         </body>
 
-Optionally, you can choose to include the cookie bar template tag:
-
-.. code-block:: html+django
-
-    {% load wtm_tags %}
-
-    <body>
-        {% wtm_cookie_bar %}
-        ...
-    </body>
-
 Include the urls:
 
 .. code-block:: python
@@ -130,6 +119,35 @@ Include the urls:
         path('', include(wagtail_urls)),
         # ...
     ]
+
+Template tags
+-------------
+
+You can choose to include the cookie bar template tag:
+
+.. image:: cookie-bar-without-form.png
+
+.. code-block:: html+django
+
+    {% load wtm_tags %}
+
+    <body>
+        {% wtm_cookie_bar %}
+        ...
+    </body>
+
+Or the cookie bar with included form:
+
+.. image:: cookie-bar-with-form.png
+
+.. code-block:: html+django
+
+    {% load wtm_tags %}
+
+    <body>
+        {% wtm_cookie_bar include_form=True %}
+        ...
+    </body>
 
 You can use the following provided template tags to render a tag status overview
 and a consent form.

@@ -1,3 +1,5 @@
+import "./cookie_bar.scss";
+
 import TagManager from "./tag_manager";
 
 export default class CookieBar {

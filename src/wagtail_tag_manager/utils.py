@@ -2,8 +2,6 @@ import datetime
 
 from django.conf import settings
 
-from wagtail_tag_manager.models import Tag
-
 
 def set_cookie(response, key, value, days_expire=None):
     if days_expire is None:
@@ -25,11 +23,3 @@ def set_cookie(response, key, value, days_expire=None):
     )
 
     return response
-
-
-def get_cookie_state(request):
-    cookies = request.COOKIES
-    return {
-        tag_type: cookies.get(Tag.get_cookie_name(tag_type), "false") != "false"
-        for tag_type in Tag.get_types()
-    }

@@ -30,7 +30,7 @@
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
-        {% wtm_cookie_bar %}
+        {% wtm_cookie_bar include_form=True %}
         {% wagtailuserbar %}
 
         {% block content %}{% endblock %}
