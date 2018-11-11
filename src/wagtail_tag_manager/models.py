@@ -479,3 +479,100 @@ class Trigger(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CookieDeclaration(models.Model):
+    PERIOD_SESSION = "session"
+    PERIOD_SECONDS = "seconds+"
+    PERIOD_MINUTES = "minutes+"
+    PERIOD_HOURS = "hours+"
+    PERIOD_DAYS = "days+"
+    PERIOD_WEEKS = "weeks+"
+    PERIOD_MONTHS = "months+"
+    PERIOD_YEARS = "years+"
+    PERIOD_CHOICES = (
+        (PERIOD_SESSION, _("Session")),
+        (PERIOD_SECONDS, _("Second(s)")),
+        (PERIOD_MINUTES, _("Minute(s)")),
+        (PERIOD_HOURS, _("Hour(s)")),
+        (PERIOD_DAYS, _("Day(s)")),
+        (PERIOD_WEEKS, _("Week(s)")),
+        (PERIOD_MONTHS, _("Month(s)")),
+        (PERIOD_YEARS, _("Year(s)")),
+    )
+
+    INSECURE_COOKIE = "http"
+    SECURE_COOKIE = "https"
+    SECURITY_CHOICES = ((INSECURE_COOKIE, _("HTTP")), (SECURE_COOKIE, _("HTTPS")))
+
+    cookie_type = models.CharField(
+        max_length=10,
+        choices=[(key, _(key.title())) for key in TagTypeSettings.all().keys()],
+        help_text=_("The type of functionality this cookie supports."),
+        null=True,
+        blank=True,
+    )
+    name = models.CharField(max_length=255, help_text=_("The name of this cookie."))
+    domain = models.CharField(
+        max_length=255,
+        help_text=mark_safe(
+            _(
+                "The domain (including subdomain if applicable) of the cookie.<br/>"
+                "For example: <code>.wagtail.io</code>."
+            )
+        ),
+    )
+    purpose = models.TextField(help_text=_("What this cookie is being used for."))
+    duration_value = models.PositiveSmallIntegerField(null=True, blank=True)
+    duration_period = models.CharField(
+        max_length=10,
+        choices=PERIOD_CHOICES,
+        help_text=mark_safe(
+            _(
+                "The period after which the cookie will expire.<br/>"
+                "<b>Session:</b> the cookie will expire when the browser is closed."
+            )
+        ),
+        null=True,
+        blank=False,
+    )
+    security = models.CharField(
+        max_length=5,
+        choices=SECURITY_CHOICES,
+        default=INSECURE_COOKIE,
+        help_text=_("Whether this cookie is secure or not."),
+    )
+
+    panels = [
+        FieldPanel("name", classname="full title"),
+        MultiFieldPanel(
+            [
+                FieldPanel("cookie_type"),
+                FieldPanel("purpose"),
+                FieldRowPanel([FieldPanel("domain"), FieldPanel("security")]),
+            ],
+            heading=_("General"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [FieldPanel("duration_value"), FieldPanel("duration_period")]
+                )
+            ],
+            heading=_("Duration"),
+        ),
+    ]
+
+    class Meta:
+        ordering = ["domain", "cookie_type", "name"]
+        unique_together = ("name", "domain")
+
+    def clean(self):
+        super().clean()
+        if not self.duration_period.endswith("+"):
+            self.duration_value = None
+
+        return self
+
+    def __str__(self):
+        return self.name

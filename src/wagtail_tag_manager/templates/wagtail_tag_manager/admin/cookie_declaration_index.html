@@ -1,0 +1,16 @@
+{% extends "modeladmin/index.html" %}
+
+{% load i18n %}
+
+{% block header_extra %}
+    {% if user_can_create %}
+        <div class="right">
+            <form action="" method="post">{% csrf_token %}
+                <div class="button-group">
+                    <button class="button bicolor icon icon-view" type="submit">{% trans "Scan for cookies" %}</button>
+                    {% include 'modeladmin/includes/button.html' with button=view.button_helper.add_button %}
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
