@@ -183,7 +183,7 @@ class Tag(models.Model):
         if not re.match("\<.+\/?\>", self.content):
             self.content = f"<script>{self.content}</script>"
 
-        self.content = BeautifulSoup(self.content, "html.parser").decode()
+        self.content = BeautifulSoup(self.content, "html.parser").prettify()
 
         return self
 
