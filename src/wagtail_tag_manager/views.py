@@ -21,9 +21,7 @@ class ManageView(TemplateView):
 
         redirect_url = request.META.get("HTTP_REFERER", request.build_absolute_uri())
         url_is_safe = is_safe_url(
-            url=redirect_url,
-            allowed_hosts=settings.ALLOWED_HOSTS,
-            require_https=request.is_secure(),
+            redirect_url, settings.ALLOWED_HOSTS, require_https=request.is_secure()
         )
         if url_is_safe:
             response = HttpResponseRedirect(redirect_url)
