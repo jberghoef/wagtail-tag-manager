@@ -32,7 +32,11 @@ def lazy_endpoint(request):
             for content in element.contents:
                 if content.name:
                     data["tags"].append(
-                        {"name": content.name, "string": content.string}
+                        {
+                            "name": content.name,
+                            "attributes": getattr(content, "attrs", {}),
+                            "string": content.string,
+                        }
                     )
 
         response.content = json.dumps(data)

@@ -10,6 +10,9 @@ interface WTMWindow extends Window {
 
 interface Tag {
   name: string;
+  attributes: {
+    [s: string]: string;
+  };
   string: string;
 }
 
@@ -109,6 +112,11 @@ export default class TagManager {
   handleLoad() {
     this.data.tags.forEach((tag: Tag) => {
       const element = document.createElement(tag.name);
+      for (let property in tag.attributes) {
+        if (tag.attributes.hasOwnProperty(property)) {
+          element.setAttribute(property, tag.attributes[property]);
+        }
+      }
       element.appendChild(document.createTextNode(tag.string));
       document.head.appendChild(element);
     });
