@@ -69,5 +69,5 @@ def wtm_tag_table(context):
     "wagtail_tag_manager/templatetags/declaration_table.html", takes_context=True
 )
 def wtm_declaration_table(context):
-    context["declarations"] = CookieDeclaration.objects.all()
+    context["declarations"] = CookieDeclaration.objects.all().sorted()
     return context

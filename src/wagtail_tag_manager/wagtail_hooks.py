@@ -106,9 +106,7 @@ class CookieDeclarationModelAdmin(ModelAdmin):
     index_template_name = "wagtail_tag_manager/admin/cookie_declaration_index.html"
 
     def duration_display(self, obj):
-        if obj.duration_value:
-            return f"{obj.duration_value} {obj.get_duration_period_display().lower()}"
-        return obj.get_duration_period_display()
+        return obj.expiration
 
     duration_display.short_description = _("Cookie duration")
 

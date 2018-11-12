@@ -7,7 +7,14 @@ from tests.factories.tag import (
     tag_instant_functional,
 )
 
-from wagtail_tag_manager.models import Tag, Trigger, Constant, Variable, TagTypeSettings
+from wagtail_tag_manager.models import (
+    Tag,
+    Trigger,
+    Constant,
+    Variable,
+    TagTypeSettings,
+    CookieDeclaration,
+)
 
 
 @pytest.mark.django_db
@@ -148,6 +155,18 @@ def test_trigger_create():
     trigger.tags.add(tag_analytical)
     trigger.tags.add(tag_traceable)
 
-    assert tag_functional in trigger.tags.all()
+    assert tag_functional in trigger.tags.all().sorted()
     assert tag_analytical in trigger.tags.all()
     assert tag_traceable in trigger.tags.all()
+
+
+@pytest.mark.django_db
+def test_cookie_declaration_create():
+    cookie_declaration = CookieDeclaration.objects.create(
+        cookie_type="functional",
+        name="Functional cookie",
+        domain="localhost",
+        purpose="Lorem ipsum",
+        duration_period=CookieDeclaration.PERIOD_SESSION,
+    )
+    assert cookie_declaration in CookieDeclaration.objects.all()

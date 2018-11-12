@@ -489,14 +489,17 @@ class Trigger(models.Model):
 
 
 class CookieDeclarationQuerySet(models.QuerySet):
-    pass
+    def sorted(self):
+        order = [*Tag.get_types(), None]
+        return sorted(self, key=lambda x: order.index(x.cookie_type))
 
 
 class CookieDeclarationManager(models.Manager):
     def get_queryset(self):
-        qs = CookieDeclarationQuerySet(self.model, using=self._db)
-        order = [*Tag.get_types(), None]
-        return sorted(qs, key=lambda x: order.index(x.cookie_type))
+        return CookieDeclarationQuerySet(self.model, using=self._db)
+
+    def sorted(self):
+        return self.get_queryset().sorted()
 
 
 class CookieDeclaration(models.Model):
@@ -589,10 +592,16 @@ class CookieDeclaration(models.Model):
 
     def clean(self):
         super().clean()
-        if not self.duration_period.endswith("+"):
+        if self.duration_period and not self.duration_period.endswith("+"):
             self.duration_value = None
 
         return self
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        self.full_clean()
+        return super().save(force_insert, force_update, using, update_fields)
 
     @property
     def expiration(self):
