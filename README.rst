@@ -149,12 +149,14 @@ Or the cookie bar with included form:
         ...
     </body>
 
-You can use the following provided template tags to render a tag status overview
-and a consent form.
+You can use the following provided template tags to render a tag status overview,
+a table with cookie declarations or a consent form.
 
 .. code-block:: html+django
 
-    {% wtm_status_table %}
+    {% wtm_tag_table %}
+
+    {% wtm_declaration_table %}
 
     {% wtm_manage_form %}
 

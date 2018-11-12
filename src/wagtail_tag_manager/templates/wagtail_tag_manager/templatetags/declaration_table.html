@@ -1,0 +1,37 @@
+{% load i18n %}
+
+{% regroup declarations by cookie_type as declaration_list %}
+
+<table>
+    <thead>
+        <tr>
+            <th>{% trans "Name" %}</th>
+            <th>{% trans "Domain" %}</th>
+            <th>{% trans "Purpose" %}</th>
+            <th>{% trans "Expiration" %}</th>
+            <th>{% trans "Security" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cookie_type in declaration_list %}
+            <tr>
+                <th colspan="5">
+                    {% if cookie_type.grouper %}
+                        {{ cookie_type.grouper|title }}
+                    {% else %}
+                        {% trans "Unclassified" %}
+                    {% endif %}
+                </th>
+            </tr>
+            {% for cookie in cookie_type.list %}
+                <tr>
+                    <td>{{ cookie.name }}</td>
+                    <td>{{ cookie.domain }}</td>
+                    <td>{{ cookie.purpose }}</td>
+                    <td>{{ cookie.expiration }}</td>
+                    <td>{{ cookie.get_security_display }}</td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    </tbody>
+</table>

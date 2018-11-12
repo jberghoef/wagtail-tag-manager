@@ -1,0 +1,25 @@
+{% load i18n %}
+
+{% regroup tags by tag_type as tag_list %}
+
+<table>
+    <thead>
+        <tr>
+            <th>{% trans "Name" %}</th>
+            <th>{% trans "Description" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tag_type in tag_list %}
+            <tr>
+                <th colspan="2">{{ tag_type.grouper|title }}</th>
+            </tr>
+            {% for tag in tag_type.list %}
+                <tr>
+                    <td>{{ tag.name }}</td>
+                    <td>{{ tag.description }}</td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    </tbody>
+</table>

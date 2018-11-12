@@ -63,6 +63,10 @@ class TagQuerySet(models.QuerySet):
     def lazy(self):
         return self.filter(tag_loading=Tag.LAZY_LOAD)
 
+    def sorted(self):
+        order = [*Tag.get_types(), None]
+        return sorted(self, key=lambda x: order.index(x.tag_type))
+
 
 class TagManager(models.Manager):
     def get_queryset(self):
@@ -79,6 +83,9 @@ class TagManager(models.Manager):
 
     def lazy(self):
         return self.get_queryset().lazy()
+
+    def sorted(self):
+        return self.get_queryset().sorted()
 
 
 class Tag(models.Model):
@@ -481,6 +488,17 @@ class Trigger(models.Model):
         return self.name
 
 
+class CookieDeclarationQuerySet(models.QuerySet):
+    pass
+
+
+class CookieDeclarationManager(models.Manager):
+    def get_queryset(self):
+        qs = CookieDeclarationQuerySet(self.model, using=self._db)
+        order = [*Tag.get_types(), None]
+        return sorted(qs, key=lambda x: order.index(x.cookie_type))
+
+
 class CookieDeclaration(models.Model):
     PERIOD_SESSION = "session"
     PERIOD_SECONDS = "seconds+"
@@ -543,6 +561,8 @@ class CookieDeclaration(models.Model):
         help_text=_("Whether this cookie is secure or not."),
     )
 
+    objects = CookieDeclarationManager()
+
     panels = [
         FieldPanel("name", classname="full title"),
         MultiFieldPanel(
@@ -573,6 +593,12 @@ class CookieDeclaration(models.Model):
             self.duration_value = None
 
         return self
+
+    @property
+    def expiration(self):
+        if self.duration_value:
+            return f"{self.duration_value} {self.get_duration_period_display().lower()}"
+        return self.get_duration_period_display()
 
     def __str__(self):
         return self.name

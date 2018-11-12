@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.html import mark_safe
 from django.views.generic import View, TemplateView
 from django.utils.http import is_safe_url
+from selenium import webdriver
 from wagtail.contrib.modeladmin.views import IndexView
 
 from wagtail_tag_manager.forms import ConsentForm
@@ -72,15 +73,12 @@ class CookieDeclarationIndexView(IndexView):
             response = HttpResponseRedirect("")
 
             try:
-                from selenium import webdriver
-
                 options = webdriver.ChromeOptions()
                 options.add_argument("headless")
 
                 browser = webdriver.Chrome(options=options)
                 browser.implicitly_wait(30)
                 browser.get(request.site.root_page.full_url)
-
                 browser.delete_all_cookies()
                 for tag in Tag.get_types():
                     browser.add_cookie(
@@ -128,6 +126,11 @@ class CookieDeclarationIndexView(IndexView):
                         )
                     ),
                 )
+            except Exception as e:
+                messages.error(request, e)
+
+            if browser:
+                browser.quit()
 
             return response
 

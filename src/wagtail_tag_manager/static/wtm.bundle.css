@@ -665,9 +665,8 @@
 }
 
 #wtm_cookie_bar {
-  position: fixed !important;
-  left: 0 !important;
-  bottom: 0 !important;
+  position: sticky !important;
+  top: 0 !important;
   display: block !important;
   box-sizing: border-box !important;
   padding: 12px 32px 12px 24px !important;
@@ -675,11 +674,10 @@
   width: 100% !important;
   font-family: sans-serif !important;
   background-color: #fff !important;
-  border-top: 1px solid #eee !important;
-  transition: transform 0.5s ease-in-out !important; }
+  border-bottom: 1px solid #eee !important;
+  z-index: 1 !important; }
   #wtm_cookie_bar.hidden {
-    transition: unset !important;
-    transform: translateY(100%) !important; }
+    display: none !important; }
   #wtm_cookie_bar .inner {
     max-width: 640px !important;
     margin: 0 auto !important; }
