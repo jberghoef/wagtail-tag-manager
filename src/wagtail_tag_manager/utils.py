@@ -71,6 +71,8 @@ def scan_cookies(request):  # pragma: no cover
             else:
                 updated = updated + 1
 
+        browser.quit()
+
         messages.success(
             request, _("Created %d declaration(s) and updated %d." % (created, updated))
         )
@@ -87,6 +89,3 @@ def scan_cookies(request):  # pragma: no cover
         )
     except Exception as e:
         messages.error(request, e)
-
-    if browser:
-        browser.quit()
