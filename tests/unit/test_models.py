@@ -170,10 +170,7 @@ def test_cookie_declaration_create():
     )
 
     assert cookie_declaration in CookieDeclaration.objects.all()
-    assert (
-        cookie_declaration.expiration
-        == cookie_declaration.get_duration_period_display()
-    )
+    assert cookie_declaration.expiration == "Session"
 
     cookie_declaration_expiration = CookieDeclaration.objects.create(
         cookie_type="functional",
@@ -185,7 +182,4 @@ def test_cookie_declaration_create():
     )
 
     assert cookie_declaration_expiration in CookieDeclaration.objects.all()
-    assert (
-        cookie_declaration_expiration.expiration
-        == f"{cookie_declaration_expiration.duration_value} {cookie_declaration_expiration.get_duration_period_display().lower()}"
-    )
+    assert cookie_declaration_expiration.expiration == "1 month(s)"
