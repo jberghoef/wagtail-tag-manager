@@ -12,8 +12,7 @@ module.exports = {
     filename: "[name].bundle.js"
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.tsx?$/,
         exclude: /(node_modules|bower_components)/,
         use: {
@@ -29,10 +28,6 @@ module.exports = {
             presets: ["@babel/preset-env"],
             plugins: [
               require("@babel/plugin-proposal-object-rest-spread"),
-              require("@babel/plugin-transform-react-jsx"),
-              {
-                pragma: "preact.h"
-              }
             ]
           }
         }
