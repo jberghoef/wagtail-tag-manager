@@ -39,11 +39,9 @@ def wtm_cookie_bar(context, include_form=False):
     cookie_state = TagStrategy(request).cookie_state
 
     return {
-        "declarations": CookieDeclaration.objects.all(),
         "manage_view": getattr(settings, "WTM_MANAGE_VIEW", True),
         "include_form": include_form,
         "form": ConsentForm(initial=cookie_state),
-        "style": static("wtm.bundle.css"),
     }
 
 
