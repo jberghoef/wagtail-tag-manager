@@ -6,7 +6,6 @@ from tests.factories.tag import (
     tag_lazy_functional,
     tag_instant_functional,
 )
-
 from wagtail_tag_manager.models import (
     Tag,
     Trigger,

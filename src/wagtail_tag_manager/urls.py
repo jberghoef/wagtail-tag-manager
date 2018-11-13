@@ -1,6 +1,6 @@
 from django.urls import path
 
-from wagtail_tag_manager.views import ManageView, VariableView, StateView
+from wagtail_tag_manager.views import StateView, ManageView, VariableView
 from wagtail_tag_manager.endpoints import lazy_endpoint
 
 app_name = "wtm"

@@ -1,7 +1,7 @@
 from django import template
 from django.conf import settings
-from django.templatetags.static import static
 from django.urls import reverse
+from django.templatetags.static import static
 
 from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.models import Tag, CookieDeclaration

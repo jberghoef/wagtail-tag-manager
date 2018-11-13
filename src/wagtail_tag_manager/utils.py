@@ -1,12 +1,13 @@
-import datetime
 import time
+import datetime
 
 from selenium import webdriver
 from django.conf import settings
 from django.contrib import messages
-from wagtail_tag_manager.models import CookieDeclaration, Tag
-from django.utils.translation import ugettext_lazy as _
 from django.utils.html import mark_safe
+from django.utils.translation import ugettext_lazy as _
+
+from wagtail_tag_manager.models import Tag, CookieDeclaration
 
 
 def set_cookie(response, key, value, days_expire=None):

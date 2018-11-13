@@ -4,15 +4,14 @@ from http.cookies import SimpleCookie
 import pytest
 
 from tests.factories.tag import (
+    TagFactory,
     tag_lazy_traceable,
     tag_lazy_analytical,
     tag_lazy_functional,
     tag_instant_traceable,
     tag_instant_analytical,
-    TagFactory,
 )
 from tests.factories.trigger import TriggerFactory
-
 from wagtail_tag_manager.models import Tag
 
 

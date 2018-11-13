@@ -8,6 +8,7 @@ from wagtail.contrib.modeladmin.options import (
     modeladmin_register,
 )
 
+from wagtail_tag_manager.views import CookieDeclarationIndexView
 from wagtail_tag_manager.models import (
     Tag,
     Trigger,
@@ -15,7 +16,6 @@ from wagtail_tag_manager.models import (
     Variable,
     CookieDeclaration,
 )
-from wagtail_tag_manager.views import CookieDeclarationIndexView
 
 
 class ConstantModelAdmin(ModelAdmin):

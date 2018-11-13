@@ -1,15 +1,14 @@
 import pytest
 
-from tests.factories.constant import ConstantFactory
-from tests.factories.variable import VariableFactory
 from tests.factories.tag import TagFactory
 from tests.factories.trigger import TriggerFactory
-
+from tests.factories.constant import ConstantFactory
+from tests.factories.variable import VariableFactory
 from wagtail_tag_manager.wagtail_hooks import (
-    ConstantModelAdmin,
-    VariableModelAdmin,
     TagModelAdmin,
     TriggerModelAdmin,
+    ConstantModelAdmin,
+    VariableModelAdmin,
 )
 
 
