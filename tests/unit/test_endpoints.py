@@ -213,6 +213,10 @@ def test_passive_tags(client, site):
         content='<script>console.log("{{ state }}")</script>',
     )
 
+    assert tag_functional in Tag.objects.passive().sorted()
+    assert tag_analytical in Tag.objects.passive().sorted()
+    assert tag_traceable in Tag.objects.passive().sorted()
+
     trigger = TriggerFactory(pattern="[?&]state=(?P<state>\S+)")
     trigger.tags.add(tag_functional)
     trigger.tags.add(tag_analytical)
