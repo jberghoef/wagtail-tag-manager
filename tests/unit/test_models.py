@@ -168,4 +168,24 @@ def test_cookie_declaration_create():
         purpose="Lorem ipsum",
         duration_period=CookieDeclaration.PERIOD_SESSION,
     )
+
     assert cookie_declaration in CookieDeclaration.objects.all()
+    assert (
+        cookie_declaration.expiration
+        == cookie_declaration.get_duration_period_display()
+    )
+
+    cookie_declaration_expiration = CookieDeclaration.objects.create(
+        cookie_type="functional",
+        name="Functional cookie 2",
+        domain="localhost",
+        purpose="Lorem ipsum",
+        duration_value=1,
+        duration_period=CookieDeclaration.PERIOD_MONTHS,
+    )
+
+    assert cookie_declaration_expiration in CookieDeclaration.objects.all()
+    assert (
+        cookie_declaration_expiration.expiration
+        == f"{cookie_declaration_expiration.duration_value} {cookie_declaration_expiration.get_duration_period_display().lower()}"
+    )
