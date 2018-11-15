@@ -1,10 +1,9 @@
 from django import template
 from django.conf import settings
-from django.templatetags.static import static
 from django.urls import reverse
 
 from wagtail_tag_manager.forms import ConsentForm
-from wagtail_tag_manager.models import Tag
+from wagtail_tag_manager.models import Tag, CookieDeclaration
 from wagtail_tag_manager.strategy import TagStrategy
 
 register = template.Library()
@@ -42,7 +41,6 @@ def wtm_cookie_bar(context, include_form=False):
         "manage_view": getattr(settings, "WTM_MANAGE_VIEW", True),
         "include_form": include_form,
         "form": ConsentForm(initial=cookie_state),
-        "style": static("wtm.bundle.css"),
     }
 
 
@@ -57,10 +55,16 @@ def wtm_manage_form(context):
 
 
 @register.inclusion_tag(
-    "wagtail_tag_manager/templatetags/status_table.html", takes_context=True
+    "wagtail_tag_manager/templatetags/tag_table.html", takes_context=True
 )
-def wtm_status_table(context):
-    context["tags"] = {}
-    for tag_type in Tag.get_types():
-        context["tags"][tag_type] = Tag.objects.filter(tag_type=tag_type)
+def wtm_tag_table(context):
+    context["tags"] = Tag.objects.all().sorted()
+    return context
+
+
+@register.inclusion_tag(
+    "wagtail_tag_manager/templatetags/declaration_table.html", takes_context=True
+)
+def wtm_declaration_table(context):
+    context["declarations"] = CookieDeclaration.objects.all().sorted()
     return context

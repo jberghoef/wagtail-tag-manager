@@ -5,9 +5,16 @@
 {% block title %}{% trans "Manage your preferences" %}{% endblock title %}
 
 {% block content %}
+    <a href="/">Back</a>
     <h1>{% trans "Privacy settings" %}</h1>
 
-    {% wtm_status_table %}
+    <h2>{% trans "Tags" %}</h2>
+    {% wtm_tag_table %}
 
+    <h2>{% trans "Cookies" %}</h2>
+    {% wtm_declaration_table %}
+
+    <h2>{% trans "Preferences" %}</h2>
     {% wtm_manage_form %}
+
 {% endblock content %}

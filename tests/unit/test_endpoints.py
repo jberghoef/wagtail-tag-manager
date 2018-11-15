@@ -4,15 +4,14 @@ from http.cookies import SimpleCookie
 import pytest
 
 from tests.factories.tag import (
+    TagFactory,
     tag_lazy_traceable,
     tag_lazy_analytical,
     tag_lazy_functional,
     tag_instant_traceable,
     tag_instant_analytical,
-    TagFactory,
 )
 from tests.factories.trigger import TriggerFactory
-
 from wagtail_tag_manager.models import Tag
 
 
@@ -213,6 +212,10 @@ def test_passive_tags(client, site):
         tag_type="traceable",
         content='<script>console.log("{{ state }}")</script>',
     )
+
+    assert tag_functional in Tag.objects.passive().sorted()
+    assert tag_analytical in Tag.objects.passive().sorted()
+    assert tag_traceable in Tag.objects.passive().sorted()
 
     trigger = TriggerFactory(pattern="[?&]state=(?P<state>\S+)")
     trigger.tags.add(tag_functional)

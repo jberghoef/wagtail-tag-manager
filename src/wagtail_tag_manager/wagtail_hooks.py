@@ -8,7 +8,14 @@ from wagtail.contrib.modeladmin.options import (
     modeladmin_register,
 )
 
-from wagtail_tag_manager.models import Tag, Trigger, Constant, Variable
+from wagtail_tag_manager.views import CookieDeclarationIndexView
+from wagtail_tag_manager.models import (
+    Tag,
+    Trigger,
+    Constant,
+    Variable,
+    CookieDeclaration,
+)
 
 
 class ConstantModelAdmin(ModelAdmin):
@@ -89,11 +96,32 @@ class TriggerModelAdmin(ModelAdmin):
     tags_count.short_description = _("Tags")
 
 
+class CookieDeclarationModelAdmin(ModelAdmin):
+    model = CookieDeclaration
+    menu_icon = "tick"
+    list_display = ("cookie_type", "name", "domain", "duration_display", "security")
+    list_filter = ("cookie_type", "domain", "security")
+    search_fields = ("name", "purpose", "domain")
+    index_view_class = CookieDeclarationIndexView
+    index_template_name = "wagtail_tag_manager/admin/cookie_declaration_index.html"
+
+    def duration_display(self, obj):
+        return obj.expiration
+
+    duration_display.short_description = _("Cookie duration")
+
+
 class TagManagerAdminGroup(ModelAdminGroup):
     menu_label = _("Tag Manager")
     menu_icon = "code"
     menu_order = 640
-    items = (TagModelAdmin, ConstantModelAdmin, VariableModelAdmin, TriggerModelAdmin)
+    items = (
+        TagModelAdmin,
+        ConstantModelAdmin,
+        VariableModelAdmin,
+        TriggerModelAdmin,
+        CookieDeclarationModelAdmin,
+    )
 
 
 modeladmin_register(TagManagerAdminGroup)

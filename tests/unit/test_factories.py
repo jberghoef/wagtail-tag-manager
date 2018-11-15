@@ -9,10 +9,10 @@ from tests.factories.tag import (
     tag_instant_analytical,
     tag_instant_functional,
 )
+from tests.factories.trigger import TriggerFactory
 from tests.factories.constant import ConstantFactory
 from tests.factories.variable import VariableFactory
-from tests.factories.trigger import TriggerFactory
-from wagtail_tag_manager.models import Tag, Constant, Variable, Trigger
+from wagtail_tag_manager.models import Tag, Trigger, Constant, Variable
 
 
 def get_expected_content(string):

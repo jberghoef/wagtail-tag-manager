@@ -5,13 +5,13 @@ import operator
 from bs4 import BeautifulSoup
 from django.db import models
 from django.conf import settings
-from django.dispatch import receiver
 from django.forms import widgets
+from django.dispatch import receiver
 from django.template import Context, Template
 from django.core.cache import cache
+from django.utils.html import mark_safe
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-from django.utils.html import mark_safe
 from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, MultiFieldPanel
 
 
@@ -63,6 +63,10 @@ class TagQuerySet(models.QuerySet):
     def lazy(self):
         return self.filter(tag_loading=Tag.LAZY_LOAD)
 
+    def sorted(self):
+        order = [*Tag.get_types(), None]
+        return sorted(self, key=lambda x: order.index(x.tag_type))
+
 
 class TagManager(models.Manager):
     def get_queryset(self):
@@ -79,6 +83,9 @@ class TagManager(models.Manager):
 
     def lazy(self):
         return self.get_queryset().lazy()
+
+    def sorted(self):
+        return self.get_queryset().sorted()
 
 
 class Tag(models.Model):
@@ -476,6 +483,131 @@ class Trigger(models.Model):
 
     def match(self, request):
         return re.search(self.pattern, request.get_full_path())
+
+    def __str__(self):
+        return self.name
+
+
+class CookieDeclarationQuerySet(models.QuerySet):
+    def sorted(self):
+        order = [*Tag.get_types(), None]
+        return sorted(self, key=lambda x: order.index(x.cookie_type))
+
+
+class CookieDeclarationManager(models.Manager):
+    def get_queryset(self):
+        return CookieDeclarationQuerySet(self.model, using=self._db)
+
+    def sorted(self):
+        return self.get_queryset().sorted()
+
+
+class CookieDeclaration(models.Model):
+    PERIOD_SESSION = "session"
+    PERIOD_SECONDS = "seconds+"
+    PERIOD_MINUTES = "minutes+"
+    PERIOD_HOURS = "hours+"
+    PERIOD_DAYS = "days+"
+    PERIOD_WEEKS = "weeks+"
+    PERIOD_MONTHS = "months+"
+    PERIOD_YEARS = "years+"
+    PERIOD_CHOICES = (
+        (PERIOD_SESSION, _("Session")),
+        (PERIOD_SECONDS, _("Second(s)")),
+        (PERIOD_MINUTES, _("Minute(s)")),
+        (PERIOD_HOURS, _("Hour(s)")),
+        (PERIOD_DAYS, _("Day(s)")),
+        (PERIOD_WEEKS, _("Week(s)")),
+        (PERIOD_MONTHS, _("Month(s)")),
+        (PERIOD_YEARS, _("Year(s)")),
+    )
+
+    INSECURE_COOKIE = "http"
+    SECURE_COOKIE = "https"
+    SECURITY_CHOICES = ((INSECURE_COOKIE, _("HTTP")), (SECURE_COOKIE, _("HTTPS")))
+
+    cookie_type = models.CharField(
+        max_length=10,
+        choices=[(key, _(key.title())) for key in TagTypeSettings.all().keys()],
+        help_text=_("The type of functionality this cookie supports."),
+        null=True,
+        blank=True,
+    )
+    name = models.CharField(max_length=255, help_text=_("The name of this cookie."))
+    domain = models.CharField(
+        max_length=255,
+        help_text=mark_safe(
+            _(
+                "The domain (including subdomain if applicable) of the cookie.<br/>"
+                "For example: <code>.wagtail.io</code>."
+            )
+        ),
+    )
+    purpose = models.TextField(help_text=_("What this cookie is being used for."))
+    duration_value = models.PositiveSmallIntegerField(null=True, blank=True)
+    duration_period = models.CharField(
+        max_length=10,
+        choices=PERIOD_CHOICES,
+        help_text=mark_safe(
+            _(
+                "The period after which the cookie will expire.<br/>"
+                "<b>Session:</b> the cookie will expire when the browser is closed."
+            )
+        ),
+        null=True,
+        blank=False,
+    )
+    security = models.CharField(
+        max_length=5,
+        choices=SECURITY_CHOICES,
+        default=INSECURE_COOKIE,
+        help_text=_("Whether this cookie is secure or not."),
+    )
+
+    objects = CookieDeclarationManager()
+
+    panels = [
+        FieldPanel("name", classname="full title"),
+        MultiFieldPanel(
+            [
+                FieldPanel("cookie_type"),
+                FieldPanel("purpose"),
+                FieldRowPanel([FieldPanel("domain"), FieldPanel("security")]),
+            ],
+            heading=_("General"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [FieldPanel("duration_value"), FieldPanel("duration_period")]
+                )
+            ],
+            heading=_("Duration"),
+        ),
+    ]
+
+    class Meta:
+        ordering = ["domain", "cookie_type", "name"]
+        unique_together = ("name", "domain")
+
+    def clean(self):
+        super().clean()
+        if self.duration_period and not self.duration_period.endswith("+"):
+            self.duration_value = None
+
+        return self
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        self.full_clean()
+        return super().save(force_insert, force_update, using, update_fields)
+
+    @property
+    def expiration(self):
+        if self.duration_value:
+            return f"{self.duration_value} {self.get_duration_period_display().lower()}"
+        return self.get_duration_period_display()
 
     def __str__(self):
         return self.name

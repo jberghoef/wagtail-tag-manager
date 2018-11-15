@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
-from django.views.generic import View, TemplateView
 from django.utils.http import is_safe_url
+from django.views.generic import View, TemplateView
+from wagtail.contrib.modeladmin.views import IndexView
 
 from wagtail_tag_manager.forms import ConsentForm
-from wagtail_tag_manager.utils import set_cookie
+from wagtail_tag_manager.utils import set_cookie, scan_cookies
 from wagtail_tag_manager.models import Constant, Variable, TagTypeSettings
 
 
@@ -41,7 +42,7 @@ class StateView(View):
 
 class VariableView(View):
     def get(self, request, *args, **kwargs):
-        if request.user.is_staff:
+        if request.user.is_authenticated and request.user.is_staff:
             return JsonResponse(
                 {
                     "constants": [
@@ -52,4 +53,14 @@ class VariableView(View):
                     ],
                 }
             )
+        return HttpResponseNotFound()
+
+
+class CookieDeclarationIndexView(IndexView):
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.is_staff:
+            response = HttpResponseRedirect("")
+            scan_cookies(request)
+            return response
+
         return HttpResponseNotFound()

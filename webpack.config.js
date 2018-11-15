@@ -12,8 +12,7 @@ module.exports = {
     filename: "[name].bundle.js"
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.tsx?$/,
         exclude: /(node_modules|bower_components)/,
         use: {
@@ -27,7 +26,9 @@ module.exports = {
           loader: "babel-loader",
           options: {
             presets: ["@babel/preset-env"],
-            plugins: [require("@babel/plugin-proposal-object-rest-spread")]
+            plugins: [
+              require("@babel/plugin-proposal-object-rest-spread"),
+            ]
           }
         }
       },

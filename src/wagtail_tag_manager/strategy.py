@@ -1,6 +1,6 @@
 from django.db.models import Q
 
-from wagtail_tag_manager.models import Tag, TagTypeSettings, Trigger
+from wagtail_tag_manager.models import Tag, Trigger, TagTypeSettings
 
 
 class TagStrategy(object):

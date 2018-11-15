@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
+from django.urls import reverse
 from django.template.response import TemplateResponse
 from django.templatetags.static import static
-from django.urls import reverse
 
 from wagtail_tag_manager.utils import set_cookie
 from wagtail_tag_manager.models import Tag
