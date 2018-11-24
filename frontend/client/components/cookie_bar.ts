@@ -21,7 +21,7 @@ export default class CookieBar {
   }
 
   initialize() {
-    const buttons = this.el.querySelectorAll(".js-cookie-choice");
+    const buttons = this.el.querySelectorAll(".js-choice");
     [].forEach.call(buttons, (button: HTMLButtonElement) => {
       button.addEventListener("click", this.handleClick, false);
     });
