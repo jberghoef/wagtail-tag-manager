@@ -111,8 +111,4 @@ class TagFormView {
   }
 }
 
-document.onreadystatechange = () => {
-  if (document.readyState === "complete") {
-    new TagFormView();
-  }
-};
+window.onload = () => new TagFormView();

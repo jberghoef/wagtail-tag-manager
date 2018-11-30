@@ -1,3 +1,5 @@
+// TODO: Turn this into something reusable.
+
 class VariableFormView {
   variableSelect: HTMLSelectElement;
   valueInput: HTMLInputElement;
@@ -30,8 +32,4 @@ class VariableFormView {
   }
 }
 
-document.onreadystatechange = () => {
-  if (document.readyState === "complete") {
-    new VariableFormView();
-  }
-};
+window.onload = () => new VariableFormView();

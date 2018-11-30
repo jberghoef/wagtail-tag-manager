@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: {
+    cookie_declaration_form_view: "./frontend/admin/cookie_declaration_form_view.ts",
     tag_form_view: "./frontend/admin/tag_form_view.ts",
     variable_form_view: "./frontend/admin/variable_form_view.ts",
     wtm: "./frontend/client/wtm.ts"

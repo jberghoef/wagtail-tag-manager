@@ -104,6 +104,7 @@ class CookieDeclarationModelAdmin(ModelAdmin):
     search_fields = ("name", "purpose", "domain")
     index_view_class = CookieDeclarationIndexView
     index_template_name = "wagtail_tag_manager/admin/cookie_declaration_index.html"
+    form_view_extra_js = [static("cookie_declaration_form_view.bundle.js")]
 
     def duration_display(self, obj):
         return obj.expiration
