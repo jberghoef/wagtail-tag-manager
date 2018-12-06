@@ -555,7 +555,7 @@ class CookieDeclaration(models.Model):
             )
         ),
         null=True,
-        blank=False,
+        blank=True,
     )
     security = models.CharField(
         max_length=5,

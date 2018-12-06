@@ -1,5 +1,16 @@
 [
   {
+    "model": "wagtailcore.site",
+    "pk": 1,
+    "fields": {
+      "hostname": "localhost",
+      "port": 8000,
+      "site_name": null,
+      "root_page": 2,
+      "is_default_site": true
+    }
+  },
+  {
     "model": "contenttypes.contenttype",
     "pk": 32,
     "fields": {

@@ -207,6 +207,16 @@ Sets the amount of seconds the cache will be preserved. At the moment,
 caching is only applied to constants, which will refresh when a constant is
 saved. Default is 30 minutes.
 
+.. code-block:: python
+
+    WTM_COOKIE_SCAN = False
+
+Disables or enables the cookie scan functionality on the cookie declaration
+management page. Requires `ChromeDriver`_ to be installed and available in the
+path.
+
+.. _ChromeDriver: http://chromedriver.chromium.org/
+
 Sandbox
 -------
 

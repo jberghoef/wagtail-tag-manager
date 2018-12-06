@@ -46,12 +46,11 @@ def scan_cookies(request):  # pragma: no cover
                 {
                     "name": Tag.get_cookie_name(tag),
                     "value": "true",
-                    "path": "/",
+                    "path": "",
                     "secure": False,
                 }
             )
         browser.get(request.site.root_page.full_url)
-        time.sleep(10)
 
         created = 0
         updated = 0
@@ -63,7 +62,8 @@ def scan_cookies(request):  # pragma: no cover
                 defaults={
                     "security": CookieDeclaration.INSECURE_COOKIE
                     if cookie.get("httpOnly")
-                    else CookieDeclaration.SECURE_COOKIE
+                    else CookieDeclaration.SECURE_COOKIE,
+                    "purpose": _("Unknown"),
                 },
             )
 

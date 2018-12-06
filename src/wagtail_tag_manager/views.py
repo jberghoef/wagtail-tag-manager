@@ -57,6 +57,13 @@ class VariableView(View):
 
 
 class CookieDeclarationIndexView(IndexView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(
+            {"cookie_scan_enabled": getattr(settings, "WTM_COOKIE_SCAN", False)}
+        )
+        return context
+
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated and request.user.is_staff:
             response = HttpResponseRedirect("")
