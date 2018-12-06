@@ -4,7 +4,7 @@ import pytest
 from django.urls import reverse
 
 from wagtail_tag_manager.views import CookieDeclarationIndexView
-from wagtail_tag_manager.models import TagTypeSettings
+from wagtail_tag_manager.settings import TagTypeSettings
 from wagtail_tag_manager.wagtail_hooks import CookieDeclarationModelAdmin
 
 

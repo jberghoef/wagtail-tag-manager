@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from wagtail_tag_manager.models import TagTypeSettings
+from wagtail_tag_manager.settings import TagTypeSettings
 
 
 class ConsentForm(forms.Form):
