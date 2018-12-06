@@ -32,4 +32,6 @@ class CookieDeclarationFormView {
   }
 }
 
-window.onload = () => new CookieDeclarationFormView();
+document.addEventListener("DOMContentLoaded", event => {
+  new CookieDeclarationFormView();
+});

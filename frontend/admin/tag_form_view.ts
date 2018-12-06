@@ -111,4 +111,6 @@ class TagFormView {
   }
 }
 
-window.onload = () => new TagFormView();
+document.addEventListener("DOMContentLoaded", event => {
+  new TagFormView();
+});
