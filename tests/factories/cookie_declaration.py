@@ -8,8 +8,7 @@ class CookieDeclarationFactory(factory.DjangoModelFactory):
     name = "Functional cookie"
     domain = "localhost"
     purpose = "Lorem ipsum"
-    duration_value = 1
-    duration_period = CookieDeclaration.PERIOD_YEARS
+    duration = 1
     security = CookieDeclaration.SECURE_COOKIE
 
     class Meta:

@@ -470,25 +470,6 @@ class CookieDeclarationManager(models.Manager):
 
 
 class CookieDeclaration(models.Model):
-    PERIOD_SESSION = "session"
-    PERIOD_SECONDS = "seconds+"
-    PERIOD_MINUTES = "minutes+"
-    PERIOD_HOURS = "hours+"
-    PERIOD_DAYS = "days+"
-    PERIOD_WEEKS = "weeks+"
-    PERIOD_MONTHS = "months+"
-    PERIOD_YEARS = "years+"
-    PERIOD_CHOICES = (
-        (PERIOD_SESSION, _("Session")),
-        (PERIOD_SECONDS, _("Second(s)")),
-        (PERIOD_MINUTES, _("Minute(s)")),
-        (PERIOD_HOURS, _("Hour(s)")),
-        (PERIOD_DAYS, _("Day(s)")),
-        (PERIOD_WEEKS, _("Week(s)")),
-        (PERIOD_MONTHS, _("Month(s)")),
-        (PERIOD_YEARS, _("Year(s)")),
-    )
-
     INSECURE_COOKIE = "http"
     SECURE_COOKIE = "https"
     SECURITY_CHOICES = ((INSECURE_COOKIE, _("HTTP")), (SECURE_COOKIE, _("HTTPS")))
@@ -511,19 +492,7 @@ class CookieDeclaration(models.Model):
         ),
     )
     purpose = models.TextField(help_text=_("What this cookie is being used for."))
-    duration_value = models.PositiveSmallIntegerField(null=True, blank=True)
-    duration_period = models.CharField(
-        max_length=10,
-        choices=PERIOD_CHOICES,
-        help_text=mark_safe(
-            _(
-                "The period after which the cookie will expire.<br/>"
-                "<b>Session:</b> the cookie will expire when the browser is closed."
-            )
-        ),
-        null=True,
-        blank=True,
-    )
+    duration = models.DurationField(null=True, blank=True)
     security = models.CharField(
         max_length=5,
         choices=SECURITY_CHOICES,
@@ -539,30 +508,16 @@ class CookieDeclaration(models.Model):
             [
                 FieldPanel("cookie_type"),
                 FieldPanel("purpose"),
+                FieldPanel("duration"),
                 FieldRowPanel([FieldPanel("domain"), FieldPanel("security")]),
             ],
             heading=_("General"),
-        ),
-        MultiFieldPanel(
-            [
-                FieldRowPanel(
-                    [FieldPanel("duration_value"), FieldPanel("duration_period")]
-                )
-            ],
-            heading=_("Duration"),
         ),
     ]
 
     class Meta:
         ordering = ["domain", "cookie_type", "name"]
         unique_together = ("name", "domain")
-
-    def clean(self):
-        super().clean()
-        if self.duration_period and not self.duration_period.endswith("+"):
-            self.duration_value = None
-
-        return self
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
@@ -572,9 +527,7 @@ class CookieDeclaration(models.Model):
 
     @property
     def expiration(self):
-        if self.duration_value:
-            return f"{self.duration_value} {self.get_duration_period_display().lower()}"
-        return self.get_duration_period_display()
+        return self.duration
 
     def __str__(self):
         return self.name

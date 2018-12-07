@@ -166,20 +166,6 @@ def test_cookie_declaration_create():
         name="Functional cookie",
         domain="localhost",
         purpose="Lorem ipsum",
-        duration_period=CookieDeclaration.PERIOD_SESSION,
     )
 
     assert cookie_declaration in CookieDeclaration.objects.all()
-    assert cookie_declaration.expiration == "Session"
-
-    cookie_declaration_expiration = CookieDeclaration.objects.create(
-        cookie_type="functional",
-        name="Functional cookie 2",
-        domain="localhost",
-        purpose="Lorem ipsum",
-        duration_value=1,
-        duration_period=CookieDeclaration.PERIOD_MONTHS,
-    )
-
-    assert cookie_declaration_expiration in CookieDeclaration.objects.all()
-    assert cookie_declaration_expiration.expiration == "1 month(s)"

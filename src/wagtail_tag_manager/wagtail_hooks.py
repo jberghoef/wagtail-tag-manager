@@ -99,17 +99,11 @@ class TriggerModelAdmin(ModelAdmin):
 class CookieDeclarationModelAdmin(ModelAdmin):
     model = CookieDeclaration
     menu_icon = "tick"
-    list_display = ("cookie_type", "name", "domain", "duration_display", "security")
+    list_display = ("cookie_type", "name", "domain", "duration", "security")
     list_filter = ("cookie_type", "domain", "security")
     search_fields = ("name", "purpose", "domain")
     index_view_class = CookieDeclarationIndexView
     index_template_name = "wagtail_tag_manager/admin/cookie_declaration_index.html"
-    form_view_extra_js = [static("cookie_declaration_form_view.bundle.js")]
-
-    def duration_display(self, obj):
-        return obj.expiration
-
-    duration_display.short_description = _("Cookie duration")
 
 
 class TagManagerAdminGroup(ModelAdminGroup):

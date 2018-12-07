@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta
 
 from selenium import webdriver
 from django.conf import settings
@@ -16,8 +16,8 @@ def set_cookie(response, key, value, days_expire=None):
     else:
         max_age = days_expire * 24 * 60 * 60
 
-    delta = datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age)
-    expires = datetime.datetime.strftime(delta, "%a, %d-%b-%Y %H:%M:%S GMT")
+    delta = datetime.utcnow() + timedelta(seconds=max_age)
+    expires = datetime.strftime(delta, "%a, %d-%b-%Y %H:%M:%S GMT")
 
     response.set_cookie(
         key,
@@ -32,6 +32,9 @@ def set_cookie(response, key, value, days_expire=None):
 
 
 def scan_cookies(request):  # pragma: no cover
+    def chop_microseconds(delta):
+        return delta - timedelta(microseconds=delta.microseconds)
+
     try:
         options = webdriver.ChromeOptions()
         options.add_argument("headless")
@@ -49,12 +52,16 @@ def scan_cookies(request):  # pragma: no cover
                     "secure": False,
                 }
             )
+
         browser.get(request.site.root_page.full_url)
+        now = datetime.utcnow()
 
         created = 0
         updated = 0
 
         for cookie in browser.get_cookies():
+            expiry = datetime.fromtimestamp(cookie.get("expiry", now))
+
             obj, created = CookieDeclaration.objects.update_or_create(
                 name=cookie.get("name"),
                 domain=cookie.get("domain"),
@@ -63,6 +70,7 @@ def scan_cookies(request):  # pragma: no cover
                     if cookie.get("httpOnly")
                     else CookieDeclaration.SECURE_COOKIE,
                     "purpose": _("Unknown"),
+                    "duration": chop_microseconds(expiry - now),
                 },
             )
 
