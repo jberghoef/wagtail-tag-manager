@@ -61,11 +61,13 @@ class TagManagerMiddleware:
                 doc.body["data-wtm-lazy"] = reverse("wtm:lazy")
 
                 link = doc.new_tag("link")
-                link["href"] = static("wtm.bundle.css")
                 link["rel"] = "stylesheet"
+                link["type"] = "text/css"
+                link["href"] = static("wtm.bundle.css")
                 doc.body.append(link)
 
                 script = doc.new_tag("script")
+                script["type"] = "text/javascript"
                 script["src"] = static("wtm.bundle.js")
                 doc.body.append(script)
 

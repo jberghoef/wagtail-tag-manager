@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 
 class TagTypeSettings:
@@ -12,6 +13,11 @@ class TagTypeSettings:
             "WTM_TAG_TYPES",
             {"functional": "required", "analytical": "initial", "traceable": ""},
         )
+
+    def get(self, tag_type):
+        if not tag_type or tag_type not in self.all():
+            raise ValueError(_("Provide a valid `tag_type`."))
+        return self.all().get(tag_type, "")
 
     def include(self, value, *args, **kwargs):
         self.SETTINGS.update({k: v for k, v in self.all().items() if v == value})

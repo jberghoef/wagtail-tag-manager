@@ -180,6 +180,8 @@ class Tag(models.Model):
     @classmethod
     def create_context(cls, request, context=None):
         context = context or {}
+        if hasattr(context, "flatten"):
+            context = context.flatten()
 
         return {
             **Constant.create_context(),

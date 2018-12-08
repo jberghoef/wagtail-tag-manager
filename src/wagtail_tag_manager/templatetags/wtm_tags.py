@@ -1,12 +1,78 @@
+from bs4 import BeautifulSoup
 from django import template
 from django.conf import settings
 from django.urls import reverse
+from django.utils.html import mark_safe
+from django.template.loader import render_to_string
+from django.utils.translation import ugettext_lazy as _
+from django.templatetags.static import static
 
 from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.models import Tag, CookieDeclaration
+from wagtail_tag_manager.settings import TagTypeSettings
 from wagtail_tag_manager.strategy import TagStrategy
 
 register = template.Library()
+
+
+class IncludeNode(template.Node):
+    def __init__(self, nodelist, tag_type, src):
+        if not tag_type:
+            raise template.TemplateSyntaxError(_("Provide a `tag_type` argument."))
+
+        self.nodelist = nodelist
+        self.tag_type = tag_type.replace('"', "")
+        self.src = src.replace('"', "")
+
+    def render(self, context):
+        request = context.get("request", None)
+        if request:
+            tag_config = TagTypeSettings().get(self.tag_type)
+
+            if TagStrategy(request=request).should_include(self.tag_type, tag_config):
+                ctx = Tag.create_context(request=request, context=context)
+
+                if self.src:
+                    if self.src.endswith(".html"):
+                        return render_to_string(self.src, ctx)
+
+                    elif self.src.endswith(".css"):
+                        tag = BeautifulSoup().new_tag("link")
+                        tag["rel"] = "stylesheet"
+                        tag["type"] = "text/css"
+                        tag["href"] = static(self.src)
+
+                    elif self.src.endswith(".js"):
+                        tag = BeautifulSoup().new_tag("script")
+                        tag["type"] = "text/javascript"
+                        tag["src"] = static(self.src)
+
+                    return mark_safe(tag.decode())
+
+                output = self.nodelist.render(ctx)
+                return output
+
+        return ""
+
+
+@register.tag
+def wtm_include(parser, token):
+    try:
+        args = token.contents.split(None)[1:]
+
+        nodelist = None
+
+        if len(args) == 1:
+            nodelist = parser.parse(("wtm_endinclude",))
+            parser.delete_first_token()
+            args.append("")
+
+        return IncludeNode(nodelist, *args)
+
+    except ValueError:
+        raise template.TemplateSyntaxError(
+            "%r tag requires arguments" % token.contents.split()[0]
+        )
 
 
 @register.inclusion_tag(

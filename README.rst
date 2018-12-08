@@ -123,6 +123,42 @@ Include the urls:
 Template tags
 -------------
 
+**wtm_include**
+
+WTM comes with the `wtm_include` template tag to accomodate loading of resources
+and markup based on the tag strategy and consent given. It can be used as a way
+to load html, css or javascript files.
+
+.. code-block:: html+django
+
+    {% load wtm_tags %}
+
+    <body>
+        ...
+        {% wtm_include "functional" "css/style.css" %}
+        {% wtm_include "functional" "js/style.js" %}
+        {% wtm_include "functional" "content.html" %}
+        ...
+    </body>
+
+Alternatively, you can use it as a block:
+
+.. code-block:: html+django
+
+    {% load wtm_tags %}
+
+    <body>
+        ...
+        {% wtm_include "analytical" %}
+            <script>
+                console.log("Included conditionally");
+            </script>
+        {% wtm_endinclude %}
+        ...
+    </body>
+
+**wtm_cookie_bar**
+
 You can choose to include the cookie bar template tag:
 
 .. image:: cookie-bar-without-form.png
@@ -148,6 +184,8 @@ Or the cookie bar with included form:
         {% wtm_cookie_bar include_form=True %}
         ...
     </body>
+
+**Preference management**
 
 You can use the following provided template tags to render a tag status overview,
 a table with cookie declarations or a consent form.
