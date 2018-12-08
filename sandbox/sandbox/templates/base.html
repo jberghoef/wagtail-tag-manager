@@ -28,7 +28,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/sandbox.css' %}">
 
         {% block extra_css %}
-            {# Override this in templates to add extra stylesheets #}
+            {% wtm_include "functional" "css/dummy.css" %}
         {% endblock %}
     </head>
 
@@ -38,13 +38,27 @@
 
         <div class="container">
             {% block content %}{% endblock %}
+
+            {% wtm_include "functional" %}
+                <p>Functional tags are being loaded.</p>
+            {% wtm_endinclude %}
+
+            {% wtm_include "analytical" %}
+                <p>Analytical tags are being loaded.</p>
+            {% wtm_endinclude %}
+
+            {% wtm_include "traceable" %}
+                <p>Traceable tags are being loaded.</p>
+            {% wtm_endinclude %}
         </div>
+
+        {% wtm_include "analytical" "dummy.html" %}
 
         {# Global javascript #}
         <script type="text/javascript" src="{% static 'js/sandbox.js' %}"></script>
 
         {% block extra_js %}
-            {# Override this in templates to add extra javascript #}
+            {% wtm_include "traceable" "js/dummy.js" %}
         {% endblock %}
     </body>
 </html>

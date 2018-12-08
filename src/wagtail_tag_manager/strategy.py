@@ -97,6 +97,19 @@ class TagStrategy(object):
         elif self._consent is False:
             self.cookies[cookie_name] = "false"
 
+    def should_include(self, tag_type, tag_config):
+        cookie_name = Tag.get_cookie_name(tag_type)
+        cookie = self._cookies.get(cookie_name, None)
+
+        if tag_config == "required":
+            return True
+        elif tag_config == "initial":
+            if not cookie or cookie == "unset" or cookie == "true":
+                return True
+        else:
+            if cookie == "true":
+                return True
+
     @property
     def queryset(self):
         queryset = Q()
