@@ -28,7 +28,6 @@ class IncludeNode(template.Node):
         request = context.get("request", None)
         if request:
             tag_config = TagTypeSettings().get(self.tag_type)
-            print(self.tag_type, self.src, tag_config)
 
             if TagStrategy(request=request).should_include(self.tag_type, tag_config):
                 ctx = Tag.create_context(request=request, context=context)
