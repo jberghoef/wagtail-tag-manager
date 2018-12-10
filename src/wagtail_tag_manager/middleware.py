@@ -35,7 +35,7 @@ class TagManagerMiddleware:
 
     def _add_instant_tags(self):
         if hasattr(self.response, "content"):
-            doc = BeautifulSoup(self.response.content, "html.parser")
+            doc = BeautifulSoup(self.response.content, "html5lib")
 
             for tag in self.strategy.result:
                 obj = tag.get("object")
@@ -54,7 +54,7 @@ class TagManagerMiddleware:
 
     def _add_lazy_manager(self):
         if hasattr(self.response, "content"):
-            doc = BeautifulSoup(self.response.content, "html.parser")
+            doc = BeautifulSoup(self.response.content, "html5lib")
 
             if doc.body:
                 doc.body["data-wtm-state"] = reverse("wtm:state")
