@@ -157,7 +157,7 @@ class Tag(models.Model):
         if not re.match("\<.+\/?\>", self.content):
             self.content = f"<script>{self.content}</script>"
 
-        self.content = BeautifulSoup(self.content, "html5lib").prettify()
+        self.content = BeautifulSoup(self.content, "html.parser").prettify()
 
         return self
 
@@ -175,7 +175,7 @@ class Tag(models.Model):
             context = Context(Tag.create_context(request, context))
             content = template.render(context)
 
-        return BeautifulSoup(content, "html5lib")
+        return BeautifulSoup(content, "html.parser")
 
     @classmethod
     def create_context(cls, request, context=None):
