@@ -12,7 +12,7 @@
   },
   {
     "model": "contenttypes.contenttype",
-    "pk": 32,
+    "pk": 33,
     "fields": {
       "app_label": "home",
       "model": "homepage"
@@ -28,7 +28,7 @@
       "title": "Wagtail Tag Manager",
       "draft_title": "Wagtail Tag Manager",
       "slug": "wagtail-tag-manager",
-      "content_type": 32,
+      "content_type": 33,
       "live": true,
       "has_unpublished_changes": false,
       "url_path": "/wagtail-tag-manager/",
