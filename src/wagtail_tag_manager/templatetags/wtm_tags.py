@@ -37,13 +37,13 @@ class IncludeNode(template.Node):
                         return render_to_string(self.src, ctx)
 
                     elif self.src.endswith(".css"):
-                        tag = BeautifulSoup().new_tag("link")
+                        tag = BeautifulSoup("", "html.parser").new_tag("link")
                         tag["rel"] = "stylesheet"
                         tag["type"] = "text/css"
                         tag["href"] = static(self.src)
 
                     elif self.src.endswith(".js"):
-                        tag = BeautifulSoup().new_tag("script")
+                        tag = BeautifulSoup("", "html.parser").new_tag("script")
                         tag["type"] = "text/javascript"
                         tag["src"] = static(self.src)
 
