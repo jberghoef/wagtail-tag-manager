@@ -253,6 +253,12 @@ Disables or enables the cookie scan functionality on the cookie declaration
 management page. Requires `ChromeDriver`_ to be installed and available in the
 path.
 
+.. code-block:: python
+
+    WTM_SUMMARY_PANELS = False
+
+Disables or enables the summary panels visible on the Wagtail admin dashboard.
+
 .. _ChromeDriver: http://chromedriver.chromium.org/
 
 Sandbox

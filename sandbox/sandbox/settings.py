@@ -79,6 +79,7 @@ MIDDLEWARE = [
 # Wagtail Tag Manager
 WTM_MANAGE_VIEW = True
 WTM_COOKIE_SCAN = True
+WTM_SUMMARY_PANELS = True
 
 ROOT_URLCONF = "sandbox.urls"
 

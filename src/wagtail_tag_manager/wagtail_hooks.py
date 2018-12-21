@@ -1,12 +1,16 @@
+from django.conf import settings
+from django.urls import reverse
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.templatetags.static import static
 from django.template.defaultfilters import truncatechars
+from wagtail.admin.site_summary import SummaryItem
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin,
     ModelAdminGroup,
     modeladmin_register,
 )
+from wagtail.core import hooks
 
 from wagtail_tag_manager.views import CookieDeclarationIndexView
 from wagtail_tag_manager.models import (
@@ -120,3 +124,72 @@ class TagManagerAdminGroup(ModelAdminGroup):
 
 
 modeladmin_register(TagManagerAdminGroup)
+
+
+# Summary panels
+class ModelCountSummaryItem(SummaryItem):
+    order = 0
+    model = None
+    reverse = ""
+    title = "Placeholder"
+    icon = "placeholder"
+
+    def render(self):
+        count = self.model.objects.count()
+        target_url = reverse(self.reverse)
+        return mark_safe(
+            f"""
+            <li class="icon icon-{self.icon}">
+                <a href="{target_url}"><span>{count}</span>{self.title}</a>
+            </li>"""
+        )
+
+
+class TagSummaryPanel(ModelCountSummaryItem):
+    order = 3000
+    model = Tag
+    reverse = "wagtail_tag_manager_tag_modeladmin_index"
+    title = _("Tags")
+    icon = "code"
+
+
+class ConstantSummaryPanel(ModelCountSummaryItem):
+    order = 3100
+    model = Constant
+    reverse = "wagtail_tag_manager_constant_modeladmin_index"
+    title = _("Constants")
+    icon = "snippet"
+
+
+class VariableSummaryPanel(ModelCountSummaryItem):
+    order = 3200
+    model = Variable
+    reverse = "wagtail_tag_manager_variable_modeladmin_index"
+    title = _("Variables")
+    icon = "snippet"
+
+
+class TriggerSummaryPanel(ModelCountSummaryItem):
+    order = 3300
+    model = Trigger
+    reverse = "wagtail_tag_manager_trigger_modeladmin_index"
+    title = _("Triggers")
+    icon = "media"
+
+
+class CookieDeclarationSummaryPanel(ModelCountSummaryItem):
+    order = 3400
+    model = CookieDeclaration
+    reverse = "wagtail_tag_manager_cookiedeclaration_modeladmin_index"
+    title = _("Cookie declarations")
+    icon = "tick"
+
+
+@hooks.register("construct_homepage_summary_items")
+def add_personalisation_summary_panels(request, items):
+    if getattr(settings, "WTM_SUMMARY_PANELS", False):
+        items.append(TagSummaryPanel(request))
+        items.append(ConstantSummaryPanel(request))
+        items.append(VariableSummaryPanel(request))
+        items.append(TriggerSummaryPanel(request))
+        items.append(CookieDeclarationSummaryPanel(request))
