@@ -14,45 +14,12 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, MultiFieldPanel
 
+from wagtail_tag_manager.managers import (
+    TagQuerySet,
+    TriggerQuerySet,
+    CookieDeclarationQuerySet,
+)
 from wagtail_tag_manager.settings import TagTypeSettings
-
-
-class TagQuerySet(models.QuerySet):
-    def active(self):
-        return self.filter(active=True)
-
-    def passive(self):
-        return self.filter(active=False)
-
-    def instant(self):
-        return self.filter(tag_loading=Tag.INSTANT_LOAD)
-
-    def lazy(self):
-        return self.filter(tag_loading=Tag.LAZY_LOAD)
-
-    def sorted(self):
-        order = [*Tag.get_types(), None]
-        return sorted(self, key=lambda x: order.index(x.tag_type))
-
-
-class TagManager(models.Manager):
-    def get_queryset(self):
-        return TagQuerySet(self.model, using=self._db)
-
-    def active(self):
-        return self.get_queryset().active()
-
-    def passive(self):
-        return self.get_queryset().passive()
-
-    def instant(self):
-        return self.get_queryset().instant()
-
-    def lazy(self):
-        return self.get_queryset().lazy()
-
-    def sorted(self):
-        return self.get_queryset().sorted()
 
 
 class Tag(models.Model):
@@ -132,7 +99,7 @@ class Tag(models.Model):
         )
     )
 
-    objects = TagManager()
+    objects = TagQuerySet.as_manager()
 
     panels = [
         FieldPanel("name", classname="full title"),
@@ -408,19 +375,6 @@ class Variable(models.Model):
         return self.name
 
 
-class TriggerQuerySet(models.QuerySet):
-    def active(self):
-        return self.filter(active=True)
-
-
-class TriggerManager(models.Manager):
-    def get_queryset(self):
-        return TriggerQuerySet(self.model, using=self._db)
-
-    def active(self):
-        return self.get_queryset().active()
-
-
 class Trigger(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
@@ -439,7 +393,7 @@ class Trigger(models.Model):
         Tag, help_text=_("The tags to include when this trigger is fired.")
     )
 
-    objects = TriggerManager()
+    objects = TriggerQuerySet.as_manager()
 
     panels = [
         FieldPanel("name", classname="full title"),
@@ -455,20 +409,6 @@ class Trigger(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class CookieDeclarationQuerySet(models.QuerySet):
-    def sorted(self):
-        order = [*Tag.get_types(), None]
-        return sorted(self, key=lambda x: order.index(x.cookie_type))
-
-
-class CookieDeclarationManager(models.Manager):
-    def get_queryset(self):
-        return CookieDeclarationQuerySet(self.model, using=self._db)
-
-    def sorted(self):
-        return self.get_queryset().sorted()
 
 
 class CookieDeclaration(models.Model):
@@ -502,7 +442,7 @@ class CookieDeclaration(models.Model):
         help_text=_("Whether this cookie is secure or not."),
     )
 
-    objects = CookieDeclarationManager()
+    objects = CookieDeclarationQuerySet.as_manager()
 
     panels = [
         FieldPanel("name", classname="full title"),
