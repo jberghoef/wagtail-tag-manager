@@ -377,7 +377,7 @@ class Variable(models.Model):
 def searchable_regex_validator(value):
     try:
         re.search(value, "")
-    except:
+    except re.error:
         raise ValidationError("The pattern {pattern} is not valid".format(pattern=value))
 
 class Trigger(models.Model):
