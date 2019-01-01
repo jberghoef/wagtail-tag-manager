@@ -379,7 +379,9 @@ def searchable_regex_validator(value):
     try:
         re.search(value, "")
     except re.error:
-        raise ValidationError("The pattern {pattern} is not valid".format(pattern=value))
+        raise ValidationError(
+            "The pattern {pattern} is not valid".format(pattern=value)
+        )
 
 
 class Trigger(models.Model):
@@ -395,7 +397,7 @@ class Trigger(models.Model):
             "The regex pattern to match the full url path with. "
             "Groups will be added to the included tag's context."
         ),
-        validators=[searchable_regex_validator]
+        validators=[searchable_regex_validator],
     )
     tags = models.ManyToManyField(
         Tag, help_text=_("The tags to include when this trigger is fired.")
