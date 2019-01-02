@@ -1,4 +1,4 @@
-0.7.1 (2018-01-01)
+0.7.1 (2019-01-01)
 ==================
  - Update front-end dependencies
  - Add regex pattern validation for Trigger models pattern CharField (#15) @ntbrown
