@@ -40,3 +40,8 @@ class TagTypeSettings:
 
     def result(self):
         return self.SETTINGS
+
+
+class StaticFilesSettings:
+    include_css = getattr(settings, "WTM_INCLUDE_CSS", True)
+    include_js = getattr(settings, "WTM_INCLUDE_JS", True)

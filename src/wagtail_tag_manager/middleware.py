@@ -6,6 +6,7 @@ from django.templatetags.static import static
 from wagtail_tag_manager.utils import set_cookie
 from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.strategy import TagStrategy
+from wagtail_tag_manager.settings import StaticFilesSettings
 
 
 class TagManagerMiddleware:
@@ -60,15 +61,17 @@ class TagManagerMiddleware:
                 doc.body["data-wtm-state"] = reverse("wtm:state")
                 doc.body["data-wtm-lazy"] = reverse("wtm:lazy")
 
-                link = doc.new_tag("link")
-                link["rel"] = "stylesheet"
-                link["type"] = "text/css"
-                link["href"] = static("wtm.bundle.css")
-                doc.body.append(link)
+                if StaticFilesSettings.include_css:
+                    link = doc.new_tag("link")
+                    link["rel"] = "stylesheet"
+                    link["type"] = "text/css"
+                    link["href"] = static("wtm.bundle.css")
+                    doc.body.append(link)
 
-                script = doc.new_tag("script")
-                script["type"] = "text/javascript"
-                script["src"] = static("wtm.bundle.js")
-                doc.body.append(script)
+                if StaticFilesSettings.include_js:
+                    script = doc.new_tag("script")
+                    script["type"] = "text/javascript"
+                    script["src"] = static("wtm.bundle.js")
+                    doc.body.append(script)
 
             self.response.content = doc.decode()
