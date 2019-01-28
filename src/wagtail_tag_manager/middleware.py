@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from django.conf import settings
 from django.urls import reverse
 from django.template.response import TemplateResponse
 from django.templatetags.static import static
@@ -60,15 +61,17 @@ class TagManagerMiddleware:
                 doc.body["data-wtm-state"] = reverse("wtm:state")
                 doc.body["data-wtm-lazy"] = reverse("wtm:lazy")
 
-                link = doc.new_tag("link")
-                link["rel"] = "stylesheet"
-                link["type"] = "text/css"
-                link["href"] = static("wtm.bundle.css")
-                doc.body.append(link)
+                if getattr(settings, "WTM_INCLUDE_STYLE", True):
+                    link = doc.new_tag("link")
+                    link["rel"] = "stylesheet"
+                    link["type"] = "text/css"
+                    link["href"] = static("wtm.bundle.css")
+                    doc.body.append(link)
 
-                script = doc.new_tag("script")
-                script["type"] = "text/javascript"
-                script["src"] = static("wtm.bundle.js")
-                doc.body.append(script)
+                if getattr(settings, "WTM_INCLUDE_SCRIPT", True):
+                    script = doc.new_tag("script")
+                    script["type"] = "text/javascript"
+                    script["src"] = static("wtm.bundle.js")
+                    doc.body.append(script)
 
             self.response.content = doc.decode()

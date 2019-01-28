@@ -30,9 +30,9 @@ Disclaimer
 ----------
 
 This package attempts to ease the implementation of tags by the new ePrivacy
-rules as defined by the European Union. I urge you to read about these new rules
-and ensure you are properly configuring your tags for both the analytical and
-traceable variants. This package is free and the author can not be held
+rules as defined by the European Union. I urge you to read about these new
+rules and ensure you are properly configuring your tags for both the analytical
+and traceable variants. This package is free and the author can not be held
 responsible for the correctness of your implementation, or the assumptions made
 in this package to comply with the new ePrivacy regulation.
 
@@ -123,11 +123,39 @@ Include the urls:
 Template tags
 -------------
 
+**wtm_cookie_bar**
+
+You can choose to include the cookie bar template tag:
+
+.. image:: cookie-bar-without-form.png
+
+.. code-block:: html+django
+
+    {% load wtm_tags %}
+
+    <body>
+        {% wtm_cookie_bar %}
+        ...
+    </body>
+
+Or the cookie bar with included form:
+
+.. image:: cookie-bar-with-form.png
+
+.. code-block:: html+django
+
+    {% load wtm_tags %}
+
+    <body>
+        {% wtm_cookie_bar include_form=True %}
+        ...
+    </body>
+
 **wtm_include**
 
-WTM comes with the `wtm_include` template tag to accomodate loading of resources
-and markup based on the tag strategy and consent given. It can be used as a way
-to load html, css or javascript files.
+WTM comes with the `wtm_include` template tag to accomodate loading of
+resources and markup based on the tag strategy and consent given. It can be
+used as a way to load html, css or javascript files.
 
 .. code-block:: html+django
 
@@ -157,38 +185,10 @@ Alternatively, you can use it as a block:
         ...
     </body>
 
-**wtm_cookie_bar**
-
-You can choose to include the cookie bar template tag:
-
-.. image:: cookie-bar-without-form.png
-
-.. code-block:: html+django
-
-    {% load wtm_tags %}
-
-    <body>
-        {% wtm_cookie_bar %}
-        ...
-    </body>
-
-Or the cookie bar with included form:
-
-.. image:: cookie-bar-with-form.png
-
-.. code-block:: html+django
-
-    {% load wtm_tags %}
-
-    <body>
-        {% wtm_cookie_bar include_form=True %}
-        ...
-    </body>
-
 **Preference management**
 
-You can use the following provided template tags to render a tag status overview,
-a table with cookie declarations or a consent form.
+You can use the following provided template tags to render a tag status
+overview, a table with cookie declarations or a consent form.
 
 .. code-block:: html+django
 
@@ -198,6 +198,32 @@ a table with cookie declarations or a consent form.
 
     {% wtm_manage_form %}
 
+Context processors
+------------------
+
+To enable the context processors, add the following to your settings:
+
+.. code-block:: python
+
+    "context_processors": [
+        # ...
+        "wagtail_tag_manager.context_processors.cookie_state",
+    ]
+
+**cookie_state**
+
+You can now use the following value in your templates:
+
+.. code-block:: html+django
+
+    {{ wtm_cookie_state.functional }}
+
+    {{ wtm_cookie_state.analytical }}
+
+    {{ wtm_cookie_state.traceable }}
+
+These will return a boolean indicating wether or not tags specific to the
+corresponding state should load.
 
 Settings
 --------
@@ -244,6 +270,21 @@ applicable to the consent cookies used by WTM, not any cookies placed by tags.
 Sets the amount of seconds the cache will be preserved. At the moment,
 caching is only applied to constants, which will refresh when a constant is
 saved. Default is 30 minutes.
+
+.. code-block:: python
+
+    WTM_INCLUDE_STYLE = True
+
+Change to `False` to prevent WTM's included styles from loading. This is useful
+if you wish to style the cookiebar yourself.
+
+.. code-block:: python
+
+    WTM_INCLUDE_SCRIPT = True
+
+Change to `False` to prevent WTM's included scripts from loading. This is
+useful if you don't want to use the inlcuded lazy loading and cookie bar
+functionality.
 
 .. code-block:: python
 
@@ -297,9 +338,9 @@ Concept
 | noting tracking functionality. |            |            |           |
 +--------------------------------+------------+------------+-----------+
 
-Note that in the case of analytical cookies or local storage, you are obliged to
-still show a notification at least once, noting that you are using cookies for
-analytical and performance measurement purposes.
+Note that in the case of analytical cookies or local storage, you are obliged
+to still show a notification at least once, noting that you are using cookies
+for analytical and performance measurement purposes.
 
 When implementing tracking cookies, the user has to explicitly give permission
 for you to enable them for their session. When asking for permission, you must
