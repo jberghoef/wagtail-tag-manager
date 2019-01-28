@@ -1,3 +1,9 @@
+0.8.0 (2019-01-28)
+==================
+ - Add settings to prevent included style and script from loading
+ - Add context processors for cookie states
+
+
 0.7.1 (2019-01-01)
 ==================
  - Update front-end dependencies
