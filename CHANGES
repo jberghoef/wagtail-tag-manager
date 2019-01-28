@@ -1,3 +1,8 @@
+0.8.1 (2019.1.28)
+=================
+ - Only show 'Scan cookies' button when settings allow it
+
+
 0.8.0 (2019-01-28)
 ==================
  - Add settings to prevent included style and script from loading
