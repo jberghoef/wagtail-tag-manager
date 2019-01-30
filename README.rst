@@ -72,6 +72,10 @@ Add the application to your ``INSTALLED_APPS``:
         # ...
     ]
 
+If you wish to enable the cookie bar settings (allowing you to change to title
+and text displayed in the cookie bar), also include ``wagtail.contrib.settings``
+in the ``INSTALLED_APPS``.
+
 WTM offers two ways to implement it's functionality. You can either choose to
 use the middleware (which will rewrite the html on each request) or use the
 ``{% wtm_instant_tags %}`` and ``{% wtm_lazy_manager %}`` template tags.

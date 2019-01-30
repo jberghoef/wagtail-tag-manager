@@ -691,6 +691,8 @@
     #wtm_cookie_bar .inner .action-container {
       display: block !important;
       margin-top: 12px !important; }
+      #wtm_cookie_bar .inner .action-container .manage-link {
+        font-size: 12px !important; }
     #wtm_cookie_bar .inner .button {
       display: inline-block !important;
       align-items: center !important;

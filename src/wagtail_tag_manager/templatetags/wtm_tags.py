@@ -9,7 +9,7 @@ from django.templatetags.static import static
 
 from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.models import Tag, CookieDeclaration
-from wagtail_tag_manager.settings import TagTypeSettings
+from wagtail_tag_manager.settings import CookieBarSettings, TagTypeSettings
 from wagtail_tag_manager.strategy import TagStrategy
 
 register = template.Library()
@@ -103,10 +103,13 @@ def wtm_cookie_bar(context, include_form=False):
     request = context.get("request")
     cookie_state = TagStrategy(request).cookie_state
 
+    cookie_bar_settings = CookieBarSettings.for_site(request.site)
+
     return {
         "manage_view": getattr(settings, "WTM_MANAGE_VIEW", True),
         "include_form": include_form,
         "form": ConsentForm(initial=cookie_state),
+        "settings": cookie_bar_settings,
     }
 
 

@@ -38,6 +38,10 @@ $tablet-bp: 576px;
     .action-container {
       display: block !important;
       margin-top: 12px !important;
+
+      .manage-link {
+        font-size: 12px !important;
+      }
     }
 
     .button {

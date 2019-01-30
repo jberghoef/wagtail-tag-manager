@@ -1,24 +1,24 @@
-{% load i18n %}
+{% load i18n wagtailcore_tags %}
 
 {% block content %}
 <div id="wtm_cookie_bar" class="cleanslate hidden">
     <div class="inner">
         <div class="content-container">
-            <h4>{% trans "This website uses cookies" %}</h4>
-            <p>
-                {% spaceless %}
-                    {% blocktrans %}
-                        This website uses cookies and other tracking technologies for
-                        functional and analytical purposes.
-                        To improve your browsing experience on our site,
-                        we would also like to place tracking cookies.
-                    {% endblocktrans %}
-
-                    {% if manage_view %}
-                        <a role="button" href="{% url 'wtm:manage' %}" aria-label="{% trans 'Manage settings' %}" tabindex="0">{% trans "Manage settings" %}</a>.
-                    {% endif %}
-                {% endspaceless %}
-            </p>
+            <h4>{% if settings.title %}{{ settings.title }}{% else %}{% trans "This website uses cookies" %}{% endif %}</h4>
+            {% if settings.text %}
+                {{ settings.text|richtext }}
+            {% else %}
+                <p>
+                    {% spaceless %}
+                        {% blocktrans %}
+                            This website uses cookies and other tracking technologies for
+                            functional and analytical purposes.
+                            To improve your browsing experience on our site,
+                            we would also like to place tracking cookies.
+                        {% endblocktrans %}
+                    {% endspaceless %}
+                </p>
+            {% endif %}
         </div>
 
         <div class="action-container">
@@ -33,6 +33,11 @@
                                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                             </li>
                         {% endfor %}
+                        {% if manage_view %}
+                            <li class="manage-link">
+                                <a role="button" href="{% url 'wtm:manage' %}" aria-label="{% trans 'Manage settings' %}" tabindex="0">{% trans "Manage settings" %}</a>
+                            </li>
+                        {% endif %}
                     </ul>
                     <input type="submit" class="button button--green" value="{% trans 'Save' %}" aria-label="{% trans 'Save' %}" tabindex="0" />
                 </form>
@@ -43,6 +48,9 @@
                 <button type="button" class="button button--red js-choice" data-choice="reject" aria-label="{% trans 'Reject' %}" tabindex="0">
                     {% trans "Reject" %}
                 </button>
+                {% if manage_view %}
+                    <a role="button" href="{% url 'wtm:manage' %}" aria-label="{% trans 'Manage settings' %}" tabindex="0">{% trans "Manage settings" %}</a>
+                {% endif %}
             {% endif %}
 
         </div>

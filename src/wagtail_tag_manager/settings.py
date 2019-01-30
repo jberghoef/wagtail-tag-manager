@@ -1,5 +1,10 @@
+from django.apps import apps
 from django.conf import settings
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
+from wagtail.core.fields import RichTextField
+from wagtail.contrib.settings.models import BaseSetting, register_setting
 
 
 class TagTypeSettings:
@@ -40,3 +45,27 @@ class TagTypeSettings:
 
     def result(self):
         return self.SETTINGS
+
+
+class CookieBarSettings(BaseSetting):
+    title = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+        help_text=_(
+            "The title that should appear on the cookie bar. "
+            "Leave empty for the default value."
+        ),
+    )
+    text = RichTextField(
+        null=True,
+        blank=True,
+        help_text=_(
+            "The text that should appear on the cookie bar. "
+            "Leave empty for the default value."
+        ),
+    )
+
+
+if apps.is_installed("wagtail.contrib.settings"):
+    register_setting(model=CookieBarSettings)
