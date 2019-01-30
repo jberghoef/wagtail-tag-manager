@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from selenium import webdriver
 from django.conf import settings
 from django.contrib import messages
+from django.utils.cache import patch_vary_headers
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
@@ -24,9 +25,12 @@ def set_cookie(response, key, value, days_expire=None):
         value,
         max_age=max_age,
         expires=expires,
-        domain=settings.SESSION_COOKIE_DOMAIN,
-        secure=settings.SESSION_COOKIE_SECURE or None,
+        domain=getattr(settings, "SESSION_COOKIE_DOMAIN"),
+        secure=getattr(settings, "SESSION_COOKIE_SECURE", None),
+        httponly=False,
+        samesite="Lax",
     )
+    patch_vary_headers(response, ('Cookie',))
 
     return response
 
