@@ -1,6 +1,6 @@
 {% load i18n %}
 
-{% regroup tags by tag_type as tag_list %}
+{% regroup tags by get_tag_type_display as tag_list %}
 
 <table>
     <thead>
@@ -12,7 +12,7 @@
     <tbody>
         {% for tag_type in tag_list %}
             <tr>
-                <th colspan="2">{{ tag_type.grouper|title }}</th>
+                <th colspan="2">{{ tag_type.grouper }}</th>
             </tr>
             {% for tag in tag_type.list %}
                 <tr>

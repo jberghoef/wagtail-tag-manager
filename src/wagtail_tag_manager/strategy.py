@@ -28,12 +28,12 @@ class TagStrategy(object):
         cookie_name = Tag.get_cookie_name(tag_type)
         cookie = self._cookies.get(cookie_name, None)
 
-        if tag_config == "required":
+        if tag_config.get("value") == "required":
             # Include required instant tags
             # Include required cookie
             self._tags.append((Tag.INSTANT_LOAD, tag_type))
             self.cookies[cookie_name] = "true"
-        elif tag_config == "initial":
+        elif tag_config.get("value") == "initial":
             if not cookie or cookie == "unset":
                 # Include initial cookie
                 self.cookies[cookie_name] = "unset"
@@ -51,7 +51,7 @@ class TagStrategy(object):
         cookie_name = Tag.get_cookie_name(tag_type)
         cookie = self._cookies.get(cookie_name, None)
 
-        if tag_config == "required":
+        if tag_config.get("value") == "required":
             # Include required lazy tags
             # Include required cookie
             if self._consent is None:
@@ -60,7 +60,7 @@ class TagStrategy(object):
                 self.cookies[cookie_name] = "true"
 
         elif self._consent is None:
-            if tag_config == "initial":
+            if tag_config.get("value") == "initial":
                 if cookie == "unset":
                     # Include initial lazy tags
                     # Include initial instant tags
@@ -75,7 +75,7 @@ class TagStrategy(object):
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
 
         elif self._consent is True:
-            if tag_config == "initial":
+            if tag_config.get("value") == "initial":
                 if cookie == "false":
                     # Include initial lazy tags
                     # Include initial instant tags
@@ -101,9 +101,9 @@ class TagStrategy(object):
         cookie_name = Tag.get_cookie_name(tag_type)
         cookie = self._cookies.get(cookie_name, None)
 
-        if tag_config == "required":
+        if tag_config.get("value") == "required":
             return True
-        elif tag_config == "initial":
+        elif tag_config.get("value") == "initial":
             if not cookie or cookie == "unset" or cookie == "true":
                 return True
         else:

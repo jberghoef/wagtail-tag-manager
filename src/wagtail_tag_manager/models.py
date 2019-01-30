@@ -63,7 +63,10 @@ class Tag(models.Model):
 
     tag_type = models.CharField(
         max_length=100,
-        choices=[(key, _(key.title())) for key in TagTypeSettings.all().keys()],
+        choices=[
+            (tag_type, config.get("verbose_name"))
+            for tag_type, config in TagTypeSettings.all().items()
+        ],
         default=list(TagTypeSettings.all())[0],
         help_text=_(
             "The purpose of this tag. Will decide if and when this tag is "
@@ -428,7 +431,10 @@ class CookieDeclaration(models.Model):
 
     cookie_type = models.CharField(
         max_length=10,
-        choices=[(key, _(key.title())) for key in TagTypeSettings.all().keys()],
+        choices=[
+            (tag_type, config.get("verbose_name"))
+            for tag_type, config in TagTypeSettings.all().items()
+        ],
         help_text=_("The type of functionality this cookie supports."),
         null=True,
         blank=True,

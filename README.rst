@@ -235,9 +235,10 @@ Settings
 .. code-block:: python
 
     WTM_TAG_TYPES = {
-        'functional': 'required',
-        'analytical': 'initial',
-        'traceable': '',
+        # key, verbose name, setting
+        "functional": (_("Functional"), "required"),
+        "analytical": (_("Analytical"), "initial"),
+        "traceable": (_("Traceable"), ""),
     }
 
 Allows you to define the tag types available. This can be helpful if you'd like

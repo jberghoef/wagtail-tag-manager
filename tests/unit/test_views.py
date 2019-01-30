@@ -25,7 +25,10 @@ def test_state_view(client):
 
     response = client.get(url)
     assert response.status_code == 200
-    assert json.loads(response.content) == TagTypeSettings.all()
+    assert json.loads(response.content) == {
+        tag_type: config.get("value")
+        for tag_type, config in TagTypeSettings.all().items()
+    }
 
 
 @pytest.mark.django_db

@@ -20,6 +20,7 @@ from wagtail_tag_manager.models import (
     Variable,
     CookieDeclaration,
 )
+from wagtail_tag_manager.settings import TagTypeSettings
 
 
 class ConstantModelAdmin(ModelAdmin):
@@ -59,7 +60,7 @@ class TagModelAdmin(ModelAdmin):
     menu_icon = "code"
     list_display = (
         "name_display",
-        "tag_type",
+        "tag_type_display",
         "tag_loading",
         "tag_location",
         "priority",
@@ -77,6 +78,12 @@ class TagModelAdmin(ModelAdmin):
         return obj.name
 
     name_display.short_description = _("Name")
+
+    def tag_type_display(self, obj):
+        config = TagTypeSettings().get(obj.tag_type)
+        return config.get("verbose_name")
+
+    tag_type_display.short_description = _("Tag type")
 
 
 class TriggerModelAdmin(ModelAdmin):

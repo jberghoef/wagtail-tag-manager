@@ -7,17 +7,24 @@ from wagtail.core.fields import RichTextField
 from wagtail.contrib.settings.models import BaseSetting, register_setting
 
 
+DEFAULT_SETTINGS = {
+    "functional": (_("Functional"), "required"),
+    "analytical": (_("Analytical"), "initial"),
+    "traceable": (_("Traceable"), ""),
+}
+
+
 class TagTypeSettings:
     def __init__(self):
         self.SETTINGS = {}
 
     @staticmethod
     def all():
-        return getattr(
-            settings,
-            "WTM_TAG_TYPES",
-            {"functional": "required", "analytical": "initial", "traceable": ""},
-        )
+        tag_type_settings = getattr(settings, "WTM_TAG_TYPES", DEFAULT_SETTINGS)
+        return {
+            tag_type: {"verbose_name": config[0], "value": config[1]}
+            for tag_type, config in tag_type_settings.items()
+        }
 
     def get(self, tag_type):
         if not tag_type or tag_type not in self.all():
@@ -25,7 +32,13 @@ class TagTypeSettings:
         return self.all().get(tag_type, "")
 
     def include(self, value, *args, **kwargs):
-        self.SETTINGS.update({k: v for k, v in self.all().items() if v == value})
+        self.SETTINGS.update(
+            {
+                tag_type: config
+                for tag_type, config in self.all().items()
+                if config.get("value") == value
+            }
+        )
 
         return self
 
@@ -34,9 +47,9 @@ class TagTypeSettings:
             self.SETTINGS = self.all()
 
         remove = []
-        for k, v in self.SETTINGS.items():
-            if v == value:
-                remove.append(k)
+        for tag_type, config in self.SETTINGS.items():
+            if config.get("value") == value:
+                remove.append(tag_type)
 
         for item in remove:
             self.SETTINGS.pop(item, None)
