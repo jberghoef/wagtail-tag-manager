@@ -62,7 +62,7 @@ class Tag(models.Model):
     )
 
     tag_type = models.CharField(
-        max_length=10,
+        max_length=100,
         choices=[(key, _(key.title())) for key in TagTypeSettings.all().keys()],
         default=list(TagTypeSettings.all())[0],
         help_text=_(
