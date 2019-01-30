@@ -1,3 +1,8 @@
+0.10.0 (2019.1.30)
+==================
+ - Include translatable verbose names (#20)
+
+
 0.9.1 (2019.1.30)
 ================
  - Fix the cookie bar setting context implementation
