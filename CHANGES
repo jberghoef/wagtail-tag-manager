@@ -1,3 +1,8 @@
+0.9.1 (2019.1.30)
+================
+ - Fix the cookie bar setting context implementation
+
+
 0.9.0 (2019.1.30)
 ================
  - Allow configuration of the cookie bar from the settings
