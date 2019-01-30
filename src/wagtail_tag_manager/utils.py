@@ -30,7 +30,7 @@ def set_cookie(response, key, value, days_expire=None):
         httponly=False,
         samesite="Lax",
     )
-    patch_vary_headers(response, ('Cookie',))
+    patch_vary_headers(response, ("Cookie",))
 
     return response
 

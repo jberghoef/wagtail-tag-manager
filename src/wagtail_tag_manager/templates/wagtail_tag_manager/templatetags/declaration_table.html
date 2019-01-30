@@ -1,6 +1,6 @@
 {% load i18n %}
 
-{% regroup declarations by cookie_type as declaration_list %}
+{% regroup declarations by get_cookie_type_display as declaration_list %}
 
 <table>
     <thead>
@@ -17,7 +17,7 @@
             <tr>
                 <th colspan="5">
                     {% if cookie_type.grouper %}
-                        {{ cookie_type.grouper|title }}
+                        {{ cookie_type.grouper }}
                     {% else %}
                         {% trans "Unclassified" %}
                     {% endif %}
