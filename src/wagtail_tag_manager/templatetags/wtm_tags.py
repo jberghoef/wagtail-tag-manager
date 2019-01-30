@@ -113,6 +113,7 @@ def wtm_cookie_bar(context, include_form=False):
             "include_form": include_form,
             "form": ConsentForm(initial=cookie_state),
             "settings": cookie_bar_settings,
+            "declarations": CookieDeclaration.objects.all().sorted(),
         }
     return ""
 

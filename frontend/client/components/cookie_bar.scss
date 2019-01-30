@@ -16,7 +16,7 @@ $tablet-bp: 576px;
   border-bottom: 1px solid #eee !important;
   z-index: 1 !important;
 
-  &.hidden {
+  .hidden {
     display: none !important;
   }
 
@@ -152,6 +152,14 @@ $tablet-bp: 576px;
           }
         }
       }
+    }
+  }
+
+  .declaration-container {
+    .declaration__type-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
     }
   }
 }

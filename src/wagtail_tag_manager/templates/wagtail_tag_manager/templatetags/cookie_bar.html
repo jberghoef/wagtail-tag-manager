@@ -54,6 +54,48 @@
             {% endif %}
 
         </div>
+
+        {% if declarations|length %}
+            <div class="declaration-container">
+                {% regroup declarations by cookie_type as declaration_list %}
+                <ul class="declaration__type-list">
+                    {% for cookie_type in declaration_list %}
+                        <li>
+                            <a href="#{{ cookie_type.grouper|default:"unclassified"|slugify }}" class="js-declaration-choice{% if forloop.first %} active{% endif %}">{% spaceless %}
+                                {% if cookie_type.grouper %}{{ cookie_type.grouper|title }}{% else %}{% trans "Unclassified" %}{% endif %}
+                            {% endspaceless %}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="declaration__tables">
+                    {% for cookie_type in declaration_list %}
+                        <table id="{{ cookie_type.grouper|default:"unclassified"|slugify }}" class="declaration__table js-declaration-table{% if not forloop.first %} hidden{% endif %}">
+                            <thead>
+                                <tr>
+                                    <th>{% trans "Name" %}</th>
+                                    <th>{% trans "Domain" %}</th>
+                                    <th>{% trans "Purpose" %}</th>
+                                    <th>{% trans "Expiration" %}</th>
+                                    <th>{% trans "Security" %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cookie in cookie_type.list %}
+                                    <tr>
+                                        <td>{{ cookie.name }}</td>
+                                        <td>{{ cookie.domain }}</td>
+                                        <td>{{ cookie.purpose }}</td>
+                                        <td>{{ cookie.expiration }}</td>
+                                        <td>{{ cookie.get_security_display }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock content %}

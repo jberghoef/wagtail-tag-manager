@@ -676,7 +676,7 @@
   background-color: #fff !important;
   border-bottom: 1px solid #eee !important;
   z-index: 1 !important; }
-  #wtm_cookie_bar.hidden {
+  #wtm_cookie_bar .hidden {
     display: none !important; }
   #wtm_cookie_bar .inner {
     max-width: 640px !important;
@@ -767,4 +767,8 @@
             font-size: 12px !important;
             font-weight: bold !important;
             cursor: pointer !important; }
+  #wtm_cookie_bar .declaration-container .declaration__type-list {
+    list-style: none;
+    margin: 0;
+    padding: 0; }
 
