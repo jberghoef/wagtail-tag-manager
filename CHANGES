@@ -1,3 +1,8 @@
+0.9.0 (2019.1.30)
+================
+ - Allow configuration of the cookie bar from the settings
+
+
 0.8.2 (2019.1.28)
 ================
  - Revert wrongly bumped dependency
