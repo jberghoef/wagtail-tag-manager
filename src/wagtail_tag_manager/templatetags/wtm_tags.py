@@ -103,7 +103,9 @@ def wtm_cookie_bar(context, include_form=False):
     request = context.get("request")
     cookie_state = TagStrategy(request).cookie_state
 
-    cookie_bar_settings = CookieBarSettings.for_site(request.site)
+    cookie_bar_settings = {}
+    if hasattr(request, "site"):
+        cookie_bar_settings = CookieBarSettings.for_site(request.site)
 
     return {
         "manage_view": getattr(settings, "WTM_MANAGE_VIEW", True),
