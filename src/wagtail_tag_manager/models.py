@@ -129,6 +129,12 @@ class Tag(models.Model):
 
         self.content = BeautifulSoup(self.content, "html.parser").prettify()
 
+        try:
+            template = Template(self.content)
+            template.render()
+        except Exception as error:
+            raise ValidationError({"content": error})
+
         return self
 
     def save(
