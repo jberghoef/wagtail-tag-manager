@@ -1,3 +1,8 @@
+0.10.4 (2019.1.31)
+==================
+ - Safer attribute usage for request and response objects
+
+
 0.10.3 (2019.1.31)
 ==================
  - Add empty context to tag content validator
