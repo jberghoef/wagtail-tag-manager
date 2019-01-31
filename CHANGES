@@ -1,3 +1,8 @@
+0.10.1 (2019.1.31)
+==================
+ - Add fallback for get_cookie variable function
+
+
 0.10.0 (2019.1.30)
 ==================
  - Include translatable verbose names (#20)
