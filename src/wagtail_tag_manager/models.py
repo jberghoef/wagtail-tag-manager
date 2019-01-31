@@ -131,7 +131,7 @@ class Tag(models.Model):
 
         try:
             template = Template(self.content)
-            template.render()
+            template.render(Context())
         except Exception as error:
             raise ValidationError({"content": error})
 
