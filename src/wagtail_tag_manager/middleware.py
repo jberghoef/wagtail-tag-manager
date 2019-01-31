@@ -19,8 +19,8 @@ class TagManagerMiddleware:
 
         if (
             not hasattr(self.request, "wtm_injected")  # Only once per request
-            and self.request.method == "GET"
-            and self.response.status_code == 200
+            and getattr(self.request, "method", None) == "GET"
+            and getattr(self.response, "status_code", None) == 200
             and isinstance(self.response, TemplateResponse)
         ):
             self.strategy = TagStrategy(request)

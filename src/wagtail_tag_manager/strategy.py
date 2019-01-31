@@ -9,13 +9,13 @@ class TagStrategy(object):
         self._consent = consent
         self._context = Tag.create_context(request)
 
-        self._cookies = request.COOKIES
+        self._cookies = getattr(request, "COOKIES", {})
         self._config = TagTypeSettings.all()
         self._tags = []
-
         self.cookies = {}
 
-        self.define_strategy()
+        if request:
+            self.define_strategy()
 
     # https://gist.github.com/jberghoef/9ffa2b738cbb0aab624ff091dc6fe9a7
     def define_strategy(self):

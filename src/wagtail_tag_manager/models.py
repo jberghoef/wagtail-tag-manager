@@ -322,8 +322,8 @@ class Variable(models.Model):
         }
 
     def get_repath(self, request):
-        path = request.path
-        if self.value:
+        path = getattr(request, "path", None)
+        if path and self.value:
             regex = re.compile(self.value)
             match = regex.search(request.get_full_path())
             if match:
@@ -426,7 +426,9 @@ class Trigger(models.Model):
     ]
 
     def match(self, request):
-        return re.search(self.pattern, request.get_full_path())
+        if request:
+            return re.search(self.pattern, request.get_full_path())
+        return False
 
     def __str__(self):
         return self.name

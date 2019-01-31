@@ -10,7 +10,7 @@ def lazy_endpoint(request):
     data = {"tags": []}
     response = JsonResponse(data)
 
-    if request.method == "POST" and request.body:
+    if getattr(request, "method", None) == "POST" and hasattr(request, "body"):
         try:
             payload = json.loads(request.body)
         except json.JSONDecodeError:

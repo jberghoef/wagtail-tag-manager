@@ -100,19 +100,21 @@ def wtm_lazy_manager():
     "wagtail_tag_manager/templatetags/cookie_bar.html", takes_context=True
 )
 def wtm_cookie_bar(context, include_form=False):
-    request = context.get("request")
-    cookie_state = TagStrategy(request).cookie_state
+    request = context.get("request", None)
+    if request:
+        cookie_state = TagStrategy(request).cookie_state
 
-    cookie_bar_settings = {}
-    if getattr(request, "site", None):
-        cookie_bar_settings = CookieBarSettings.for_site(request.site)
+        cookie_bar_settings = {}
+        if getattr(request, "site", None):
+            cookie_bar_settings = CookieBarSettings.for_site(request.site)
 
-    return {
-        "manage_view": getattr(settings, "WTM_MANAGE_VIEW", True),
-        "include_form": include_form,
-        "form": ConsentForm(initial=cookie_state),
-        "settings": cookie_bar_settings,
-    }
+        return {
+            "manage_view": getattr(settings, "WTM_MANAGE_VIEW", True),
+            "include_form": include_form,
+            "form": ConsentForm(initial=cookie_state),
+            "settings": cookie_bar_settings,
+        }
+    return ""
 
 
 @register.inclusion_tag(
@@ -120,9 +122,10 @@ def wtm_cookie_bar(context, include_form=False):
 )
 def wtm_manage_form(context):
     request = context.get("request")
-    cookie_state = TagStrategy(request).cookie_state
-
-    return {"form": ConsentForm(initial=cookie_state)}
+    if request:
+        cookie_state = TagStrategy(request).cookie_state
+        return {"form": ConsentForm(initial=cookie_state)}
+    return ""
 
 
 @register.inclusion_tag(
