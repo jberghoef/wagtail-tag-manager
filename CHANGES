@@ -1,3 +1,8 @@
+0.10.2 (2019.1.31)
+==================
+ - Add tag content validation to check the template
+
+
 0.10.1 (2019.1.31)
 ==================
  - Add fallback for get_cookie variable function
