@@ -326,7 +326,9 @@ class Variable(models.Model):
         return path
 
     def get_cookie(self, request):
-        return request.COOKIES.get(self.value, "")
+        if request and hasattr(request, "COOKIES"):
+            return request.COOKIES.get(self.value, "")
+        return ""
 
     def get_random(self, request):
         return int(random.random() * 2_147_483_647)
