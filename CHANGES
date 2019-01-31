@@ -1,3 +1,8 @@
+0.10.3 (2019.1.31)
+==================
+ - Add empty context to tag content validator
+
+
 0.10.2 (2019.1.31)
 ==================
  - Add tag content validation to check the template
