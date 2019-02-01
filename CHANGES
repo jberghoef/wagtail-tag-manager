@@ -1,3 +1,9 @@
+0.11.0 (2019.2.1)
+=================
+ - Add declaration table to cookie bar
+ - Update screenshots and README
+
+
 0.10.4 (2019.1.31)
 ==================
  - Safer attribute usage for request and response objects
