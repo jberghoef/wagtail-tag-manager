@@ -133,6 +133,8 @@ You can choose to include the cookie bar template tag:
 
 .. image:: cookie-bar-without-form.png
 
+.. image:: cookie-bar-without-form-and-details.png
+
 .. code-block:: html+django
 
     {% load wtm_tags %}
@@ -145,6 +147,8 @@ You can choose to include the cookie bar template tag:
 Or the cookie bar with included form:
 
 .. image:: cookie-bar-with-form.png
+
+.. image:: cookie-bar-with-form-and-details.png
 
 .. code-block:: html+django
 
