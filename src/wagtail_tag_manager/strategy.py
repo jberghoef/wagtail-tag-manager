@@ -4,9 +4,8 @@ from wagtail_tag_manager.models import Tag, Trigger, TagTypeSettings
 
 
 class TagStrategy(object):
-    def __init__(self, request, consent=None):
+    def __init__(self, request):
         self._request = request
-        self._consent = consent
         self._context = Tag.create_context(request)
 
         self._cookies = getattr(request, "COOKIES", {})
@@ -54,12 +53,11 @@ class TagStrategy(object):
         if tag_config.get("value") == "required":
             # Include required lazy tags
             # Include required cookie
-            if self._consent is None:
-                self._tags.append((Tag.LAZY_LOAD, tag_type))
+            self._tags.append((Tag.LAZY_LOAD, tag_type))
             if cookie != "true":
                 self.cookies[cookie_name] = "true"
 
-        elif self._consent is None:
+        else:
             if tag_config.get("value") == "initial":
                 if cookie == "unset":
                     # Include initial lazy tags
@@ -73,29 +71,6 @@ class TagStrategy(object):
                 if cookie == "true":
                     # Include generic lazy tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
-
-        elif self._consent is True:
-            if tag_config.get("value") == "initial":
-                if cookie == "false":
-                    # Include initial lazy tags
-                    # Include initial instant tags
-                    # Include initial cookie
-                    self._tags.append((Tag.LAZY_LOAD, tag_type))
-                    self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                self.cookies[cookie_name] = "true"
-            else:
-                if cookie == "true":
-                    pass
-                else:
-                    # Include generic lazy tags
-                    # Include generic instant tags
-                    # Include generic cookie
-                    self._tags.append((Tag.LAZY_LOAD, tag_type))
-                    self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                    self.cookies[cookie_name] = "true"
-
-        elif self._consent is False:
-            self.cookies[cookie_name] = "false"
 
     def should_include(self, tag_type, tag_config):
         cookie_name = Tag.get_cookie_name(tag_type)

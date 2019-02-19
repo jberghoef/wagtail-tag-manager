@@ -80,10 +80,7 @@ class CookieBarSettings(BaseSetting):
         ),
     )
 
-    panels = [
-        FieldPanel("title", classname="full title"),
-        FieldPanel("text"),
-    ]
+    panels = [FieldPanel("title", classname="full title"), FieldPanel("text")]
 
 
 if apps.is_installed("wagtail.contrib.settings"):

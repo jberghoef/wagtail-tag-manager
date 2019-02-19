@@ -24,53 +24,30 @@
         <input id="declaration-checkbox" type="checkbox" name="checkbox"/>
 
         <div class="action-container">
-
-            {% if include_form %}
-                <form class="form js-form" action="{% url 'wtm:manage' %}" method="POST">
-                    {% csrf_token %}
-                    <ul class="form__list">
-                        {% for field in form %}
-                            <li>
-                                {{ field }}
-                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                            </li>
-                        {% endfor %}
-                        {% if manage_view %}
-                            <li class="manage-link">
-                                <a role="button" href="{% url 'wtm:manage' %}" aria-label="{% trans 'Manage settings' %}" tabindex="0">{% trans "Manage settings" %}</a>
-                            </li>
-                        {% endif %}
-                        {% if declarations|length %}
-                            <li class="detail-link">
-                                <label role="button" for="declaration-checkbox" aria-label="{% trans 'Show details' %}" tabindex="0">
-                                    <span data-label-show="{% trans 'Show details' %} &#9661;" data-label-hide="{% trans 'Hide details' %} &#9651;"></span>
-                                </label>
-                            </li>
-                        {% endif %}
-                    </ul>
-                    <input type="submit" class="button button--green" value="{% trans 'Save' %}" aria-label="{% trans 'Save' %}" tabindex="0" />
-                </form>
-            {% else %}
-                <button type="button" class="button button--green js-choice" data-choice="accept" aria-label="{% trans 'Accept' %}" tabindex="0">
-                    {% trans "Accept" %}
-                </button>
-                <button type="button" class="button button--red js-choice" data-choice="reject" aria-label="{% trans 'Reject' %}" tabindex="0">
-                    {% trans "Reject" %}
-                </button>
-                {% if manage_view %}
-                    <span class="manage-link">
-                        <a role="button" href="{% url 'wtm:manage' %}" aria-label="{% trans 'Manage settings' %}" tabindex="0">{% trans "Manage settings" %}</a>
-                    </span>
-                {% endif %}
-                {% if declarations|length %}
-                    <span class="detail-link">
-                        <label role="button" for="declaration-checkbox" aria-label="{% trans 'Show details' %}" tabindex="0">
-                            <span data-label-show="{% trans 'Show details' %} &#9661;" data-label-hide="{% trans 'Hide details' %} &#9651;"></span>
-                        </label>
-                    </span>
-                {% endif %}
-            {% endif %}
-
+            <form class="form" action="{% url 'wtm:manage' %}" method="POST">
+                {% csrf_token %}
+                <ul class="form__list">
+                    {% for field in form %}
+                        <li>
+                            {{ field }}
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        </li>
+                    {% endfor %}
+                    {% if manage_view %}
+                        <li class="manage-link">
+                            <a role="button" href="{% url 'wtm:manage' %}" aria-label="{% trans 'Manage settings' %}" tabindex="0">{% trans "Manage settings" %}</a>
+                        </li>
+                    {% endif %}
+                    {% if declarations|length %}
+                        <li class="detail-link">
+                            <label role="button" for="declaration-checkbox" aria-label="{% trans 'Show details' %}" tabindex="0">
+                                <span data-label-show="{% trans 'Show details' %} &#9661;" data-label-hide="{% trans 'Hide details' %} &#9651;"></span>
+                            </label>
+                        </li>
+                    {% endif %}
+                </ul>
+                <input type="submit" class="button button--green" value="{% trans 'Save' %}" aria-label="{% trans 'Save' %}" tabindex="0" />
+            </form>
         </div>
 
         {% if declarations|length %}

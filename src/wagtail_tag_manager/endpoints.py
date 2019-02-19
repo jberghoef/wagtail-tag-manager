@@ -16,12 +16,10 @@ def lazy_endpoint(request):
         except json.JSONDecodeError:
             return HttpResponseBadRequest()
 
-        consent = payload.get("consent", None)
-
         request.path = payload.get("pathname", request.path)
         request.META["QUERY_STRING"] = payload.get("search", "")
 
-        strategy = TagStrategy(request, consent)
+        strategy = TagStrategy(request)
 
         for cookie_name, value in strategy.cookies.items():
             set_cookie(response, cookie_name, value)
