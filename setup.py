@@ -9,20 +9,20 @@ install_requires = [
 ]
 
 tests_require = [
-    "factory_boy==2.7.0",
-    "fake-factory==0.7.4",
+    "factory_boy==2.11.1",
+    "Faker==1.0.2",
     "flake8-blind-except",
     "flake8-debugger",
     "flake8-imports",
-    "flake8==3.4.1",
-    "freezegun==0.3.8",
-    "pycodestyle==2.3.1",
-    "pytest-cov==2.4.0",
-    "pytest-django==3.1.2",
-    "pytest-pythonpath==0.7.2",
-    "pytest-sugar==0.8.0",
-    "pytest==3.1.0",
-    "wagtail_factories==1.0.0",
+    "flake8==3.7.6",
+    "freezegun==0.3.11",
+    "pycodestyle==2.5.0",
+    "pytest-cov==2.6.1",
+    "pytest-django==3.4.7",
+    "pytest-pythonpath==0.7.3",
+    "pytest-sugar==0.9.2",
+    "pytest==4.3.0",
+    "wagtail_factories==1.1.0",
 ]
 
 docs_require = ["sphinx>=1.4.0"]
