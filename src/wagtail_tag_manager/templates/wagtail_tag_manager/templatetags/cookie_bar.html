@@ -21,6 +21,8 @@
             {% endif %}
         </div>
 
+        <input id="declaration-checkbox" type="checkbox" name="checkbox"/>
+
         <div class="action-container">
 
             {% if include_form %}
@@ -40,7 +42,9 @@
                         {% endif %}
                         {% if declarations|length %}
                             <li class="detail-link">
-                                <label class="js-declaration-toggle" role="button" for="declaration-checkbox" aria-label="{% trans 'Show details' %}" tabindex="0" data-label-show="{% trans 'Show details' %}" data-label-hide="{% trans 'Hide details' %}">{% trans "Show details" %}</label>
+                                <label role="button" for="declaration-checkbox" aria-label="{% trans 'Show details' %}" tabindex="0">
+                                    <span data-label-show="{% trans 'Show details' %} &#9661;" data-label-hide="{% trans 'Hide details' %} &#9651;"></span>
+                                </label>
                             </li>
                         {% endif %}
                     </ul>
@@ -60,7 +64,9 @@
                 {% endif %}
                 {% if declarations|length %}
                     <span class="detail-link">
-                        <label class="js-declaration-toggle" role="button" for="declaration-checkbox" aria-label="{% trans 'Show details' %}" tabindex="0" data-label-show="{% trans 'Show details' %}" data-label-hide="{% trans 'Hide details' %}">{% trans "Show details" %}</label>
+                        <label role="button" for="declaration-checkbox" aria-label="{% trans 'Show details' %}" tabindex="0">
+                            <span data-label-show="{% trans 'Show details' %} &#9661;" data-label-hide="{% trans 'Hide details' %} &#9651;"></span>
+                        </label>
                     </span>
                 {% endif %}
             {% endif %}
@@ -68,22 +74,26 @@
         </div>
 
         {% if declarations|length %}
-            <input id="declaration-checkbox" class="js-declaration-checkbox" type="checkbox" name="checkbox"/>
             <div class="declaration-container">
                 {% regroup declarations by cookie_type as declaration_list %}
-                <ul class="declaration__type-list">
-                    {% for cookie_type in declaration_list %}
-                        <li>
-                            <a href="#{{ cookie_type.grouper|default:"unclassified"|slugify }}" class="js-declaration-choice{% if forloop.first %} active{% endif %}">{% spaceless %}
-                                {% if cookie_type.grouper %}{{ cookie_type.grouper|title }}{% else %}{% trans "Unclassified" %}{% endif %}
-                            {% endspaceless %}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
 
-                <div class="declaration__tables">
-                    {% for cookie_type in declaration_list %}
-                        <table id="{{ cookie_type.grouper|default:"unclassified"|slugify }}" class="declaration__table js-declaration-table{% if not forloop.first %} hidden{% endif %}">
+                {% for cookie_type in declaration_list %}{% spaceless %}
+                    {% with cookie_type.grouper|default:'unclassified'|slugify as grouper %}
+                        <input id="{{ grouper }}" type="radio" name="declaration-tabs"{% if forloop.first %} checked{% endif %} />
+                        <label for="{{ grouper }}">
+                            {% if cookie_type.grouper %}{{ cookie_type.grouper|title }}{% else %}{% trans "Unclassified" %}{% endif %}
+                        </label>
+
+                        <style scoped>
+                            #{{ grouper }}-table { display: none !important; }
+                            #{{ grouper }}:checked ~ #{{ grouper }}-table { display: block !important; }
+                        </style>
+                    {% endwith %}
+                {% endspaceless %}{% endfor %}
+
+                {% for cookie_type in declaration_list %}
+                    {% with cookie_type.grouper|default:'unclassified'|slugify as grouper %}
+                        <table id="{{ grouper }}-table" class="declaration-table">
                             <tbody>
                                 <tr>
                                     <th>{% trans "Name" %}</th>
@@ -103,8 +113,9 @@
                                 {% endfor %}
                             </tbody>
                         </table>
-                    {% endfor %}
-                </div>
+                    {% endwith %}
+                {% endfor %}
+
             </div>
         {% endif %}
     </div>

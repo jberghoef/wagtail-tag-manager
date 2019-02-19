@@ -56,6 +56,11 @@ $tablet-bp: 576px;
           cursor: pointer !important;
         }
       }
+
+      .detail-link label[for="declaration-checkbox"] span:before {
+        content: attr(data-label-show) " " !important;
+        cursor: pointer !important;
+      }
     }
 
     .button {
@@ -174,7 +179,7 @@ $tablet-bp: 576px;
 
   .declaration-container {
     display: none !important;
-    margin-top: 15px !important;
+    margin: 15px 0 0 1px !important;
     background-color: rgb(245, 245, 245) !important;
     font-size: 14px !important;
     border-left: 1px solid #eee !important;
@@ -182,76 +187,63 @@ $tablet-bp: 576px;
     border-bottom: 1px solid #eee !important;
     width: 100% !important;
 
-    .declaration__type-list {
-      display: flex !important;
-      list-style: none !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border-top: 1px solid #eee !important;
-      overflow: auto !important;
+    label {
+      display: inline-block !important;
+      margin: 0 0 0 -1px !important;
+      padding: 8px !important;
+      background-color: rgb(245, 245, 245) !important;
+      text-decoration: none !important;
+      color: #000 !important;
+      border: 1px solid #eee !important;
+      cursor: pointer !important;
 
-      li {
-        margin: 0 !important;
-        padding: 0 !important;
-
-        &:not(:first-child) {
-          border-left: 1px solid #eee !important;
-        }
-
-        &:last-child {
-          border-right: 1px solid #eee !important;
-        }
-
-        a {
-          display: block !important;
-          padding: 8px !important;
-          background-color: rgb(245, 245, 245) !important;
-          text-decoration: none !important;
-          color: #000 !important;
-
-          &.active {
-            background-color: #fff !important;
-          }
-        }
+      @media screen and (max-width: $mobile-bp) {
+        box-sizing: border-box !important;
+        width: calc(50% + 1px) !important;
       }
     }
 
-    .declaration__tables {
-      display: block !important;
+    input {
+      display: none !important;
+
+      &:checked + label {
+        background-color: #fff !important;
+        border-bottom: 1px solid #fff !important;
+      }
+    }
+
+    .declaration-table {
+      box-sizing: border-box !important;
+      width: 100% !important;
+      table-layout: fixed !important;
       background-color: #fff !important;
 
-      table {
-        box-sizing: border-box !important;
+      tbody {
         width: 100% !important;
-        table-layout: fixed !important;
+        display: block !important;
+        overflow: auto !important;
+      }
 
-        tbody {
-          width: 100% !important;
-          display: block !important;
-          overflow: auto !important;
+      tr {
+        &:not(:first-child) {
+          border-top: 1px solid #eee !important;
         }
 
-        tr {
+        th,
+        td {
+          padding: 4px 8px !important;
+
           &:not(:first-child) {
-            border-top: 1px solid #eee !important;
+            border-left: 1px solid #eee !important;
           }
 
-          th,
-          td {
-            padding: 4px 8px !important;
-
-            &:not(:first-child) {
-              border-left: 1px solid #eee !important;
-            }
-
-            &:last-child {
-              border-right: 1px solid #eee !important;
-            }
+          &:last-child {
+            border-right: 1px solid #eee !important;
           }
+        }
 
-          th {
-            font-weight: bold !important;
-          }
+        th {
+          font-weight: bold !important;
         }
       }
     }
@@ -263,7 +255,13 @@ $tablet-bp: 576px;
     top: -9999px !important;
   }
 
-  #declaration-checkbox:checked + .declaration-container {
-    display: block !important;
+  #declaration-checkbox:checked {
+    & ~ .declaration-container {
+      display: block !important;
+    }
+
+    & ~ .action-container .detail-link label[for="declaration-checkbox"] span:before {
+      content: attr(data-label-hide) " " !important;
+    }
   }
 }
