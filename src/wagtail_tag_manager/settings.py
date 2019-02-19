@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.core.fields import RichTextField
 from wagtail.contrib.settings.models import BaseSetting, register_setting
 
@@ -78,6 +79,11 @@ class CookieBarSettings(BaseSetting):
             "Leave empty for the default value."
         ),
     )
+
+    panels = [
+        FieldPanel("title", classname="full title"),
+        FieldPanel("text"),
+    ]
 
 
 if apps.is_installed("wagtail.contrib.settings"):
