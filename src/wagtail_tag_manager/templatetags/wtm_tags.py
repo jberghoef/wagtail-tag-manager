@@ -108,16 +108,18 @@ def wtm_cookie_bar(context, include_form=False):
         if getattr(request, "site", None):
             cookie_bar_settings = CookieBarSettings.for_site(request.site)
 
-        return context.update(
-            {
-                "manage_view": getattr(settings, "WTM_MANAGE_VIEW", True)
-                and request.resolver_match.view_name != "wtm:manage",
-                "include_form": include_form,
-                "form": ConsentForm(initial=cookie_state),
-                "settings": cookie_bar_settings,
-                "declarations": CookieDeclaration.objects.all().sorted(),
-            }
-        )
+        manage_view = getattr(settings, "WTM_MANAGE_VIEW", True)
+        if manage_view and hasattr(request, "resolver_match"):
+            manage_view = getattr(request.resolver_match, "view_name", "") != "wtm:manage"
+
+        return {
+            "manage_view": manage_view,
+            "include_form": include_form,
+            "form": ConsentForm(initial=cookie_state),
+            "settings": cookie_bar_settings,
+            "declarations": CookieDeclaration.objects.all().sorted(),
+        }
+
     return ""
 
 
