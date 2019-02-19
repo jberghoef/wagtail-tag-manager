@@ -129,23 +129,6 @@ Template tags
 
 **wtm_cookie_bar**
 
-You can choose to include the cookie bar template tag:
-
-.. image:: cookie-bar-without-form.png
-
-.. image:: cookie-bar-without-form-and-details.png
-
-.. code-block:: html+django
-
-    {% load wtm_tags %}
-
-    <body>
-        {% wtm_cookie_bar %}
-        ...
-    </body>
-
-Or the cookie bar with included form:
-
 .. image:: cookie-bar-with-form.png
 
 .. image:: cookie-bar-with-form-and-details.png
@@ -155,7 +138,7 @@ Or the cookie bar with included form:
     {% load wtm_tags %}
 
     <body>
-        {% wtm_cookie_bar include_form=True %}
+        {% wtm_cookie_bar %}
         ...
     </body>
 

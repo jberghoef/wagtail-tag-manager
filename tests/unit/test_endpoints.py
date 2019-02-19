@@ -47,38 +47,6 @@ def test_lazy_cookies(client, site):
     assert "wtm_analytical" not in response.cookies
     assert "wtm_traceable" not in response.cookies
 
-    client.cookies["wtm_functional"] = "false"
-    response = client.post(
-        "/wtm/lazy/", json.dumps({"consent": False}), content_type="application/json"
-    )
-    data = response.json()
-
-    assert response.status_code == 200
-    assert "tags" in data
-
-    assert "wtm_functional" in response.cookies
-    assert response.cookies.get("wtm_functional").value == "true"
-    assert "wtm_analytical" in response.cookies
-    assert response.cookies.get("wtm_analytical").value == "false"
-    assert "wtm_traceable" in response.cookies
-    assert response.cookies.get("wtm_traceable").value == "false"
-
-    client.cookies["wtm_functional"] = "false"
-    response = client.post(
-        "/wtm/lazy/", json.dumps({"consent": True}), content_type="application/json"
-    )
-    data = response.json()
-
-    assert response.status_code == 200
-    assert "tags" in data
-
-    assert "wtm_functional" in response.cookies
-    assert response.cookies.get("wtm_functional").value == "true"
-    assert "wtm_analytical" in response.cookies
-    assert response.cookies.get("wtm_analytical").value == "true"
-    assert "wtm_traceable" in response.cookies
-    assert response.cookies.get("wtm_traceable").value == "true"
-
 
 @pytest.mark.django_db
 def test_required_lazy_cookies(client, site):
@@ -92,19 +60,6 @@ def test_required_lazy_cookies(client, site):
     assert response.status_code == 200
     assert "tags" in data
     assert len(data["tags"]) == 1
-
-    assert "wtm_functional" in response.cookies
-    assert response.cookies.get("wtm_functional").value == "true"
-
-    client.cookies["wtm_functional"] = "false"
-    response = client.post(
-        "/wtm/lazy/", json.dumps({"consent": False}), content_type="application/json"
-    )
-    data = response.json()
-
-    assert response.status_code == 200
-    assert "tags" in data
-    assert len(data["tags"]) == 0
 
     assert "wtm_functional" in response.cookies
     assert response.cookies.get("wtm_functional").value == "true"
@@ -126,30 +81,6 @@ def test_initial_lazy_cookies(client, site):
     assert "tags" in data
     assert len(data["tags"]) == 2
 
-    response = client.post(
-        "/wtm/lazy/", json.dumps({"consent": False}), content_type="application/json"
-    )
-    data = response.json()
-
-    assert response.status_code == 200
-    assert "tags" in data
-    assert len(data["tags"]) == 0
-
-    assert "wtm_analytical" in response.cookies
-    assert response.cookies.get("wtm_analytical").value == "false"
-
-    response = client.post(
-        "/wtm/lazy/", json.dumps({"consent": True}), content_type="application/json"
-    )
-    data = response.json()
-
-    assert response.status_code == 200
-    assert "tags" in data
-    assert len(data["tags"]) == 2
-
-    assert "wtm_analytical" in response.cookies
-    assert response.cookies.get("wtm_analytical").value == "true"
-
 
 @pytest.mark.django_db
 def test_generic_lazy_cookies(client, site):
@@ -164,30 +95,6 @@ def test_generic_lazy_cookies(client, site):
     assert response.status_code == 200
     assert "tags" in data
     assert len(data["tags"]) == 0
-
-    response = client.post(
-        "/wtm/lazy/", json.dumps({"consent": False}), content_type="application/json"
-    )
-    data = response.json()
-
-    assert response.status_code == 200
-    assert "tags" in data
-    assert len(data["tags"]) == 0
-
-    assert "wtm_traceable" in response.cookies
-    assert response.cookies.get("wtm_traceable").value == "false"
-
-    response = client.post(
-        "/wtm/lazy/", json.dumps({"consent": True}), content_type="application/json"
-    )
-    data = response.json()
-
-    assert response.status_code == 200
-    assert "tags" in data
-    assert len(data["tags"]) == 2
-
-    assert "wtm_traceable" in response.cookies
-    assert response.cookies.get("wtm_traceable").value == "true"
 
 
 @pytest.mark.django_db
@@ -261,12 +168,12 @@ def test_passive_tags(client, site):
 
     response = client.post(
         "/wtm/lazy/",
-        json.dumps({"consent": "true", "pathname": "/", "search": "?state=3"}),
+        json.dumps({"pathname": "/", "search": "?state=3"}),
         content_type="application/json",
     )
     data = response.json()
 
     assert response.status_code == 200
     assert "tags" in data
-    assert len(data["tags"]) == 3
-    assert 'console.log("3")' in data["tags"][2]["string"]
+    assert len(data["tags"]) == 2
+    assert 'console.log("3")' in data["tags"][1]["string"]

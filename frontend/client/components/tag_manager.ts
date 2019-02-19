@@ -85,7 +85,7 @@ export default class TagManager {
     return true;
   }
 
-  loadData(consent: boolean = undefined) {
+  loadData() {
     fetch(this.lazyUrl, {
       method: "POST",
       mode: "cors",
@@ -97,10 +97,7 @@ export default class TagManager {
       },
       redirect: "follow",
       referrer: "no-referrer",
-      body: JSON.stringify({
-        consent,
-        ...window.location
-      })
+      body: JSON.stringify({ ...window.location })
     })
       .then(response => response.json())
       .then(json => {

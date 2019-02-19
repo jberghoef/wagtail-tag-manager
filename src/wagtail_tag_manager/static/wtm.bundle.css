@@ -719,24 +719,14 @@
       background: none !important;
       border: none !important;
       text-decoration: none !important;
-      border-radius: 3px !important; }
+      border-radius: 3px !important;
+      background-color: #009600 !important; }
+      #wtm_cookie_bar .inner .button:hover, #wtm_cookie_bar .inner .button:focus {
+        background-color: #00af00 !important; }
       #wtm_cookie_bar .inner .button:hover {
         text-decoration: none !important; }
       #wtm_cookie_bar .inner .button:not(:last-child) {
         margin: 0 12px 0 0 !important; }
-      #wtm_cookie_bar .inner .button--green {
-        background-color: #009600 !important; }
-        #wtm_cookie_bar .inner .button--green:hover, #wtm_cookie_bar .inner .button--green:focus {
-          background-color: #00af00 !important; }
-      #wtm_cookie_bar .inner .button--red {
-        background-color: #960000 !important; }
-        #wtm_cookie_bar .inner .button--red:hover, #wtm_cookie_bar .inner .button--red:focus {
-          background-color: #af0000 !important; }
-      #wtm_cookie_bar .inner .button--transparant {
-        color: black !important;
-        background-color: #f0f0f0 !important; }
-        #wtm_cookie_bar .inner .button--transparant:hover, #wtm_cookie_bar .inner .button--transparant:focus {
-          background-color: #d7d7d7 !important; }
     #wtm_cookie_bar .inner .form {
       display: flex !important; }
       @media screen and (max-width: 576px) {
@@ -766,6 +756,7 @@
           display: inline-flex !important;
           align-content: center !important;
           box-sizing: border-box !important;
+          margin: 0 15px 0 0 !important;
           padding: 3px !important; }
           @media screen and (max-width: 576px) {
             #wtm_cookie_bar .inner .form__list li {
@@ -773,17 +764,15 @@
           @media screen and (max-width: 432px) {
             #wtm_cookie_bar .inner .form__list li {
               width: 100% !important; } }
-          #wtm_cookie_bar .inner .form__list li:not(:last-child) {
-            margin: 0 15px 0 0 !important; }
-            @media screen and (max-width: 576px) {
-              #wtm_cookie_bar .inner .form__list li:not(:last-child) {
-                margin: 0 !important; } }
-            #wtm_cookie_bar .inner .form__list li:not(:last-child) label {
-              margin-left: 5px !important; }
+          @media screen and (max-width: 576px) {
+            #wtm_cookie_bar .inner .form__list li {
+              margin: 0 !important; } }
           #wtm_cookie_bar .inner .form__list li label {
             font-size: 12px !important;
             font-weight: bold !important;
             cursor: pointer !important; }
+          #wtm_cookie_bar .inner .form__list li input[type="checkbox"] {
+            margin-right: 5px !important; }
   #wtm_cookie_bar .declaration-container {
     display: none !important;
     margin: 15px 0 0 1px !important;

@@ -74,6 +74,12 @@ $tablet-bp: 576px;
       border: none !important;
       text-decoration: none !important;
       border-radius: 3px !important;
+      background-color: rgb(0, 150, 0) !important;
+
+      &:hover,
+      &:focus {
+        background-color: rgb(0, 175, 0) !important;
+      }
 
       &:hover {
         text-decoration: none !important;
@@ -81,33 +87,6 @@ $tablet-bp: 576px;
 
       &:not(:last-child) {
         margin: 0 12px 0 0 !important;
-      }
-
-      &--green {
-        background-color: rgb(0, 150, 0) !important;
-
-        &:hover,
-        &:focus {
-          background-color: rgb(0, 175, 0) !important;
-        }
-      }
-
-      &--red {
-        background-color: rgb(150, 0, 0) !important;
-
-        &:hover,
-        &:focus {
-          background-color: rgb(175, 0, 0) !important;
-        }
-      }
-
-      &--transparant {
-        color: black !important;
-        background-color: rgb(240, 240, 240) !important;
-        &:hover,
-        &:focus {
-          background-color: rgb(215, 215, 215) !important;
-        }
       }
     }
 
@@ -145,6 +124,7 @@ $tablet-bp: 576px;
           display: inline-flex !important;
           align-content: center !important;
           box-sizing: border-box !important;
+          margin: 0 15px 0 0 !important;
           padding: 3px !important;
 
           @media screen and (max-width: $tablet-bp) {
@@ -155,22 +135,18 @@ $tablet-bp: 576px;
             width: 100% !important;
           }
 
-          &:not(:last-child) {
-            margin: 0 15px 0 0 !important;
-
-            @media screen and (max-width: $tablet-bp) {
-              margin: 0 !important;
-            }
-
-            label {
-              margin-left: 5px !important;
-            }
+          @media screen and (max-width: $tablet-bp) {
+            margin: 0 !important;
           }
 
           label {
             font-size: 12px !important;
             font-weight: bold !important;
             cursor: pointer !important;
+          }
+
+          input[type="checkbox"] {
+            margin-right: 5px !important;
           }
         }
       }
