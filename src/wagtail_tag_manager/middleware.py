@@ -17,20 +17,17 @@ class TagManagerMiddleware:
         self.request = request
         self.response = self.get_response(request)
 
+        self.strategy = TagStrategy(request)
+        for cookie_name, value in self.strategy.cookies.items():
+            set_cookie(self.response, cookie_name, value)
+
         if (
-            not hasattr(self.request, "wtm_injected")  # Only once per request
-            and getattr(self.request, "method", None) == "GET"
+            getattr(self.request, "method", None) == "GET"
             and getattr(self.response, "status_code", None) == 200
             and isinstance(self.response, TemplateResponse)
         ):
-            self.strategy = TagStrategy(request)
-            for cookie_name, value in self.strategy.cookies.items():
-                set_cookie(self.response, cookie_name, value)
-
             self._add_instant_tags()
             self._add_lazy_manager()
-
-            self.request.wtm_injected = True
 
         return self.response
 
