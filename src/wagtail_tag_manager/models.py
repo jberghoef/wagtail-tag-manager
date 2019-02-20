@@ -162,7 +162,11 @@ class Tag(models.Model):
         if not hasattr(request, "wtm_constant_context"):
             request.wtm_constant_context = Constant.create_context()
 
-        if not hasattr(request, "wtm_variable_context"):
+        if (
+            getattr(settings, "WTM_PRESERVE_VARIABLES", True)
+            and not hasattr(request, "wtm_variable_context")
+            or not getattr(settings, "WTM_PRESERVE_VARIABLES", True)
+        ):
             request.wtm_variable_context = Variable.create_context(request)
 
         return {
