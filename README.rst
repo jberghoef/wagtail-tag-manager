@@ -265,6 +265,14 @@ saved. Default is 30 minutes.
 
 .. code-block:: python
 
+    WTM_PRESERVE_VARIABLES = True
+
+Configures whether the variables are preserved for each request, or refreshed
+for each tag applied to a response. When set to `False`, a query will be done
+for each single tag which will add up quickly.
+
+.. code-block:: python
+
     WTM_INCLUDE_STYLE = True
 
 Change to `False` to prevent WTM's included styles from loading. This is useful
