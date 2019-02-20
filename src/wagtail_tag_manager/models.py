@@ -159,9 +159,15 @@ class Tag(models.Model):
         if hasattr(context, "flatten"):
             context = context.flatten()
 
+        if not hasattr(request, "wtm_constant_context"):
+            request.wtm_constant_context = Constant.create_context()
+
+        if not hasattr(request, "wtm_variable_context"):
+            request.wtm_variable_context = Variable.create_context(request)
+
         return {
-            **Constant.create_context(),
-            **Variable.create_context(request),
+            **request.wtm_constant_context,
+            **request.wtm_variable_context,
             **context,
         }
 
