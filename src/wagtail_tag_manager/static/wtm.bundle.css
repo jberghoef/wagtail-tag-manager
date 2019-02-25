@@ -757,7 +757,8 @@
           align-content: center !important;
           box-sizing: border-box !important;
           margin: 0 15px 0 0 !important;
-          padding: 3px !important; }
+          padding: 3px !important;
+          list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7) !important; }
           @media screen and (max-width: 576px) {
             #wtm_cookie_bar .inner .form__list li {
               width: 50% !important; } }

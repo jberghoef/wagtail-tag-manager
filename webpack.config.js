@@ -3,10 +3,10 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: {
-    tag_form_view: "./frontend/admin/tag_form_view.ts",
-    trigger_form_view: "./frontend/admin/trigger_form_view.ts",
-    variable_form_view: "./frontend/admin/variable_form_view.ts",
-    wtm: "./frontend/client/wtm.ts"
+    tag_form_view: ["@babel/polyfill", "./frontend/admin/tag_form_view.ts"],
+    trigger_form_view: ["@babel/polyfill", "./frontend/admin/trigger_form_view.ts"],
+    variable_form_view: ["@babel/polyfill", "./frontend/admin/variable_form_view.ts"],
+    wtm: ["@babel/polyfill", "./frontend/client/wtm.ts"]
   },
   output: {
     path: path.resolve(__dirname, "src/wagtail_tag_manager/static/"),
@@ -26,7 +26,9 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env"],
+            presets: ["@babel/preset-env", {
+              "useBuiltIns": "entry"
+            }],
             plugins: [
               require("@babel/plugin-proposal-object-rest-spread"),
             ]
