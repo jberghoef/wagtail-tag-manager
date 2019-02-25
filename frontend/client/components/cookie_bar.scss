@@ -126,6 +126,7 @@ $tablet-bp: 576px;
           box-sizing: border-box !important;
           margin: 0 15px 0 0 !important;
           padding: 3px !important;
+          list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7) !important; // Resolve IE11 bug
 
           @media screen and (max-width: $tablet-bp) {
             width: 50% !important;
