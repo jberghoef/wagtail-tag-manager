@@ -1,3 +1,9 @@
+0.13.1 (2019.2.25)
+==================
+ - Fix IE11 list styling error
+ - Add babel polyfill for promise support
+
+
 0.13.0 (2019.2.25)
 ==================
  - Feature/query optimizations (#24)
