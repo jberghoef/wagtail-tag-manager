@@ -1,4 +1,5 @@
 import * as Cookies from "js-cookie";
+import "whatwg-fetch";
 import CookieBar from "./cookie_bar";
 
 interface WTMWindow extends Window {
