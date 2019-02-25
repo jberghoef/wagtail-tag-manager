@@ -1,0 +1,7 @@
+.field.checkbox_select_multiple ul {
+  display: flex;
+  flex-wrap: wrap; }
+  .field.checkbox_select_multiple ul li {
+    width: 25%;
+    min-width: 280px; }
+

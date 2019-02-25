@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
   entry: {
     tag_form_view: "./frontend/admin/tag_form_view.ts",
+    trigger_form_view: "./frontend/admin/trigger_form_view.ts",
     variable_form_view: "./frontend/admin/variable_form_view.ts",
     wtm: "./frontend/client/wtm.ts"
   },

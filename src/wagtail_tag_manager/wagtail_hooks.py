@@ -92,6 +92,8 @@ class TriggerModelAdmin(ModelAdmin):
     list_display = ("name_display", "tags_count", "active")
     list_filter = ("active",)
     search_fields = ("name", "description")
+    form_view_extra_css = [static("trigger_form_view.bundle.css")]
+    form_view_extra_js = [static("trigger_form_view.bundle.js")]
 
     def name_display(self, obj):
         if obj.description:
