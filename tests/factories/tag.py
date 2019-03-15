@@ -24,6 +24,15 @@ def tag_instant_analytical(**kwarg):
     )
 
 
+def tag_instant_continue(**kwarg):
+    return TagFactory(
+        name="continue instant",
+        tag_type="continue",
+        content='<script>console.log("continue instant")</script>',
+        **kwarg,
+    )
+
+
 def tag_instant_traceable(**kwarg):
     return TagFactory(
         name="traceable instant",
@@ -48,6 +57,16 @@ def tag_lazy_analytical(**kwarg):
         tag_loading=Tag.LAZY_LOAD,
         tag_type="analytical",
         content='<script>console.log("analytical lazy")</script>',
+        **kwarg,
+    )
+
+
+def tag_lazy_continue(**kwarg):
+    return TagFactory(
+        name="continue lazy",
+        tag_loading=Tag.LAZY_LOAD,
+        tag_type="continue",
+        content='<script>console.log("continue lazy")</script>',
         **kwarg,
     )
 

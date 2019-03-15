@@ -22,36 +22,42 @@ def test_tag_type_settings():
 
     assert "functional" in config
     assert "analytical" in config
+    assert "continue" in config
     assert "traceable" in config
 
     config = TagTypeSettings().include("required").result()
 
     assert "functional" in config
     assert "analytical" not in config
+    assert "continue" not in config
     assert "traceable" not in config
 
     config = TagTypeSettings().include("initial").result()
 
     assert "functional" not in config
     assert "analytical" in config
+    assert "continue" not in config
     assert "traceable" not in config
 
     config = TagTypeSettings().exclude("initial").result()
 
     assert "functional" in config
     assert "analytical" not in config
+    assert "continue" in config
     assert "traceable" in config
 
     config = TagTypeSettings().exclude("required").exclude("initial").result()
 
     assert "functional" not in config
     assert "analytical" not in config
+    assert "continue" in config
     assert "traceable" in config
 
     config = TagTypeSettings().exclude("").result()
 
     assert "functional" in config
     assert "analytical" in config
+    assert "continue" in config
     assert "traceable" not in config
 
 

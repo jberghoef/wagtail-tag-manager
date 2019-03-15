@@ -9,7 +9,7 @@ from django.templatetags.static import static
 
 from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.models import Tag, CookieDeclaration
-from wagtail_tag_manager.settings import CookieBarSettings, TagTypeSettings
+from wagtail_tag_manager.settings import TagTypeSettings, CookieBarSettings
 from wagtail_tag_manager.strategy import TagStrategy
 
 register = template.Library()

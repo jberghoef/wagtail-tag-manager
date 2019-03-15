@@ -240,6 +240,9 @@ been given by the end user, provided the browser allows cookies. While no
 consent has been given, these tags will be loaded lazily to honor the browser
 settings (which we can only read using javascript).
 
+The third option is to mark a tag as ``continue``. This will ensure the tag will
+not load on the first page load, but only from the second load forward.
+
 .. code-block:: python
 
     WTM_MANAGE_VIEW = True
@@ -294,13 +297,13 @@ Disables or enables the cookie scan functionality on the cookie declaration
 management page. Requires `ChromeDriver`_ to be installed and available in the
 path.
 
+.. _ChromeDriver: http://chromedriver.chromium.org/
+
 .. code-block:: python
 
     WTM_SUMMARY_PANELS = False
 
 Disables or enables the summary panels visible on the Wagtail admin dashboard.
-
-.. _ChromeDriver: http://chromedriver.chromium.org/
 
 Sandbox
 -------

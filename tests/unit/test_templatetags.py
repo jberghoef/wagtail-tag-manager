@@ -1,5 +1,5 @@
 import pytest
-from django.template.base import Parser, Token, TokenType
+from django.template.base import Token, Parser, TokenType
 from django.template.context import make_context
 from django.template.exceptions import TemplateDoesNotExist
 
@@ -9,8 +9,8 @@ from tests.factories.tag import (
     tag_instant_functional,
 )
 from wagtail_tag_manager.templatetags.wtm_tags import (
-    wtm_cookie_bar,
     wtm_include,
+    wtm_cookie_bar,
     wtm_instant_tags,
     wtm_lazy_manager,
 )

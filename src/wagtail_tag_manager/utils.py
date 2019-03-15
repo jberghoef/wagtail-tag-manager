@@ -3,11 +3,12 @@ from datetime import datetime, timedelta
 from selenium import webdriver
 from django.conf import settings
 from django.contrib import messages
-from django.utils.cache import patch_vary_headers
 from django.utils.html import mark_safe
+from django.utils.cache import patch_vary_headers
 from django.utils.translation import ugettext_lazy as _
 
 from wagtail_tag_manager.models import Tag, CookieDeclaration
+from wagtail_tag_manager.strategy import COOKIE_TRUE
 
 
 def set_cookie(response, key, value, days_expire=None):
@@ -51,7 +52,7 @@ def scan_cookies(request):  # pragma: no cover
             browser.add_cookie(
                 {
                     "name": Tag.get_cookie_name(tag),
-                    "value": "true",
+                    "value": COOKIE_TRUE,
                     "path": "",
                     "secure": False,
                 }
