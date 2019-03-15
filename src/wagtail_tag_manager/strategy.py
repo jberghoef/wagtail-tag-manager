@@ -2,7 +2,6 @@ from django.db.models import Q
 
 from wagtail_tag_manager.models import Tag, Trigger, TagTypeSettings
 from wagtail_tag_manager.settings import (
-    SETTING_DEFAULT,
     SETTING_INITIAL,
     SETTING_CONTINUE,
     SETTING_REQUIRED,
