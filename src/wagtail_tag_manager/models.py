@@ -5,22 +5,28 @@ import operator
 from bs4 import BeautifulSoup
 from django.db import models
 from django.conf import settings
-from django.forms import widgets
 from django.dispatch import receiver
 from django.template import Context, Template
 from django.core.cache import cache
 from django.utils.html import mark_safe
+from wagtail.core.models import Page
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, MultiFieldPanel
+from wagtail.admin.edit_handlers import (
+    HelpPanel,
+    FieldPanel,
+    FieldRowPanel,
+    MultiFieldPanel,
+)
 
-from wagtail_tag_manager.decorators import get_variables
+from wagtail_tag_manager.widgets import StackedCheckboxSelectMultiple
 from wagtail_tag_manager.managers import (
     TagQuerySet,
     TriggerQuerySet,
     CookieDeclarationQuerySet,
 )
 from wagtail_tag_manager.settings import TagTypeSettings
+from wagtail_tag_manager.decorators import get_variables
 
 
 class Tag(models.Model):
@@ -135,6 +141,10 @@ class Tag(models.Model):
             template.render(Context())
         except Exception as error:
             raise ValidationError({"content": error})
+
+        import pdb
+
+        pdb.set_trace()
 
         return self
 
@@ -422,7 +432,9 @@ class Trigger(models.Model):
         validators=[searchable_regex_validator],
     )
     tags = models.ManyToManyField(
-        Tag, help_text=_("The tags to include when this trigger is fired.")
+        Tag,
+        help_text=_("The tags to include when this trigger is fired."),
+        limit_choices_to={"auto_load": False},
     )
 
     objects = TriggerQuerySet.as_manager()
@@ -433,7 +445,10 @@ class Trigger(models.Model):
         MultiFieldPanel(
             [FieldPanel("pattern"), FieldPanel("active")], heading=_("Configuration")
         ),
-        FieldPanel("tags", widget=widgets.CheckboxSelectMultiple),
+        HelpPanel(
+            _("Only tags with 'auto load' disabled may be included with a trigger.")
+        ),
+        FieldPanel("tags", widget=StackedCheckboxSelectMultiple),
     ]
 
     def match(self, request):
@@ -510,3 +525,27 @@ class CookieDeclaration(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class TagManagerPageMixin(models.Model):
+    tags = models.ManyToManyField(
+        Tag,
+        help_text=_("The tags to include when this page is loaded."),
+        limit_choices_to={"auto_load": False},
+    )
+
+    promote_panels = Page.promote_panels + [
+        MultiFieldPanel(
+            [
+                HelpPanel(
+                    _("Only tags with 'auto load' disabled may be included on a page.")
+                ),
+                FieldPanel("tags", widget=StackedCheckboxSelectMultiple),
+            ],
+            heading=_("Tags"),
+            classname="collapsible",
+        )
+    ]
+
+    class Meta:
+        abstract = True

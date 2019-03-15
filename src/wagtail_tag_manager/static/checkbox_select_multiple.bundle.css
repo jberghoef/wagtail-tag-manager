@@ -1,0 +1,7 @@
+ul.stacked_checkbox_select_multiple {
+  display: flex;
+  flex-wrap: wrap; }
+  ul.stacked_checkbox_select_multiple li {
+    width: 25%;
+    min-width: 280px; }
+

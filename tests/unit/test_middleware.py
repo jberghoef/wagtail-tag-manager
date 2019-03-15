@@ -4,9 +4,9 @@ import pytest
 
 from tests.factories.tag import (
     TagFactory,
+    tag_instant_continue,
     tag_instant_traceable,
     tag_instant_analytical,
-    tag_instant_continue,
     tag_instant_functional,
 )
 from tests.factories.trigger import TriggerFactory

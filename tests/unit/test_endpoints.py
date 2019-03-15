@@ -5,13 +5,13 @@ import pytest
 
 from tests.factories.tag import (
     TagFactory,
+    tag_lazy_continue,
     tag_lazy_traceable,
     tag_lazy_analytical,
     tag_lazy_functional,
-    tag_lazy_continue,
+    tag_instant_continue,
     tag_instant_traceable,
     tag_instant_analytical,
-    tag_instant_continue,
 )
 from tests.factories.trigger import TriggerFactory
 from wagtail_tag_manager.models import Tag

@@ -3,10 +3,11 @@ from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 
 from wagtail_tag_manager.decorators import register_variable
+from wagtail_tag_manager.models import TagManagerPageMixin
 from wagtail_tag_manager.options import CustomVariable
 
 
-class HomePage(Page):
+class HomePage(TagManagerPageMixin, Page):
     content = RichTextField()
 
     content_panels = Page.content_panels + [
