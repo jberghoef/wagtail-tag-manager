@@ -1,5 +1,8 @@
 import os
 
+from django.utils.translation import ugettext_lazy as _
+
+
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get("DATABASE_ENGINE", "django.db.backends.sqlite3"),
@@ -88,3 +91,11 @@ PASSWORD_HASHERS = (
 )
 
 WAGTAIL_SITE_NAME = "wagtail-tag-manager test"
+
+WTM_TAG_TYPES = {
+    # key, verbose name, setting
+    "functional": (_("Functional"), "required"),
+    "analytical": (_("Analytical"), "initial"),
+    "continue": (_("Continue"), "continue"),
+    "traceable": (_("Traceable"), ""),
+}

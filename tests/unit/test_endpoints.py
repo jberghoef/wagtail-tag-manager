@@ -8,8 +8,10 @@ from tests.factories.tag import (
     tag_lazy_traceable,
     tag_lazy_analytical,
     tag_lazy_functional,
+    tag_lazy_continue,
     tag_instant_traceable,
     tag_instant_analytical,
+    tag_instant_continue,
 )
 from tests.factories.trigger import TriggerFactory
 from wagtail_tag_manager.models import Tag
@@ -45,6 +47,7 @@ def test_lazy_cookies(client, site):
     assert "wtm_functional" in response.cookies
     assert response.cookies.get("wtm_functional").value == "true"
     assert "wtm_analytical" not in response.cookies
+    assert "wtm_continue" not in response.cookies
     assert "wtm_traceable" not in response.cookies
 
 
@@ -80,6 +83,39 @@ def test_initial_lazy_cookies(client, site):
     assert response.status_code == 200
     assert "tags" in data
     assert len(data["tags"]) == 2
+
+
+@pytest.mark.django_db
+def test_continue_lazy_cookies(client, site):
+    tag_instant_continue()
+    tag_lazy_continue()
+
+    client.cookies = SimpleCookie({"wtm_continue": ""})
+
+    response = client.post(
+        "/wtm/lazy/", json.dumps({}), content_type="application/json"
+    )
+    data = response.json()
+
+    assert response.status_code == 200
+    assert "tags" in data
+    assert len(data["tags"]) == 0
+
+    assert "wtm_continue" not in response.cookies
+
+    client.cookies = SimpleCookie({"wtm_continue": "unset"})
+
+    response = client.post(
+        "/wtm/lazy/", json.dumps({}), content_type="application/json"
+    )
+    data = response.json()
+
+    assert response.status_code == 200
+    assert "tags" in data
+    assert len(data["tags"]) == 0
+
+    assert "wtm_continue" in response.cookies
+    assert response.cookies.get("wtm_continue").value == "true"
 
 
 @pytest.mark.django_db
