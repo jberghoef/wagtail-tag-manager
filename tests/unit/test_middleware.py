@@ -70,27 +70,27 @@ def test_passive_view(client, site):
 
     tag_functional = TagFactory(
         name="functional lazy",
-        active=False,
+        auto_load=False,
         tag_loading=Tag.INSTANT_LOAD,
         content='<script>console.log("{{ state }}")</script>',
     )
     tag_analytical = TagFactory(
         name="analytical lazy",
-        active=False,
+        auto_load=False,
         tag_loading=Tag.INSTANT_LOAD,
         tag_type="analytical",
         content='<script>console.log("{{ state }}")</script>',
     )
     tag_continue = TagFactory(
         name="continue lazy",
-        active=False,
+        auto_load=False,
         tag_loading=Tag.INSTANT_LOAD,
         tag_type="continue",
         content='<script>console.log("{{ state }}")</script>',
     )
     tag_traceable = TagFactory(
         name="traceable lazy",
-        active=False,
+        auto_load=False,
         tag_loading=Tag.INSTANT_LOAD,
         tag_type="traceable",
         content='<script>console.log("{{ state }}")</script>',

@@ -123,7 +123,7 @@ class TagStrategy(object):
     @property
     def tags(self):
         if self._tags:
-            return Tag.objects.active().filter(self.queryset)
+            return Tag.objects.auto_load().filter(self.queryset)
         else:
             return Tag.objects.none()
 

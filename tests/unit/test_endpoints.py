@@ -137,20 +137,20 @@ def test_generic_lazy_cookies(client, site):
 def test_passive_tags(client, site):
     tag_functional = TagFactory(
         name="functional lazy",
-        active=False,
+        auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
         content='<script>console.log("{{ state }}")</script>',
     )
     tag_analytical = TagFactory(
         name="analytical lazy",
-        active=False,
+        auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
         tag_type="analytical",
         content='<script>console.log("{{ state }}")</script>',
     )
     tag_traceable = TagFactory(
         name="traceable lazy",
-        active=False,
+        auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
         tag_type="traceable",
         content='<script>console.log("{{ state }}")</script>',

@@ -5,7 +5,7 @@
     "fields": {
       "name": "Instant functional",
       "description": "Loads instantly, is functional",
-      "active": true,
+      "auto_load": true,
       "tag_type": "functional",
       "tag_location": "1_bottom_head",
       "tag_loading": "instant_load",
@@ -18,7 +18,7 @@
     "fields": {
       "name": "Instant analytical",
       "description": "Loads instantly, is analytical",
-      "active": true,
+      "auto_load": true,
       "tag_type": "analytical",
       "tag_location": "1_bottom_head",
       "tag_loading": "instant_load",
@@ -31,7 +31,7 @@
     "fields": {
       "name": "Instant traceable",
       "description": "Loads instantly, is traceable",
-      "active": true,
+      "auto_load": true,
       "tag_type": "traceable",
       "tag_location": "1_bottom_head",
       "tag_loading": "instant_load",
@@ -44,7 +44,7 @@
     "fields": {
       "name": "Lazy functional",
       "description": "Loads lazily, is functional",
-      "active": true,
+      "auto_load": true,
       "tag_type": "functional",
       "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
@@ -57,7 +57,7 @@
     "fields": {
       "name": "Lazy analytical",
       "description": "Loads lazily, is analytical",
-      "active": true,
+      "auto_load": true,
       "tag_type": "analytical",
       "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
@@ -70,7 +70,7 @@
     "fields": {
       "name": "Lazy traceable",
       "description": "Loads lazily, is traceable",
-      "active": true,
+      "auto_load": true,
       "tag_type": "traceable",
       "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
@@ -83,7 +83,7 @@
     "fields": {
       "name": "Thank You",
       "description": "This logs a \"thank you\" message using a constant.",
-      "active": true,
+      "auto_load": true,
       "tag_type": "functional",
       "tag_location": "3_bottom_body",
       "tag_loading": "instant_load",
@@ -96,7 +96,7 @@
     "fields": {
       "name": "A random number",
       "description": "This will log a random number.",
-      "active": true,
+      "auto_load": true,
       "tag_type": "analytical",
       "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
@@ -109,7 +109,7 @@
     "fields": {
       "name": "Passive lazy tag",
       "description": "",
-      "active": false,
+      "auto_load": false,
       "tag_type": "traceable",
       "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
@@ -122,7 +122,7 @@
     "fields": {
       "name": "Passive instant tag",
       "description": "",
-      "active": false,
+      "auto_load": false,
       "tag_type": "traceable",
       "tag_location": "0_top_head",
       "tag_loading": "instant_load",

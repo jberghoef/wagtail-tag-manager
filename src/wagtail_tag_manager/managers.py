@@ -2,11 +2,11 @@ from django.db import models
 
 
 class TagQuerySet(models.QuerySet):
-    def active(self):
-        return self.filter(active=True)
+    def auto_load(self):
+        return self.filter(auto_load=True)
 
     def passive(self):
-        return self.filter(active=False)
+        return self.filter(auto_load=False)
 
     def instant(self):
         from wagtail_tag_manager.models import Tag

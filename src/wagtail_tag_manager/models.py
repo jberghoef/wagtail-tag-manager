@@ -41,10 +41,10 @@ class Tag(models.Model):
 
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
-    active = models.BooleanField(
+    auto_load = models.BooleanField(
         default=True,
         help_text=_(
-            "Uncheck to disable this tag from being included, "
+            "Uncheck to disable this tag from being included automatically, "
             "or when using a trigger to include this tag."
         ),
     )
@@ -113,7 +113,7 @@ class Tag(models.Model):
                 FieldPanel("tag_type"),
                 FieldRowPanel([FieldPanel("tag_loading"), FieldPanel("tag_location")]),
                 FieldPanel("priority"),
-                FieldPanel("active"),
+                FieldPanel("auto_load"),
             ],
             heading=_("Meta"),
             classname="collapsible",
@@ -122,7 +122,7 @@ class Tag(models.Model):
     ]
 
     class Meta:
-        ordering = ["tag_loading", "-active", "tag_location", "-priority"]
+        ordering = ["tag_loading", "-auto_load", "tag_location", "-priority"]
 
     def clean(self):
         if not re.match("\<.+\/?\>", self.content):
