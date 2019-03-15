@@ -14,6 +14,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, MultiFieldPanel
 
+from wagtail_tag_manager.decorators import get_variables
 from wagtail_tag_manager.managers import (
     TagQuerySet,
     TriggerQuerySet,
@@ -368,7 +369,7 @@ class Variable(models.Model):
     def create_context(cls, request):
         context = {}
 
-        for variable in cls.objects.all():
+        for variable in [*get_variables(), *cls.objects.all()]:
             context[variable.key] = variable.get_value(request)
 
         return context
