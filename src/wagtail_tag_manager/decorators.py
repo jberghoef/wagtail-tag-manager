@@ -1,7 +1,3 @@
-from operator import itemgetter
-
-from wagtail.utils.apps import get_app_submodules
-
 from wagtail_tag_manager.options import CustomVariable
 
 _variables: dict = {}
