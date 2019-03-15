@@ -38,24 +38,10 @@ export default class TagManager {
   }
 
   initialize() {
-    fetch(this.stateUrl, {
-      method: "GET",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      },
-      redirect: "follow",
-      referrer: "no-referrer"
-    })
-      .then(response => response.json())
-      .then(json => {
-        this.config = json;
-
-        this.validate();
-        this.loadData();
-      });
+    this.loadState(() => {
+      this.validate();
+      this.loadData();
+    });
   }
 
   validate() {
@@ -86,7 +72,26 @@ export default class TagManager {
     return true;
   }
 
-  loadData() {
+  loadState(callback?: Function) {
+    fetch(this.stateUrl, {
+      method: "GET",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      redirect: "follow",
+      referrer: "no-referrer"
+    })
+      .then(response => response.json())
+      .then(json => {
+        this.config = json;
+        if (callback) callback();
+      });
+  }
+
+  loadData(callback?: Function) {
     fetch(this.lazyUrl, {
       method: "POST",
       mode: "cors",
@@ -104,6 +109,7 @@ export default class TagManager {
       .then(json => {
         this.data = json;
         this.handleLoad();
+        if (callback) callback();
       });
   }
 

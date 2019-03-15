@@ -42,6 +42,7 @@ class TagStrategy(object):
             # Include required cookie
             self._tags.append((Tag.INSTANT_LOAD, tag_type))
             self.cookies[cookie_name] = COOKIE_TRUE
+
         elif tag_config.get("value") == SETTING_INITIAL:
             if not cookie or cookie == COOKIE_UNSET:
                 # Include initial cookie
@@ -50,8 +51,16 @@ class TagStrategy(object):
                 # Include initial instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
                 self.cookies[cookie_name] = COOKIE_TRUE
+
         elif tag_config.get("value") == SETTING_CONTINUE:
-            pass
+            if not cookie or cookie == COOKIE_UNSET:
+                # Include initial cookie
+                self.cookies[cookie_name] = COOKIE_UNSET
+            elif cookie == COOKIE_TRUE:
+                # Include initial instant tags
+                self._tags.append((Tag.INSTANT_LOAD, tag_type))
+                self.cookies[cookie_name] = COOKIE_TRUE
+
         else:
             if cookie == COOKIE_TRUE:
                 # Include generic instant tags
@@ -79,6 +88,14 @@ class TagStrategy(object):
                 elif cookie == COOKIE_TRUE:
                     # Include initial lazy tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
+
+            elif tag_config.get("value") == SETTING_CONTINUE:
+                if cookie == COOKIE_UNSET:
+                    self.cookies[cookie_name] = COOKIE_TRUE
+                elif cookie == COOKIE_TRUE:
+                    # Include generic lazy tags
+                    self._tags.append((Tag.LAZY_LOAD, tag_type))
+
             else:
                 if cookie == COOKIE_TRUE:
                     # Include generic lazy tags
