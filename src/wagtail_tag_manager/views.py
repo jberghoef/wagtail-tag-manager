@@ -4,6 +4,7 @@ from django.utils.http import is_safe_url
 from django.views.generic import View, TemplateView
 from wagtail.contrib.modeladmin.views import IndexView
 
+from wagtail_tag_manager.decorators import get_variables
 from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.utils import set_cookie, scan_cookies
 from wagtail_tag_manager.models import Constant, Variable, TagTypeSettings
@@ -54,7 +55,8 @@ class VariableView(View):
                         constant.as_dict() for constant in Constant.objects.all()
                     ],
                     "variables": [
-                        variable.as_dict() for variable in Variable.objects.all()
+                        *[variable.as_dict() for variable in get_variables()],
+                        *[variable.as_dict() for variable in Variable.objects.all()],
                     ],
                 }
             )

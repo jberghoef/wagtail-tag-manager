@@ -34,20 +34,24 @@ class TagManagerMiddleware:
     def _add_instant_tags(self):
         if hasattr(self.response, "content"):
             doc = BeautifulSoup(self.response.content, "html.parser")
+            head = getattr(doc, "head", [])
+            body = getattr(doc, "body", [])
 
             for tag in self.strategy.result:
                 obj = tag.get("object")
                 element = tag.get("element")
 
-                if obj.tag_location == Tag.TOP_HEAD and doc.head:
-                    doc.head.insert(1, element)
-                elif obj.tag_location == Tag.BOTTOM_HEAD and doc.head:
-                    doc.head.append(element)
-                elif obj.tag_location == Tag.TOP_BODY and doc.body:
-                    doc.body.insert(1, element)
-                elif obj.tag_location == Tag.BOTTOM_BODY and doc.body:
-                    doc.body.append(element)
+                if obj.tag_location == Tag.TOP_HEAD:
+                    head.insert(1, element)
+                elif obj.tag_location == Tag.BOTTOM_HEAD:
+                    head.append(element)
+                elif obj.tag_location == Tag.TOP_BODY:
+                    body.insert(1, element)
+                elif obj.tag_location == Tag.BOTTOM_BODY:
+                    body.append(element)
 
+            doc.head = head
+            doc.body = body
             self.response.content = doc.decode()
 
     def _add_lazy_manager(self):
