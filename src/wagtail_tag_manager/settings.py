@@ -1,17 +1,20 @@
+from django.db import models
 from django.apps import apps
 from django.conf import settings
-from django.db import models
-from django.utils.translation import ugettext_lazy as _
-
-from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.core.fields import RichTextField
+from django.utils.translation import ugettext_lazy as _
+from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.contrib.settings.models import BaseSetting, register_setting
 
+SETTING_DEFAULT = ""
+SETTING_REQUIRED = "required"
+SETTING_INITIAL = "initial"
+SETTING_CONTINUE = "continue"
 
 DEFAULT_SETTINGS = {
-    "functional": (_("Functional"), "required"),
-    "analytical": (_("Analytical"), "initial"),
-    "traceable": (_("Traceable"), ""),
+    "functional": (_("Functional"), SETTING_REQUIRED),
+    "analytical": (_("Analytical"), SETTING_INITIAL),
+    "traceable": (_("Traceable"), SETTING_DEFAULT),
 }
 
 

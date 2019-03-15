@@ -1,16 +1,16 @@
 from django.conf import settings
 from django.urls import reverse
+from wagtail.core import hooks
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.templatetags.static import static
-from django.template.defaultfilters import truncatechars
 from wagtail.admin.site_summary import SummaryItem
+from django.template.defaultfilters import truncatechars
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin,
     ModelAdminGroup,
     modeladmin_register,
 )
-from wagtail.core import hooks
 
 from wagtail_tag_manager.views import CookieDeclarationIndexView
 from wagtail_tag_manager.models import (
