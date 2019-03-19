@@ -13,8 +13,8 @@ from wagtail_tag_manager.strategy import CONSENT_TRUE, CONSENT_UNSET
 from wagtail_tag_manager.settings import TagTypeSettings
 
 
-def set_cookie(response, key, value, days_expire=None):
-    consent_state = get_cookie(response)
+def set_consent(response, key, value, days_expire=None):
+    consent_state = get_consent(response)
     consent_state[key] = str(value).lower()
 
     if days_expire is None:
@@ -41,7 +41,7 @@ def set_cookie(response, key, value, days_expire=None):
     return response
 
 
-def get_cookie(r):
+def get_consent(r):
     cookies = getattr(r, "COOKIES", {})
     if issubclass(r.__class__, HttpResponse):
         response_cookies = getattr(r, "cookies", {})
@@ -79,7 +79,7 @@ def scan_cookies(request):  # pragma: no cover
         for tag in Tag.get_types():
             browser.add_cookie(
                 {
-                    "name": Tag.get_cookie_name(tag),
+                    "name": Tag.get_consent_name(tag),
                     "value": CONSENT_TRUE,
                     "path": "",
                     "secure": False,
@@ -92,7 +92,7 @@ def scan_cookies(request):  # pragma: no cover
         created = 0
         updated = 0
 
-        for cookie in browser.get_cookies():
+        for cookie in browser.get_consents():
             expiry = datetime.fromtimestamp(cookie.get("expiry", now))
 
             obj, created = CookieDeclaration.objects.update_or_create(

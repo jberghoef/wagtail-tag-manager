@@ -15,7 +15,7 @@ from tests.factories.tag import (
 )
 from tests.factories.trigger import TriggerFactory
 from wagtail_tag_manager.models import Tag
-from wagtail_tag_manager.utils import get_cookie
+from wagtail_tag_manager.utils import get_consent
 
 
 @pytest.mark.django_db
@@ -46,7 +46,7 @@ def test_lazy_cookies(client, site):
     assert "tags" in data
 
     assert "wtm" in response.cookies
-    consent_state = get_cookie(response)
+    consent_state = get_consent(response)
     assert consent_state.get("functional", "") == "true"
     assert consent_state.get("analytical", "") == "unset"
     assert consent_state.get("continue", "") == "unset"
@@ -67,7 +67,7 @@ def test_required_lazy_cookies(client, site):
     assert len(data["tags"]) == 1
 
     assert "wtm" in response.cookies
-    consent_state = get_cookie(response)
+    consent_state = get_consent(response)
     assert consent_state.get("functional", "") == "true"
 
 
@@ -105,7 +105,7 @@ def test_continue_lazy_cookies(client, site):
     assert len(data["tags"]) == 0
 
     assert "wtm" in response.cookies
-    consent_state = get_cookie(response)
+    consent_state = get_consent(response)
 
     assert consent_state.get("continue", "") == "unset"
 
@@ -121,7 +121,7 @@ def test_continue_lazy_cookies(client, site):
     assert len(data["tags"]) == 0
 
     assert "wtm" in response.cookies
-    consent_state = get_cookie(response)
+    consent_state = get_consent(response)
 
     assert consent_state.get("continue") == "true"
 

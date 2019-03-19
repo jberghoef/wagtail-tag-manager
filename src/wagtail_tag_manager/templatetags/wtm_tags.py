@@ -11,7 +11,7 @@ from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.models import Tag, CookieDeclaration
 from wagtail_tag_manager.settings import TagTypeSettings, CookieBarSettings
 from wagtail_tag_manager.strategy import TagStrategy
-from wagtail_tag_manager.utils import get_cookie
+from wagtail_tag_manager.utils import get_consent
 
 register = template.Library()
 

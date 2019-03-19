@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.template.response import TemplateResponse
 from django.templatetags.static import static
 
-from wagtail_tag_manager.utils import set_cookie
+from wagtail_tag_manager.utils import set_consent
 from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.strategy import TagStrategy
 
@@ -18,8 +18,8 @@ class TagManagerMiddleware:
         self.response = self.get_response(request)
 
         self.strategy = TagStrategy(request)
-        for cookie_name, value in self.strategy.cookies.items():
-            set_cookie(self.response, cookie_name, value)
+        for tag_type, value in self.strategy.consent.items():
+            set_consent(self.response, tag_type, value)
 
         if (
             getattr(self.request, "method", None) == "GET"
