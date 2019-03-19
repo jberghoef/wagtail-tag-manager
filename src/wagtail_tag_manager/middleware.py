@@ -59,7 +59,7 @@ class TagManagerMiddleware:
             doc = BeautifulSoup(self.response.content, "html.parser")
 
             if doc.body:
-                doc.body["data-wtm-state"] = reverse("wtm:state")
+                doc.body["data-wtm-config"] = reverse("wtm:config")
                 doc.body["data-wtm-lazy"] = reverse("wtm:lazy")
 
                 if getattr(settings, "WTM_INCLUDE_STYLE", True):

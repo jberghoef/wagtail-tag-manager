@@ -30,7 +30,7 @@ def test_consent_form_initial(rf, site):
     request = rf.get(site.root_page.url)
     request.COOKIES = {
         **request.COOKIES,
-        "wtm": "{\"functional\": \"true\", \"analytical\": \"false\", \"traceable\": \"true\"}",
+        "wtm": "functional:true|analytical:false|traceable:true",
     }
 
     cookie_state = TagStrategy(request).cookie_state

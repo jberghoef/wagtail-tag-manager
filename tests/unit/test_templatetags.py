@@ -32,12 +32,12 @@ def test_wtm_include_functional(rf, site):
 
     assert result == expected_result
 
-    request.COOKIES = {"wtm": "{\"functional\": \"false\"}"}
+    request.COOKIES = {"wtm": "functional:false"}
     result = node.render(context=make_context({"request": request}))
 
     assert result == expected_result
 
-    request.COOKIES = {"wtm": "{\"functional\": \"true\"}"}
+    request.COOKIES = {"wtm": "functional:true"}
     result = node.render(context=make_context({"request": request}))
 
     assert result == expected_result
@@ -58,12 +58,12 @@ def test_wtm_include_analytical(rf, site):
 
     assert result == expected_result
 
-    request.COOKIES = {"wtm": "{\"analytical\": \"false\"}"}
+    request.COOKIES = {"wtm": "analytical:false"}
     result = node.render(context=make_context({"request": request}))
 
     assert result == ""
 
-    request.COOKIES = {"wtm": "{\"analytical\": \"true\"}"}
+    request.COOKIES = {"wtm": "analytical:true"}
     result = node.render(context=make_context({"request": request}))
 
     assert result == expected_result
@@ -81,10 +81,10 @@ def test_wtm_include_traceable(rf, site):
         request = rf.get(site.root_page.url)
         node.render(context=make_context({"request": request}))
 
-        request.COOKIES = {"wtm": "{\"traceable\": \"false\"}"}
+        request.COOKIES = {"wtm": "traceable:false"}
         node.render(context=make_context({"request": request}))
 
-        request.COOKIES = {"wtm": "{\"traceable\": \"true\"}"}
+        request.COOKIES = {"wtm": "traceable:true"}
         node.render(context=make_context({"request": request}))
 
 
@@ -100,12 +100,12 @@ def test_wtm_instant_tags(rf, site):
     assert "tags" in context
     assert len(context.get("tags")) == 1
 
-    request.COOKIES = {"wtm": "{\"functional\": \"true\", \"analytical\": \"true\"}"}
+    request.COOKIES = {"wtm": "functional:true|analytical:true"}
     context = wtm_instant_tags({"request": request})
     assert "tags" in context
     assert len(context.get("tags")) == 2
 
-    request.COOKIES = {"wtm": "{\"functional\": \"true\", \"analytical\": \"true\", \"traceable\": \"true\"}"}
+    request.COOKIES = {"wtm": "functional:true|analytical:true|traceable:true"}
     context = wtm_instant_tags({"request": request})
     assert "tags" in context
     assert len(context.get("tags")) == 3
@@ -134,7 +134,7 @@ def test_wtm_lazy_manager():
     context = wtm_lazy_manager()
 
     assert "config" in context
-    assert "state_url" in context.get("config")
+    assert "config_url" in context.get("config")
     assert "lazy_url" in context.get("config")
 
 

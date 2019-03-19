@@ -2,6 +2,7 @@ from django.db import models
 from django.apps import apps
 from django.conf import settings
 from wagtail.core.fields import RichTextField
+from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.contrib.settings.models import BaseSetting, register_setting
@@ -26,7 +27,7 @@ class TagTypeSettings:
     def all():
         tag_type_settings = getattr(settings, "WTM_TAG_TYPES", DEFAULT_SETTINGS)
         return {
-            tag_type: {"verbose_name": config[0], "value": config[1]}
+            slugify(tag_type): {"verbose_name": config[0], "value": config[1]}
             for tag_type, config in tag_type_settings.items()
         }
 

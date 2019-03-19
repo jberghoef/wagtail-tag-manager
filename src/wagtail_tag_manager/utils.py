@@ -1,5 +1,3 @@
-import base64
-import json
 from datetime import datetime, timedelta
 
 from selenium import webdriver
@@ -11,13 +9,13 @@ from django.utils.cache import patch_vary_headers
 from django.utils.translation import ugettext_lazy as _
 
 from wagtail_tag_manager.models import Tag, CookieDeclaration
-from wagtail_tag_manager.strategy import COOKIE_TRUE
+from wagtail_tag_manager.strategy import CONSENT_TRUE
 from wagtail_tag_manager.settings import TagTypeSettings
 
 
 def set_cookie(response, key, value, days_expire=None):
     consent_state = get_cookie(response)
-    consent_state[key] = value or ""
+    consent_state[key] = str(value).lower()
 
     if days_expire is None:
         expires = getattr(settings, "WTM_COOKIE_EXPIRE", 365)
@@ -30,7 +28,7 @@ def set_cookie(response, key, value, days_expire=None):
 
     response.set_cookie(
         "wtm",
-        json.dumps(consent_state),
+        "|".join([f"{key}:{value or 'none'}" for key, value in consent_state.items()]),
         max_age=max_age,
         expires=expires,
         domain=getattr(settings, "SESSION_COOKIE_DOMAIN"),
@@ -51,9 +49,15 @@ def get_cookie(r):
             key: response_cookies.get(key).value for key in response_cookies.keys()
         }
 
-    wtm_cookie = cookies.get("wtm", "{}")
+    wtm_cookie = cookies.get("wtm", "")
     consent_state = {tag_type: "" for tag_type in TagTypeSettings.all()}
-    consent_state.update(json.loads(wtm_cookie))
+    consent_state.update(
+        {
+            item.split(":")[0]: item.split(":")[1]
+            for item in wtm_cookie.split("|")
+            if ":" in item
+        }
+    )
     return consent_state
 
 
@@ -75,7 +79,7 @@ def scan_cookies(request):  # pragma: no cover
             browser.add_cookie(
                 {
                     "name": Tag.get_cookie_name(tag),
-                    "value": COOKIE_TRUE,
+                    "value": CONSENT_TRUE,
                     "path": "",
                     "secure": False,
                 }

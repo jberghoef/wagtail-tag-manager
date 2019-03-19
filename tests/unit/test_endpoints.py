@@ -76,7 +76,7 @@ def test_initial_lazy_cookies(client, site):
     tag_instant_analytical()
     tag_lazy_analytical()
 
-    client.cookies = SimpleCookie({"wtm": "{\"analytical\": \"unset\"}"})
+    client.cookies = SimpleCookie({"wtm": "analytical:unset"})
 
     response = client.post(
         "/wtm/lazy/", json.dumps({}), content_type="application/json"
@@ -93,7 +93,7 @@ def test_continue_lazy_cookies(client, site):
     tag_instant_continue()
     tag_lazy_continue()
 
-    client.cookies = SimpleCookie({"wtm": "{}"})
+    client.cookies = SimpleCookie({"wtm": ""})
 
     response = client.post(
         "/wtm/lazy/", json.dumps({}), content_type="application/json"
@@ -109,7 +109,7 @@ def test_continue_lazy_cookies(client, site):
 
     assert consent_state.get("continue", "") == ""
 
-    client.cookies = SimpleCookie({"wtm": "{\"continue\": \"unset\"}"})
+    client.cookies = SimpleCookie({"wtm": "continue:unset"})
 
     response = client.post(
         "/wtm/lazy/", json.dumps({}), content_type="application/json"
@@ -205,7 +205,7 @@ def test_passive_tags(client, site):
     assert "tags" in data
     assert 'console.log("functional: 1")' in data["tags"][0]["string"]
 
-    client.cookies = SimpleCookie({"wtm": "{\"analytical\": \"true\"}"})
+    client.cookies = SimpleCookie({"wtm": "analytical:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": "/", "search": "?state=2"}),
@@ -217,7 +217,7 @@ def test_passive_tags(client, site):
     assert "tags" in data
     assert 'console.log("analytical: 2")' in data["tags"][1]["string"]
 
-    client.cookies = SimpleCookie({"wtm": "{\"continue\": \"true\"}"})
+    client.cookies = SimpleCookie({"wtm": "continue:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": "/", "search": "?state=3"}),
@@ -229,7 +229,7 @@ def test_passive_tags(client, site):
     assert "tags" in data
     assert 'console.log("continue: 3")' in data["tags"][1]["string"]
 
-    client.cookies = SimpleCookie({"wtm": "{\"traceable\": \"true\"}"})
+    client.cookies = SimpleCookie({"wtm": "traceable:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": "/", "search": "?state=4"}),
