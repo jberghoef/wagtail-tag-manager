@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from selenium import webdriver
 from django.conf import settings
 from django.contrib import messages
+from django.http import HttpResponse
 from django.utils.html import mark_safe
 from django.utils.cache import patch_vary_headers
 from django.utils.translation import ugettext_lazy as _
@@ -44,7 +45,7 @@ def set_cookie(response, key, value, days_expire=None):
 
 def get_cookie(r):
     cookies = getattr(r, "COOKIES", {})
-    if hasattr(r, "cookies"):  # This is a response object
+    if issubclass(r.__class__, HttpResponse):
         response_cookies = getattr(r, "cookies", {})
         cookies = {
             key: response_cookies.get(key).value for key in response_cookies.keys()

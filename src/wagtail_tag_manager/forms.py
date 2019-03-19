@@ -10,6 +10,7 @@ from wagtail_tag_manager.settings import (
 class ConsentForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        print(kwargs)
         for tag_type, config in TagTypeSettings.all().items():
             initial = (
                 config.get("value") == SETTING_INITIAL
