@@ -11,4 +11,4 @@ class StackedCheckboxSelectMultiple(CheckboxSelectMultiple):
 
     class Media:
         css = {"all": ("checkbox_select_multiple.bundle.css",)}
-        js = "checkbox_select_multiple.bundle.js"
+        js = ("checkbox_select_multiple.bundle.js",)

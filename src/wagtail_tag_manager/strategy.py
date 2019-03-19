@@ -15,6 +15,7 @@ COOKIE_UNSET = "unset"
 class TagStrategy(object):
     def __init__(self, request):
         self._request = request
+        self._page = None
         self._context = Tag.create_context(request)
 
         self._cookies = getattr(request, "COOKIES", {})
@@ -23,6 +24,13 @@ class TagStrategy(object):
         self.cookies = {}
 
         if request:
+            if hasattr(request, "site"):
+                path_components = [c for c in request.path.split("/") if c]
+                page, args, kwargs = request.site.root_page.specific.route(
+                    request, path_components
+                )
+                self._page = page
+
             self.define_strategy()
 
     # https://gist.github.com/jberghoef/9ffa2b738cbb0aab624ff091dc6fe9a7
