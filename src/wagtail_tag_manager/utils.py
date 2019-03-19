@@ -13,40 +13,23 @@ from wagtail_tag_manager.strategy import CONSENT_TRUE, CONSENT_UNSET
 from wagtail_tag_manager.settings import TagTypeSettings
 
 
-def set_consent(response, key, value, days_expire=None):
+def set_consent(response, key, value):
     consent_state = get_consent(response)
     consent_state[key] = str(value).lower()
 
-    if days_expire is None:
-        expires = getattr(settings, "WTM_COOKIE_EXPIRE", 365)
-        max_age = expires * 24 * 60 * 60  # one year
-    else:
-        max_age = days_expire * 24 * 60 * 60
-
-    delta = datetime.utcnow() + timedelta(seconds=max_age)
-    expires = datetime.strftime(delta, "%a, %d-%b-%Y %H:%M:%S GMT")
-
-    response.set_cookie(
+    set_cookie(
+        response,
         "wtm",
         "|".join([f"{key}:{value}" for key, value in consent_state.items()]),
-        max_age=max_age,
-        expires=expires,
-        domain=getattr(settings, "SESSION_COOKIE_DOMAIN"),
-        secure=getattr(settings, "SESSION_COOKIE_SECURE", None),
-        httponly=False,
-        samesite="Lax",
     )
-    patch_vary_headers(response, ("Cookie",))
-
-    return response
 
 
 def get_consent(r):
     cookies = getattr(r, "COOKIES", {})
-    if issubclass(r.__class__, HttpResponse):
-        response_cookies = getattr(r, "cookies", {})
+    if isinstance(r, HttpResponse):
         cookies = {
-            key: response_cookies.get(key).value for key in response_cookies.keys()
+            key: getattr(r, "cookies", {}).get(key).value
+            for key in getattr(r, "cookies", {}).keys()
         }
 
     wtm_cookie = cookies.get("wtm", "")
@@ -60,6 +43,31 @@ def get_consent(r):
     )
 
     return consent_state
+
+
+def set_cookie(response, key, value, days_expire=None):
+    if days_expire is None:
+        expires = getattr(settings, "WTM_COOKIE_EXPIRE", 365)
+        max_age = expires * 24 * 60 * 60  # one year
+    else:
+        max_age = days_expire * 24 * 60 * 60
+
+    delta = datetime.utcnow() + timedelta(seconds=max_age)
+    expires = datetime.strftime(delta, "%a, %d-%b-%Y %H:%M:%S GMT")
+
+    response.set_cookie(
+        key,
+        value,
+        max_age=max_age,
+        expires=expires,
+        domain=getattr(settings, "SESSION_COOKIE_DOMAIN"),
+        secure=getattr(settings, "SESSION_COOKIE_SECURE", None),
+        httponly=False,
+        samesite="Lax",
+    )
+    patch_vary_headers(response, ("Cookie",))
+
+    return response
 
 
 def scan_cookies(request):  # pragma: no cover
