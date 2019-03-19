@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from wagtail_tag_manager.models import Tag, CookieDeclaration
 from wagtail_tag_manager.strategy import COOKIE_TRUE
+from wagtail_tag_manager.settings import TagTypeSettings
 
 
 def set_cookie(response, key, value, days_expire=None):
@@ -43,8 +44,16 @@ def set_cookie(response, key, value, days_expire=None):
 
 def get_cookie(r):
     cookies = getattr(r, "COOKIES", {})
+    if hasattr(r, "cookies"):  # This is a response object
+        response_cookies = getattr(r, "cookies", {})
+        cookies = {
+            key: response_cookies.get(key).value for key in response_cookies.keys()
+        }
+
     wtm_cookie = cookies.get("wtm", "{}")
-    return json.loads(wtm_cookie)
+    consent_state = {tag_type: "" for tag_type in TagTypeSettings.all()}
+    consent_state.update(json.loads(wtm_cookie))
+    return consent_state
 
 
 def scan_cookies(request):  # pragma: no cover

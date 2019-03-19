@@ -17,9 +17,11 @@ class TagStrategy(object):
         self._request = request
         self._context = Tag.create_context(request)
 
-        self._cookies = getattr(request, "COOKIES", {})
         self._config = TagTypeSettings.all()
         self._tags = []
+
+        from wagtail_tag_manager.utils import get_cookie
+        self.consent_state = get_cookie(request)
         self.cookies = {}
 
         if request:
@@ -33,7 +35,7 @@ class TagStrategy(object):
                 handler(tag_type, tag_config)
 
     def get(self, tag_type, tag_config):
-        cookie = self._cookies.get(tag_type, None)
+        cookie = self.consent_state.get(tag_type, None)
 
         if tag_config.get("value") == SETTING_REQUIRED:
             # Include required instant tags
@@ -66,7 +68,7 @@ class TagStrategy(object):
                 self.cookies[tag_type] = COOKIE_TRUE
 
     def post(self, tag_type, tag_config):
-        cookie = self._cookies.get(tag_type, None)
+        cookie = self.consent_state.get(tag_type, None)
 
         if tag_config.get("value") == SETTING_REQUIRED:
             # Include required lazy tags
@@ -99,7 +101,7 @@ class TagStrategy(object):
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
 
     def should_include(self, tag_type, tag_config):
-        cookie = self._cookies.get(tag_type, None)
+        cookie = self.consent_state.get(tag_type, None)
 
         if tag_config.get("value") == SETTING_REQUIRED:
             return True
