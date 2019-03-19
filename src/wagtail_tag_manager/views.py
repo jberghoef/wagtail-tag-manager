@@ -31,7 +31,7 @@ class ManageView(TemplateView):
         form = ConsentForm(request.POST)
         if form.is_valid():
             for key, value in form.cleaned_data.items():
-                set_cookie(response, f"wtm_{key}", str(value).lower())
+                set_cookie(response, key, str(value).lower())
 
         return response
 

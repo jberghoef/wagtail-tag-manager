@@ -180,10 +180,6 @@ class Tag(models.Model):
     def get_types(cls):
         return list(TagTypeSettings.all())
 
-    @classmethod
-    def get_cookie_name(cls, tag_type):
-        return f"wtm_{tag_type}"
-
     def __str__(self):
         return self.name
 

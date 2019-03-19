@@ -11,6 +11,7 @@ from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.models import Tag, CookieDeclaration
 from wagtail_tag_manager.settings import TagTypeSettings, CookieBarSettings
 from wagtail_tag_manager.strategy import TagStrategy
+from wagtail_tag_manager.utils import get_cookie
 
 register = template.Library()
 
@@ -123,7 +124,7 @@ def wtm_lazy_manager():
 def wtm_cookie_bar(context):
     request = context.get("request", None)
     if request:
-        cookie_state = TagStrategy(request).cookie_state
+        consent_state = get_cookie(request)
 
         cookie_bar_settings = {}
         if getattr(request, "site", None):
@@ -137,7 +138,7 @@ def wtm_cookie_bar(context):
 
         return {
             "manage_view": manage_view,
-            "form": ConsentForm(initial=cookie_state),
+            "form": ConsentForm(initial=consent_state),
             "settings": cookie_bar_settings,
             "declarations": CookieDeclaration.objects.all().sorted(),
         }
@@ -151,8 +152,8 @@ def wtm_cookie_bar(context):
 def wtm_manage_form(context):
     request = context.get("request")
     if request:
-        cookie_state = TagStrategy(request).cookie_state
-        return {"form": ConsentForm(initial=cookie_state)}
+        consent_state = get_cookie(request)
+        return {"form": ConsentForm(initial=consent_state)}
     return ""
 
 

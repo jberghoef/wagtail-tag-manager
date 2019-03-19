@@ -33,49 +33,47 @@ class TagStrategy(object):
                 handler(tag_type, tag_config)
 
     def get(self, tag_type, tag_config):
-        cookie_name = Tag.get_cookie_name(tag_type)
-        cookie = self._cookies.get(cookie_name, None)
+        cookie = self._cookies.get(tag_type, None)
 
         if tag_config.get("value") == SETTING_REQUIRED:
             # Include required instant tags
             # Include required cookie
             self._tags.append((Tag.INSTANT_LOAD, tag_type))
-            self.cookies[cookie_name] = COOKIE_TRUE
+            self.cookies[tag_type] = COOKIE_TRUE
 
         elif tag_config.get("value") == SETTING_INITIAL:
             if not cookie or cookie == COOKIE_UNSET:
                 # Include initial cookie
-                self.cookies[cookie_name] = COOKIE_UNSET
+                self.cookies[tag_type] = COOKIE_UNSET
             elif cookie == COOKIE_TRUE:
                 # Include initial instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                self.cookies[cookie_name] = COOKIE_TRUE
+                self.cookies[tag_type] = COOKIE_TRUE
 
         elif tag_config.get("value") == SETTING_CONTINUE:
             if not cookie or cookie == COOKIE_UNSET:
                 # Include initial cookie
-                self.cookies[cookie_name] = COOKIE_UNSET
+                self.cookies[tag_type] = COOKIE_UNSET
             elif cookie == COOKIE_TRUE:
                 # Include initial instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                self.cookies[cookie_name] = COOKIE_TRUE
+                self.cookies[tag_type] = COOKIE_TRUE
 
         else:
             if cookie == COOKIE_TRUE:
                 # Include generic instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                self.cookies[cookie_name] = COOKIE_TRUE
+                self.cookies[tag_type] = COOKIE_TRUE
 
     def post(self, tag_type, tag_config):
-        cookie_name = Tag.get_cookie_name(tag_type)
-        cookie = self._cookies.get(cookie_name, None)
+        cookie = self._cookies.get(tag_type, None)
 
         if tag_config.get("value") == SETTING_REQUIRED:
             # Include required lazy tags
             # Include required cookie
             self._tags.append((Tag.LAZY_LOAD, tag_type))
             if cookie != COOKIE_TRUE:
-                self.cookies[cookie_name] = COOKIE_TRUE
+                self.cookies[tag_type] = COOKIE_TRUE
 
         else:
             if tag_config.get("value") == SETTING_INITIAL:
@@ -90,7 +88,7 @@ class TagStrategy(object):
 
             elif tag_config.get("value") == SETTING_CONTINUE:
                 if cookie == COOKIE_UNSET:
-                    self.cookies[cookie_name] = COOKIE_TRUE
+                    self.cookies[tag_type] = COOKIE_TRUE
                 elif cookie == COOKIE_TRUE:
                     # Include generic lazy tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
@@ -101,8 +99,7 @@ class TagStrategy(object):
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
 
     def should_include(self, tag_type, tag_config):
-        cookie_name = Tag.get_cookie_name(tag_type)
-        cookie = self._cookies.get(cookie_name, None)
+        cookie = self._cookies.get(tag_type, None)
 
         if tag_config.get("value") == SETTING_REQUIRED:
             return True
@@ -152,7 +149,6 @@ class TagStrategy(object):
     @property
     def cookie_state(self):
         return {
-            tag_type: self.cookies.get(Tag.get_cookie_name(tag_type), COOKIE_FALSE)
-            != COOKIE_FALSE
+            tag_type: self.cookies.get(tag_type, COOKIE_FALSE) != COOKIE_FALSE
             for tag_type in Tag.get_types()
         }

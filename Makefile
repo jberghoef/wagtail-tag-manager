@@ -39,7 +39,7 @@ black:
 
 prettier:
 	yarn install
-	prettier --write './frontend/**/*'
+	yarn format
 
 sandbox: bundle
 	pip install -r sandbox/requirements.txt

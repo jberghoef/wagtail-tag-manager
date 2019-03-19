@@ -1,3 +1,5 @@
+import base64
+import json
 from datetime import datetime, timedelta
 
 from selenium import webdriver
@@ -12,6 +14,9 @@ from wagtail_tag_manager.strategy import COOKIE_TRUE
 
 
 def set_cookie(response, key, value, days_expire=None):
+    consent_state = get_cookie(response)
+    consent_state[key] = value or ""
+
     if days_expire is None:
         expires = getattr(settings, "WTM_COOKIE_EXPIRE", 365)
         max_age = expires * 24 * 60 * 60  # one year
@@ -22,8 +27,8 @@ def set_cookie(response, key, value, days_expire=None):
     expires = datetime.strftime(delta, "%a, %d-%b-%Y %H:%M:%S GMT")
 
     response.set_cookie(
-        key,
-        value,
+        "wtm",
+        json.dumps(consent_state),
         max_age=max_age,
         expires=expires,
         domain=getattr(settings, "SESSION_COOKIE_DOMAIN"),
@@ -34,6 +39,12 @@ def set_cookie(response, key, value, days_expire=None):
     patch_vary_headers(response, ("Cookie",))
 
     return response
+
+
+def get_cookie(r):
+    cookies = getattr(r, "COOKIES", {})
+    wtm_cookie = cookies.get("wtm", "{}")
+    return json.loads(wtm_cookie)
 
 
 def scan_cookies(request):  # pragma: no cover
@@ -48,6 +59,8 @@ def scan_cookies(request):  # pragma: no cover
         browser.implicitly_wait(30)
         browser.get(request.site.root_page.full_url)
         browser.delete_all_cookies()
+
+        # TODO: Fix this!
         for tag in Tag.get_types():
             browser.add_cookie(
                 {

@@ -246,20 +246,20 @@ To enable the context processors, add the following to your settings:
 
     "context_processors": [
         # ...
-        "wagtail_tag_manager.context_processors.cookie_state",
+        "wagtail_tag_manager.context_processors.consent_state",
     ]
 
-**cookie_state**
+**consent_state**
 
 You can now use the following value in your templates:
 
 .. code-block:: html+django
 
-    {{ wtm_cookie_state.functional }}
+    {{ wtm_consent_state.functional }}
 
-    {{ wtm_cookie_state.analytical }}
+    {{ wtm_consent_state.analytical }}
 
-    {{ wtm_cookie_state.traceable }}
+    {{ wtm_consent_state.traceable }}
 
 These will return a boolean indicating wether or not tags specific to the
 corresponding state should load.
