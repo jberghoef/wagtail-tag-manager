@@ -36,7 +36,7 @@ class TagStrategy(object):
                 handler(tag_type, tag_config)
 
     def get(self, tag_type, tag_config):
-        cookie = self.consent_state.get(tag_type, CONSENT_UNSET)
+        consent = self.consent_state.get(tag_type, CONSENT_UNSET)
 
         if tag_config.get("value") == SETTING_REQUIRED:
             # Include required instant tags
@@ -45,72 +45,72 @@ class TagStrategy(object):
             self.cookies[tag_type] = CONSENT_TRUE
 
         elif tag_config.get("value") == SETTING_INITIAL:
-            if cookie == CONSENT_UNSET:
+            if consent == CONSENT_UNSET:
                 # Include initial cookie
                 self.cookies[tag_type] = CONSENT_UNSET
-            elif cookie == CONSENT_TRUE:
+            elif consent == CONSENT_TRUE:
                 # Include initial instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
                 self.cookies[tag_type] = CONSENT_TRUE
 
         elif tag_config.get("value") == SETTING_CONTINUE:
-            if cookie == CONSENT_UNSET:
+            if consent == CONSENT_UNSET:
                 # Include initial cookie
                 self.cookies[tag_type] = CONSENT_UNSET
-            elif cookie == CONSENT_TRUE:
+            elif consent == CONSENT_TRUE:
                 # Include initial instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
                 self.cookies[tag_type] = CONSENT_TRUE
 
         else:
             self.cookies[tag_type] = CONSENT_TRUE
-            if cookie == CONSENT_TRUE:
+            if consent == CONSENT_TRUE:
                 # Include generic instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
 
     def post(self, tag_type, tag_config):
-        cookie = self.consent_state.get(tag_type, CONSENT_UNSET)
+        consent = self.consent_state.get(tag_type, CONSENT_UNSET)
 
         if tag_config.get("value") == SETTING_REQUIRED:
             # Include required lazy tags
             # Include required cookie
             self._tags.append((Tag.LAZY_LOAD, tag_type))
-            if cookie != CONSENT_TRUE:
+            if consent != CONSENT_TRUE:
                 self.cookies[tag_type] = CONSENT_TRUE
 
         else:
             if tag_config.get("value") == SETTING_INITIAL:
-                if cookie == CONSENT_UNSET:
+                if consent == CONSENT_UNSET:
                     # Include initial lazy tags
                     # Include initial instant tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
                     self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                elif cookie == CONSENT_TRUE:
+                elif consent == CONSENT_TRUE:
                     # Include initial lazy tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
 
             elif tag_config.get("value") == SETTING_CONTINUE:
-                if cookie == CONSENT_UNSET:
+                if consent == CONSENT_UNSET:
                     self.cookies[tag_type] = CONSENT_TRUE
-                elif cookie == CONSENT_TRUE:
+                elif consent == CONSENT_TRUE:
                     # Include generic lazy tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
 
             else:
-                if cookie == CONSENT_TRUE:
+                if consent == CONSENT_TRUE:
                     # Include generic lazy tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
 
     def should_include(self, tag_type, tag_config):
-        cookie = self.consent_state.get(tag_type, CONSENT_UNSET)
+        consent = self.consent_state.get(tag_type, CONSENT_UNSET)
 
         if tag_config.get("value") == SETTING_REQUIRED:
             return True
         elif tag_config.get("value") == SETTING_INITIAL:
-            if cookie == CONSENT_UNSET or cookie == CONSENT_TRUE:
+            if consent == CONSENT_UNSET or consent == CONSENT_TRUE:
                 return True
         else:
-            if cookie == CONSENT_TRUE:
+            if consent == CONSENT_TRUE:
                 return True
 
     @property
