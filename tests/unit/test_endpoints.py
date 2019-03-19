@@ -48,9 +48,9 @@ def test_lazy_cookies(client, site):
     assert "wtm" in response.cookies
     consent_state = get_cookie(response)
     assert consent_state.get("functional", "") == "true"
-    assert consent_state.get("analytical", "") == ""
-    assert consent_state.get("continue", "") == ""
-    assert consent_state.get("traceable", "") == ""
+    assert consent_state.get("analytical", "") == "unset"
+    assert consent_state.get("continue", "") == "unset"
+    assert consent_state.get("traceable", "") == "unset"
 
 
 @pytest.mark.django_db
@@ -107,7 +107,7 @@ def test_continue_lazy_cookies(client, site):
     assert "wtm" in response.cookies
     consent_state = get_cookie(response)
 
-    assert consent_state.get("continue", "") == ""
+    assert consent_state.get("continue", "") == "unset"
 
     client.cookies = SimpleCookie({"wtm": "continue:unset"})
 
