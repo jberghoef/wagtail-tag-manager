@@ -8,6 +8,7 @@ from tests.factories.tag import (
     tag_instant_analytical,
     tag_instant_functional,
 )
+from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.templatetags.wtm_tags import (
     wtm_include,
     wtm_cookie_bar,
@@ -89,9 +90,9 @@ def test_wtm_include_traceable(rf, site):
 
 @pytest.mark.django_db
 def test_wtm_instant_tags(rf, site):
-    tag_instant_functional()
-    tag_instant_analytical()
-    tag_instant_traceable()
+    tag_instant_functional(tag_location=Tag.TOP_HEAD)
+    tag_instant_analytical(tag_location=Tag.BOTTOM_HEAD)
+    tag_instant_traceable(tag_location=Tag.TOP_BODY)
 
     request = rf.get(site.root_page.url)
 
@@ -112,6 +113,24 @@ def test_wtm_instant_tags(rf, site):
     context = wtm_instant_tags({"request": request})
     assert "tags" in context
     assert len(context.get("tags")) == 3
+
+    context = wtm_instant_tags({"request": request}, location="top_head")
+    assert "tags" in context
+    assert len(context.get("tags")) == 1
+    assert "functional instant" in context.get("tags")[0]
+
+    context = wtm_instant_tags({"request": request}, location="bottom_head")
+    assert "tags" in context
+    assert len(context.get("tags")) == 1
+    assert "analytical instant" in context.get("tags")[0]
+
+    context = wtm_instant_tags({"request": request}, location="top_body")
+    assert "tags" in context
+    assert len(context.get("tags")) == 1
+    assert "traceable instant" in context.get("tags")[0]
+
+    with pytest.raises(KeyError):
+        wtm_instant_tags({"request": request}, location="middle_body")
 
 
 @pytest.mark.django_db

@@ -78,13 +78,34 @@ def wtm_include(parser, token):
 @register.inclusion_tag(
     "wagtail_tag_manager/templatetags/instant_tags.html", takes_context=True
 )
-def wtm_instant_tags(context):
+def wtm_instant_tags(context, location=None):
     context["tags"] = []
     request = context.get("request", None)
 
+    found = False
+    if location is not None:
+        location_choices = [
+            location_choice[0][2:] for location_choice in Tag.LOCATION_CHOICES
+        ]
+
+        if location in location_choices:
+            found = True
+
+        if not found:
+            raise KeyError(
+                f"'{location}' is not an allowed location. Select one of {', '.join(location_choices)}"
+            )
+
     if request is not None:
-        strategy = TagStrategy(request)
-        context["tags"] = [tag.get("element").decode() for tag in strategy.result]
+        for tag in TagStrategy(request).result:
+            obj = tag.get("object")
+            element = tag.get("element")
+            if (
+                location is not None
+                and obj.tag_location[2:] == location
+                or location is None
+            ):
+                context["tags"].append(element.decode())
 
     return context
 

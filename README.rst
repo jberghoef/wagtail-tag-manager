@@ -76,13 +76,10 @@ If you wish to enable the cookie bar settings (allowing you to change to title
 and text displayed in the cookie bar), also include ``wagtail.contrib.settings``
 in the ``INSTALLED_APPS``.
 
+.. _middleware:
 WTM offers two ways to implement it's functionality. You can either choose to
 use the middleware (which will rewrite the html on each request) or use the
 ``{% wtm_instant_tags %}`` and ``{% wtm_lazy_manager %}`` template tags.
-
-When using the template tags, you will lose the option to set a document
-location for your instant tags (top of ``<head>``, bottom of ``<head>``, top of
-``<body>`` and bottom of ``<body>``).
 
     Option 1: Include the middleware (preferred):
 
@@ -109,6 +106,8 @@ location for your instant tags (top of ``<head>``, bottom of ``<head>``, top of
             {% wtm_lazy_manager %}
         </body>
 
+    Read more about the wtm_instant_tags_ and wtm_lazy_manager_ template tags.
+
 Include the urls:
 
 .. code-block:: python
@@ -126,6 +125,55 @@ Include the urls:
 
 Template tags
 -------------
+
+As an alternative to using the middleware_ you can use the ``wtm_instant_tags``
+and ``wtm_lazy_manager`` template tags. Please be sure to use the middleware OR
+the template tags, never both.
+
+.. _wtm_instant_tags:
+**wtm_instant_tags**
+
+To load all instant tags at once:
+
+.. code-block:: html+django
+
+    {% load wtm_tags %}
+
+    <head>
+        ...
+        {% wtm_instant_tags %}
+    </head>
+
+To load tags corresponding to a certain position:
+
+.. code-block:: html+django
+
+    {% load wtm_tags %}
+
+    <head>
+        {% wtm_instant_tags 'top_head' %}
+        ...
+        {% wtm_instant_tags 'bottom_head' %}
+    </head>
+    <body>
+        {% wtm_instant_tags 'top_body' %}
+        ...
+        {% wtm_instant_tags 'bottom_body' %}
+    </body>
+
+.. _wtm_lazy_manager:
+**wtm_lazy_manager**
+
+.. code-block:: html+django
+
+    {% load wtm_tags %}
+
+    <body>
+        ...
+        {% wtm_lazy_manager %}
+    </body>
+
+---
 
 **wtm_cookie_bar**
 
