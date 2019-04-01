@@ -76,7 +76,6 @@ If you wish to enable the cookie bar settings (allowing you to change to title
 and text displayed in the cookie bar), also include ``wagtail.contrib.settings``
 in the ``INSTALLED_APPS``.
 
-.. _middleware:
 WTM offers two ways to implement it's functionality. You can either choose to
 use the middleware (which will rewrite the html on each request) or use the
 ``{% wtm_instant_tags %}`` and ``{% wtm_lazy_manager %}`` template tags.
@@ -106,7 +105,7 @@ use the middleware (which will rewrite the html on each request) or use the
             {% wtm_lazy_manager %}
         </body>
 
-    Read more about the wtm_instant_tags_ and wtm_lazy_manager_ template tags.
+    Read more about the wtm_instant_tags and wtm_lazy_manager template tags.
 
 Include the urls:
 
@@ -126,11 +125,10 @@ Include the urls:
 Template tags
 -------------
 
-As an alternative to using the middleware_ you can use the ``wtm_instant_tags``
+As an alternative to using the middleware you can use the ``wtm_instant_tags``
 and ``wtm_lazy_manager`` template tags. Please be sure to use the middleware OR
 the template tags, never both.
 
-.. _wtm_instant_tags:
 **wtm_instant_tags**
 
 To load all instant tags at once:
@@ -161,7 +159,6 @@ To load tags corresponding to a certain position:
         {% wtm_instant_tags 'bottom_body' %}
     </body>
 
-.. _wtm_lazy_manager:
 **wtm_lazy_manager**
 
 .. code-block:: html+django
@@ -173,7 +170,7 @@ To load tags corresponding to a certain position:
         {% wtm_lazy_manager %}
     </body>
 
----
+-----
 
 **wtm_cookie_bar**
 
@@ -246,20 +243,20 @@ To enable the context processors, add the following to your settings:
 
     "context_processors": [
         # ...
-        "wagtail_tag_manager.context_processors.cookie_state",
+        "wagtail_tag_manager.context_processors.consent_state",
     ]
 
-**cookie_state**
+**consent_state**
 
 You can now use the following value in your templates:
 
 .. code-block:: html+django
 
-    {{ wtm_cookie_state.functional }}
+    {{ wtm_consent_state.functional }}
 
-    {{ wtm_cookie_state.analytical }}
+    {{ wtm_consent_state.analytical }}
 
-    {{ wtm_cookie_state.traceable }}
+    {{ wtm_consent_state.traceable }}
 
 These will return a boolean indicating wether or not tags specific to the
 corresponding state should load.
