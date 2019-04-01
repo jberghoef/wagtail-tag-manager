@@ -665,7 +665,7 @@
 }
 
 #wtm_cookie_bar {
-  position: sticky !important;
+  position: relative !important;
   top: 0 !important;
   display: block !important;
   box-sizing: border-box !important;
