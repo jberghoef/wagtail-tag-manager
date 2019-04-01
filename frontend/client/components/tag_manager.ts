@@ -4,7 +4,7 @@ import CookieBar from "./cookie_bar";
 
 interface WTMWindow extends Window {
   wtm: {
-    state_url: string;
+    config_url: string;
     lazy_url: string;
   };
 }
@@ -20,17 +20,18 @@ interface Tag {
 export default class TagManager {
   window: WTMWindow = window as WTMWindow;
 
-  stateUrl: string;
+  configUrl: string;
   lazyUrl: string;
 
   showCookiebar: boolean;
-  data: { [s: string]: any };
-  config: { [s: string]: any };
+  data: { [s: string]: any } = {};
+  config: { [s: string]: any } = {};
+  state: { [s: string]: any } = {};
 
   constructor() {
     const { body } = document;
 
-    this.stateUrl = body.getAttribute("data-wtm-state") || this.window.wtm.state_url;
+    this.configUrl = body.getAttribute("data-wtm-config") || this.window.wtm.config_url;
     this.lazyUrl = body.getAttribute("data-wtm-lazy") || this.window.wtm.lazy_url;
 
     this.showCookiebar = false;
@@ -38,7 +39,13 @@ export default class TagManager {
   }
 
   initialize() {
-    this.loadState(() => {
+    this.loadConfig(() => {
+      const items = Cookies.get("wtm").split("|");
+      items.map(item => {
+        const parts = item.split(":", 2);
+        if (parts.length > 0) this.state[parts[0]] = parts[1];
+      });
+
       this.validate();
       this.loadData();
     });
@@ -54,7 +61,7 @@ export default class TagManager {
 
     if (enabled) {
       Object.keys(this.config).forEach(tagType => {
-        if (Cookies.get(`wtm_${tagType}`) === "unset" || !this.has(tagType)) {
+        if (this.state[tagType] === "unset" || this.state[tagType] == "none") {
           this.showCookiebar = true;
         }
       });
@@ -65,15 +72,8 @@ export default class TagManager {
     }
   }
 
-  has(type: string) {
-    if (type in this.config) {
-      return Cookies.get(`wtm_${type}`) !== undefined;
-    }
-    return true;
-  }
-
-  loadState(callback?: Function) {
-    fetch(this.stateUrl, {
+  loadConfig(callback?: Function) {
+    fetch(this.configUrl, {
       method: "GET",
       mode: "cors",
       cache: "no-cache",

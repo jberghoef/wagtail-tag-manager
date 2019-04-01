@@ -2,7 +2,7 @@ import json
 
 from django.http import JsonResponse, HttpResponseBadRequest
 
-from wagtail_tag_manager.utils import set_cookie
+from wagtail_tag_manager.utils import set_consent
 from wagtail_tag_manager.strategy import TagStrategy
 
 
@@ -21,8 +21,8 @@ def lazy_endpoint(request):
 
         strategy = TagStrategy(request)
 
-        for cookie_name, value in strategy.cookies.items():
-            set_cookie(response, cookie_name, value)
+        for tag_type, value in strategy.consent.items():
+            set_consent(response, tag_type, value)
 
         for tag in strategy.result:
             element = tag.get("element")

@@ -7,9 +7,9 @@ from wagtail_tag_manager.settings import (
     SETTING_REQUIRED,
 )
 
-COOKIE_TRUE = "true"
-COOKIE_FALSE = "false"
-COOKIE_UNSET = "unset"
+CONSENT_TRUE = "true"
+CONSENT_FALSE = "false"
+CONSENT_UNSET = "unset"
 
 
 class TagStrategy(object):
@@ -17,10 +17,13 @@ class TagStrategy(object):
         self._request = request
         self._context = Tag.create_context(request)
 
-        self._cookies = getattr(request, "COOKIES", {})
         self._config = TagTypeSettings.all()
         self._tags = []
-        self.cookies = {}
+
+        from wagtail_tag_manager.utils import get_consent
+
+        self.consent_state = get_consent(request)
+        self.consent = {}
 
         if request:
             self.define_strategy()
@@ -33,84 +36,81 @@ class TagStrategy(object):
                 handler(tag_type, tag_config)
 
     def get(self, tag_type, tag_config):
-        cookie_name = Tag.get_cookie_name(tag_type)
-        cookie = self._cookies.get(cookie_name, None)
+        consent = self.consent_state.get(tag_type, CONSENT_UNSET)
 
         if tag_config.get("value") == SETTING_REQUIRED:
             # Include required instant tags
             # Include required cookie
             self._tags.append((Tag.INSTANT_LOAD, tag_type))
-            self.cookies[cookie_name] = COOKIE_TRUE
+            self.consent[tag_type] = CONSENT_TRUE
 
         elif tag_config.get("value") == SETTING_INITIAL:
-            if not cookie or cookie == COOKIE_UNSET:
+            if consent == CONSENT_UNSET:
                 # Include initial cookie
-                self.cookies[cookie_name] = COOKIE_UNSET
-            elif cookie == COOKIE_TRUE:
+                self.consent[tag_type] = CONSENT_UNSET
+            elif consent == CONSENT_TRUE:
                 # Include initial instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                self.cookies[cookie_name] = COOKIE_TRUE
+                self.consent[tag_type] = CONSENT_TRUE
 
         elif tag_config.get("value") == SETTING_CONTINUE:
-            if not cookie or cookie == COOKIE_UNSET:
+            if consent == CONSENT_UNSET:
                 # Include initial cookie
-                self.cookies[cookie_name] = COOKIE_UNSET
-            elif cookie == COOKIE_TRUE:
+                self.consent[tag_type] = CONSENT_UNSET
+            elif consent == CONSENT_TRUE:
                 # Include initial instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                self.cookies[cookie_name] = COOKIE_TRUE
+                self.consent[tag_type] = CONSENT_TRUE
 
         else:
-            if cookie == COOKIE_TRUE:
+            if consent == CONSENT_TRUE:
                 # Include generic instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                self.cookies[cookie_name] = COOKIE_TRUE
+                self.consent[tag_type] = CONSENT_TRUE
 
     def post(self, tag_type, tag_config):
-        cookie_name = Tag.get_cookie_name(tag_type)
-        cookie = self._cookies.get(cookie_name, None)
+        consent = self.consent_state.get(tag_type, CONSENT_UNSET)
 
         if tag_config.get("value") == SETTING_REQUIRED:
             # Include required lazy tags
             # Include required cookie
             self._tags.append((Tag.LAZY_LOAD, tag_type))
-            if cookie != COOKIE_TRUE:
-                self.cookies[cookie_name] = COOKIE_TRUE
+            if consent != CONSENT_TRUE:
+                self.consent[tag_type] = CONSENT_TRUE
 
         else:
             if tag_config.get("value") == SETTING_INITIAL:
-                if cookie == COOKIE_UNSET:
+                if consent == CONSENT_UNSET:
                     # Include initial lazy tags
                     # Include initial instant tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
                     self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                elif cookie == COOKIE_TRUE:
+                elif consent == CONSENT_TRUE:
                     # Include initial lazy tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
 
             elif tag_config.get("value") == SETTING_CONTINUE:
-                if cookie == COOKIE_UNSET:
-                    self.cookies[cookie_name] = COOKIE_TRUE
-                elif cookie == COOKIE_TRUE:
+                if consent == CONSENT_UNSET:
+                    self.consent[tag_type] = CONSENT_TRUE
+                elif consent == CONSENT_TRUE:
                     # Include generic lazy tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
 
             else:
-                if cookie == COOKIE_TRUE:
+                if consent == CONSENT_TRUE:
                     # Include generic lazy tags
                     self._tags.append((Tag.LAZY_LOAD, tag_type))
 
     def should_include(self, tag_type, tag_config):
-        cookie_name = Tag.get_cookie_name(tag_type)
-        cookie = self._cookies.get(cookie_name, None)
+        consent = self.consent_state.get(tag_type, CONSENT_UNSET)
 
         if tag_config.get("value") == SETTING_REQUIRED:
             return True
         elif tag_config.get("value") == SETTING_INITIAL:
-            if not cookie or cookie == COOKIE_UNSET or cookie == COOKIE_TRUE:
+            if consent == CONSENT_UNSET or consent == CONSENT_TRUE:
                 return True
         else:
-            if cookie == COOKIE_TRUE:
+            if consent == CONSENT_TRUE:
                 return True
 
     @property
@@ -152,7 +152,6 @@ class TagStrategy(object):
     @property
     def cookie_state(self):
         return {
-            tag_type: self.cookies.get(Tag.get_cookie_name(tag_type), COOKIE_FALSE)
-            != COOKIE_FALSE
+            tag_type: self.consent.get(tag_type, CONSENT_FALSE) != CONSENT_FALSE
             for tag_type in Tag.get_types()
         }

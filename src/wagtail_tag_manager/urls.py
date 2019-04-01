@@ -7,7 +7,7 @@ app_name = "wtm"
 
 urlpatterns = [
     path("manage/", ManageView.as_view(), name="manage"),
-    path("state/", StateView.as_view(), name="state"),
+    path("config/", StateView.as_view(), name="config"),
     path("lazy/", lazy_endpoint, name="lazy"),
     path("variables/", VariableView.as_view(), name="variables"),
 ]

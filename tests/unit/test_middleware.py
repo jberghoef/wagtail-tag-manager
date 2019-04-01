@@ -19,18 +19,18 @@ def test_view_functional(client, site):
     assert response.status_code == 200
 
     tag_instant_functional(tag_location=Tag.TOP_HEAD)
-    client.cookies = SimpleCookie({"wtm_functional": "true"})
+    client.cookies = SimpleCookie({"wtm": "functional:true"})
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("functional instant")' in response.content
 
     tag_instant_functional(name="instant functional 2", tag_location=Tag.BOTTOM_HEAD)
-    client.cookies = SimpleCookie({"wtm_functional": "true"})
+    client.cookies = SimpleCookie({"wtm": "functional:true"})
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("functional instant")' in response.content
 
-    client.cookies = SimpleCookie({"wtm_functional": "false"})
+    client.cookies = SimpleCookie({"wtm": "functional:false"})
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("functional instant")' in response.content
@@ -39,7 +39,7 @@ def test_view_functional(client, site):
 @pytest.mark.django_db
 def test_view_analytical(client, site):
     tag_instant_analytical(tag_location=Tag.TOP_BODY)
-    client.cookies = SimpleCookie({"wtm_analytical": "true"})
+    client.cookies = SimpleCookie({"wtm": "analytical:true"})
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("analytical instant")' in response.content
@@ -48,7 +48,7 @@ def test_view_analytical(client, site):
 @pytest.mark.django_db
 def test_view_continue(client, site):
     tag_instant_continue(tag_location=Tag.TOP_BODY)
-    client.cookies = SimpleCookie({"wtm_continue": "true"})
+    client.cookies = SimpleCookie({"wtm": "continue:true"})
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("continue instant")' in response.content
@@ -57,7 +57,7 @@ def test_view_continue(client, site):
 @pytest.mark.django_db
 def test_view_traceable(client, site):
     tag_instant_traceable(tag_location=Tag.BOTTOM_BODY)
-    client.cookies = SimpleCookie({"wtm_traceable": "true"})
+    client.cookies = SimpleCookie({"wtm": "traceable:true"})
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("traceable instant")' in response.content
@@ -107,22 +107,22 @@ def test_passive_view(client, site):
     trigger.tags.add(tag_continue)
     trigger.tags.add(tag_traceable)
 
-    client.cookies = SimpleCookie({"wtm_functional": "true"})
+    client.cookies = SimpleCookie({"wtm": "functional:true"})
     response = client.get("/?state=1")
     assert response.status_code == 200
     assert b'console.log("1")' in response.content
 
-    client.cookies = SimpleCookie({"wtm_analytical": "true"})
+    client.cookies = SimpleCookie({"wtm": "analytical:true"})
     response = client.get("/?state=2")
     assert response.status_code == 200
     assert b'console.log("2")' in response.content
 
-    client.cookies = SimpleCookie({"wtm_continue": "true"})
+    client.cookies = SimpleCookie({"wtm": "continue:true"})
     response = client.get("/?state=3")
     assert response.status_code == 200
     assert b'console.log("3")' in response.content
 
-    client.cookies = SimpleCookie({"wtm_traceable": "true"})
+    client.cookies = SimpleCookie({"wtm": "traceable:true"})
     response = client.get("/?state=4")
     assert response.status_code == 200
     assert b'console.log("4")' in response.content

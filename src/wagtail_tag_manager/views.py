@@ -6,7 +6,7 @@ from wagtail.contrib.modeladmin.views import IndexView
 
 from wagtail_tag_manager.decorators import get_variables
 from wagtail_tag_manager.forms import ConsentForm
-from wagtail_tag_manager.utils import set_cookie, scan_cookies
+from wagtail_tag_manager.utils import set_consent, scan_cookies
 from wagtail_tag_manager.models import Constant, Variable, TagTypeSettings
 
 
@@ -31,7 +31,7 @@ class ManageView(TemplateView):
         form = ConsentForm(request.POST)
         if form.is_valid():
             for key, value in form.cleaned_data.items():
-                set_cookie(response, f"wtm_{key}", str(value).lower())
+                set_consent(response, key, str(value).lower())
 
         return response
 

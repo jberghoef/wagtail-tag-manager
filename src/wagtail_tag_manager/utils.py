@@ -3,12 +3,51 @@ from datetime import datetime, timedelta
 from selenium import webdriver
 from django.conf import settings
 from django.contrib import messages
+from django.http import HttpResponse
 from django.utils.html import mark_safe
 from django.utils.cache import patch_vary_headers
 from django.utils.translation import ugettext_lazy as _
 
 from wagtail_tag_manager.models import Tag, CookieDeclaration
-from wagtail_tag_manager.strategy import COOKIE_TRUE
+from wagtail_tag_manager.strategy import CONSENT_TRUE, CONSENT_UNSET
+from wagtail_tag_manager.settings import TagTypeSettings
+
+
+def set_consent(response, key, value):
+    consent_state = get_consent(response)
+    consent_state[key] = str(value).lower()
+
+    set_cookie(
+        response,
+        "wtm",
+        "|".join([f"{key}:{value}" for key, value in consent_state.items()]),
+    )
+
+
+def get_consent(r):
+    cookies = getattr(r, "COOKIES", {})
+    if isinstance(r, HttpResponse):
+        cookies = {
+            key: getattr(r, "cookies", {}).get(key).value
+            for key in getattr(r, "cookies", {}).keys()
+        }
+
+    wtm_cookie = cookies.get("wtm", "")
+    consent_state = parse_consent_state(wtm_cookie)
+
+    return consent_state
+
+
+def parse_consent_state(cookie_value: str) -> dict:
+    consent_state = {tag_type: CONSENT_UNSET for tag_type in TagTypeSettings.all()}
+    consent_state.update(
+        {
+            item.split(":")[0]: item.split(":")[1]
+            for item in cookie_value.split("|")
+            if ":" in item
+        }
+    )
+    return consent_state
 
 
 def set_cookie(response, key, value, days_expire=None):
@@ -48,15 +87,15 @@ def scan_cookies(request):  # pragma: no cover
         browser.implicitly_wait(30)
         browser.get(request.site.root_page.full_url)
         browser.delete_all_cookies()
-        for tag in Tag.get_types():
-            browser.add_cookie(
-                {
-                    "name": Tag.get_cookie_name(tag),
-                    "value": COOKIE_TRUE,
-                    "path": "",
-                    "secure": False,
-                }
-            )
+
+        browser.add_cookie(
+            {
+                "name": "wtm",
+                "value": "|".join([f"{tag_type}:true" for tag_type in Tag.get_types()]),
+                "path": "",
+                "secure": False,
+            }
+        )
 
         browser.get(request.site.root_page.full_url)
         now = datetime.utcnow()

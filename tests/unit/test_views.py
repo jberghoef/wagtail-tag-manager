@@ -21,7 +21,7 @@ def test_manage_view(client):
 
 @pytest.mark.django_db
 def test_state_view(client):
-    url = reverse("wtm:state")
+    url = reverse("wtm:config")
 
     response = client.get(url)
     assert response.status_code == 200

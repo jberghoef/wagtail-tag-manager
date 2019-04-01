@@ -15,6 +15,7 @@ from tests.factories.tag import (
 )
 from tests.factories.trigger import TriggerFactory
 from wagtail_tag_manager.models import Tag
+from wagtail_tag_manager.utils import get_consent
 
 
 @pytest.mark.django_db
@@ -44,11 +45,12 @@ def test_lazy_cookies(client, site):
     assert response.status_code == 200
     assert "tags" in data
 
-    assert "wtm_functional" in response.cookies
-    assert response.cookies.get("wtm_functional").value == "true"
-    assert "wtm_analytical" not in response.cookies
-    assert "wtm_continue" not in response.cookies
-    assert "wtm_traceable" not in response.cookies
+    assert "wtm" in response.cookies
+    consent_state = get_consent(response)
+    assert consent_state.get("functional", "") == "true"
+    assert consent_state.get("analytical", "") == "unset"
+    assert consent_state.get("continue", "") == "true"
+    assert consent_state.get("traceable", "") == "unset"
 
 
 @pytest.mark.django_db
@@ -64,8 +66,9 @@ def test_required_lazy_cookies(client, site):
     assert "tags" in data
     assert len(data["tags"]) == 1
 
-    assert "wtm_functional" in response.cookies
-    assert response.cookies.get("wtm_functional").value == "true"
+    assert "wtm" in response.cookies
+    consent_state = get_consent(response)
+    assert consent_state.get("functional", "") == "true"
 
 
 @pytest.mark.django_db
@@ -73,7 +76,7 @@ def test_initial_lazy_cookies(client, site):
     tag_instant_analytical()
     tag_lazy_analytical()
 
-    client.cookies = SimpleCookie({"wtm_analytical": "unset"})
+    client.cookies = SimpleCookie({"wtm": "analytical:unset"})
 
     response = client.post(
         "/wtm/lazy/", json.dumps({}), content_type="application/json"
@@ -90,7 +93,7 @@ def test_continue_lazy_cookies(client, site):
     tag_instant_continue()
     tag_lazy_continue()
 
-    client.cookies = SimpleCookie({"wtm_continue": ""})
+    client.cookies = SimpleCookie({"wtm": ""})
 
     response = client.post(
         "/wtm/lazy/", json.dumps({}), content_type="application/json"
@@ -101,21 +104,10 @@ def test_continue_lazy_cookies(client, site):
     assert "tags" in data
     assert len(data["tags"]) == 0
 
-    assert "wtm_continue" not in response.cookies
+    assert "wtm" in response.cookies
+    consent_state = get_consent(response)
 
-    client.cookies = SimpleCookie({"wtm_continue": "unset"})
-
-    response = client.post(
-        "/wtm/lazy/", json.dumps({}), content_type="application/json"
-    )
-    data = response.json()
-
-    assert response.status_code == 200
-    assert "tags" in data
-    assert len(data["tags"]) == 0
-
-    assert "wtm_continue" in response.cookies
-    assert response.cookies.get("wtm_continue").value == "true"
+    assert consent_state.get("continue", "") == "true"
 
 
 @pytest.mark.django_db
@@ -139,30 +131,39 @@ def test_passive_tags(client, site):
         name="functional lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
-        content='<script>console.log("{{ state }}")</script>',
+        content='<script>console.log("functional: {{ state }}")</script>',
     )
     tag_analytical = TagFactory(
         name="analytical lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
         tag_type="analytical",
-        content='<script>console.log("{{ state }}")</script>',
+        content='<script>console.log("analytical: {{ state }}")</script>',
+    )
+    tag_continue = TagFactory(
+        name="continue lazy",
+        auto_load=False,
+        tag_loading=Tag.LAZY_LOAD,
+        tag_type="continue",
+        content='<script>console.log("continue: {{ state }}")</script>',
     )
     tag_traceable = TagFactory(
         name="traceable lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
         tag_type="traceable",
-        content='<script>console.log("{{ state }}")</script>',
+        content='<script>console.log("traceable: {{ state }}")</script>',
     )
 
     assert tag_functional in Tag.objects.passive().sorted()
     assert tag_analytical in Tag.objects.passive().sorted()
+    assert tag_continue in Tag.objects.passive().sorted()
     assert tag_traceable in Tag.objects.passive().sorted()
 
     trigger = TriggerFactory(pattern="[?&]state=(?P<state>\S+)")
     trigger.tags.add(tag_functional)
     trigger.tags.add(tag_analytical)
+    trigger.tags.add(tag_continue)
     trigger.tags.add(tag_traceable)
 
     response = client.post(
@@ -176,6 +177,7 @@ def test_passive_tags(client, site):
     assert "tags" in data
     assert len(data["tags"]) == 0
 
+    trigger.tags.add(tag_analytical)
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": "/", "search": "?state=1"}),
@@ -185,11 +187,9 @@ def test_passive_tags(client, site):
 
     assert response.status_code == 200
     assert "tags" in data
-    assert len(data["tags"]) == 1
-    assert 'console.log("1")' in data["tags"][0]["string"]
+    assert 'console.log("functional: 1")' in data["tags"][0]["string"]
 
-    client.cookies = SimpleCookie({"wtm_analytical": "unset"})
-
+    client.cookies = SimpleCookie({"wtm": "analytical:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": "/", "search": "?state=2"}),
@@ -199,9 +199,9 @@ def test_passive_tags(client, site):
 
     assert response.status_code == 200
     assert "tags" in data
-    assert len(data["tags"]) == 2
-    assert 'console.log("2")' in data["tags"][1]["string"]
+    assert 'console.log("analytical: 2")' in data["tags"][1]["string"]
 
+    client.cookies = SimpleCookie({"wtm": "analytical:false|continue:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": "/", "search": "?state=3"}),
@@ -211,5 +211,16 @@ def test_passive_tags(client, site):
 
     assert response.status_code == 200
     assert "tags" in data
-    assert len(data["tags"]) == 2
-    assert 'console.log("3")' in data["tags"][1]["string"]
+    assert 'console.log("continue: 3")' in data["tags"][1]["string"]
+
+    client.cookies = SimpleCookie({"wtm": "analytical:false|traceable:true"})
+    response = client.post(
+        "/wtm/lazy/",
+        json.dumps({"pathname": "/", "search": "?state=4"}),
+        content_type="application/json",
+    )
+    data = response.json()
+
+    assert response.status_code == 200
+    assert "tags" in data
+    assert 'console.log("traceable: 4")' in data["tags"][1]["string"]

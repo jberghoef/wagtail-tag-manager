@@ -8,7 +8,8 @@
     "build": "webpack --mode production",
     "dev": "webpack --mode development",
     "watch": "webpack --mode development --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write './frontend/**/*'"
   },
   "repository": "github.com/jberghoef/wagtail-tag-manager",
   "author": "Jasper Berghoef",
