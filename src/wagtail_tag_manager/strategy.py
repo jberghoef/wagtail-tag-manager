@@ -63,10 +63,10 @@ class TagStrategy(object):
                 self.consent[tag_type] = CONSENT_TRUE
 
         else:
-            self.consent[tag_type] = CONSENT_TRUE
             if consent == CONSENT_TRUE:
                 # Include generic instant tags
                 self._tags.append((Tag.INSTANT_LOAD, tag_type))
+                self.consent[tag_type] = CONSENT_TRUE
 
     def post(self, tag_type, tag_config):
         consent = self.consent_state.get(tag_type, CONSENT_UNSET)

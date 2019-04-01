@@ -49,7 +49,7 @@ def test_lazy_cookies(client, site):
     consent_state = get_consent(response)
     assert consent_state.get("functional", "") == "true"
     assert consent_state.get("analytical", "") == "unset"
-    assert consent_state.get("continue", "") == "unset"
+    assert consent_state.get("continue", "") == "true"
     assert consent_state.get("traceable", "") == "unset"
 
 
@@ -107,23 +107,7 @@ def test_continue_lazy_cookies(client, site):
     assert "wtm" in response.cookies
     consent_state = get_consent(response)
 
-    assert consent_state.get("continue", "") == "unset"
-
-    client.cookies = SimpleCookie({"wtm": "continue:unset"})
-
-    response = client.post(
-        "/wtm/lazy/", json.dumps({}), content_type="application/json"
-    )
-    data = response.json()
-
-    assert response.status_code == 200
-    assert "tags" in data
-    assert len(data["tags"]) == 0
-
-    assert "wtm" in response.cookies
-    consent_state = get_consent(response)
-
-    assert consent_state.get("continue") == "true"
+    assert consent_state.get("continue", "") == "true"
 
 
 @pytest.mark.django_db
@@ -217,7 +201,7 @@ def test_passive_tags(client, site):
     assert "tags" in data
     assert 'console.log("analytical: 2")' in data["tags"][1]["string"]
 
-    client.cookies = SimpleCookie({"wtm": "continue:true"})
+    client.cookies = SimpleCookie({"wtm": "analytical:false|continue:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": "/", "search": "?state=3"}),
@@ -229,7 +213,7 @@ def test_passive_tags(client, site):
     assert "tags" in data
     assert 'console.log("continue: 3")' in data["tags"][1]["string"]
 
-    client.cookies = SimpleCookie({"wtm": "traceable:true"})
+    client.cookies = SimpleCookie({"wtm": "analytical:false|traceable:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": "/", "search": "?state=4"}),
