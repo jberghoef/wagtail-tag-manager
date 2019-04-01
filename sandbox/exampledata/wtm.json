@@ -29,6 +29,19 @@
     "model": "wagtail_tag_manager.tag",
     "pk": 3,
     "fields": {
+      "name": "Instant continue",
+      "description": "Loads instantly, is continuous",
+      "auto_load": true,
+      "tag_type": "continue",
+      "tag_location": "1_bottom_head",
+      "tag_loading": "instant_load",
+      "content": "<script>\n console.info('instant continuous')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 4,
+    "fields": {
       "name": "Instant traceable",
       "description": "Loads instantly, is traceable",
       "auto_load": true,
@@ -40,7 +53,7 @@
   },
   {
     "model": "wagtail_tag_manager.tag",
-    "pk": 4,
+    "pk": 5,
     "fields": {
       "name": "Lazy functional",
       "description": "Loads lazily, is functional",
@@ -53,7 +66,7 @@
   },
   {
     "model": "wagtail_tag_manager.tag",
-    "pk": 5,
+    "pk": 6,
     "fields": {
       "name": "Lazy analytical",
       "description": "Loads lazily, is analytical",
@@ -66,7 +79,20 @@
   },
   {
     "model": "wagtail_tag_manager.tag",
-    "pk": 6,
+    "pk": 7,
+    "fields": {
+      "name": "Lazy continue",
+      "description": "Loads lazily, is continuous",
+      "auto_load": true,
+      "tag_type": "continue",
+      "tag_location": "0_top_head",
+      "tag_loading": "lazy_load",
+      "content": "<script>\n console.info('lazy continuous')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 8,
     "fields": {
       "name": "Lazy traceable",
       "description": "Loads lazily, is traceable",
@@ -79,7 +105,7 @@
   },
   {
     "model": "wagtail_tag_manager.tag",
-    "pk": 7,
+    "pk": 9,
     "fields": {
       "name": "Thank You",
       "description": "This logs a \"thank you\" message using a constant.",
@@ -92,7 +118,7 @@
   },
   {
     "model": "wagtail_tag_manager.tag",
-    "pk": 8,
+    "pk": 10,
     "fields": {
       "name": "A random number",
       "description": "This will log a random number.",
@@ -105,7 +131,7 @@
   },
   {
     "model": "wagtail_tag_manager.tag",
-    "pk": 9,
+    "pk": 11,
     "fields": {
       "name": "Passive lazy tag",
       "description": "",
@@ -118,7 +144,7 @@
   },
   {
     "model": "wagtail_tag_manager.tag",
-    "pk": 10,
+    "pk": 12,
     "fields": {
       "name": "Passive instant tag",
       "description": "",

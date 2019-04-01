@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 from __future__ import absolute_import, unicode_literals
 
+from django.utils.translation import ugettext_lazy as _
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
@@ -81,6 +83,14 @@ MIDDLEWARE = [
 WTM_MANAGE_VIEW = True
 WTM_COOKIE_SCAN = True
 WTM_SUMMARY_PANELS = True
+
+WTM_TAG_TYPES = {
+    # key, verbose name, setting
+    "functional": (_("Functional"), "required"),
+    "analytical": (_("Analytical"), "initial"),
+    "continue": (_("Continue"), "continue"),
+    "traceable": (_("Traceable"), ""),
+}
 
 ROOT_URLCONF = "sandbox.urls"
 
