@@ -83,16 +83,14 @@ def scan_cookies(request):  # pragma: no cover
         browser.get(request.site.root_page.full_url)
         browser.delete_all_cookies()
 
-        # TODO: Fix this!
-        for tag in Tag.get_types():
-            browser.add_cookie(
-                {
-                    "name": Tag.get_consent_name(tag),
-                    "value": CONSENT_TRUE,
-                    "path": "",
-                    "secure": False,
-                }
-            )
+        browser.add_cookie(
+            {
+                "name": "wtm",
+                "value": "|".join([f"{tag_type}:true" for tag_type in Tag.get_types()]),
+                "path": "",
+                "secure": False,
+            }
+        )
 
         browser.get(request.site.root_page.full_url)
         now = datetime.utcnow()
@@ -100,7 +98,7 @@ def scan_cookies(request):  # pragma: no cover
         created = 0
         updated = 0
 
-        for cookie in browser.get_consents():
+        for cookie in browser.get_cookies():
             expiry = datetime.fromtimestamp(cookie.get("expiry", now))
 
             obj, created = CookieDeclaration.objects.update_or_create(
