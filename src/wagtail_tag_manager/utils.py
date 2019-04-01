@@ -33,15 +33,20 @@ def get_consent(r):
         }
 
     wtm_cookie = cookies.get("wtm", "")
+    consent_state = parse_consent_state(wtm_cookie)
+
+    return consent_state
+
+
+def parse_consent_state(cookie_value: str) -> dict:
     consent_state = {tag_type: CONSENT_UNSET for tag_type in TagTypeSettings.all()}
     consent_state.update(
         {
             item.split(":")[0]: item.split(":")[1]
-            for item in wtm_cookie.split("|")
+            for item in cookie_value.split("|")
             if ":" in item
         }
     )
-
     return consent_state
 
 
