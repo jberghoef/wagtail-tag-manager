@@ -16,8 +16,6 @@ def django_db_setup(django_db_setup, django_db_blocker):
 
 @pytest.fixture(scope='module')
 def browser(request):
-    """Provide a selenium webdriver instance."""
-    # SetUp
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
 

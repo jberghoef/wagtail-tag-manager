@@ -1,10 +1,18 @@
 import pytest
 
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
+
 from src.wagtail_tag_manager.utils import parse_consent_state
 
 
 def test_consent_result(live_server, browser):
     browser.get(live_server.url)
+    WebDriverWait(browser, 10).until(
+        EC.visibility_of_element_located((By.ID, "wtm_cookie_bar"))
+    )
 
     wtm_cookie = None
     for cookie in browser.get_cookies():
