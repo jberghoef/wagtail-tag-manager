@@ -1,9 +1,13 @@
 {% load static %}
 
-<link href="{% static 'wtm.bundle.css' %}" rel="stylesheet" />
+{% if include_style %}
+    <link href="{% static 'wtm.bundle.css' %}" rel="stylesheet" />
+{% endif %}
 
 <script>
     window.wtm = {{ config|safe }}
 </script>
 
-<script src="{% static 'wtm.bundle.js' %}"></script>
+{% if include_script %}
+    <script src="{% static 'wtm.bundle.js' %}"></script>
+{% endif %}
