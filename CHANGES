@@ -1,3 +1,17 @@
+0.15.0 (2019.4.2)
+=================
+ - Use single cookie for storage of consent state (#28)
+
+
+0.14.0 (2019.4.1)
+=================
+ - "Continue" tag type implementation (#25)
+ - Custom variable implementation (#26)
+ - Rename tag ‘active’ field to ‘auto_load’
+ - Allow for filtering of tags in the wtm_instant_tags template tag
+ - Make the cookie bar position relative
+
+
 0.13.2 (2019.2.28)
 ==================
  - Adjust babel polyfill implementation to avoid collision
