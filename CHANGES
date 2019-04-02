@@ -1,3 +1,8 @@
+0.15.1 (2019.4.2)
+=================
+ - Ensure the lazy manager template tags honors settings
+
+
 0.15.0 (2019.4.2)
 =================
  - Use single cookie for storage of consent state (#28)
