@@ -29,10 +29,10 @@
     "model": "wagtail_tag_manager.tag",
     "pk": 3,
     "fields": {
-      "name": "Instant continue",
+      "name": "Instant delayed",
       "description": "Loads instantly, is continuous",
       "auto_load": true,
-      "tag_type": "continue",
+      "tag_type": "delayed",
       "tag_location": "1_bottom_head",
       "tag_loading": "instant_load",
       "content": "<script>\n console.info('instant continuous')\n</script>"
@@ -81,10 +81,10 @@
     "model": "wagtail_tag_manager.tag",
     "pk": 7,
     "fields": {
-      "name": "Lazy continue",
+      "name": "Lazy delayed",
       "description": "Loads lazily, is continuous",
       "auto_load": true,
-      "tag_type": "continue",
+      "tag_type": "delayed",
       "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
       "content": "<script>\n console.info('lazy continuous')\n</script>"

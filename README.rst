@@ -285,7 +285,7 @@ been given by the end user, provided the browser allows cookies. While no
 consent has been given, these tags will be loaded lazily to honor the browser
 settings (which we can only read using javascript).
 
-The third option is to mark a tag as ``continue``. This will ensure the tag will
+The third option is to mark a tag as ``delayed``. This will ensure the tag will
 not load on the first page load, but only from the second load forward.
 
 .. code-block:: python

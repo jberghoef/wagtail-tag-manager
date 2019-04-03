@@ -24,11 +24,11 @@ def tag_instant_analytical(**kwarg):
     )
 
 
-def tag_instant_continue(**kwarg):
+def tag_instant_delayed(**kwarg):
     return TagFactory(
-        name="continue instant",
-        tag_type="continue",
-        content='<script>console.log("continue instant")</script>',
+        name="delayed instant",
+        tag_type="delayed",
+        content='<script>console.log("delayed instant")</script>',
         **kwarg,
     )
 
@@ -61,12 +61,12 @@ def tag_lazy_analytical(**kwarg):
     )
 
 
-def tag_lazy_continue(**kwarg):
+def tag_lazy_delayed(**kwarg):
     return TagFactory(
-        name="continue lazy",
+        name="delayed lazy",
         tag_loading=Tag.LAZY_LOAD,
-        tag_type="continue",
-        content='<script>console.log("continue lazy")</script>',
+        tag_type="delayed",
+        content='<script>console.log("delayed lazy")</script>',
         **kwarg,
     )
 

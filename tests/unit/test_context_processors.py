@@ -9,7 +9,7 @@ def test_consent_state(rf, site):
     assert consent_state(request) == {
         "wtm_consent_state": {
             "analytical": True,
-            "continue": True,
+            "delayed": True,
             "functional": True,
             "traceable": False,
         }

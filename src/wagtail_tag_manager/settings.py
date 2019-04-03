@@ -10,7 +10,7 @@ from wagtail.contrib.settings.models import BaseSetting, register_setting
 SETTING_DEFAULT = ""
 SETTING_REQUIRED = "required"
 SETTING_INITIAL = "initial"
-SETTING_CONTINUE = "continue"
+SETTING_DELAYED = "delayed"
 
 DEFAULT_SETTINGS = {
     "functional": (_("Functional"), SETTING_REQUIRED),

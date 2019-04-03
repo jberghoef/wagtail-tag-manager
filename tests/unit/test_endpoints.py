@@ -8,10 +8,10 @@ from tests.factories.tag import (
     tag_lazy_traceable,
     tag_lazy_analytical,
     tag_lazy_functional,
-    tag_lazy_continue,
+    tag_lazy_delayed,
     tag_instant_traceable,
     tag_instant_analytical,
-    tag_instant_continue,
+    tag_instant_delayed,
 )
 from tests.factories.trigger import TriggerFactory
 from wagtail_tag_manager.models import Tag
@@ -49,7 +49,7 @@ def test_lazy_cookies(client, site):
     consent_state = get_consent(response)
     assert consent_state.get("functional", "") == "true"
     assert consent_state.get("analytical", "") == "unset"
-    assert consent_state.get("continue", "") == "true"
+    assert consent_state.get("delayed", "") == "true"
     assert consent_state.get("traceable", "") == "false"
 
 
@@ -89,9 +89,9 @@ def test_initial_lazy_cookies(client, site):
 
 
 @pytest.mark.django_db
-def test_continue_lazy_cookies(client, site):
-    tag_instant_continue()
-    tag_lazy_continue()
+def test_delayed_lazy_cookies(client, site):
+    tag_instant_delayed()
+    tag_lazy_delayed()
 
     client.cookies = SimpleCookie({"wtm": ""})
 
@@ -107,7 +107,7 @@ def test_continue_lazy_cookies(client, site):
     assert "wtm" in response.cookies
     consent_state = get_consent(response)
 
-    assert consent_state.get("continue", "") == "true"
+    assert consent_state.get("delayed", "") == "true"
 
 
 @pytest.mark.django_db
@@ -140,12 +140,12 @@ def test_passive_tags(client, site):
         tag_type="analytical",
         content='<script>console.log("analytical: {{ state }}")</script>',
     )
-    tag_continue = TagFactory(
-        name="continue lazy",
+    tag_delayed = TagFactory(
+        name="delayed lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
-        tag_type="continue",
-        content='<script>console.log("continue: {{ state }}")</script>',
+        tag_type="delayed",
+        content='<script>console.log("delayed: {{ state }}")</script>',
     )
     tag_traceable = TagFactory(
         name="traceable lazy",
@@ -157,13 +157,13 @@ def test_passive_tags(client, site):
 
     assert tag_functional in Tag.objects.passive().sorted()
     assert tag_analytical in Tag.objects.passive().sorted()
-    assert tag_continue in Tag.objects.passive().sorted()
+    assert tag_delayed in Tag.objects.passive().sorted()
     assert tag_traceable in Tag.objects.passive().sorted()
 
     trigger = TriggerFactory(pattern="[?&]state=(?P<state>\S+)")
     trigger.tags.add(tag_functional)
     trigger.tags.add(tag_analytical)
-    trigger.tags.add(tag_continue)
+    trigger.tags.add(tag_delayed)
     trigger.tags.add(tag_traceable)
 
     response = client.post(
@@ -201,7 +201,7 @@ def test_passive_tags(client, site):
     assert "tags" in data
     assert 'console.log("analytical: 2")' in data["tags"][1]["string"]
 
-    client.cookies = SimpleCookie({"wtm": "analytical:false|continue:true"})
+    client.cookies = SimpleCookie({"wtm": "analytical:false|delayed:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": "/", "search": "?state=3"}),
@@ -211,7 +211,7 @@ def test_passive_tags(client, site):
 
     assert response.status_code == 200
     assert "tags" in data
-    assert 'console.log("continue: 3")' in data["tags"][1]["string"]
+    assert 'console.log("delayed: 3")' in data["tags"][1]["string"]
 
     client.cookies = SimpleCookie({"wtm": "analytical:false|traceable:true"})
     response = client.post(

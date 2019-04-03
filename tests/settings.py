@@ -96,6 +96,6 @@ WTM_TAG_TYPES = {
     # key, verbose name, setting
     "functional": (_("Functional"), "required"),
     "analytical": (_("Analytical"), "initial"),
-    "continue": (_("Continue"), "continue"),
+    "delayed": (_("Delayed"), "delayed"),
     "traceable": (_("Traceable"), ""),
 }
