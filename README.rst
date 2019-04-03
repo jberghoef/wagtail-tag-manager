@@ -173,6 +173,17 @@ To load tags corresponding to a certain position:
         {% wtm_lazy_manager %}
     </body>
 
+Optionally, you can disable either the script and/or the styling.
+
+.. code-block:: html+django
+
+    {% load wtm_tags %}
+
+    <body>
+        ...
+        {% wtm_lazy_manager include_style=False include_script=False %}
+    </body>
+
 -----
 
 **wtm_cookie_bar**

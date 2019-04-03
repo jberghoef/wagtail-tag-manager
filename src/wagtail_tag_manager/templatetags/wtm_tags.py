@@ -112,14 +112,14 @@ def wtm_instant_tags(context, location=None):
 
 
 @register.inclusion_tag("wagtail_tag_manager/templatetags/lazy_manager.html")
-def wtm_lazy_manager():
+def wtm_lazy_manager(include_style=True, include_script=True):
     return {
         "config": {
             "config_url": reverse("wtm:config"),
             "lazy_url": reverse("wtm:lazy"),
         },
-        "include_style": getattr(settings, "WTM_INJECT_STYLE", True),
-        "include_script": getattr(settings, "WTM_INJECT_SCRIPT", True),
+        "include_style": include_style,
+        "include_script": include_script,
     }
 
 
