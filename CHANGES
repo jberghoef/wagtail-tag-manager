@@ -1,3 +1,10 @@
+0.16.0 (2019.4.3)
+=================
+ - Repair strategy consent functionality
+ - Rename “continue” to “delayed”
+ - Add simpler strategy validation (#29)
+
+
 0.15.1 (2019.4.2)
 =================
  - Ensure the lazy manager template tags honors settings
