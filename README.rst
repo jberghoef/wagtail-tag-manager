@@ -76,36 +76,39 @@ If you wish to enable the cookie bar settings (allowing you to change to title
 and text displayed in the cookie bar), also include ``wagtail.contrib.settings``
 in the ``INSTALLED_APPS``.
 
+Include the middleware:
+
+.. code-block:: python
+
+    MIDDLEWARE = [
+        # ...
+        'wagtail_tag_manager.middleware.TagManagerMiddleware',
+        # ...
+    ]
+
 WTM offers two ways to implement it's functionality. You can either choose to
 use the middleware (which will rewrite the html on each request) or use the
 ``{% wtm_instant_tags %}`` and ``{% wtm_lazy_manager %}`` template tags.
 
-    Option 1: Include the middleware (preferred):
+If you prefer to use the template tags to inject tags into your templates,
+set the ``WTM_INJECT_TAGS`` and ``WTM_INJECT_SCRIPT`` settings to ``False``
+and implement the template tags as follows:
 
-    .. code-block:: python
-
-        MIDDLEWARE = [
-            # ...
-            'wagtail_tag_manager.middleware.TagManagerMiddleware',
-            # ...
-        ]
-
-    Option 2: Add these template tags to you're ``base.html`` file:
-
-    .. code-block:: html+django
+.. code-block:: html+django
 
         {% load wtm_tags %}
 
         <head>
+            {% wtm_instant_tags 'top_head' %}
             ...
-            {% wtm_instant_tags %}
+            {% wtm_instant_tags 'bottom_head' %}
         </head>
         <body>
+            {% wtm_instant_tags 'top_body' %}
             ...
+            {% wtm_instant_tags 'bottom_body' %}
             {% wtm_lazy_manager %}
         </body>
-
-    Read more about the wtm_instant_tags and wtm_lazy_manager template tags.
 
 Include the urls:
 
@@ -290,6 +293,14 @@ not load on the first page load, but only from the second load forward.
 
 .. code-block:: python
 
+    WTM_INJECT_TAGS = True
+
+Instructs the middleware to inject all tags marked "instant load" in the
+document. Disable this if you would rather use the ``{% wtm_instant_tags %}``
+template tags.
+
+.. code-block:: python
+
     WTM_MANAGE_VIEW = True
 
 Allows you to enable or disable the included "manage" view allowing users to
@@ -321,14 +332,14 @@ for each single tag which will add up quickly.
 
 .. code-block:: python
 
-    WTM_INCLUDE_STYLE = True
+    WTM_INJECT_STYLE = True
 
 Change to `False` to prevent WTM's included styles from loading. This is useful
 if you wish to style the cookiebar yourself.
 
 .. code-block:: python
 
-    WTM_INCLUDE_SCRIPT = True
+    WTM_INJECT_SCRIPT = True
 
 Change to `False` to prevent WTM's included scripts from loading. This is
 useful if you don't want to use the inlcuded lazy loading and cookie bar

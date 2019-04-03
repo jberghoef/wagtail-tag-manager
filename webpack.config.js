@@ -1,7 +1,7 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-module.exports = {
+module.exports = (env, options) => ({
   entry: {
     tag_form_view: ["./frontend/admin/tag_form_view.ts"],
     trigger_form_view: ["./frontend/admin/trigger_form_view.ts"],
@@ -10,8 +10,10 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "src/wagtail_tag_manager/static/"),
-    filename: "[name].bundle.js"
+    filename: "[name].bundle.js",
+    sourceMapFilename: "sourcemaps/[file].map"
   },
+  devtool: options.mode == "production" ? "hidden-source-map" : "source-map",
   module: {
     rules: [
       {
@@ -54,4 +56,4 @@ module.exports = {
       chunkFilename: "[id].chunk.css"
     })
   ]
-};
+});

@@ -84,6 +84,8 @@ WTM_MANAGE_VIEW = True
 WTM_COOKIE_SCAN = True
 WTM_SUMMARY_PANELS = True
 
+WTM_INJECT_TAGS = False
+
 WTM_TAG_TYPES = {
     # key, verbose name, setting
     "functional": (_("Functional"), "required"),
