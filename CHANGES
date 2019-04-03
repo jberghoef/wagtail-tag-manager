@@ -1,3 +1,8 @@
+0.16.2 (2019.4.3)
+=================
+ - Add additional options to lazy manager template tag
+
+
 0.16.1 (2019.4.3)
 =================
  - Always include style and code with lazy manager
