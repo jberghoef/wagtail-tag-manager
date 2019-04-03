@@ -20,6 +20,7 @@
         </title>
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {% wtm_instant_tags 'top_head' %}
 
         {# Global stylesheets #}
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
@@ -32,11 +33,13 @@
         {% block extra_css %}
             {% wtm_include "functional" "css/dummy.css" %}
         {% endblock %}
+        {% wtm_instant_tags 'bottom_head' %}
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
         {% wtm_cookie_bar %}
         {% wagtailuserbar %}
+        {% wtm_instant_tags 'top_body' %}
 
         <div class="container">
             {% block content %}{% endblock %}
@@ -68,5 +71,7 @@
         {% block extra_js %}
             {% wtm_include "traceable" "js/dummy.js" %}
         {% endblock %}
+
+        {% wtm_instant_tags 'bottom_body' %}
     </body>
 </html>

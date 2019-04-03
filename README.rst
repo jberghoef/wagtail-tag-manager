@@ -91,8 +91,8 @@ use the middleware (which will rewrite the html on each request) or use the
 ``{% wtm_instant_tags %}`` and ``{% wtm_lazy_manager %}`` template tags.
 
 If you prefer to use the template tags to inject tags into your templates,
-set the ``WTM_INJECT_TAGS`` setting to ``False`` and implement the template
-tags as follows:
+set the ``WTM_INJECT_TAGS`` and ``WTM_INJECT_SCRIPT`` settings to ``False``
+and implement the template tags as follows:
 
 .. code-block:: html+django
 
@@ -332,14 +332,14 @@ for each single tag which will add up quickly.
 
 .. code-block:: python
 
-    WTM_INCLUDE_STYLE = True
+    WTM_INJECT_STYLE = True
 
 Change to `False` to prevent WTM's included styles from loading. This is useful
 if you wish to style the cookiebar yourself.
 
 .. code-block:: python
 
-    WTM_INCLUDE_SCRIPT = True
+    WTM_INJECT_SCRIPT = True
 
 Change to `False` to prevent WTM's included scripts from loading. This is
 useful if you don't want to use the inlcuded lazy loading and cookie bar

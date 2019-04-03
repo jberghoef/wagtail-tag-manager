@@ -66,14 +66,14 @@ class TagManagerMiddleware:
                 doc.body["data-wtm-config"] = reverse("wtm:config")
                 doc.body["data-wtm-lazy"] = reverse("wtm:lazy")
 
-                if getattr(settings, "WTM_INCLUDE_STYLE", True):
+                if getattr(settings, "WTM_INJECT_STYLE", True):
                     link = doc.new_tag("link")
                     link["rel"] = "stylesheet"
                     link["type"] = "text/css"
                     link["href"] = static("wtm.bundle.css")
                     doc.body.append(link)
 
-                if getattr(settings, "WTM_INCLUDE_SCRIPT", True):
+                if getattr(settings, "WTM_INJECT_SCRIPT", True):
                     script = doc.new_tag("script")
                     script["type"] = "text/javascript"
                     script["src"] = static("wtm.bundle.js")

@@ -832,5 +832,3 @@
   #wtm_cookie_bar #declaration-checkbox:checked ~ .action-container .detail-link label[for="declaration-checkbox"] span:before {
     content: attr(data-label-hide) " " !important; }
 
-
-/*# sourceMappingURL=sourcemaps/wtm.bundle.css.map*/

@@ -118,8 +118,8 @@ def wtm_lazy_manager():
             "config_url": reverse("wtm:config"),
             "lazy_url": reverse("wtm:lazy"),
         },
-        "include_style": getattr(settings, "WTM_INCLUDE_STYLE", True),
-        "include_script": getattr(settings, "WTM_INCLUDE_SCRIPT", True),
+        "include_style": getattr(settings, "WTM_INJECT_STYLE", True),
+        "include_script": getattr(settings, "WTM_INJECT_SCRIPT", True),
     }
 
 
