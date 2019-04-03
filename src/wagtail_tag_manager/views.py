@@ -38,14 +38,16 @@ class ManageView(TemplateView):
         return response
 
 
-class StateView(View):
+class ConfigView(View):
     def get(self, request, *args, **kwargs):
-        return JsonResponse(
+        response = JsonResponse(
             {
                 tag_type: config.get("value")
                 for tag_type, config in TagTypeSettings.all().items()
             }
         )
+
+        return response
 
 
 class VariableView(View):

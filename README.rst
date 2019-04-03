@@ -290,6 +290,14 @@ not load on the first page load, but only from the second load forward.
 
 .. code-block:: python
 
+    WTM_INJECT_TAGS = True
+
+Instructs the middleware to inject all tags marked "instant load" in the
+document. Disable this if you would rather use the ``{% wtm_instant_tags %}``
+template tags.
+
+.. code-block:: python
+
     WTM_MANAGE_VIEW = True
 
 Allows you to enable or disable the included "manage" view allowing users to

@@ -10,8 +10,10 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "src/wagtail_tag_manager/static/"),
-    filename: "[name].bundle.js"
+    filename: "[name].bundle.js",
+    sourceMapFilename: "sourcemaps/[file].map"
   },
+  devtool: "source-map",
   module: {
     rules: [
       {

@@ -34,7 +34,9 @@ class TagManagerMiddleware:
         return self.response
 
     def _add_instant_tags(self):
-        if hasattr(self.response, "content"):
+        if hasattr(self.response, "content") and getattr(
+            settings, "WTM_INJECT_TAGS", True
+        ):
             doc = BeautifulSoup(self.response.content, "html.parser")
             head = getattr(doc, "head", [])
             body = getattr(doc, "body", [])
