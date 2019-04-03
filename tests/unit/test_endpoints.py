@@ -50,7 +50,7 @@ def test_lazy_cookies(client, site):
     assert consent_state.get("functional", "") == "true"
     assert consent_state.get("analytical", "") == "unset"
     assert consent_state.get("continue", "") == "true"
-    assert consent_state.get("traceable", "") == "unset"
+    assert consent_state.get("traceable", "") == "false"
 
 
 @pytest.mark.django_db

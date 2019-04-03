@@ -5,11 +5,73 @@ from wagtail_tag_manager.settings import (
     SETTING_INITIAL,
     SETTING_CONTINUE,
     SETTING_REQUIRED,
+    SETTING_DEFAULT,
 )
 
 CONSENT_TRUE = "true"
 CONSENT_FALSE = "false"
 CONSENT_UNSET = "unset"
+
+CONSENT_MAP = (
+    # Method, tag config
+    (
+        "GET",
+        SETTING_REQUIRED,
+        (
+            # Consent validator, consent value, include instant tags, include lazy tags
+            (lambda c: True, CONSENT_TRUE, True, False),
+        ),
+    ),
+    (
+        "GET",
+        SETTING_INITIAL,
+        (
+            (lambda c: c == CONSENT_UNSET, CONSENT_UNSET, False, False),
+            (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, True, False),
+        ),
+    ),
+    (
+        "GET",
+        SETTING_CONTINUE,
+        (
+            (lambda c: c == CONSENT_UNSET, CONSENT_UNSET, False, False),
+            (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, True, False),
+        ),
+    ),
+    (
+        "GET",
+        SETTING_DEFAULT,
+        (
+            (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, True, False),
+            (lambda c: c != CONSENT_TRUE, CONSENT_FALSE, False, False),
+        ),
+    ),
+    ("POST", SETTING_REQUIRED, ((lambda c: True, CONSENT_TRUE, False, True),)),
+    (
+        "POST",
+        SETTING_INITIAL,
+        (
+            (lambda c: c == CONSENT_UNSET, CONSENT_UNSET, True, True),
+            (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, False, True),
+        ),
+    ),
+    (
+        "POST",
+        SETTING_CONTINUE,
+        (
+            (lambda c: c == CONSENT_UNSET, CONSENT_TRUE, False, False),
+            (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, False, True),
+        ),
+    ),
+    (
+        "POST",
+        SETTING_DEFAULT,
+        (
+            (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, False, True),
+            (lambda c: c != CONSENT_TRUE, CONSENT_FALSE, False, False),
+        ),
+    ),
+)
 
 
 class TagStrategy(object):
@@ -30,76 +92,32 @@ class TagStrategy(object):
 
     # https://gist.github.com/jberghoef/9ffa2b738cbb0aab624ff091dc6fe9a7
     def define_strategy(self):
+        method = self._request.method
+
         for tag_type, tag_config in self._config.items():
-            handler = getattr(self, self._request.method.lower(), None)
-            if handler:
-                handler(tag_type, tag_config)
+            consent_value, include_instant, include_lazy = self.validate_request(
+                method, tag_type, tag_config
+            )
 
-    def get(self, tag_type, tag_config):
+            self.consent[tag_type] = consent_value
+
+            if include_instant:
+                self._tags.append((Tag.INSTANT_LOAD, tag_type))
+
+            if include_lazy:
+                self._tags.append((Tag.LAZY_LOAD, tag_type))
+
+    def validate_request(self, method: str, tag_type: str, tag_config: dict):
         consent = self.consent_state.get(tag_type, CONSENT_UNSET)
+        config = tag_config.get("value")
 
-        if tag_config.get("value") == SETTING_REQUIRED:
-            # Include required instant tags
-            # Include required cookie
-            self._tags.append((Tag.INSTANT_LOAD, tag_type))
-            self.consent[tag_type] = CONSENT_TRUE
+        for rule in CONSENT_MAP:
+            if rule[0] == method and rule[1] == tag_config.get("value"):
+                for validator in rule[2]:
+                    if validator[0](consent):
+                        return validator[1:]
 
-        elif tag_config.get("value") == SETTING_INITIAL:
-            if consent == CONSENT_UNSET:
-                # Include initial cookie
-                self.consent[tag_type] = CONSENT_UNSET
-            elif consent == CONSENT_TRUE:
-                # Include initial instant tags
-                self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                self.consent[tag_type] = CONSENT_TRUE
-
-        elif tag_config.get("value") == SETTING_CONTINUE:
-            if consent == CONSENT_UNSET:
-                # Include initial cookie
-                self.consent[tag_type] = CONSENT_UNSET
-            elif consent == CONSENT_TRUE:
-                # Include initial instant tags
-                self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                self.consent[tag_type] = CONSENT_TRUE
-
-        else:
-            if consent == CONSENT_TRUE:
-                # Include generic instant tags
-                self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                self.consent[tag_type] = CONSENT_TRUE
-
-    def post(self, tag_type, tag_config):
-        consent = self.consent_state.get(tag_type, CONSENT_UNSET)
-
-        if tag_config.get("value") == SETTING_REQUIRED:
-            # Include required lazy tags
-            # Include required cookie
-            self._tags.append((Tag.LAZY_LOAD, tag_type))
-            if consent != CONSENT_TRUE:
-                self.consent[tag_type] = CONSENT_TRUE
-
-        else:
-            if tag_config.get("value") == SETTING_INITIAL:
-                if consent == CONSENT_UNSET:
-                    # Include initial lazy tags
-                    # Include initial instant tags
-                    self._tags.append((Tag.LAZY_LOAD, tag_type))
-                    self._tags.append((Tag.INSTANT_LOAD, tag_type))
-                elif consent == CONSENT_TRUE:
-                    # Include initial lazy tags
-                    self._tags.append((Tag.LAZY_LOAD, tag_type))
-
-            elif tag_config.get("value") == SETTING_CONTINUE:
-                if consent == CONSENT_UNSET:
-                    self.consent[tag_type] = CONSENT_TRUE
-                elif consent == CONSENT_TRUE:
-                    # Include generic lazy tags
-                    self._tags.append((Tag.LAZY_LOAD, tag_type))
-
-            else:
-                if consent == CONSENT_TRUE:
-                    # Include generic lazy tags
-                    self._tags.append((Tag.LAZY_LOAD, tag_type))
+        return consent, False, False
 
     def should_include(self, tag_type, tag_config):
         consent = self.consent_state.get(tag_type, CONSENT_UNSET)
@@ -109,9 +127,10 @@ class TagStrategy(object):
         elif tag_config.get("value") == SETTING_INITIAL:
             if consent == CONSENT_UNSET or consent == CONSENT_TRUE:
                 return True
-        else:
-            if consent == CONSENT_TRUE:
-                return True
+        elif consent == CONSENT_TRUE:
+            return True
+
+        return False
 
     @property
     def queryset(self):

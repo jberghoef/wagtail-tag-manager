@@ -16,18 +16,20 @@ class TagManagerMiddleware:
     def __call__(self, request):
         self.request = request
         self.response = self.get_response(request)
-
         self.strategy = TagStrategy(request)
-        for tag_type, value in self.strategy.consent.items():
-            set_consent(self.response, tag_type, value)
 
         if (
             getattr(self.request, "method", None) == "GET"
             and getattr(self.response, "status_code", None) == 200
-            and isinstance(self.response, TemplateResponse)
         ):
-            self._add_instant_tags()
-            self._add_lazy_manager()
+            set_consent(
+                self.response,
+                {key: value for key, value in self.strategy.consent.items()},
+            )
+
+            if isinstance(self.response, TemplateResponse):
+                self._add_instant_tags()
+                self._add_lazy_manager()
 
         return self.response
 

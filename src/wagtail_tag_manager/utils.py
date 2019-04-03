@@ -13,9 +13,11 @@ from wagtail_tag_manager.strategy import CONSENT_TRUE, CONSENT_UNSET
 from wagtail_tag_manager.settings import TagTypeSettings
 
 
-def set_consent(response, key, value):
-    consent_state = get_consent(response)
-    consent_state[key] = str(value).lower()
+def set_consent(response, consent):
+    consent_state = {
+        **get_consent(response),
+        **consent
+    }
 
     set_cookie(
         response,
