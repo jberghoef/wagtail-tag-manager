@@ -112,7 +112,7 @@ class TagStrategy(object):
         config = tag_config.get("value")
 
         for rule in CONSENT_MAP:
-            if rule[0] == method and rule[1] == tag_config.get("value"):
+            if rule[0] == method and rule[1] == config:
                 for validator in rule[2]:
                     if validator[0](consent):
                         return validator[1:]
@@ -121,10 +121,11 @@ class TagStrategy(object):
 
     def should_include(self, tag_type, tag_config):
         consent = self.consent_state.get(tag_type, CONSENT_UNSET)
+        config = tag_config.get("value")
 
-        if tag_config.get("value") == SETTING_REQUIRED:
+        if config == SETTING_REQUIRED:
             return True
-        elif tag_config.get("value") == SETTING_INITIAL:
+        elif config == SETTING_INITIAL:
             if consent == CONSENT_UNSET or consent == CONSENT_TRUE:
                 return True
         elif consent == CONSENT_TRUE:

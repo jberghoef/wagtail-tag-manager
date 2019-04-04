@@ -10,7 +10,7 @@ class CustomVariable(object):
                     f"A CustomVariable class has to provide a '{field}' value."
                 )
 
-        return super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def as_dict(self):
         return {

@@ -14,10 +14,10 @@ def django_db_setup(django_db_setup, django_db_blocker):
         Page.objects.all().exclude(depth=1).delete()
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def browser(request):
     options = webdriver.ChromeOptions()
-    options.add_argument('headless')
+    options.add_argument("headless")
 
     browser_ = webdriver.Chrome(options=options)
     browser_.implicitly_wait(30)

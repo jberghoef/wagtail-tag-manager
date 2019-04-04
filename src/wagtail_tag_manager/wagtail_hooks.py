@@ -29,7 +29,8 @@ class ConstantModelAdmin(ModelAdmin):
     list_display = ("name_display", "key", "value")
     search_fields = ("name", "key", "value", "description")
 
-    def name_display(self, obj):
+    @staticmethod
+    def name_display(obj):
         if obj.description:
             description = truncatechars(obj.description, 64)
             return mark_safe(f"{obj.name}<br/><small>{description}</small>")
@@ -46,7 +47,8 @@ class VariableModelAdmin(ModelAdmin):
     search_fields = ("name", "key", "description")
     form_view_extra_js = [static("variable_form_view.bundle.js")]
 
-    def name_display(self, obj):
+    @staticmethod
+    def name_display(obj):
         if obj.description:
             description = truncatechars(obj.description, 64)
             return mark_safe(f"{obj.name}<br/><small>{description}</small>")
@@ -71,7 +73,8 @@ class TagModelAdmin(ModelAdmin):
     form_view_extra_css = [static("tag_form_view.bundle.css")]
     form_view_extra_js = [static("tag_form_view.bundle.js")]
 
-    def name_display(self, obj):
+    @staticmethod
+    def name_display(obj):
         if obj.description:
             description = truncatechars(obj.description, 64)
             return mark_safe(f"{obj.name}<br/><small>{description}</small>")
@@ -79,7 +82,8 @@ class TagModelAdmin(ModelAdmin):
 
     name_display.short_description = _("Name")
 
-    def tag_type_display(self, obj):
+    @staticmethod
+    def tag_type_display(obj):
         config = TagTypeSettings().get(obj.tag_type)
         return config.get("verbose_name")
 
@@ -95,7 +99,8 @@ class TriggerModelAdmin(ModelAdmin):
     form_view_extra_css = [static("trigger_form_view.bundle.css")]
     form_view_extra_js = [static("trigger_form_view.bundle.js")]
 
-    def name_display(self, obj):
+    @staticmethod
+    def name_display(obj):
         if obj.description:
             description = truncatechars(obj.description, 64)
             return mark_safe(f"{obj.name}<br/><small>{description}</small>")
@@ -103,7 +108,8 @@ class TriggerModelAdmin(ModelAdmin):
 
     name_display.short_description = _("Name")
 
-    def tags_count(self, obj):
+    @staticmethod
+    def tags_count(obj):
         return f"{obj.tags.count()} tag(s)"
 
     tags_count.short_description = _("Tags")

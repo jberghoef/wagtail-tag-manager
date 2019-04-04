@@ -9,15 +9,12 @@ from django.utils.cache import patch_vary_headers
 from django.utils.translation import ugettext_lazy as _
 
 from wagtail_tag_manager.models import Tag, CookieDeclaration
-from wagtail_tag_manager.strategy import CONSENT_TRUE, CONSENT_UNSET
+from wagtail_tag_manager.strategy import CONSENT_UNSET
 from wagtail_tag_manager.settings import TagTypeSettings
 
 
 def set_consent(response, consent):
-    consent_state = {
-        **get_consent(response),
-        **consent
-    }
+    consent_state = {**get_consent(response), **consent}
 
     set_cookie(
         response,
