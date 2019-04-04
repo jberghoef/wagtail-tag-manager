@@ -2,25 +2,16 @@
 
 
 [![alt text][circleci]](https://circleci.com/gh/jberghoef/wagtail-tag-manager)
-
-[circleci]: https://circleci.com/gh/jberghoef/wagtail-tag-manager.svg?style=svg "Circle CI"
-
 [![alt text][codecov]](https://codecov.io/gh/jberghoef/wagtail-tag-manager)
-
-[codecov]: https://codecov.io/gh/jberghoef/wagtail-tag-manager/branch/master/graph/badge.svg "Codecov"
-
 [![alt text][codacy]](https://www.codacy.com/app/jberghoef/wagtail-tag-manager)
-
-[codacy]: https://api.codacy.com/project/badge/Grade/2a59a006e69442bb809bf08f47028eb9 "Codacy"
-
 [![alt text][black]](https://github.com/ambv/black)
-
-[black]: https://img.shields.io/badge/code%20style-black-000000.svg "Black"
-
 [![alt text][prettier]](https://github.com/prettier/prettier)
 
+[circleci]: https://circleci.com/gh/jberghoef/wagtail-tag-manager.svg?style=svg "Circle CI"
+[codecov]: https://codecov.io/gh/jberghoef/wagtail-tag-manager/branch/master/graph/badge.svg "Codecov"
+[codacy]: https://api.codacy.com/project/badge/Grade/2a59a006e69442bb809bf08f47028eb9 "Codacy"
+[black]: https://img.shields.io/badge/code%20style-black-000000.svg "Black"
 [prettier]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg "Prettier"
-
 
 Wagtail Tag Manager (WTM for short) is a [Wagtail](https://wagtail.io/) addon
 that allows for easier and GDPR compliant administration of scripts and tags.

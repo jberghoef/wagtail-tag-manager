@@ -27,11 +27,6 @@ tests_require = [
 
 docs_require = ["sphinx>=1.4.0"]
 
-with open("README.rst") as fh:
-    long_description = re.sub(
-        "^.. start-no-pypi.*^.. end-no-pypi", "", fh.read(), flags=re.M | re.S
-    )
-
 setup(
     name="wagtail-tag-manager",
     version="0.16.2",
@@ -46,7 +41,7 @@ setup(
     package_dir={"": "src"},
     include_package_data=True,
     license="BSD 3-Clause",
-    long_description=long_description,
+    long_description="",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Environment :: Web Environment",
