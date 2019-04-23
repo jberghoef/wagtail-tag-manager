@@ -3,3 +3,4 @@ exclude_paths:
   - '*.css'
   - '*.scss'
   - '*.json'
+  - '*.md'
