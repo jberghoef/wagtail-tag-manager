@@ -7,7 +7,7 @@ def register_variable(cls=None):
     if not issubclass(cls, CustomVariable):
         raise ValueError("Class must subclass CustomVariable.")
 
-    if cls is None:
+    if cls is None:  # pragma: no cover
 
         def decorator(cls):
             register_variable(cls)
