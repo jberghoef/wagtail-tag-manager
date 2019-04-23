@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth.views import SuccessURLAllowedHostsMixin
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.utils.http import is_safe_url
 from django.views.generic import View, TemplateView
@@ -10,7 +11,7 @@ from wagtail_tag_manager.utils import set_consent, scan_cookies
 from wagtail_tag_manager.models import Constant, Variable, TagTypeSettings
 
 
-class ManageView(TemplateView):
+class ManageView(SuccessURLAllowedHostsMixin, TemplateView):
     template_name = "wagtail_tag_manager/manage.html"
 
     def get(self, request, *args, **kwargs):
@@ -23,7 +24,9 @@ class ManageView(TemplateView):
 
         redirect_url = request.META.get("HTTP_REFERER", request.build_absolute_uri())
         url_is_safe = is_safe_url(
-            redirect_url, settings.ALLOWED_HOSTS, require_https=request.is_secure()
+            redirect_url,
+            allowed_hosts=self.get_success_url_allowed_hosts(),
+            require_https=request.is_secure()
         )
         if url_is_safe:
             response = HttpResponseRedirect(redirect_url)
