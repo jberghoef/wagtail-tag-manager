@@ -29,7 +29,7 @@ docs_require = ["sphinx>=1.4.0"]
 
 setup(
     name="wagtail-tag-manager",
-    version="0.16.3",
+    version="0.16.4",
     description="A Wagtail add-on for managing tags.",
     author="Jasper Berghoef",
     author_email="jasper.berghoef@gmail.com",
