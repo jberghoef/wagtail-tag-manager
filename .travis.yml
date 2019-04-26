@@ -2,6 +2,7 @@
 sudo: false
 dist: xenial
 language: python
+cache: pip
 
 cache: pip
 
