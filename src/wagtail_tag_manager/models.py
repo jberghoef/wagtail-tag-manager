@@ -14,13 +14,13 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, MultiFieldPanel
 
-from wagtail_tag_manager.decorators import get_variables
 from wagtail_tag_manager.managers import (
     TagQuerySet,
     TriggerQuerySet,
     CookieDeclarationQuerySet,
 )
 from wagtail_tag_manager.settings import TagTypeSettings
+from wagtail_tag_manager.decorators import get_variables
 
 
 class Tag(models.Model):

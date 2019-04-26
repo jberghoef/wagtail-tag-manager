@@ -149,7 +149,9 @@ def test_variable_types(rf):
 
 @pytest.mark.django_db
 def test_trigger_create():
-    trigger = Trigger.objects.create(name="Trigger", pattern=r"[?&]state=(?P<state>\S+)")
+    trigger = Trigger.objects.create(
+        name="Trigger", pattern=r"[?&]state=(?P<state>\S+)"
+    )
     assert trigger in Trigger.objects.all()
 
     tag_functional = tag_lazy_functional()

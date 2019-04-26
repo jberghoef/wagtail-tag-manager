@@ -1,5 +1,5 @@
-import pytest
 import django
+import pytest
 from django.template.base import Token, Parser
 from django.template.context import make_context
 from django.template.exceptions import TemplateDoesNotExist

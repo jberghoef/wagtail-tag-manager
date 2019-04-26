@@ -1,8 +1,8 @@
 from django.db import models
 from django.apps import apps
 from django.conf import settings
-from wagtail.core.fields import RichTextField
 from django.utils.text import slugify
+from wagtail.core.fields import RichTextField
 from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.contrib.settings.models import BaseSetting, register_setting

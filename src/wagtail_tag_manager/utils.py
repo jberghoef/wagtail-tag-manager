@@ -1,19 +1,18 @@
-import django
 import typing
-
 from datetime import datetime, timedelta
 
+import django
 from selenium import webdriver
 from django.conf import settings
+from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
-from django.http import HttpResponse, HttpRequest
 from django.utils.html import mark_safe
 from django.utils.cache import patch_vary_headers
 from django.utils.translation import ugettext_lazy as _
 
 from wagtail_tag_manager.models import Tag, CookieDeclaration
-from wagtail_tag_manager.strategy import CONSENT_UNSET
 from wagtail_tag_manager.settings import TagTypeSettings
+from wagtail_tag_manager.strategy import CONSENT_UNSET
 
 __version__ = django.get_version()
 

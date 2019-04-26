@@ -5,17 +5,17 @@ import pytest
 
 from tests.factories.tag import (
     TagFactory,
+    tag_lazy_delayed,
     tag_lazy_traceable,
+    tag_instant_delayed,
     tag_lazy_analytical,
     tag_lazy_functional,
-    tag_lazy_delayed,
     tag_instant_traceable,
     tag_instant_analytical,
-    tag_instant_delayed,
 )
 from tests.factories.trigger import TriggerFactory
-from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.utils import get_consent
+from wagtail_tag_manager.models import Tag
 
 
 @pytest.mark.django_db

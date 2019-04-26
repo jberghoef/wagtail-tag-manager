@@ -2,7 +2,6 @@ import os
 
 from django.utils.translation import ugettext_lazy as _
 
-
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get("DATABASE_ENGINE", "django.db.backends.sqlite3"),
