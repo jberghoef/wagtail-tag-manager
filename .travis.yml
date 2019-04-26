@@ -9,8 +9,6 @@ addons:
   apt:
     packages:
       - sqlite3
-      - python3
-      - python3-pip
 
 cache: pip
 
