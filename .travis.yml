@@ -3,12 +3,11 @@ sudo: false
 dist: xenial
 language: python
 
-cache:
-  apt: true
-  pip: true
+cache: pip
 
 addons:
-  apt_packages:
+  apt:
+    packages:
     - sqlite3
 
 cache: pip
