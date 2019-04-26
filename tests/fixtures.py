@@ -28,7 +28,8 @@ def rf():
 
 
 class RequestFactory(BaseRequestFactory):
-    def request(self, user=None, **request):
+    def request(self, **request):
+        request["user"] = None
         request = super(RequestFactory, self).request(**request)
         request.user = AnonymousUser()
         request.session = SessionStore()

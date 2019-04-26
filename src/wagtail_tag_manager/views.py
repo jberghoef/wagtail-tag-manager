@@ -25,7 +25,7 @@ class ManageView(SuccessURLAllowedHostsMixin, TemplateView):
         redirect_url = request.META.get("HTTP_REFERER", request.build_absolute_uri())
         url_is_safe = is_safe_url(
             redirect_url,
-            allowed_hosts=self.get_success_url_allowed_hosts(),
+            self.get_success_url_allowed_hosts(),
             require_https=request.is_secure(),
         )
         if url_is_safe:

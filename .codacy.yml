@@ -4,5 +4,6 @@ exclude_paths:
   - '*.scss'
   - '*.json'
   - '*.md'
+  - '*.bundle.*'
   - 'tests/**/*'
   - '**/tests/**'
