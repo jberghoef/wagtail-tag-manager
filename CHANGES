@@ -1,3 +1,12 @@
+0.16.3 (2019.4.26)
+==================
+ - Code quality improvements
+ - Update README
+ - Fix redirect to HomePage stay on current Page (#30) @shaquille-lab
+ - Update Codacy configuration
+ - Update front-end dependencies
+
+
 0.16.2 (2019.4.3)
 =================
  - Add additional options to lazy manager template tag
