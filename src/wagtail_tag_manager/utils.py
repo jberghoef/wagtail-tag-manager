@@ -4,7 +4,6 @@ import typing
 from datetime import datetime, timedelta
 
 from selenium import webdriver
-import django
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponse, HttpRequest
