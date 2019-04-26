@@ -1,3 +1,10 @@
+0.16.5 (2019.4.26)
+==================
+ - Add Travis testing Matrix
+ - Fix compatibility with Django 2.0
+ - Verify compatibility with Django 2.2 and Wagtail 2.5
+
+
 0.16.4 (2019.4.26)
 ==================
  - Update front-end bundles
