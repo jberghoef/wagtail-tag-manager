@@ -32,7 +32,7 @@ matrix:
       env: TOXENV=py37-django22-wagtail25
 
 install:
-  - pip install tox coverage
+  - pip install tox
 
 script:
   - tox -- --nomigrations --reuse-db tests/
