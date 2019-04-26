@@ -1,5 +1,6 @@
 from django.db.models import Q
 
+from wagtail_tag_manager.mixins import TagMixin
 from wagtail_tag_manager.models import Tag, Trigger, TagTypeSettings
 from wagtail_tag_manager.settings import (
     SETTING_INITIAL,
@@ -166,6 +167,20 @@ class TagStrategy(object):
                             ),
                         }
                     )
+
+        from wagtail_tag_manager.utils import get_page_for_request
+
+        page = get_page_for_request(self._request)
+        if page is not None and isinstance(page, TagMixin):
+            for tag in page.tags.filter(self.queryset):
+                result.append(
+                    {
+                        "object": tag,
+                        "element": tag.get_doc(
+                            self._request, {**self._context, **match.groupdict()}
+                        ),
+                    }
+                )
 
         return result
 

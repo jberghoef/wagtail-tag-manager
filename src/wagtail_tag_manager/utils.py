@@ -147,3 +147,15 @@ def scan_cookies(request):  # pragma: no cover
         )
     except Exception as e:
         messages.error(request, e)
+
+
+def get_page_for_request(request):
+    if request and hasattr(request, "site"):
+        path = request.path
+        path_components = [component for component in path.split("/") if component]
+        page, args, kwargs = request.site.root_page.specific.route(
+            request, path_components
+        )
+        return page
+
+    return None
