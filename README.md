@@ -51,7 +51,6 @@ in practice. Any part of the API may change without notice!**
     - [``WTM_COOKIE_SCAN``](#wtm_cookie_scan)
 - [Custom variables](#custom-variables)
 - [Sandbox](#sandbox)
-- [Todo](#todo)
 - [Concept](#concept)
 
 ## Disclaimer
@@ -440,13 +439,6 @@ and http://localhost:8000/cms/. The superuser credentials are
 
 Various types of tags, constants and variables are enabled out of the box.
 Check out the console in your browser to see them in action.
-
-## Todo
-
-- [x] Optimize the middleware and endpoint for performance.
-- [ ] Add selenium tests for proper lazy tag testing.
-- [ ] Ensure the cookie bar and manage view are accessible.
-- [ ] Write user and developer documentation.
 
 ## Concept
 
