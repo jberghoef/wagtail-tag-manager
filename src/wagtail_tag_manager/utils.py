@@ -111,7 +111,7 @@ def scan_cookies(request):  # pragma: no cover
         for cookie in browser.get_cookies():
             expiry = datetime.fromtimestamp(cookie.get("expiry", now))
 
-            _, created = CookieDeclaration.objects.update_or_create(
+            obj, created = CookieDeclaration.objects.update_or_create(
                 name=cookie.get("name"),
                 domain=cookie.get("domain"),
                 defaults={
@@ -122,6 +122,8 @@ def scan_cookies(request):  # pragma: no cover
                     "duration": chop_microseconds(expiry - now),
                 },
             )
+
+            print(obj)
 
             if created:
                 created = created + 1
