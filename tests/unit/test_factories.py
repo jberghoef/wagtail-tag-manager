@@ -138,7 +138,7 @@ def test_variable_create():
 @pytest.mark.django_db
 def test_trigger_create():
     produced_trigger = TriggerFactory()
-    trigger = Trigger(name="Trigger", pattern="[?&]state=(?P<state>\S+)")
+    trigger = Trigger(name="Trigger", pattern=r"[?&]state=(?P<state>\S+)")
 
     assert produced_trigger.name == trigger.name
     assert produced_trigger.pattern == trigger.pattern

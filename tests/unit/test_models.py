@@ -128,7 +128,7 @@ def test_variable_types(rf):
         name="RePath variable",
         key="repath_variable",
         variable_type="_repath+",
-        value="(?:^\/)wtm(?:\/$)",
+        value=r"(?:^\/)wtm(?:\/$)",
     )
     assert repath_variable.get_value(request) == "/wtm/"
 
@@ -149,7 +149,7 @@ def test_variable_types(rf):
 
 @pytest.mark.django_db
 def test_trigger_create():
-    trigger = Trigger.objects.create(name="Trigger", pattern="[?&]state=(?P<state>\S+)")
+    trigger = Trigger.objects.create(name="Trigger", pattern=r"[?&]state=(?P<state>\S+)")
     assert trigger in Trigger.objects.all()
 
     tag_functional = tag_lazy_functional()

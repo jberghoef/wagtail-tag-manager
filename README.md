@@ -2,14 +2,20 @@
 
 
 [![alt text][circleci]](https://circleci.com/gh/jberghoef/wagtail-tag-manager)
+[![alt text][travis]](https://travis-ci.org/jberghoef/wagtail-tag-manager)
 [![alt text][codecov]](https://codecov.io/gh/jberghoef/wagtail-tag-manager)
 [![alt text][codacy]](https://www.codacy.com/app/jberghoef/wagtail-tag-manager)
+[![alt text][license]](https://opensource.org/licenses/BSD-3-Clause)
+[![alt text][version]](https://pypi.python.org/pypi/wagtail-tag-manager/)
 [![alt text][black]](https://github.com/ambv/black)
 [![alt text][prettier]](https://github.com/prettier/prettier)
 
 [circleci]: https://circleci.com/gh/jberghoef/wagtail-tag-manager.svg?style=svg "Circle CI"
+[travis]: https://travis-ci.org/jberghoef/wagtail-tag-manager.svg?branch=master "Travis CI"
 [codecov]: https://codecov.io/gh/jberghoef/wagtail-tag-manager/branch/master/graph/badge.svg "Codecov"
 [codacy]: https://api.codacy.com/project/badge/Grade/2a59a006e69442bb809bf08f47028eb9 "Codacy"
+[license]: https://img.shields.io/badge/license-BSD-blue.svg "License"
+[version]: https://img.shields.io/pypi/v/wagtail-tag-manager.svg "Version"
 [black]: https://img.shields.io/badge/code%20style-black-000000.svg "Black"
 [prettier]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg "Prettier"
 
@@ -17,7 +23,7 @@ Wagtail Tag Manager (WTM for short) is a [Wagtail](https://wagtail.io/) addon
 that allows for easier and GDPR compliant administration of scripts and tags.
 
 **Please note that this software is in beta and has not been extensively tested
-in practice.**
+in practice. Any part of the API may change without notice!**
 
 ![alt text](screenshot.png "Screenshot")
 

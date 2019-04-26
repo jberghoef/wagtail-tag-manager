@@ -1,9 +1,8 @@
-import re
 from setuptools import find_packages, setup
 
 
 install_requires = [
-    "wagtail>=2.1,<2.5",
+    "wagtail>=2.1,<2.6",
     "beautifulsoup4==4.6.0",
     "selenium>=3.141.0,<3.142.0",
 ]
@@ -27,6 +26,9 @@ tests_require = [
 
 docs_require = ["sphinx>=1.4.0"]
 
+with open('README.md') as fh:
+    long_description = fh.read()
+
 setup(
     name="wagtail-tag-manager",
     version="0.16.4",
@@ -41,7 +43,7 @@ setup(
     package_dir={"": "src"},
     include_package_data=True,
     license="BSD 3-Clause",
-    long_description="",
+    long_description=long_description,
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Environment :: Web Environment",

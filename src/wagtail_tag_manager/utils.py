@@ -1,9 +1,12 @@
+import django
+import typing
+
 from datetime import datetime, timedelta
 
 from selenium import webdriver
 from django.conf import settings
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.utils.html import mark_safe
 from django.utils.cache import patch_vary_headers
 from django.utils.translation import ugettext_lazy as _
@@ -11,6 +14,8 @@ from django.utils.translation import ugettext_lazy as _
 from wagtail_tag_manager.models import Tag, CookieDeclaration
 from wagtail_tag_manager.strategy import CONSENT_UNSET
 from wagtail_tag_manager.settings import TagTypeSettings
+
+__version__ = django.get_version()
 
 
 def set_consent(response, consent):
@@ -23,7 +28,7 @@ def set_consent(response, consent):
     )
 
 
-def get_consent(r):
+def get_consent(r: typing.Union[HttpResponse, HttpRequest]):
     cookies = getattr(r, "COOKIES", {})
     if isinstance(r, HttpResponse):
         cookies = {
@@ -59,16 +64,18 @@ def set_cookie(response, key, value, days_expire=None):
     delta = datetime.utcnow() + timedelta(seconds=max_age)
     expires = datetime.strftime(delta, "%a, %d-%b-%Y %H:%M:%S GMT")
 
-    response.set_cookie(
-        key,
-        value,
-        max_age=max_age,
-        expires=expires,
-        domain=getattr(settings, "SESSION_COOKIE_DOMAIN"),
-        secure=getattr(settings, "SESSION_COOKIE_SECURE", None),
-        httponly=False,
-        samesite="Lax",
-    )
+    kwargs = {
+        "max_age": max_age,
+        "expires": expires,
+        "domain": getattr(settings, "SESSION_COOKIE_DOMAIN"),
+        "secure": getattr(settings, "SESSION_COOKIE_SECURE", None),
+        "httponly": False,
+    }
+
+    if not __version__.startswith("2.0"):
+        kwargs["samesite"] = "Lax"
+
+    response.set_cookie(key, value, **kwargs)
     patch_vary_headers(response, ("Cookie",))
 
     return response

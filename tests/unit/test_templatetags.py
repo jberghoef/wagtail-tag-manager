@@ -1,5 +1,6 @@
 import pytest
-from django.template.base import Token, Parser, TokenType
+import django
+from django.template.base import Token, Parser
 from django.template.context import make_context
 from django.template.exceptions import TemplateDoesNotExist
 
@@ -16,14 +17,22 @@ from wagtail_tag_manager.templatetags.wtm_tags import (
     wtm_lazy_manager,
 )
 
+__version__ = django.get_version()
+if __version__.startswith("2.0"):
+    from django.template.base import TOKEN_MAPPING, TOKEN_TEXT
+
+    TOKEN_TYPE = TOKEN_MAPPING[TOKEN_TEXT]
+else:
+    from django.template.base import TokenType
+
+    TOKEN_TYPE = TokenType.TEXT
+
 
 @pytest.mark.django_db
 def test_wtm_include_functional(rf, site):
     expected_result = '<link href="/static/test.css" rel="stylesheet" type="text/css"/>'
 
-    token = Token(
-        token_type=TokenType.TEXT, contents='wtm_include "functional" "test.css"'
-    )
+    token = Token(token_type=TOKEN_TYPE, contents='wtm_include "functional" "test.css"')
     parser = Parser(tokens=[token])
     node = wtm_include(parser, token)
 
@@ -47,9 +56,7 @@ def test_wtm_include_functional(rf, site):
 def test_wtm_include_analytical(rf, site):
     expected_result = '<script src="/static/test.js" type="text/javascript"></script>'
 
-    token = Token(
-        token_type=TokenType.TEXT, contents='wtm_include "analytical" "test.js"'
-    )
+    token = Token(token_type=TOKEN_TYPE, contents='wtm_include "analytical" "test.js"')
     parser = Parser(tokens=[token])
     node = wtm_include(parser, token)
 
@@ -71,9 +78,7 @@ def test_wtm_include_analytical(rf, site):
 
 @pytest.mark.django_db
 def test_wtm_include_traceable(rf, site):
-    token = Token(
-        token_type=TokenType.TEXT, contents='wtm_include "traceable" "test.html"'
-    )
+    token = Token(token_type=TOKEN_TYPE, contents='wtm_include "traceable" "test.html"')
     parser = Parser(tokens=[token])
     node = wtm_include(parser, token)
 

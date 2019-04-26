@@ -1,0 +1,38 @@
+---
+sudo: false
+dist: xenial
+language: python
+
+cache: pip
+
+addons:
+  apt:
+    packages:
+      - sqlite3
+
+matrix:
+  include:
+    - python: 3.6
+      env: TOXENV=lint
+
+    - python: 3.6
+      env: TOXENV=py36-django20-wagtail21
+    - python: 3.6
+      env: TOXENV=py36-django20-wagtail22
+    - python: 3.6
+      env: TOXENV=py36-django21-wagtail23
+    - python: 3.6
+      env: TOXENV=py36-django21-wagtail24
+    - python: 3.6
+      env: TOXENV=py36-django22-wagtail25
+
+    - python: 3.7
+      env: TOXENV=py37-django21-wagtail24
+    - python: 3.7
+      env: TOXENV=py37-django22-wagtail25
+
+install:
+  - pip install tox
+
+script:
+  - tox -- --nomigrations --reuse-db tests/

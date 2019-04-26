@@ -101,7 +101,7 @@ def test_passive_view(client, site):
     assert tag_delayed in Tag.objects.passive().sorted()
     assert tag_traceable in Tag.objects.passive().sorted()
 
-    trigger = TriggerFactory(pattern="[?&]state=(?P<state>\S+)")
+    trigger = TriggerFactory(pattern=r"[?&]state=(?P<state>\S+)")
     trigger.tags.add(tag_functional)
     trigger.tags.add(tag_analytical)
     trigger.tags.add(tag_delayed)

@@ -125,7 +125,7 @@ class Tag(models.Model):
         ordering = ["tag_loading", "-auto_load", "tag_location", "-priority"]
 
     def clean(self):
-        if not re.match("\<.+\/?\>", self.content):
+        if not re.match(r"\<.+\/?\>", self.content):
             self.content = f"<script>{self.content}</script>"
 
         self.content = BeautifulSoup(self.content, "html.parser").prettify()
