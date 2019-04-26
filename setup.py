@@ -44,6 +44,7 @@ setup(
     include_package_data=True,
     license="BSD 3-Clause",
     long_description=long_description,
+    long_description_content_type='text/markdown',
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Environment :: Web Environment",
