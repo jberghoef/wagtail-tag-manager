@@ -27,7 +27,17 @@ in practice. Any part of the API may change without notice!**
 
 ![alt text](screenshot.png "Screenshot")
 
+*In this package the term "tag" is being used for code snippets being injected
+into HTML. This is not to be confused with tags used to identify content in the
+CMS, such as pictures and documents.*
+
 ## Features
+Wagtail Tag Manager offers functionality similar to platforms like
+**Adobe Dynamic Tag Management**, **Google Tag Manager** and **Tealium iQ**
+without the need of a third party. It's fully integrated into Wagtail.
+
+This approach comes with a couple of advantages, most prominently the ability
+to inject tags into a page before the response is send to a client.
 
 ### Administrators
 - Manage scripts and tags from within Wagtail, with powerful options to define load order.
