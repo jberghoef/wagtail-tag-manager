@@ -10,7 +10,7 @@ clean:
 	find . -name '*.egg-info' |xargs rm -rf
 
 requirements:
-	pip install --upgrade -e .[docs,test]
+	pip install -U -e .[docs,test]
 
 test:
 	py.test --nomigrations --reuse-db tests/
@@ -24,18 +24,21 @@ coverage:
 lint: flake8 isort
 
 flake8:
+	pip install -U flake8
 	flake8 src/ tests/
 
 isort:
-	pip install isort
+	pip install -U isort
 	isort --recursive src tests
 
 format: black prettier
 
-black:
+BLACK_EXCLUDE="/(\.git|\.hg|\.mypy_cache|\.tox|\.venv|_build|buck-out|build|dist|migrations)/"
+
+black: isort
 	pip install -U black
-	black --target-version py36 --verbose --exclude "/(\.git|\.hg|\.mypy_cache|\.tox|\.venv|_build|buck-out|build|dist|migrations)/" ./src
-	black --target-version py36 --verbose --exclude "/(\.git|\.hg|\.mypy_cache|\.tox|\.venv|_build|buck-out|build|dist|migrations)/" ./tests
+	black --py36 --verbose --exclude $(BLACK_EXCLUDE) ./src
+	black --py36 --verbose --exclude $(BLACK_EXCLUDE) ./tests
 
 prettier:
 	yarn install
