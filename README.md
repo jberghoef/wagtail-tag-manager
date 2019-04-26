@@ -27,6 +27,17 @@ in practice. Any part of the API may change without notice!**
 
 ![alt text](screenshot.png "Screenshot")
 
+## Features
+
+### Administrators
+- Manage scripts and tags from within Wagtail, with powerful options to define load order.
+- Store reusable content in constants and variables and easily add them to your tags.
+- Create triggers to load tags based on regex pattern matching paths.
+- Create cookie declarations to provide end-users with a full picture of the tracking taking place.
+
+### Developers
+- Create custom variables to give administrators functionality specific to your use-cases.
+
 ## Table of content
 - [Disclaimer](#disclaimer)
 - [Requirements](#requirements)
