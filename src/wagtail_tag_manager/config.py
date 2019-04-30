@@ -24,6 +24,6 @@ class WagtailTagManagerConfig(AppConfig):
                 description=_(
                     "Retrieve consent state for %s tags." % config.get("verbose_name")
                 ),
-                key=tag_type,
+                key="consent_%s" % tag_type,
             )
             register_variable(instance)
