@@ -1,12 +1,8 @@
 from django.forms import widgets
-from django.utils.translation import ugettext_lazy as _
 from modelcluster.fields import ParentalManyToManyField
 from modelcluster.models import ClusterableModel
-from wagtail.admin.edit_handlers import (
-    FieldPanel,
-    MultiFieldPanel,
-    PublishingPanel,
-)
+from django.utils.translation import ugettext_lazy as _
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, PublishingPanel
 
 from wagtail_tag_manager.models import Tag
 

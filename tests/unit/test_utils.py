@@ -1,6 +1,6 @@
 import pytest
 
-from wagtail_tag_manager.utils import scan_cookies
+from wagtail_tag_manager.webdriver import scan_cookies
 
 
 @pytest.mark.django_db
