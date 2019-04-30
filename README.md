@@ -71,6 +71,7 @@ to inject tags into a page before the response is send to a client.
     - [``WTM_SUMMARY_PANELS``](#wtm_summary_panels)
     - [``WTM_COOKIE_SCAN``](#wtm_cookie_scan)
 - [Custom variables](#custom-variables)
+- [Page tag mixin](#page-tag-mixin)
 - [Sandbox](#sandbox)
 - [Concept](#concept)
 
@@ -449,6 +450,25 @@ class Variable(CustomVariable):
     def get_value(self, request):
         return "This is a custom variable."
 ```
+
+## Page tag mixin
+
+If you would like to include tags on a page, include the ``TagMixin`` mixin.
+Under the "Settings" tab of the corresponding page type a list of tags will be
+shown. By selecting these, these tags will be included when the page loads.
+
+Note that the consent state is being applied to these tags. If the selected tag
+is marked as, for example, "traceable", the end-user still must allow this type
+of tags before is is being injected.
+
+```python
+from wagtail_tag_manager.mixins import TagMixin
+
+class HomePage(TagMixin, Page):
+    pass
+```
+
+![alt text](tag-mixin-admin.png "The tag mixin admin interface")
 
 ## Sandbox
 

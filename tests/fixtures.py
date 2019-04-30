@@ -4,7 +4,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.messages.storage.fallback import FallbackStorage
 
-from tests.factories.page import ContentPageFactory
+from tests.factories.page import ContentPageFactory, TaggableContentPageFactory
 from tests.factories.site import SiteFactory
 
 
@@ -13,10 +13,10 @@ def site():
     root_page = ContentPageFactory(parent=None, slug="")
     site = SiteFactory(is_default_site=True, root_page=root_page)
 
-    page1 = ContentPageFactory(parent=root_page, slug="page-1")
-    page2 = ContentPageFactory(parent=root_page, slug="page-2")
-    ContentPageFactory(parent=page1, slug="page-1-1")
-    ContentPageFactory(parent=page2, slug="page-2-1")
+    page1 = ContentPageFactory(parent=root_page, slug="content-page")
+    page2 = TaggableContentPageFactory(parent=root_page, slug="taggable-content-page")
+    ContentPageFactory(parent=page1, slug="content-page-child")
+    TaggableContentPageFactory(parent=page2, slug="taggable-content-page-child")
 
     return site
 

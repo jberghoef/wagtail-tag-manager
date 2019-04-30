@@ -2,7 +2,7 @@ import factory
 from django.utils.text import slugify
 from wagtail_factories.factories import PageFactory
 
-from tests.site.pages.models import ContentPage
+from tests.site.pages.models import ContentPage, TaggableContentPage
 
 
 class ContentPageFactory(PageFactory):
@@ -11,3 +11,8 @@ class ContentPageFactory(PageFactory):
 
     class Meta:
         model = ContentPage
+
+
+class TaggableContentPageFactory(ContentPageFactory):
+    class Meta:
+        model = TaggableContentPage

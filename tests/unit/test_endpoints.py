@@ -13,6 +13,7 @@ from tests.factories.tag import (
     tag_instant_traceable,
     tag_instant_analytical,
 )
+from tests.factories.page import TaggableContentPageFactory
 from tests.factories.trigger import TriggerFactory
 from wagtail_tag_manager.utils import get_consent
 from wagtail_tag_manager.models import Tag
@@ -177,7 +178,6 @@ def test_passive_tags(client, site):
     assert "tags" in data
     assert len(data["tags"]) == 0
 
-    trigger.tags.add(tag_analytical)
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": "/", "search": "?state=1"}),
@@ -224,3 +224,103 @@ def test_passive_tags(client, site):
     assert response.status_code == 200
     assert "tags" in data
     assert 'console.log("traceable: 4")' in data["tags"][1]["string"]
+
+
+@pytest.mark.django_db
+def test_page_tags(client, site):
+    tag_functional = TagFactory(
+        name="functional lazy",
+        auto_load=False,
+        tag_loading=Tag.LAZY_LOAD,
+        content='<script>console.log("functional")</script>',
+    )
+    tag_analytical = TagFactory(
+        name="analytical lazy",
+        auto_load=False,
+        tag_loading=Tag.LAZY_LOAD,
+        tag_type="analytical",
+        content='<script>console.log("analytical")</script>',
+    )
+    tag_delayed = TagFactory(
+        name="delayed lazy",
+        auto_load=False,
+        tag_loading=Tag.LAZY_LOAD,
+        tag_type="delayed",
+        content='<script>console.log("delayed")</script>',
+    )
+    tag_traceable = TagFactory(
+        name="traceable lazy",
+        auto_load=False,
+        tag_loading=Tag.LAZY_LOAD,
+        tag_type="traceable",
+        content='<script>console.log("traceable")</script>',
+    )
+
+    assert tag_functional in Tag.objects.passive().sorted()
+    assert tag_analytical in Tag.objects.passive().sorted()
+    assert tag_delayed in Tag.objects.passive().sorted()
+    assert tag_traceable in Tag.objects.passive().sorted()
+
+    page = TaggableContentPageFactory(parent=site.root_page, slug="tagged-page")
+    page.tags.add(tag_functional)
+    page.tags.add(tag_analytical)
+    page.tags.add(tag_delayed)
+    page.tags.add(tag_traceable)
+    page.save()
+
+    assert len(page.tags.all()) == 4
+
+    response = client.post(
+        "/wtm/lazy/",
+        json.dumps({"pathname": page.get_url()}),
+        content_type="application/json",
+    )
+    data = response.json()
+
+    assert response.status_code == 200
+    assert "tags" in data
+    results = ['console.log("functional")', 'console.log("analytical")']
+    for tag in data.get("tags", []):
+        assert tag["string"].strip() in results
+
+    client.cookies = SimpleCookie({"wtm": "analytical:true"})
+    response = client.post(
+        "/wtm/lazy/",
+        json.dumps({"pathname": page.get_url()}),
+        content_type="application/json",
+    )
+    data = response.json()
+
+    assert response.status_code == 200
+    assert "tags" in data
+    results = ['console.log("functional")', 'console.log("analytical")']
+    for tag in data.get("tags", []):
+        assert tag["string"].strip() in results
+
+    client.cookies = SimpleCookie({"wtm": "analytical:false|delayed:true"})
+    response = client.post(
+        "/wtm/lazy/",
+        json.dumps({"pathname": page.get_url()}),
+        content_type="application/json",
+    )
+    data = response.json()
+
+    assert response.status_code == 200
+    assert "tags" in data
+    results = ['console.log("functional")', 'console.log("delayed")']
+    for tag in data.get("tags", []):
+        assert tag["string"].strip() in results
+
+    client.cookies = SimpleCookie({"wtm": "analytical:false|traceable:true"})
+    response = client.post(
+        "/wtm/lazy/",
+        json.dumps({"pathname": page.get_url()}),
+        content_type="application/json",
+    )
+    data = response.json()
+
+    assert response.status_code == 200
+    assert "tags" in data
+    results = ['console.log("functional")', 'console.log("traceable")']
+    for tag in data.get("tags", []):
+        assert tag["string"].strip() in results
