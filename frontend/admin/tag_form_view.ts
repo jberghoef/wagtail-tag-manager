@@ -4,6 +4,11 @@ import * as CodeMirror from "codemirror";
 import "codemirror/mode/django/django";
 import "codemirror/addon/display/panel";
 
+interface VariableGroup {
+  verbose_name: string;
+  items: [VariableItem];
+}
+
 interface VariableItem {
   name: string;
   description: string;
@@ -23,7 +28,6 @@ class TagFormView {
   textArea: HTMLTextAreaElement;
   editor: Editor;
   hiddenInput: HTMLInputElement;
-  variables: Array<VariableItem>;
 
   constructor() {
     this.loadSelect = document.getElementById("id_tag_loading") as HTMLSelectElement;
@@ -51,35 +55,46 @@ class TagFormView {
         return response.json();
       })
       .then(data => {
-        this.variables = data.constants.concat(data.variables);
-        this.addVariablePanel(this.variables);
+        this.addPanel(data);
       });
   }
 
-  addVariablePanel(items: Array<VariableItem>) {
-    const panel = document.createElement("div");
-    panel.classList.add("panel");
+  addPanel(data: Array<VariableGroup>) {
+    const panelEl = document.createElement("ul");
+    panelEl.classList.add("panel");
 
-    for (let item of items) {
-      const button = document.createElement("button");
-      button.classList.add("button", "button-small", "bicolor", "icon", "icon-plus");
+    for (const group of data) {
+      const groupEl = document.createElement("ul");
+      groupEl.classList.add("listing");
 
-      button.appendChild(document.createTextNode(item.name));
-      button.type = "button";
-      button.title = item.description;
-      button.dataset.key = item.key;
+      const h3 = document.createElement("h3");
+      h3.appendChild(document.createTextNode(group.verbose_name));
+      panelEl.appendChild(h3);
 
-      button.addEventListener("click", event => {
-        event.preventDefault();
-        const target = event.currentTarget as HTMLElement;
-        this.editor.doc.replaceSelection(`{{ ${target.dataset.key} }}`, "end");
-        this.editor.focus();
-      });
+      for (let item of group.items) {
+        const a = document.createElement("a");
+        a.appendChild(document.createTextNode(item.name));
+        a.href = "#";
+        a.title = item.description;
+        a.dataset.key = item.key;
 
-      panel.appendChild(button);
+        a.addEventListener("click", event => {
+          event.preventDefault();
+          const target = event.currentTarget as HTMLElement;
+          this.editor.doc.replaceSelection(`{{ ${target.dataset.key} }}`, "end");
+          this.editor.focus();
+        });
+
+        const li = document.createElement("li");
+        li.appendChild(a);
+
+        groupEl.appendChild(li);
+      }
+
+      panelEl.appendChild(groupEl);
     }
 
-    this.editor.addPanel(panel, { position: "top", stable: true });
+    this.editor.addPanel(panelEl, { position: "top" });
   }
 
   handleLoadChange(event: Event = null) {
@@ -111,6 +126,6 @@ class TagFormView {
   }
 }
 
-document.addEventListener("DOMContentLoaded", event => {
+document.addEventListener("DOMContentLoaded", () => {
   new TagFormView();
 });

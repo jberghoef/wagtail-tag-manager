@@ -1,13 +1,14 @@
 @import "~codemirror/lib/codemirror.css";
 
-.code .input {
+.object.code .field .field-content .input {
   .CodeMirror {
     height: auto;
-    min-height: 200px;
+    min-height: 240px;
+    width: 100%;
     padding: 2em 30px;
     background-color: #fafafa;
     border-right: 1px solid #e6e6e6;
-    border-top: 1px solid #e6e6e6;
+    border-left: 1px solid #e6e6e6;
     transition: background-color 0.2s ease;
     overflow: hidden;
 
@@ -28,9 +29,25 @@
   }
 }
 
-.code .panel {
-  @media screen and (min-width: 800px) {
-    border-right: 1px solid #e6e6e6;
+.object.code {
+  .object-layout {
+    &_big-part {
+      fieldset {
+        width: 100% !important;
+        max-width: unset !important;
+
+        .input > div {
+          display: flex;
+          width: 100%;
+
+          .panel {
+            width: 200px;
+            height: 100%;
+            padding: 10px;
+            overflow-x: scroll;
+          }
+        }
+      }
+    }
   }
-  padding: 1em 0.5rem;
 }
