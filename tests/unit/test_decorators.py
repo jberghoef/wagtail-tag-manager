@@ -4,6 +4,7 @@ from wagtail_tag_manager.options import CustomVariable
 from wagtail_tag_manager.decorators import get_variables, register_variable
 from wagtail_tag_manager.settings import TagTypeSettings
 
+
 @pytest.mark.django_db
 def test_default_variables():
     variables = get_variables()
