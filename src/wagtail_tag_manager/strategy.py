@@ -1,5 +1,8 @@
+from django.http import Http404
 from django.db.models import Q
+from wagtail.core.views import serve as wagtail_serve
 
+from wagtail_tag_manager.mixins import TagMixin
 from wagtail_tag_manager.models import Tag, Trigger, TagTypeSettings
 from wagtail_tag_manager.settings import (
     SETTING_DEFAULT,
@@ -166,6 +169,29 @@ class TagStrategy(object):
                             ),
                         }
                     )
+
+        from wagtail_tag_manager.utils import get_page_for_request
+        from wagtail_tag_manager.endpoints import lazy_endpoint
+
+        if (
+            self._request.resolver_match
+            and self._request.resolver_match.func == wagtail_serve
+            or self._request.resolver_match
+            and self._request.resolver_match.func == lazy_endpoint
+        ):
+            try:
+                page = get_page_for_request(self._request)
+
+                if page is not None and isinstance(page, TagMixin):
+                    for tag in page.tags.filter(self.queryset):
+                        result.append(
+                            {
+                                "object": tag,
+                                "element": tag.get_doc(self._request, self._context),
+                            }
+                        )
+            except Http404:
+                pass
 
         return result
 
