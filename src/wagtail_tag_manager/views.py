@@ -3,6 +3,7 @@ from django.conf import settings
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.utils.http import is_safe_url
 from django.views.generic import View, TemplateView
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.views import SuccessURLAllowedHostsMixin
 from wagtail.contrib.modeladmin.views import IndexView
 
@@ -70,15 +71,25 @@ class VariableView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated and request.user.is_staff:
             return JsonResponse(
-                {
-                    "constants": [
-                        constant.as_dict() for constant in Constant.objects.all()
-                    ],
-                    "variables": [
-                        *[variable.as_dict() for variable in get_variables()],
-                        *[variable.as_dict() for variable in Variable.objects.all()],
-                    ],
-                }
+                [
+                    {
+                        "verbose_name": _("Constants"),
+                        "items": [
+                            constant.as_dict() for constant in Constant.objects.all()
+                        ],
+                    },
+                    {
+                        "verbose_name": _("Variables"),
+                        "items": [
+                            variable.as_dict() for variable in Variable.objects.all()
+                        ],
+                    },
+                    {
+                        "verbose_name": _("Built-in"),
+                        "items": [variable.as_dict() for variable in get_variables()],
+                    },
+                ],
+                safe=False,
             )
         return HttpResponseNotFound()
 

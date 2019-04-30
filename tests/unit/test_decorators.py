@@ -1,8 +1,8 @@
 import pytest
 
 from wagtail_tag_manager.options import CustomVariable
-from wagtail_tag_manager.decorators import get_variables, register_variable
 from wagtail_tag_manager.settings import TagTypeSettings
+from wagtail_tag_manager.decorators import get_variables, register_variable
 
 
 @pytest.mark.django_db
