@@ -30,10 +30,11 @@ class ManageView(SuccessURLAllowedHostsMixin, TemplateView):
         args = [redirect_url]
         kwargs = {"require_https": request.is_secure()}
 
+        allowed_hosts = self.get_success_url_allowed_hosts()
         if __version__.startswith("2.0"):
-            kwargs["allowed_hosts"] = self.get_success_url_allowed_hosts()
+            kwargs["allowed_hosts"] = allowed_hosts
         else:
-            args.append(self.get_success_url_allowed_hosts())
+            args.append(allowed_hosts)
 
         url_is_safe = is_safe_url(*args, **kwargs)
         if url_is_safe:
