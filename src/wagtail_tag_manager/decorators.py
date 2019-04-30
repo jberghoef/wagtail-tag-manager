@@ -1,10 +1,12 @@
+import inspect
+
 from wagtail_tag_manager.options import CustomVariable
 
 _variables: dict = {}
 
 
 def register_variable(cls=None):
-    if not issubclass(cls, CustomVariable):
+    if inspect.isclass(cls) and not issubclass(cls, CustomVariable):
         raise ValueError("Class must subclass CustomVariable.")
 
     if cls is None:  # pragma: no cover
@@ -20,4 +22,12 @@ def register_variable(cls=None):
 
 def get_variables():
     """ Return the variables function sorted by their order. """
-    return [cls() for key, cls in _variables.items()]
+    variables = []
+
+    for key, cls in _variables.items():
+        if inspect.isclass(cls):
+            variables.append(cls())
+        else:
+            variables.append(cls)
+
+    return variables

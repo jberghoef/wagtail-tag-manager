@@ -4,13 +4,14 @@ class CustomVariable(object):
     key = ""
 
     def __init__(self, *args, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
         for field in ["name", "description", "key"]:
             if not getattr(self, field, None):
                 raise ValueError(
                     f"A CustomVariable class has to provide a '{field}' value."
                 )
-
-        super().__init__(*args, **kwargs)
 
     def as_dict(self):
         return {
