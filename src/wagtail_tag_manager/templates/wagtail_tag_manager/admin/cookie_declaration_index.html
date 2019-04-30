@@ -7,9 +7,7 @@
         <div class="right">
             <form action="" method="post">{% csrf_token %}
                 <div class="button-group">
-                    {% if cookie_scan_enabled %}
-                        <button class="button bicolor icon icon-view" type="submit">{% trans "Scan for cookies" %}</button>
-                    {% endif %}
+                    <button class="button bicolor icon icon-view" type="submit">{% trans "Scan for cookies" %}</button>
                     {% include 'modeladmin/includes/button.html' with button=view.button_helper.add_button %}
                 </div>
             </form>

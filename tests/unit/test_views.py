@@ -50,7 +50,3 @@ def test_cookie_declaration_index_view(client, admin_user):
 
     response = client.get(url)
     assert response.status_code == 302
-
-    client.login(username="admin", password="password")
-    response = client.post(url)
-    assert response.status_code == 302

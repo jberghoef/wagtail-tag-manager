@@ -9,7 +9,7 @@ from wagtail.contrib.modeladmin.views import IndexView
 from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.utils import set_consent
 from wagtail_tag_manager.models import Constant, Variable, TagTypeSettings
-from wagtail_tag_manager.webdriver import scan_cookies
+from wagtail_tag_manager.webdriver import CookieScanner
 from wagtail_tag_manager.decorators import get_variables
 
 __version__ = django.get_version()
@@ -19,7 +19,10 @@ class ManageView(SuccessURLAllowedHostsMixin, TemplateView):
     template_name = "wagtail_tag_manager/manage.html"
 
     def get(self, request, *args, **kwargs):
-        if getattr(settings, "WTM_MANAGE_VIEW", True):
+        if (
+            getattr(settings, "WTM_MANAGE_VIEW", True)
+            or request.COOKIES.get("wtm_debug", "false") == "true"
+        ):
             return super().get(request, *args, **kwargs)
         return HttpResponseNotFound()
 
@@ -81,17 +84,10 @@ class VariableView(View):
 
 
 class CookieDeclarationIndexView(IndexView):
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(
-            {"cookie_scan_enabled": getattr(settings, "WTM_COOKIE_SCAN", False)}
-        )
-        return context
-
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated and request.user.is_staff:
             response = HttpResponseRedirect("")
-            scan_cookies(request)
+            CookieScanner(request).scan()
             return response
 
         return HttpResponseNotFound()

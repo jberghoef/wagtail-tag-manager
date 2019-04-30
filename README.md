@@ -69,7 +69,6 @@ to inject tags into a page before the response is send to a client.
     - [``WTM_INJECT_STYLE``](#wtm_inject_style)
     - [``WTM_INJECT_SCRIPT``](#wtm_inject_script)
     - [``WTM_SUMMARY_PANELS``](#wtm_summary_panels)
-    - [``WTM_COOKIE_SCAN``](#wtm_cookie_scan)
     - [``WTM_CHROMEDRIVER_URL``](#wtm_chromedriver_url)
 - [Custom variables](#custom-variables)
 - [Page tag mixin](#page-tag-mixin)
@@ -421,18 +420,9 @@ WTM_SUMMARY_PANELS = False
 
 Disables or enables the summary panels visible on the Wagtail admin dashboard.
 
-### ``WTM_COOKIE_SCAN``
+### ``WTM_CHROMEDRIVER_URL``
 
 **This is an experimental feature.**
-
-```python
-WTM_COOKIE_SCAN = False
-```
-
-Disables or enables the cookie scan functionality on the cookie declaration
-management page.
-
-### ``WTM_CHROMEDRIVER_URL``
 
 ```python
 WTM_CHROMEDRIVER_URL = "http://0.0.0.0:4444/wd/hub"

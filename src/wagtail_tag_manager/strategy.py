@@ -145,10 +145,13 @@ class TagStrategy(object):
 
     @property
     def tags(self):
-        if self._tags:
+        method = self._request.method
+        if self.is_debug and method == "GET":
+            return Tag.objects.all()
+        elif not self.is_debug and self._tags:
             return Tag.objects.auto_load().filter(self.queryset)
-        else:
-            return Tag.objects.none()
+
+        return Tag.objects.none()
 
     @property
     def result(self):
@@ -201,3 +204,7 @@ class TagStrategy(object):
             tag_type: self.consent.get(tag_type, CONSENT_FALSE) != CONSENT_FALSE
             for tag_type in Tag.get_types()
         }
+
+    @property
+    def is_debug(self):
+        return self._request.COOKIES.get("wtm_debug", "false") == "true"
