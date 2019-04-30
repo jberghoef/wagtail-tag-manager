@@ -133,7 +133,8 @@ class CookieScanner(object):  # pragma: no cover
             self.process_requests_cookie(cookie)
 
     def process_requests_cookie(self, cookie):
-        expiry = datetime.fromtimestamp(getattr(cookie, "expires", self.now))
+        cookie_expires = getattr(cookie, "expires")
+        expiry = datetime.fromtimestamp(cookie_expires) if cookie_expires else self.now
         obj, created = CookieDeclaration.objects.update_or_create(
             name=getattr(cookie, "name"),
             domain=getattr(cookie, "domain"),
