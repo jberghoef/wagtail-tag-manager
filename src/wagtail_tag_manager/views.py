@@ -7,8 +7,9 @@ from django.contrib.auth.views import SuccessURLAllowedHostsMixin
 from wagtail.contrib.modeladmin.views import IndexView
 
 from wagtail_tag_manager.forms import ConsentForm
-from wagtail_tag_manager.utils import set_consent, scan_cookies
+from wagtail_tag_manager.utils import set_consent
 from wagtail_tag_manager.models import Constant, Variable, TagTypeSettings
+from wagtail_tag_manager.webdriver import scan_cookies
 from wagtail_tag_manager.decorators import get_variables
 
 __version__ = django.get_version()
