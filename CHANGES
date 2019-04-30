@@ -1,3 +1,13 @@
+0.17.0 (2019.4.30)
+==================
+ - Reformat codebase, update Makefile and README
+ - Create CODE_OF_CONDUCT.md, update issue templates
+ - Restructure models
+ - Manage view Django 2.0 compatability
+ - Page tag implementation (#32)
+ - Switch WebDriver implementation to docker (#45)
+ - Add request based fallback to cookie scanner
+
 0.16.6 (2019.4.26)
 =================
  - Add content type for long description
