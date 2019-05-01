@@ -1,7 +1,6 @@
 import pytest
 
 from wagtail_tag_manager.options import CustomVariable
-from wagtail_tag_manager.settings import TagTypeSettings
 from wagtail_tag_manager.decorators import get_variables, register_variable
 
 BUILT_IN_COUNT = len(get_variables())

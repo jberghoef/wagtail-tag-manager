@@ -1,5 +1,4 @@
 import re
-import random
 import operator
 
 from django.db import models
