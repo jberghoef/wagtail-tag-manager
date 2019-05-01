@@ -127,7 +127,9 @@ def test_constant_create():
 @pytest.mark.django_db
 def test_variable_create():
     produced_variable = VariableFactory()
-    variable = Variable(name="Variable", key="key", variable_type="path", value="")
+    variable = Variable(
+        name="Variable", key="key", variable_type="_cookie+", value="wtm"
+    )
 
     assert produced_variable.name == variable.name
     assert produced_variable.key == variable.key

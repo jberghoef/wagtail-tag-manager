@@ -1,14 +1,15 @@
 import pytest
 
 from wagtail_tag_manager.options import CustomVariable
-from wagtail_tag_manager.settings import TagTypeSettings
 from wagtail_tag_manager.decorators import get_variables, register_variable
+
+BUILT_IN_COUNT = len(get_variables())
 
 
 @pytest.mark.django_db
 def test_default_variables():
     variables = get_variables()
-    assert len(variables) == len(TagTypeSettings.all())
+    assert len(variables) == BUILT_IN_COUNT
 
 
 @pytest.mark.django_db
@@ -23,7 +24,7 @@ def test_register_variable():
             return "This is a custom variable."
 
     variables = get_variables()
-    assert len(variables) == len(TagTypeSettings.all()) + 1
+    assert len(variables) == BUILT_IN_COUNT + 1
 
 
 @pytest.mark.django_db
@@ -39,7 +40,7 @@ def test_register_variable_after():
     register_variable(Variable)
 
     variables = get_variables()
-    assert len(variables) == len(TagTypeSettings.all()) + 2
+    assert len(variables) == BUILT_IN_COUNT + 2
 
 
 @pytest.mark.django_db
@@ -69,4 +70,4 @@ def test_register_variable_subclass():
         register_variable(Variable)
 
     variables = get_variables()
-    assert len(variables) == len(TagTypeSettings.all()) + 2
+    assert len(variables) == BUILT_IN_COUNT + 2
