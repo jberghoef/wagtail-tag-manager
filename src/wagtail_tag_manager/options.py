@@ -1,7 +1,12 @@
+from django.utils.translation import ugettext_lazy as _
+
+
 class CustomVariable(object):
     name = ""
     description = ""
     key = ""
+    group = _("Various")
+    lazy_only = False
 
     def __init__(self, *args, **kwargs):
         for key, value in kwargs.items():
@@ -18,6 +23,8 @@ class CustomVariable(object):
             "name": self.name,
             "description": self.description,
             "key": self.key,
+            "group": self.group,
+            "lazy_only": self.lazy_only,
             "variable_type": "custom",
             "value": "not available",
         }

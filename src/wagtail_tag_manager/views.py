@@ -1,3 +1,5 @@
+from itertools import groupby
+
 import django
 from django.conf import settings
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
@@ -68,30 +70,40 @@ class ConfigView(View):
 
 
 class VariableView(View):
-    def get(self, request, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated and request.user.is_staff:
-            return JsonResponse(
-                [
-                    {
-                        "verbose_name": _("Constants"),
-                        "items": [
-                            constant.as_dict() for constant in Constant.objects.all()
-                        ],
-                    },
-                    {
-                        "verbose_name": _("Variables"),
-                        "items": [
-                            variable.as_dict() for variable in Variable.objects.all()
-                        ],
-                    },
-                    {
-                        "verbose_name": _("Built-in"),
-                        "items": [variable.as_dict() for variable in get_variables()],
-                    },
-                ],
-                safe=False,
-            )
+            return super().dispatch(request, *args, **kwargs)
         return HttpResponseNotFound()
+
+    def get(self, request, *args, **kwargs):
+        data = []
+
+        if Constant.objects.exists():
+            data.append(
+                {
+                    "verbose_name": _("Constants"),
+                    "items": [
+                        constant.as_dict() for constant in Constant.objects.all()
+                    ],
+                }
+            )
+
+        if Variable.objects.exists():
+            data.append(
+                {
+                    "verbose_name": _("Variables"),
+                    "items": [
+                        variable.as_dict() for variable in Variable.objects.all()
+                    ],
+                }
+            )
+
+        custom = [variable.as_dict() for variable in get_variables()]
+        custom = sorted(custom, key=lambda x: (x["group"], x["lazy_only"]))
+        for key, value in groupby(custom, key=lambda x: x["group"]):
+            data.append({"verbose_name": key, "items": list(value)})
+
+        return JsonResponse(data, safe=False)
 
 
 class CookieDeclarationIndexView(IndexView):

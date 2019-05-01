@@ -166,17 +166,6 @@
     }
   },
   {
-    "model": "wagtail_tag_manager.variable",
-    "pk": 2,
-    "fields": {
-      "name": "A random number",
-      "description": "This will return a random number!",
-      "key": "rand",
-      "variable_type": "_random",
-      "value": ""
-    }
-  },
-  {
     "model": "wagtail_tag_manager.trigger",
     "pk": 1,
     "fields": {

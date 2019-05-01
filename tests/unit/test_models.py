@@ -111,18 +111,15 @@ def test_constant_create():
 
 @pytest.mark.django_db
 def test_variable_create():
-    variable = Variable.objects.create(name="Variable", key="key", variable_type="path")
+    variable = Variable.objects.create(
+        name="Variable", key="key", variable_type="_cookie+"
+    )
     assert variable in Variable.objects.all()
 
 
 @pytest.mark.django_db
 def test_variable_types(rf):
     request = rf.get("/wtm/")
-
-    path_variable = Variable.objects.create(
-        name="Path variable", key="path_variable", variable_type="path"
-    )
-    assert path_variable.get_value(request) == "/wtm/"
 
     repath_variable = Variable.objects.create(
         name="RePath variable",
@@ -140,11 +137,6 @@ def test_variable_types(rf):
         value="wtm_test",
     )
     assert cookie_variable.get_value(request) == "hello, world"
-
-    random_variable = Variable.objects.create(
-        name="Random variable", key="random_variable", variable_type="_random"
-    )
-    assert random_variable.get_value(request) > 0
 
 
 @pytest.mark.django_db

@@ -13,10 +13,8 @@ from wagtail_tag_manager.decorators import get_variables
 
 class Variable(models.Model):
     TYPE_CHOICES = (
-        (_("HTTP"), (("path", _("Path")), ("_repath+", _("Path with regex")))),
-        (_("User"), (("user.pk", _("User")), ("session.session_key", _("Session")))),
-        (_("Wagtail"), (("site", _("Site")),)),
-        (_("Other"), (("_cookie+", _("Cookie")), ("_random", _("Random number")))),
+        (_("HTTP"), (("_repath+", _("Path with regex")),)),
+        (_("Other"), (("_cookie+", _("Cookie")),)),
     )
 
     name = models.CharField(max_length=100, unique=True)
@@ -37,14 +35,9 @@ class Variable(models.Model):
         choices=TYPE_CHOICES,
         help_text=mark_safe(
             _(
-                "<b>Path:</b> the path of the visited page.<br/>"
                 "<b>Path with regex:</b> the path of the visited page after "
                 "applying a regex search.<br/>"
-                "<b>User:</b> the ID of a user, when available.<br/>"
-                "<b>Session:</b> the session key.<br/>"
-                "<b>Site:</b> the name of the site.<br/>"
-                "<b>Cookie:</b> the value of a cookie, when available.<br/>"
-                "<b>Random number:</b> a random number."
+                "<b>Cookie:</b> the value of a cookie, when available."
             )
         ),
     )
@@ -95,9 +88,6 @@ class Variable(models.Model):
         if request and hasattr(request, "COOKIES"):
             return request.COOKIES.get(self.value, "")
         return ""
-
-    def get_random(self, request):
-        return int(random.random() * 2_147_483_647)
 
     def get_value(self, request):
         variable_type = self.variable_type
