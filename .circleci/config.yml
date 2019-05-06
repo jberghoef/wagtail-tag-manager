@@ -18,8 +18,8 @@ jobs:
     working_directory: ~/repo
 
     steps:
-      - |
-        curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | bash
+      - run: |
+          curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | bash
       - checkout
 
       # Download and cache dependencies
