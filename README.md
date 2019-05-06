@@ -9,6 +9,7 @@
 [![alt text][version]](https://pypi.python.org/pypi/wagtail-tag-manager/)
 [![alt text][black]](https://github.com/ambv/black)
 [![alt text][prettier]](https://github.com/prettier/prettier)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager?ref=badge_shield)
 
 [circleci]: https://circleci.com/gh/jberghoef/wagtail-tag-manager.svg?style=svg "Circle CI"
 [travis]: https://travis-ci.org/jberghoef/wagtail-tag-manager.svg?branch=master "Travis CI"
@@ -542,3 +543,7 @@ account the following scenario's:
     |---------|------------|------------|------------|-----------|
     | Instant | yes        | yes        | yes        | yes       |
     | Lazy    | yes        | yes        | yes        | yes       |
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager?ref=badge_large)
