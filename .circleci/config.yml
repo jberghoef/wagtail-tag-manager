@@ -41,10 +41,10 @@ jobs:
             - ./venv
           key: v1-dependencies-{{ checksum "requirements.txt" }}
 
-      - run:
-          command: |
-            . venv/bin/activate
-            fossa
+      # - run:
+      #     command: |
+      #       . venv/bin/activate
+      #       fossa
 
       # run tests!
       # this example uses Django's built-in test-runner
