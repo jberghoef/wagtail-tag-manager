@@ -44,12 +44,7 @@ jobs:
       - run:
           command: |
             . venv/bin/activate
-            fossa init
-
-      - run:
-          command: |
-            . venv/bin/activate
-            fossa analyze
+            fossa
 
       # run tests!
       # this example uses Django's built-in test-runner
