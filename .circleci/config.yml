@@ -42,12 +42,14 @@ jobs:
           key: v1-dependencies-{{ checksum "requirements.txt" }}
 
       - run:
-          command: fossa init
-          working_directory: ~/repo
+          command: |
+            . venv/bin/activate
+            fossa init
 
       - run:
-          command: fossa analyze
-          working_directory: ~/repo
+          command: |
+            . venv/bin/activate
+            fossa analyze
 
       # run tests!
       # this example uses Django's built-in test-runner
