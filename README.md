@@ -6,6 +6,7 @@
 [![alt text][codecov]](https://codecov.io/gh/jberghoef/wagtail-tag-manager)
 [![alt text][codacy]](https://www.codacy.com/app/jberghoef/wagtail-tag-manager)
 [![alt text][license]](https://opensource.org/licenses/BSD-3-Clause)
+[![alt text][fossa]](https://app.fossa.com/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager)
 [![alt text][version]](https://pypi.python.org/pypi/wagtail-tag-manager/)
 [![alt text][black]](https://github.com/ambv/black)
 [![alt text][prettier]](https://github.com/prettier/prettier)
@@ -15,6 +16,7 @@
 [codecov]: https://codecov.io/gh/jberghoef/wagtail-tag-manager/branch/master/graph/badge.svg "Codecov"
 [codacy]: https://api.codacy.com/project/badge/Grade/2a59a006e69442bb809bf08f47028eb9 "Codacy"
 [license]: https://img.shields.io/badge/license-BSD-blue.svg "License"
+[fossa]: https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager.svg?type=shield "Fossa"
 [version]: https://img.shields.io/pypi/v/wagtail-tag-manager.svg "Version"
 [black]: https://img.shields.io/badge/code%20style-black-000000.svg "Black"
 [prettier]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg "Prettier"
@@ -542,3 +544,6 @@ account the following scenario's:
     |---------|------------|------------|------------|-----------|
     | Instant | yes        | yes        | yes        | yes       |
     | Lazy    | yes        | yes        | yes        | yes       |
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager?ref=badge_large)
