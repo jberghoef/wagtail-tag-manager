@@ -60,8 +60,9 @@ watch:
 	yarn dev
 	yarn watch
 
-release: clean bundle
-	pip install twine wheel
+release:
+	pip install -U twine wheel
 	rm -rf build/*
 	rm -rf dist/*
-	python setup.py sdist bdist_wheel upload -r pypi
+	python setup.py sdist bdist_wheel
+	twine upload --repository pypi dist/*
