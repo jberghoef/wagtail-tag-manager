@@ -1,3 +1,8 @@
+0.18.1 (2019.5.12)
+==================
+ - Update Twine release script
+
+
 0.18.0 (2019.5.12)
 ==================
  - Add included custom variables for the consent state
