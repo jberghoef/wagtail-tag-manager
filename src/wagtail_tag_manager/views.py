@@ -11,7 +11,7 @@ from wagtail.contrib.modeladmin.views import IndexView
 
 from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.utils import set_consent
-from wagtail_tag_manager.models import Constant, Variable, TagTypeSettings
+from wagtail_tag_manager.models import Trigger, Constant, Variable, TagTypeSettings
 from wagtail_tag_manager.webdriver import CookieScanner
 from wagtail_tag_manager.decorators import get_variables
 
@@ -61,8 +61,11 @@ class ConfigView(View):
     def get(self, request, *args, **kwargs):
         response = JsonResponse(
             {
-                tag_type: config.get("value")
-                for tag_type, config in TagTypeSettings.all().items()
+                "tag_types": {
+                    tag_type: config.get("value")
+                    for tag_type, config in TagTypeSettings.all().items()
+                },
+                "triggers": [trigger.as_dict() for trigger in Trigger.objects.active()],
             }
         )
 

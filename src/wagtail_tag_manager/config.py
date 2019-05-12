@@ -138,3 +138,24 @@ class WagtailTagManagerConfig(AppConfig):
 
             def get_value(self, request):
                 return int(random.random() * 2_147_483_647)
+
+        @register_variable
+        class TriggerNameVariable(CustomVariable):
+            name = _("Name")
+            description = _("The name of a trigger event.")
+            key = "trigger_name"
+            group = _("Trigger")
+
+        @register_variable
+        class TriggerTypeVariable(CustomVariable):
+            name = _("Type")
+            description = _("The type of a trigger event.")
+            key = "trigger_type"
+            group = _("Trigger")
+
+        @register_variable
+        class TriggerValueVariable(CustomVariable):
+            name = _("Value")
+            description = _("The value retrieved from a trigger event.")
+            key = "trigger_value"
+            group = _("Trigger")

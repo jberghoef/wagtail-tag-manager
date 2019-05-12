@@ -1,15 +1,18 @@
 import * as Cookies from "js-cookie";
 import "whatwg-fetch";
 import CookieBar from "./cookie_bar";
+import TriggerMonitor from "./trigger_monitor";
 
-interface WTMWindow extends Window {
+import { Trigger } from "./trigger_monitor";
+
+export interface WTMWindow extends Window {
   wtm: {
     config_url: string;
     lazy_url: string;
   };
 }
 
-interface Tag {
+export interface Tag {
   name: string;
   attributes: {
     [s: string]: string;
@@ -47,7 +50,7 @@ export default class TagManager {
       });
 
       this.validate();
-      this.loadData();
+      this.loadData(null);
     });
   }
 
@@ -60,7 +63,7 @@ export default class TagManager {
     }
 
     if (enabled) {
-      Object.keys(this.config).forEach(tagType => {
+      Object.keys(this.config.tag_types).forEach(tagType => {
         if (this.state[tagType] === "unset" || this.state[tagType] == "none") {
           this.showCookiebar = true;
         }
@@ -69,6 +72,11 @@ export default class TagManager {
 
     if (this.showCookiebar) {
       new CookieBar(this);
+    }
+
+    if (this.config.triggers && this.config.triggers.length > 0) {
+      const { triggers } = this.config;
+      new TriggerMonitor(this, triggers);
     }
   }
 
@@ -91,7 +99,7 @@ export default class TagManager {
       });
   }
 
-  loadData(callback?: Function) {
+  loadData(trigger: Trigger, callback?: Function) {
     fetch(this.lazyUrl, {
       method: "POST",
       mode: "cors",
@@ -103,7 +111,7 @@ export default class TagManager {
       },
       redirect: "follow",
       referrer: "no-referrer",
-      body: JSON.stringify({ ...window.location })
+      body: JSON.stringify({ ...window.location, trigger })
     })
       .then(response => response.json())
       .then(json => {

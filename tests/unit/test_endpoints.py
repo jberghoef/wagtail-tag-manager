@@ -16,7 +16,7 @@ from tests.factories.tag import (
 from tests.factories.page import TaggableContentPageFactory
 from tests.factories.trigger import TriggerFactory
 from wagtail_tag_manager.utils import get_consent
-from wagtail_tag_manager.models import Tag
+from wagtail_tag_manager.models import Tag, Trigger
 
 
 @pytest.mark.django_db
@@ -132,28 +132,28 @@ def test_passive_tags(client, site):
         name="functional lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
-        content='<script>console.log("functional: {{ state }}")</script>',
+        content='<script>console.log("functional: {{ trigger_value }}")</script>',
     )
     tag_analytical = TagFactory(
         name="analytical lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
         tag_type="analytical",
-        content='<script>console.log("analytical: {{ state }}")</script>',
+        content='<script>console.log("analytical: {{ trigger_value }}")</script>',
     )
     tag_delayed = TagFactory(
         name="delayed lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
         tag_type="delayed",
-        content='<script>console.log("delayed: {{ state }}")</script>',
+        content='<script>console.log("delayed: {{ trigger_value }}")</script>',
     )
     tag_traceable = TagFactory(
         name="traceable lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
         tag_type="traceable",
-        content='<script>console.log("traceable: {{ state }}")</script>',
+        content='<script>console.log("traceable: {{ trigger_value }}")</script>',
     )
 
     assert tag_functional in Tag.objects.passive().sorted()
@@ -161,7 +161,7 @@ def test_passive_tags(client, site):
     assert tag_delayed in Tag.objects.passive().sorted()
     assert tag_traceable in Tag.objects.passive().sorted()
 
-    trigger = TriggerFactory(pattern=r"[?&]state=(?P<state>\S+)")
+    trigger = TriggerFactory()
     trigger.tags.add(tag_functional)
     trigger.tags.add(tag_analytical)
     trigger.tags.add(tag_delayed)
@@ -180,7 +180,17 @@ def test_passive_tags(client, site):
 
     response = client.post(
         "/wtm/lazy/",
-        json.dumps({"pathname": "/", "search": "?state=1"}),
+        json.dumps(
+            {
+                "pathname": "/",
+                "search": "",
+                "trigger": {
+                    "slug": "trigger",
+                    "type": Trigger.TYPE_FORM_SUBMIT,
+                    "value": "1",
+                },
+            }
+        ),
         content_type="application/json",
     )
     data = response.json()
@@ -192,7 +202,17 @@ def test_passive_tags(client, site):
     client.cookies = SimpleCookie({"wtm": "analytical:true"})
     response = client.post(
         "/wtm/lazy/",
-        json.dumps({"pathname": "/", "search": "?state=2"}),
+        json.dumps(
+            {
+                "pathname": "/",
+                "search": "",
+                "trigger": {
+                    "slug": "trigger",
+                    "type": Trigger.TYPE_FORM_SUBMIT,
+                    "value": "2",
+                },
+            }
+        ),
         content_type="application/json",
     )
     data = response.json()
@@ -204,7 +224,17 @@ def test_passive_tags(client, site):
     client.cookies = SimpleCookie({"wtm": "analytical:false|delayed:true"})
     response = client.post(
         "/wtm/lazy/",
-        json.dumps({"pathname": "/", "search": "?state=3"}),
+        json.dumps(
+            {
+                "pathname": "/",
+                "search": "",
+                "trigger": {
+                    "slug": "trigger",
+                    "type": Trigger.TYPE_FORM_SUBMIT,
+                    "value": "3",
+                },
+            }
+        ),
         content_type="application/json",
     )
     data = response.json()
@@ -216,7 +246,17 @@ def test_passive_tags(client, site):
     client.cookies = SimpleCookie({"wtm": "analytical:false|traceable:true"})
     response = client.post(
         "/wtm/lazy/",
-        json.dumps({"pathname": "/", "search": "?state=4"}),
+        json.dumps(
+            {
+                "pathname": "/",
+                "search": "",
+                "trigger": {
+                    "slug": "trigger",
+                    "type": Trigger.TYPE_FORM_SUBMIT,
+                    "value": "4",
+                },
+            }
+        ),
         content_type="application/json",
     )
     data = response.json()

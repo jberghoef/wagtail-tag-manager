@@ -9,10 +9,16 @@ from tests.factories.tag import (
     tag_instant_analytical,
     tag_instant_functional,
 )
-from tests.factories.trigger import TriggerFactory
+from tests.factories.trigger import TriggerFactory, TriggerConditionFactory
 from tests.factories.constant import ConstantFactory
 from tests.factories.variable import VariableFactory
-from wagtail_tag_manager.models import Tag, Trigger, Constant, Variable
+from wagtail_tag_manager.models import (
+    Tag,
+    Trigger,
+    Constant,
+    Variable,
+    TriggerCondition,
+)
 
 
 def get_expected_content(string):
@@ -140,7 +146,19 @@ def test_variable_create():
 @pytest.mark.django_db
 def test_trigger_create():
     produced_trigger = TriggerFactory()
-    trigger = Trigger(name="Trigger", pattern=r"[?&]state=(?P<state>\S+)")
+    trigger = Trigger(name="Trigger")
 
     assert produced_trigger.name == trigger.name
-    assert produced_trigger.pattern == trigger.pattern
+
+
+@pytest.mark.django_db
+def test_trigger_condition_create():
+    produced_trigger = TriggerFactory()
+    produced_trigger_condition = TriggerConditionFactory(trigger=produced_trigger)
+    trigger = Trigger(name="Trigger")
+    trigger_condition = TriggerCondition(
+        variable="navigation_path", value="/", trigger=trigger
+    )
+
+    assert produced_trigger.name == trigger.name
+    assert produced_trigger_condition.value == trigger_condition.value

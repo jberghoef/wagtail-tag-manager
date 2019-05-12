@@ -98,3 +98,5 @@ WTM_TAG_TYPES = {
     "delayed": (_("Delayed"), "delayed"),
     "traceable": (_("Traceable"), ""),
 }
+
+WTM_SUMMARY_PANELS = True

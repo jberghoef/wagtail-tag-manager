@@ -3,6 +3,8 @@ import json
 import pytest
 from django.urls import reverse
 
+from tests.factories.constant import ConstantFactory
+from tests.factories.variable import VariableFactory
 from wagtail_tag_manager.views import CookieDeclarationIndexView
 from wagtail_tag_manager.settings import TagTypeSettings
 from wagtail_tag_manager.wagtail_hooks import CookieDeclarationModelAdmin
@@ -25,15 +27,19 @@ def test_state_view(client):
 
     response = client.get(url)
     assert response.status_code == 200
-    assert json.loads(response.content) == {
-        tag_type: config.get("value")
-        for tag_type, config in TagTypeSettings.all().items()
-    }
+
+    content = json.loads(response.content)
+    for tag_type, config in TagTypeSettings.all().items():
+        assert tag_type in content["tag_types"]
+        assert content["tag_types"][tag_type] == config.get("value")
 
 
 @pytest.mark.django_db
 def test_variable_view(client, admin_user):
     url = reverse("wtm:variables")
+
+    ConstantFactory(key="constant1")
+    VariableFactory(key="variable1")
 
     response = client.get(url)
     assert response.status_code == 404

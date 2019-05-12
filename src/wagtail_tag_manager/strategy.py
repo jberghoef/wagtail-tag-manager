@@ -1,4 +1,6 @@
-from django.http import Http404
+from typing import Dict, List
+
+from django.http import Http404, HttpRequest
 from django.db.models import Q
 from wagtail.core.views import serve as wagtail_serve
 
@@ -78,37 +80,39 @@ CONSENT_MAP = (
 
 
 class TagStrategy(object):
-    def __init__(self, request):
+    def __init__(self, request: HttpRequest, payload: dict = None):
         self._request = request
         self._context = Tag.create_context(request)
+        self._payload = payload or {}
 
         self._config = TagTypeSettings.all()
-        self._tags = []
+        self._tags: List = []
 
         from wagtail_tag_manager.utils import get_consent
 
         self.consent_state = get_consent(request)
-        self.consent = {}
+        self.consent: Dict = {}
 
         if request:
             self.define_strategy()
 
     # https://gist.github.com/jberghoef/9ffa2b738cbb0aab624ff091dc6fe9a7
     def define_strategy(self):
-        method = self._request.method
+        for method in (
+            [self._request.method] if not self.is_trigger else ["GET", "POST"]
+        ):
+            for tag_type, tag_config in self._config.items():
+                consent_value, include_instant, include_lazy = self.validate_request(
+                    method, tag_type, tag_config
+                )
 
-        for tag_type, tag_config in self._config.items():
-            consent_value, include_instant, include_lazy = self.validate_request(
-                method, tag_type, tag_config
-            )
+                self.consent[tag_type] = consent_value
 
-            self.consent[tag_type] = consent_value
+                if include_instant:
+                    self._tags.append((Tag.INSTANT_LOAD, tag_type))
 
-            if include_instant:
-                self._tags.append((Tag.INSTANT_LOAD, tag_type))
-
-            if include_lazy:
-                self._tags.append((Tag.LAZY_LOAD, tag_type))
+                if include_lazy:
+                    self._tags.append((Tag.LAZY_LOAD, tag_type))
 
     def validate_request(self, method: str, tag_type: str, tag_config: dict):
         consent = self.consent_state.get(tag_type, CONSENT_UNSET)
@@ -155,26 +159,26 @@ class TagStrategy(object):
 
     @property
     def result(self):
-        result = [
+        result = []
+
+        if not self.is_trigger:
+            result = [*self._get_tags_for_request(), *self._get_tags_for_page()]
+        else:
+            result = [*self._get_tags_for_trigger()]
+
+        return result
+
+    def _get_tags_for_request(self):
+        return [
             {"object": tag, "element": tag.get_doc(self._request, self._context)}
             for tag in self.tags
         ]
 
-        for trigger in Trigger.objects.active():
-            match = trigger.match(self._request)
-            if match is not None:
-                for tag in trigger.tags.filter(self.queryset):
-                    result.append(
-                        {
-                            "object": tag,
-                            "element": tag.get_doc(
-                                self._request, {**self._context, **match.groupdict()}
-                            ),
-                        }
-                    )
-
+    def _get_tags_for_page(self):
         from wagtail_tag_manager.utils import get_page_for_request
         from wagtail_tag_manager.endpoints import lazy_endpoint
+
+        result = []
 
         if (
             self._request.resolver_match
@@ -198,6 +202,27 @@ class TagStrategy(object):
 
         return result
 
+    def _get_tags_for_trigger(self):
+        trigger_dict = self._payload.get("trigger")
+        trigger = Trigger.objects.get(
+            slug=trigger_dict.get("slug"),
+            trigger_type__startswith=trigger_dict.get("type"),
+        )
+        trigger_context = {
+            **self._context,
+            "trigger_name": trigger_dict.get("slug", ""),
+            "trigger_type": trigger_dict.get("type", ""),
+            "trigger_value": trigger_dict.get("value", ""),
+        }
+
+        if trigger is not None and trigger.validate(trigger_context):
+            return [
+                {"object": tag, "element": tag.get_doc(self._request, trigger_context)}
+                for tag in trigger.tags.filter(self.queryset)
+            ]
+
+        return []
+
     @property
     def cookie_state(self):
         return {
@@ -208,3 +233,7 @@ class TagStrategy(object):
     @property
     def is_debug(self):
         return self._request.COOKIES.get("wtm_debug", "false") == "true"
+
+    @property
+    def is_trigger(self):
+        return self._payload.get("trigger", None) is not None
