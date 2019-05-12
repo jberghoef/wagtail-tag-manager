@@ -44,7 +44,7 @@ to inject tags into a page before the response is send to a client.
 ### Administrators
 - Manage scripts and tags from within Wagtail, with powerful options to define load order.
 - Store reusable content in constants and variables and easily add them to your tags.
-- Create triggers to load tags based on regex pattern matching paths.
+- Create triggers to load tags based on events in the browser.
 - Create cookie declarations to provide end-users with a full picture of the tracking taking place.
 
 ### Developers

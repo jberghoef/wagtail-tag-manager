@@ -20,11 +20,14 @@ def register_variable(cls=None):
     _variables[cls.key] = cls
 
 
-def get_variables():
+def get_variables(lazy=None):
     """ Return the variables function sorted by their order. """
     variables = []
 
     for key, cls in _variables.items():
+        if lazy is not None and cls.lazy_only is not lazy:
+            continue
+
         if inspect.isclass(cls):
             variables.append(cls())
         else:

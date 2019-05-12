@@ -164,16 +164,5 @@
       "key": "thnx",
       "value": "Thank you for using WTM!"
     }
-  },
-  {
-    "model": "wagtail_tag_manager.trigger",
-    "pk": 1,
-    "fields": {
-      "name": "State in query",
-      "description": "Render some awesome stuff",
-      "active": true,
-      "pattern": "[?&]state=(?P<state>\\S+)",
-      "tags": [9, 10]
-    }
   }
 ]

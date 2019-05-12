@@ -2,8 +2,6 @@
 
 from django.db import models, migrations
 
-import wagtail_tag_manager.models
-
 
 class Migration(migrations.Migration):
 
@@ -15,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='trigger',
             name='pattern',
-            field=models.CharField(help_text="The regex pattern to match the full url path with. Groups will be added to the included tag's context.", max_length=255, validators=[wagtail_tag_manager.models.searchable_regex_validator]),
+            field=models.CharField(help_text="The regex pattern to match the full url path with. Groups will be added to the included tag's context.", max_length=255),
         ),
     ]

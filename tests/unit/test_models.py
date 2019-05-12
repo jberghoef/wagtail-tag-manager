@@ -6,12 +6,14 @@ from tests.factories.tag import (
     tag_lazy_functional,
     tag_instant_functional,
 )
+from tests.factories.trigger import TriggerFactory, TriggerConditionFactory
 from wagtail_tag_manager.models import (
     Tag,
     Trigger,
     Constant,
     Variable,
     TagTypeSettings,
+    TriggerCondition,
     CookieDeclaration,
 )
 
@@ -141,10 +143,12 @@ def test_variable_types(rf):
 
 @pytest.mark.django_db
 def test_trigger_create():
-    trigger = Trigger.objects.create(
-        name="Trigger", pattern=r"[?&]state=(?P<state>\S+)"
-    )
+    trigger = Trigger.objects.create(name="Trigger")
     assert trigger in Trigger.objects.all()
+
+    trigger_condition = TriggerConditionFactory(trigger=trigger)
+
+    assert trigger_condition in trigger.conditions.all()
 
     tag_functional = tag_lazy_functional()
     tag_analytical = tag_lazy_analytical()
@@ -157,6 +161,16 @@ def test_trigger_create():
     assert tag_functional in trigger.tags.all().sorted()
     assert tag_analytical in trigger.tags.all()
     assert tag_traceable in trigger.tags.all()
+
+
+@pytest.mark.django_db
+def test_trigger_condition_create():
+    trigger = TriggerFactory()
+    trigger_condition = TriggerCondition.objects.create(
+        variable="navigation_path", value="/", trigger=trigger
+    )
+
+    assert trigger_condition in TriggerCondition.objects.all()
 
 
 @pytest.mark.django_db

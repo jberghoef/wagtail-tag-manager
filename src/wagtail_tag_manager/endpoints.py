@@ -19,7 +19,7 @@ def lazy_endpoint(request):
         request.path = payload.get("pathname", request.path)
         request.META["QUERY_STRING"] = payload.get("search", "")
 
-        strategy = TagStrategy(request)
+        strategy = TagStrategy(request, payload)
 
         set_consent(response, {key: value for key, value in strategy.consent.items()})
 
