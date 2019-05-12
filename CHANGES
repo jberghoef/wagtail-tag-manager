@@ -1,3 +1,12 @@
+0.18.0 (2019.5.12)
+==================
+ - Add included custom variables for the consent state
+ - Tweak the tag form view display (#46)
+ - Refactor variable system (#47)
+ - Lazy triggers and variables (#49)
+ - Add Fossa license scans
+
+
 0.17.1 (2019.4.30)
 ==================
  - Handle possible None type in cookie request processing
