@@ -1,15 +1,15 @@
 # Wagtail Tag Manager
 
-
-[![alt text][circleci]](https://circleci.com/gh/jberghoef/wagtail-tag-manager)
-[![alt text][travis]](https://travis-ci.org/jberghoef/wagtail-tag-manager)
-[![alt text][codecov]](https://codecov.io/gh/jberghoef/wagtail-tag-manager)
-[![alt text][codacy]](https://www.codacy.com/app/jberghoef/wagtail-tag-manager)
-[![alt text][license]](https://opensource.org/licenses/BSD-3-Clause)
-[![alt text][fossa]](https://app.fossa.com/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager)
-[![alt text][version]](https://pypi.python.org/pypi/wagtail-tag-manager/)
-[![alt text][black]](https://github.com/ambv/black)
-[![alt text][prettier]](https://github.com/prettier/prettier)
+[![CircleCI][circleci]](https://circleci.com/gh/jberghoef/wagtail-tag-manager)
+[![TravisCI][travis]](https://travis-ci.org/jberghoef/wagtail-tag-manager)
+[![CodeCov][codecov]](https://codecov.io/gh/jberghoef/wagtail-tag-manager)
+[![Codacy][codacy]](https://www.codacy.com/app/jberghoef/wagtail-tag-manager)
+[![License][license]](https://opensource.org/licenses/BSD-3-Clause)
+[![Fossa][fossa]](https://app.fossa.com/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager)
+[![Version][version]](https://pypi.python.org/pypi/wagtail-tag-manager/)
+[![Downloads][downloads]](https://pepy.tech/project/wagtail-tag-manager)
+[![Black][black]](https://github.com/ambv/black)
+[![Prettier][prettier]](https://github.com/prettier/prettier)
 
 [circleci]: https://circleci.com/gh/jberghoef/wagtail-tag-manager.svg?style=svg "Circle CI"
 [travis]: https://travis-ci.org/jberghoef/wagtail-tag-manager.svg?branch=master "Travis CI"
@@ -18,6 +18,7 @@
 [license]: https://img.shields.io/badge/license-BSD-blue.svg "License"
 [fossa]: https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager.svg?type=shield "Fossa"
 [version]: https://img.shields.io/pypi/v/wagtail-tag-manager.svg "Version"
+[downloads]: https://pepy.tech/badge/wagtail-tag-manager "Downloads"
 [black]: https://img.shields.io/badge/code%20style-black-000000.svg "Black"
 [prettier]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg "Prettier"
 
