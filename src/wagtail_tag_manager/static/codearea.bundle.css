@@ -345,29 +345,36 @@ div.CodeMirror-dragcursors {
 /* Help users use markselection to safely style text background */
 span.CodeMirror-selectedtext { background: none; }
 
-.code .input .CodeMirror {
+.object .codearea .field-content .input .CodeMirror {
   height: auto;
-  min-height: 200px;
+  min-height: 240px;
+  width: 100%;
   padding: 2em 30px;
   background-color: #fafafa;
   border-right: 1px solid #e6e6e6;
-  border-top: 1px solid #e6e6e6;
+  border-left: 1px solid #e6e6e6;
   transition: background-color 0.2s ease;
   overflow: hidden; }
-  .code .input .CodeMirror-focused {
+  .object .codearea .field-content .input .CodeMirror-focused {
     background-color: #f4fcfc;
     border-color: #54d0d0;
     outline: none; }
-  .code .input .CodeMirror * {
+  .object .codearea .field-content .input .CodeMirror * {
     font-size: 0.9rem;
     line-height: 1.4rem; }
   @media screen and (max-width: 799px) {
-    .code .input .CodeMirror {
+    .object .codearea .field-content .input .CodeMirror {
       border: 1px solid #e6e6e6; } }
 
-.code .panel {
-  padding: 1em 0.5rem; }
-  @media screen and (min-width: 800px) {
-    .code .panel {
-      border-right: 1px solid #e6e6e6; } }
+.object.code .object-layout_big-part fieldset {
+  width: 100% !important;
+  max-width: unset !important; }
+  .object.code .object-layout_big-part fieldset .input > div {
+    display: flex;
+    width: 100%; }
+    .object.code .object-layout_big-part fieldset .input > div .panel {
+      width: 200px;
+      height: 100%;
+      padding: 10px;
+      overflow-x: scroll; }
 

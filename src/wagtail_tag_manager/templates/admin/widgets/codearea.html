@@ -1,0 +1,3 @@
+<textarea name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+{% if widget.value %}{{ widget.value }}{% endif %}</textarea>
+<script>window.wtm.initCodearea('#{{ widget.attrs.id|escapejs }}', document.currentScript)</script>

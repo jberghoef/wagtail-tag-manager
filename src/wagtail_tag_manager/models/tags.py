@@ -10,6 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, MultiFieldPanel
 
 from wagtail_tag_manager.models import constants, variables
+from wagtail_tag_manager.widgets import Codearea
 from wagtail_tag_manager.managers import TagQuerySet
 from wagtail_tag_manager.settings import TagTypeSettings
 
@@ -109,7 +110,7 @@ class Tag(models.Model):
             heading=_("Meta"),
             classname="collapsible",
         ),
-        FieldPanel("content", classname="full code"),
+        FieldPanel("content", classname="full code", widget=Codearea),
     ]
 
     class Meta:

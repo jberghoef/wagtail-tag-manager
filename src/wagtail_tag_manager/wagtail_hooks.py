@@ -70,7 +70,6 @@ class TagModelAdmin(ModelAdmin):
     )
     list_filter = ("auto_load", "tag_type", "tag_location", "tag_loading")
     search_fields = ("name", "description", "content")
-    form_view_extra_css = [static("tag_form_view.bundle.css")]
     form_view_extra_js = [static("tag_form_view.bundle.js")]
 
     @staticmethod
