@@ -21,6 +21,7 @@ from wagtail_tag_manager.utils import parse_consent_state
 
 
 def get_messages_for_log(driver, amount, iterations=5):
+    time.sleep(iterations)
     log = driver.get_log("browser")
     while len(log) < amount and iterations > 0:
         log = driver.get_log("browser")
@@ -38,6 +39,7 @@ def get_messages_for_log(driver, amount, iterations=5):
 
 
 def get_consent_state(driver, iterations=5):
+    time.sleep(iterations)
     while True and iterations > 0:
         for cookie in driver.get_cookies():
             if cookie.get("name") == "wtm":
