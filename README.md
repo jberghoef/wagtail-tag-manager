@@ -28,7 +28,7 @@ that allows for easier and GDPR compliant administration of scripts and tags.
 **Please note that this software is in beta and has not been extensively tested
 in practice. Any part of the API may change without notice!**
 
-![alt text](screenshot.png "Screenshot")
+![Screenshot](screenshots/screenshot.png "Screenshot")
 
 *In this package the term "tag" is being used for code snippets being injected
 into HTML. This is not to be confused with tags used to identify content in the
@@ -235,9 +235,9 @@ Optionally, you can disable either the script and/or the styling.
 
 ### ``wtm_cookie_bar``
 
-![alt text](cookie-bar-with-form.png "Cookie bar with form")
+![Cookie bar with form](screenshots/cookie-bar-with-form.png "Cookie bar with form")
 
-![alt text](cookie-bar-with-form-and-details.png "Cookie bar with form and details")
+![Cookie bar with form and details](screenshots/cookie-bar-with-form-and-details.png "Cookie bar with form and details")
 
 ```html+django
 {% load wtm_tags %}
@@ -423,6 +423,8 @@ WTM_SUMMARY_PANELS = False
 
 Disables or enables the summary panels visible on the Wagtail admin dashboard.
 
+![Admin summary panels](screenshots/summary-panels-admin.png "Summary panels on the dashboard")
+
 ### ``WTM_CHROMEDRIVER_URL``
 
 **This is an experimental feature.**
@@ -459,11 +461,16 @@ class Variable(CustomVariable):
         return "This is a custom variable."
 ```
 
+![Admin custom variables](screenshots/custom-variables-admin.png "Custom variables visible in the code editor")
+
 ## Page tag mixin
 
 If you would like to include tags on a page, include the ``TagMixin`` mixin.
 Under the "Settings" tab of the corresponding page type a list of tags will be
 shown. By selecting these, these tags will be included when the page loads.
+
+Additionally, by selecting the "Include children" field, all descending pages
+of the configured page will also load the chosen tags.
 
 Note that the consent state is being applied to these tags. If the selected tag
 is marked as, for example, "traceable", the end-user still must allow this type
@@ -476,7 +483,7 @@ class HomePage(TagMixin, Page):
     pass
 ```
 
-![alt text](tag-mixin-admin.png "The tag mixin admin interface")
+![Tag mixin admin](screenshots/tag-mixin-admin.png "The tag mixin admin interface")
 
 ## Sandbox
 
