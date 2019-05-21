@@ -6,6 +6,7 @@ module.exports = (env, options) => ({
     tag_form_view: ["./frontend/admin/tag_form_view.ts"],
     trigger_form_view: ["./frontend/admin/trigger_form_view.ts"],
     variable_form_view: ["./frontend/admin/variable_form_view.ts"],
+    checkbox_select_multiple: ["./frontend/admin/widgets/checkbox_select_multiple.ts"],
     codearea: ["./frontend/admin/widgets/codearea.ts"],
     wtm: ["./frontend/client/wtm.ts"]
   },

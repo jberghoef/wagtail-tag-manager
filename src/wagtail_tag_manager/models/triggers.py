@@ -13,6 +13,9 @@ from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel
 
 from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.widgets import VariableSelect
+from wagtail_tag_manager.widgets import (
+    HorizontalCheckboxSelectMultiple as CheckboxSelectMultiple,
+)
 from wagtail_tag_manager.managers import TriggerQuerySet
 
 
@@ -103,7 +106,7 @@ class Trigger(ClusterableModel):
             heading=_("Configuration"),
         ),
         InlinePanel("conditions", label=_("Conditions")),
-        FieldPanel("tags", widget=widgets.CheckboxSelectMultiple),
+        FieldPanel("tags", widget=CheckboxSelectMultiple),
     ]
 
     def as_dict(self):

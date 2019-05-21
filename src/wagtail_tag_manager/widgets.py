@@ -19,3 +19,8 @@ class Codearea(widgets.Textarea):
     class Media:
         css = {"all": (static("codearea.bundle.css"),)}
         js = (static("codearea.bundle.js"),)
+
+
+class HorizontalCheckboxSelectMultiple(widgets.CheckboxSelectMultiple):
+    class Media:
+        css = {"all": (static("checkbox_select_multiple.bundle.css"),)}

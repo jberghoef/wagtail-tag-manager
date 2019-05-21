@@ -1,10 +1,12 @@
-from django.forms import widgets
 from modelcluster.fields import ParentalManyToManyField
 from modelcluster.models import ClusterableModel
 from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, PublishingPanel
 
 from wagtail_tag_manager.models import Tag
+from wagtail_tag_manager.widgets import (
+    HorizontalCheckboxSelectMultiple as CheckboxSelectMultiple,
+)
 
 
 class TagMixin(ClusterableModel):
@@ -17,8 +19,7 @@ class TagMixin(ClusterableModel):
     settings_panels = [
         PublishingPanel(),
         MultiFieldPanel(
-            [FieldPanel("tags", widget=widgets.CheckboxSelectMultiple)],
-            heading=_("Tags"),
+            [FieldPanel("tags", widget=CheckboxSelectMultiple)], heading=_("Tags")
         ),
     ]
 

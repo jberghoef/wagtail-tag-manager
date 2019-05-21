@@ -1,7 +1,3 @@
-import "./trigger_form_view.scss";
-
-// TODO: Turn this into something reusable.
-
 class TriggerFormView {
   triggerSelect: HTMLSelectElement;
   valueInput: HTMLInputElement;
