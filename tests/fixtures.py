@@ -1,10 +1,10 @@
 import pytest
 from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from django.test.client import RequestFactory as BaseRequestFactory
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.messages.storage.fallback import FallbackStorage
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from tests.factories.page import ContentPageFactory, TaggableContentPageFactory
 from tests.factories.site import SiteFactory
@@ -54,7 +54,7 @@ def driver():
     options.add_argument("no-sandbox")
 
     d = DesiredCapabilities.CHROME
-    d['loggingPrefs'] = { 'browser':'ALL' }
+    d["loggingPrefs"] = {"browser": "ALL"}
 
     driver = webdriver.Chrome(options=options, desired_capabilities=d)
     driver.implicitly_wait(30)

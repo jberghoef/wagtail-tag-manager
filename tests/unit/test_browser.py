@@ -1,12 +1,11 @@
-import pytest
 import re
 import time
+
+import pytest
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-
-from wagtail_tag_manager.utils import parse_consent_state
 
 from tests.factories.tag import (
     tag_lazy_delayed,
@@ -18,6 +17,7 @@ from tests.factories.tag import (
     tag_instant_analytical,
     tag_instant_functional,
 )
+from wagtail_tag_manager.utils import parse_consent_state
 
 
 def get_messages_for_log(driver, amount, iterations=5):
@@ -36,14 +36,15 @@ def get_messages_for_log(driver, amount, iterations=5):
     assert len(messages) == amount
     return messages
 
+
 def get_consent_state(driver, iterations=5):
     while True and iterations > 0:
-        cookies = driver.get_cookies()
         for cookie in driver.get_cookies():
             if cookie.get("name") == "wtm":
                 return parse_consent_state(cookie.get("value", ""))
         iterations = iterations - 1
         time.sleep(1)
+
 
 @pytest.mark.django_db
 def test_default_functionality(driver, site, live_server):
@@ -64,7 +65,7 @@ def test_default_functionality(driver, site, live_server):
     except TimeoutException:
         pass
 
-    messages = get_messages_for_log(driver, 4)
+    get_messages_for_log(driver, 4)
     consent_state = get_consent_state(driver)
     assert consent_state.get("functional") == "true"
     assert consent_state.get("analytical") == "unset"
@@ -79,7 +80,7 @@ def test_default_functionality(driver, site, live_server):
     except TimeoutException:
         pass
 
-    messages = get_messages_for_log(driver, 6)
+    get_messages_for_log(driver, 6)
     consent_state = get_consent_state(driver)
     assert consent_state.get("functional") == "true"
     assert consent_state.get("analytical") == "unset"
@@ -97,7 +98,7 @@ def test_default_functionality(driver, site, live_server):
     except TimeoutException:
         pass
 
-    messages = get_messages_for_log(driver, 8)
+    get_messages_for_log(driver, 8)
     consent_state = get_consent_state(driver)
     assert consent_state.get("functional") == "true"
     assert consent_state.get("analytical") == "true"
@@ -157,6 +158,7 @@ def test_functional_only(driver, site, live_server):
     assert consent_state.get("delayed") == "false"
     assert consent_state.get("traceable") == "false"
 
+
 @pytest.mark.django_db
 def test_analytical_only(driver, site, live_server):
     tag_instant_analytical()
@@ -208,6 +210,7 @@ def test_analytical_only(driver, site, live_server):
     assert consent_state.get("analytical") == "true"
     assert consent_state.get("delayed") == "false"
     assert consent_state.get("traceable") == "false"
+
 
 @pytest.mark.django_db
 def test_delayed_only(driver, site, live_server):
