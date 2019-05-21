@@ -6,6 +6,7 @@ language: python
 cache: pip
 
 addons:
+  chrome: stable
   apt:
     packages:
       - sqlite3
@@ -35,4 +36,4 @@ install:
   - pip install tox
 
 script:
-  - tox -- --nomigrations --reuse-db tests/
+  - tox -- --nomigrations --reuse-db --ignore tests/browser/ tests/

@@ -1,8 +1,10 @@
 import pytest
+from selenium import webdriver
 from django.test.client import RequestFactory as BaseRequestFactory
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.messages.storage.fallback import FallbackStorage
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from tests.factories.page import ContentPageFactory, TaggableContentPageFactory
 from tests.factories.site import SiteFactory
@@ -40,3 +42,22 @@ class RequestFactory(BaseRequestFactory):
 @pytest.fixture
 def user(django_user_model):
     return django_user_model.objects.create(username="user")
+
+
+@pytest.fixture(scope="function")
+def driver():
+    options = webdriver.ChromeOptions()
+    options.add_argument("disable-gpu")
+    options.add_argument("headless")
+    options.add_argument("no-default-browser-check")
+    options.add_argument("no-first-run")
+    options.add_argument("no-sandbox")
+
+    d = DesiredCapabilities.CHROME
+    d["loggingPrefs"] = {"browser": "ALL"}
+
+    driver = webdriver.Chrome(options=options, desired_capabilities=d)
+    driver.implicitly_wait(30)
+
+    yield driver
+    driver.quit()
