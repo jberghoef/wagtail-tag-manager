@@ -36,4 +36,4 @@ install:
   - pip install tox
 
 script:
-  - tox -- --nomigrations --reuse-db tests/
+  - tox -- --nomigrations --reuse-db --ignore tests/browser/ tests/
