@@ -190,13 +190,36 @@ class TagStrategy(object):
                 page = get_page_for_request(self._request)
 
                 if page is not None and isinstance(page, TagMixin):
-                    for tag in page.tags.filter(self.queryset):
+                    for tag in page.wtm_tags.filter(self.queryset):
                         result.append(
                             {
                                 "object": tag,
                                 "element": tag.get_doc(self._request, self._context),
                             }
                         )
+
+                parent = page
+                while parent.get_parent():
+                    parent = parent.get_parent()
+                    if (
+                        parent is not None
+                        and isinstance(parent.specific, TagMixin)
+                        and getattr(parent.specific, "wtm_include_children", False)
+                    ):
+                        parent = parent.specific
+                        for tag in parent.wtm_tags.filter(self.queryset):
+                            if tag.pk not in [
+                                getattr(x.get("object"), "pk", None) for x in result
+                            ]:
+                                result.append(
+                                    {
+                                        "object": tag,
+                                        "element": tag.get_doc(
+                                            self._request, self._context
+                                        ),
+                                    }
+                                )
+
             except Http404:
                 pass
 

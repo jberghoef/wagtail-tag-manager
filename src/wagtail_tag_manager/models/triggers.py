@@ -1,7 +1,6 @@
 import re
 
 from django.db import models
-from django.forms import widgets
 from django.utils.html import mark_safe
 from django.utils.text import slugify
 from modelcluster.fields import ParentalKey

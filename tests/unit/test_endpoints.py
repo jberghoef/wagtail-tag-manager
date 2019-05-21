@@ -302,13 +302,13 @@ def test_page_tags(client, site):
     assert tag_traceable in Tag.objects.passive().sorted()
 
     page = TaggableContentPageFactory(parent=site.root_page, slug="tagged-page")
-    page.tags.add(tag_functional)
-    page.tags.add(tag_analytical)
-    page.tags.add(tag_delayed)
-    page.tags.add(tag_traceable)
+    page.wtm_tags.add(tag_functional)
+    page.wtm_tags.add(tag_analytical)
+    page.wtm_tags.add(tag_delayed)
+    page.wtm_tags.add(tag_traceable)
     page.save()
 
-    assert len(page.tags.all()) == 4
+    assert len(page.wtm_tags.all()) == 4
 
     response = client.post(
         "/wtm/lazy/",
