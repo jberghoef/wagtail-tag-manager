@@ -48,7 +48,7 @@ def user(django_user_model):
 def driver():
     options = webdriver.ChromeOptions()
     options.add_argument("disable-gpu")
-    # options.add_argument("headless")
+    options.add_argument("headless")
     options.add_argument("no-default-browser-check")
     options.add_argument("no-first-run")
     options.add_argument("no-sandbox")
