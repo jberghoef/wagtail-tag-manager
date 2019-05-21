@@ -6,6 +6,7 @@ language: python
 cache: pip
 
 addons:
+  chrome: stable
   apt:
     packages:
       - sqlite3
