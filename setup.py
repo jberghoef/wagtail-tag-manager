@@ -8,19 +8,19 @@ install_requires = [
 ]
 
 tests_require = [
-    "factory_boy==2.11.1",
-    "Faker==1.0.2",
+    "factory_boy==2.12.0",
+    "Faker==1.0.7",
     "flake8-blind-except",
     "flake8-debugger",
     "flake8-imports",
-    "flake8==3.7.6",
+    "flake8==3.7.7",
     "freezegun==0.3.11",
     "pycodestyle==2.5.0",
-    "pytest-cov==2.6.1",
-    "pytest-django==3.4.7",
+    "pytest-cov==2.7.1",
+    "pytest-django==3.4.8",
     "pytest-pythonpath==0.7.3",
     "pytest-sugar==0.9.2",
-    "pytest==4.3.0",
+    "pytest==4.5.0",
     "wagtail_factories==1.1.0",
 ]
 
