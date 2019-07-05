@@ -1,3 +1,13 @@
+0.20.0 (2019.7.5)
+=================
+ - Add selenium browser tests (#52)
+ - Bump fstream from 1.0.11 to 1.0.12 (#53)
+ - Add help text blocks (#55)
+ - Randomize tests
+ - Upgrade front-end dependencies
+ - Back-end dependency updates
+
+
 0.19.1 (2019.5.22)
 ==================
  - Update and extend README
