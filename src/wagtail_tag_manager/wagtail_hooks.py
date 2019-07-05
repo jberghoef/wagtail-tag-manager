@@ -12,7 +12,7 @@ from wagtail.contrib.modeladmin.options import (
     modeladmin_register,
 )
 
-from wagtail_tag_manager.views import CookieDeclarationIndexView
+from wagtail_tag_manager.views import CookieDeclarationIndexView, WTMIndexView
 from wagtail_tag_manager.models import (
     Tag,
     Trigger,
@@ -28,6 +28,11 @@ class ConstantModelAdmin(ModelAdmin):
     menu_icon = "snippet"
     list_display = ("name_display", "key", "value")
     search_fields = ("name", "key", "value", "description")
+    index_view_class = WTMIndexView
+    index_template_name = "wagtail_tag_manager/admin/constant_index.html"
+    help_text = _(
+        "Constants allow you to store reusable information for usage in 1 or multiple tags. This is often used for account ID's."
+    )
 
     @staticmethod
     def name_display(obj):
@@ -46,6 +51,11 @@ class VariableModelAdmin(ModelAdmin):
     list_filter = ("variable_type",)
     search_fields = ("name", "key", "description")
     form_view_extra_js = [static("variable_form_view.bundle.js")]
+    index_view_class = WTMIndexView
+    index_template_name = "wagtail_tag_manager/admin/variable_index.html"
+    help_text = _(
+        "Variables allow you to retrieve information corresponding to a request and add that to 1 or multiple tags."
+    )
 
     @staticmethod
     def name_display(obj):
@@ -71,6 +81,12 @@ class TagModelAdmin(ModelAdmin):
     list_filter = ("auto_load", "tag_type", "tag_location", "tag_loading")
     search_fields = ("name", "description", "content")
     form_view_extra_js = [static("tag_form_view.bundle.js")]
+    index_view_class = WTMIndexView
+    index_template_name = "wagtail_tag_manager/admin/tag_index.html"
+    help_text = _(
+        "A tag is a little code snippet (HTML containing CSS, JavaScript or both) that can be added to your page. "
+        "You can choose where and when this tag should load, allowing you to control the order in which the tags will be loaded."
+    )
 
     @staticmethod
     def name_display(obj):
@@ -96,6 +112,12 @@ class TriggerModelAdmin(ModelAdmin):
     list_filter = ("active",)
     search_fields = ("name", "description")
     form_view_extra_js = [static("trigger_form_view.bundle.js")]
+    index_view_class = WTMIndexView
+    index_template_name = "wagtail_tag_manager/admin/trigger_index.html"
+    help_text = _(
+        "Triggers monitor the behaviour of a visitor on a page and can load tags whenever a certain event takes place. "
+        "For example, when a form is submitted or a user scrolls past a certain point on the page."
+    )
 
     @staticmethod
     def name_display(obj):
@@ -121,6 +143,11 @@ class CookieDeclarationModelAdmin(ModelAdmin):
     search_fields = ("name", "purpose", "domain")
     index_view_class = CookieDeclarationIndexView
     index_template_name = "wagtail_tag_manager/admin/cookie_declaration_index.html"
+    help_text = _(
+        "Cookie declarations provide visitors of your website with insight into the data that is stored on their computer by your site. "
+        "These declarations will be visible in the cookie bar. Use the \"Scan for cookies\" button to automatically detect cookies. "
+        "Note that it is unlikely the scanner will find everything."
+    )
 
 
 class TagManagerAdminGroup(ModelAdminGroup):

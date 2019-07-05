@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = (env, options) => ({
   entry: {
+    index: ["./frontend/admin/index.ts"],
     tag_form_view: ["./frontend/admin/tag_form_view.ts"],
     trigger_form_view: ["./frontend/admin/trigger_form_view.ts"],
     variable_form_view: ["./frontend/admin/variable_form_view.ts"],

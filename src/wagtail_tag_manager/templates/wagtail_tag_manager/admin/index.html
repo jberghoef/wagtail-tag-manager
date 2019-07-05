@@ -1,0 +1,14 @@
+{% extends "modeladmin/index.html" %}
+
+{% load i18n %}
+
+{% block content_main %}
+    {% if help_text %}
+        <div id="wtm_help_block" class="help-block help-info" style="display: none; margin: 0; border-radius: 0;">
+            {{ help_text|safe }}
+
+            <a class="close-link" href="#">{% trans "Close" %}</a>
+        </div>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}
