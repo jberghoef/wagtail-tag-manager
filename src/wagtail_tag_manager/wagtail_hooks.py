@@ -12,7 +12,7 @@ from wagtail.contrib.modeladmin.options import (
     modeladmin_register,
 )
 
-from wagtail_tag_manager.views import CookieDeclarationIndexView, WTMIndexView
+from wagtail_tag_manager.views import WTMIndexView, CookieDeclarationIndexView
 from wagtail_tag_manager.models import (
     Tag,
     Trigger,
@@ -148,7 +148,7 @@ class CookieDeclarationModelAdmin(ModelAdmin):
     help_text = _(
         "Cookie declarations provide visitors of your website with insight into the data that is "
         "stored on their computer by your site. These declarations will be visible in the "
-        "cookie bar. Use the \"Scan for cookies\" button to automatically detect cookies. "
+        'cookie bar. Use the "Scan for cookies" button to automatically detect cookies. '
         "Note that it is unlikely the scanner will find everything."
     )
 

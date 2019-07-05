@@ -26,16 +26,16 @@ class IndexView {
   }
 
   showHelpBlock() {
-    this.el.style.display = "block"
+    this.el.style.display = "block";
   }
 
   hideHelpBlock() {
     localStorage.setItem(this.identifier, "hidden");
-    this.el.style.display = "none"
+    this.el.style.display = "none";
   }
 
   get identifier() {
-    return "wtm_help_block:" + location.pathname
+    return "wtm_help_block:" + location.pathname;
   }
 }
 
