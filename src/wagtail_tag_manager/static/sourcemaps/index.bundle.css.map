@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./frontend/admin/index.scss"],"names":[],"mappings":"AAAA;AACA,qBAAqB;AACrB;AACA;AACA;AACA,aAAa","file":"index.bundle.css","sourcesContent":["#wtm_help_block {\n  padding-right: 6em; }\n  #wtm_help_block .close-link {\n    position: absolute;\n    right: 2em;\n    top: 1em; }\n"],"sourceRoot":""}

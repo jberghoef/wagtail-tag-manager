@@ -1,12 +1,14 @@
 from itertools import groupby
 
 import django
+from django import forms
 from django.conf import settings
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.utils.http import is_safe_url
 from django.views.generic import View, TemplateView
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.views import SuccessURLAllowedHostsMixin
+from django.templatetags.static import static
 from wagtail.contrib.modeladmin.views import IndexView
 
 from wagtail_tag_manager.forms import ConsentForm
@@ -109,7 +111,26 @@ class VariableView(View):
         return JsonResponse(data, safe=False)
 
 
-class CookieDeclarationIndexView(IndexView):
+class WTMIndexView(IndexView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["help_text"] = getattr(self.model_admin, "help_text", None)
+        return context
+
+    @property
+    def media(self):
+        return forms.Media(
+            css={
+                "all": [
+                    static("index.bundle.css"),
+                    *self.model_admin.get_index_view_extra_css(),
+                ]
+            },
+            js=[static("index.bundle.js"), *self.model_admin.get_index_view_extra_js()],
+        )
+
+
+class CookieDeclarationIndexView(WTMIndexView):
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated and request.user.is_staff:
             response = HttpResponseRedirect("")
