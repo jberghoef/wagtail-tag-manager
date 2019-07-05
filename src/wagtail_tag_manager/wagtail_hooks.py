@@ -31,7 +31,8 @@ class ConstantModelAdmin(ModelAdmin):
     index_view_class = WTMIndexView
     index_template_name = "wagtail_tag_manager/admin/constant_index.html"
     help_text = _(
-        "Constants allow you to store reusable information for usage in 1 or multiple tags. This is often used for account ID's."
+        "Constants allow you to store reusable information for usage in 1 or multiple tags. "
+        "This is often used for account ID's."
     )
 
     @staticmethod
@@ -85,7 +86,8 @@ class TagModelAdmin(ModelAdmin):
     index_template_name = "wagtail_tag_manager/admin/tag_index.html"
     help_text = _(
         "A tag is a little code snippet (HTML containing CSS, JavaScript or both) that can be added to your page. "
-        "You can choose where and when this tag should load, allowing you to control the order in which the tags will be loaded."
+        "You can choose where and when this tag should load, "
+        "allowing you to control the order in which the tags will be loaded."
     )
 
     @staticmethod
@@ -144,8 +146,9 @@ class CookieDeclarationModelAdmin(ModelAdmin):
     index_view_class = CookieDeclarationIndexView
     index_template_name = "wagtail_tag_manager/admin/cookie_declaration_index.html"
     help_text = _(
-        "Cookie declarations provide visitors of your website with insight into the data that is stored on their computer by your site. "
-        "These declarations will be visible in the cookie bar. Use the \"Scan for cookies\" button to automatically detect cookies. "
+        "Cookie declarations provide visitors of your website with insight into the data that is "
+        "stored on their computer by your site. These declarations will be visible in the "
+        "cookie bar. Use the \"Scan for cookies\" button to automatically detect cookies. "
         "Note that it is unlikely the scanner will find everything."
     )
 
