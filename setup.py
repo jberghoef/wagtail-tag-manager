@@ -19,6 +19,7 @@ tests_require = [
     "pytest-cov==2.6.1",
     "pytest-django==3.4.7",
     "pytest-pythonpath==0.7.3",
+    "pytest-randomly==3.0.0",
     "pytest-sugar==0.9.2",
     "pytest==4.3.0",
     "wagtail_factories==1.1.0",
