@@ -27,6 +27,7 @@ export default class TagManager {
   lazyUrl: string;
 
   showCookiebar: boolean;
+  requestInit: RequestInit;
   data: { [s: string]: any } = {};
   config: { [s: string]: any } = {};
   state: { [s: string]: any } = {};
@@ -36,6 +37,19 @@ export default class TagManager {
 
     this.configUrl = body.getAttribute("data-wtm-config") || this.window.wtm.config_url;
     this.lazyUrl = body.getAttribute("data-wtm-lazy") || this.window.wtm.lazy_url;
+
+    this.requestInit = {
+      method: "GET",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        "X-CSRFToken": Cookies.get("csrftoken")
+      },
+      redirect: "follow",
+      referrer: "no-referrer"
+    };
 
     this.showCookiebar = false;
     this.initialize();
@@ -81,17 +95,7 @@ export default class TagManager {
   }
 
   loadConfig(callback?: Function) {
-    fetch(this.configUrl, {
-      method: "GET",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      },
-      redirect: "follow",
-      referrer: "no-referrer"
-    })
+    fetch(this.configUrl, this.requestInit)
       .then(response => response.json())
       .then(json => {
         this.config = json;
@@ -101,16 +105,8 @@ export default class TagManager {
 
   loadData(trigger: Trigger, callback?: Function) {
     fetch(this.lazyUrl, {
+      ...this.requestInit,
       method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-        "X-CSRFToken": Cookies.get("csrftoken")
-      },
-      redirect: "follow",
-      referrer: "no-referrer",
       body: JSON.stringify({ ...window.location, trigger })
     })
       .then(response => response.json())
