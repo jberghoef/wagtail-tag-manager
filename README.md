@@ -75,6 +75,7 @@ to inject tags into a page before the response is send to a client.
     - [``WTM_CHROMEDRIVER_URL``](#wtm_chromedriver_url)
 - [Custom variables](#custom-variables)
 - [Page tag mixin](#page-tag-mixin)
+- [Lazy triggers](#lazy-triggers)
 - [Sandbox](#sandbox)
 - [Concept](#concept)
 
@@ -484,6 +485,15 @@ class HomePage(TagMixin, Page):
 ```
 
 ![Tag mixin admin](screenshots/tag-mixin-admin.png "The tag mixin admin interface")
+
+## Lazy triggers
+
+Triggers allow you to monitor events on the frontend of your website and load a
+tag after a specified event has occurred. By using conditions you are able to
+harness (custom) variables to only trigger a tag once your event complies with
+the conditions that you specified.
+
+![Trigger admin](screenshots/trigger-admin.png "The trigger admin interface")
 
 ## Sandbox
 
