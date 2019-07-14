@@ -137,7 +137,7 @@ class WagtailTagManagerConfig(AppConfig):
             key = "rand"
 
             def get_value(self, request):
-                return int(random.random() * 2_147_483_647)
+                return int(random.random() * 2147483647)
 
         @register_variable
         class TriggerNameVariable(CustomVariable):
