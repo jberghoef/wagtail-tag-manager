@@ -15,28 +15,28 @@
   "author": "Jasper Berghoef",
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
     "@babel/polyfill": "^7.4.4",
-    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-env": "^7.5.5",
     "@types/codemirror": "^0.0.76",
     "@types/js-cookie": "^2.2.2",
     "babel-loader": "^8.0.6",
-    "css-loader": "^3.0.0",
-    "mini-css-extract-plugin": "^0.7.0",
+    "css-loader": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
     "prettier": "^1.17.1",
-    "sass-loader": "^7.1.0",
-    "style-loader": "^0.23.1",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
     "ts-loader": "^6.0.2",
-    "typescript": "^3.5.1",
-    "webpack": "^4.32.2",
-    "webpack-cli": "^3.3.2"
+    "typescript": "^3.6.2",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.7"
   },
   "dependencies": {
     "@types/simmerjs": "^0.5.0",
-    "codemirror": "^5.47.0",
-    "js-cookie": "^2.2.0",
+    "codemirror": "^5.48.4",
+    "js-cookie": "^2.2.1",
     "whatwg-fetch": "^3.0.0"
   }
 }
