@@ -1,3 +1,12 @@
+0.20.1 (2019.9.2)
+=================
+ - Optimize the tag manager client
+ - Update README to cover lazy triggers
+ - Bump lodash from 4.17.11 to 4.17.14 (#58)
+ - Update underscore number literals to normal number literals (#57)
+ - Update front-end dependencies
+
+
 0.20.0 (2019.7.5)
 =================
  - Add selenium browser tests (#52)
