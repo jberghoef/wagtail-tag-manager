@@ -564,11 +564,11 @@ the correct time, taking in account the following scenario's:
 
     *² From the second page load onward.*
 
-    As the acceptance of analytical tags can only be verified client side, we'll
-    first load all the analytical tags lazy (whether they are instant or not).
+    As the acceptance of "Initial" tags can only be verified client side, we'll
+    first load all the "Initial" tags lazy (whether they are instant or not).
 
     Please note that we still have to show a message stating that we are using
-    analytical tags.
+    tags with analytical purposes.
 
 3. The user has explicitly accepted cookies for your site.
 
