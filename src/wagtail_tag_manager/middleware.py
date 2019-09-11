@@ -23,6 +23,7 @@ class TagManagerMiddleware:
             and getattr(self.response, "status_code", None) == 200
         ):
             set_consent(
+                self.request,
                 self.response,
                 {key: value for key, value in self.strategy.consent.items()},
             )

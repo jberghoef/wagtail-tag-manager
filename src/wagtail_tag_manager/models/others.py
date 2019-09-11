@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
@@ -72,3 +74,10 @@ class CookieDeclaration(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CookieConsent(models.Model):
+    identifier = models.UUIDField(default=uuid.uuid4, editable=False)
+    consent_state = models.TextField(editable=False)
+    location = models.URLField(editable=False)
+    timestamp = models.DateTimeField(auto_now=False, auto_now_add=True, editable=False)

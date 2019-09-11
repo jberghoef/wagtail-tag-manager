@@ -1,5 +1,7 @@
+import uuid
 import typing
 from datetime import datetime, timedelta
+from http.cookies import SimpleCookie
 
 import django
 from django.conf import settings
@@ -8,18 +10,28 @@ from django.utils.cache import patch_vary_headers
 
 from wagtail_tag_manager.settings import TagTypeSettings
 from wagtail_tag_manager.strategy import CONSENT_UNSET
+from wagtail_tag_manager.models.others import CookieConsent
 
 __version__ = django.get_version()
 
 
-def set_consent(response, consent):
+def set_consent(request, response, consent, explicit=False):
     consent_state = {**get_consent(response), **consent}
-
     set_cookie(
         response,
         "wtm",
         "|".join([f"{key}:{value}" for key, value in consent_state.items()]),
     )
+
+    if request is not None and explicit:
+        cookie_consent = CookieConsent.objects.create(
+            identifier=request.COOKIES.get("wtm_id", str(uuid.uuid4())),
+            consent_state="\n".join(
+                [f"{key}: {value};" for key, value in consent_state.items()]
+            ),
+            location=request.META.get("HTTP_REFERER", request.build_absolute_uri()),
+        )
+        set_cookie(response, "wtm_id", cookie_consent.identifier)
 
 
 def get_consent(r: typing.Union[HttpResponse, HttpRequest]):
