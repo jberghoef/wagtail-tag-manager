@@ -3,36 +3,36 @@
     "model": "wagtail_tag_manager.tag",
     "pk": 1,
     "fields": {
-      "name": "Instant functional",
-      "description": "Loads instantly, is functional",
+      "name": "Instant necessary",
+      "description": "Loads instantly, is necessary",
       "auto_load": true,
-      "tag_type": "functional",
+      "tag_type": "necessary",
       "tag_location": "1_bottom_head",
       "tag_loading": "instant_load",
-      "content": "<script>\n console.info('instant functional')\n</script>"
+      "content": "<script>\n console.info('instant necessary')\n</script>"
     }
   },
   {
     "model": "wagtail_tag_manager.tag",
     "pk": 2,
     "fields": {
-      "name": "Instant analytical",
-      "description": "Loads instantly, is analytical",
+      "name": "Instant preferences",
+      "description": "Loads instantly, is preferences",
       "auto_load": true,
-      "tag_type": "analytical",
+      "tag_type": "preferences",
       "tag_location": "1_bottom_head",
       "tag_loading": "instant_load",
-      "content": "<script>\n console.info('instant analytical')\n</script>"
+      "content": "<script>\n console.info('instant preferences')\n</script>"
     }
   },
   {
     "model": "wagtail_tag_manager.tag",
     "pk": 3,
     "fields": {
-      "name": "Instant delayed",
+      "name": "Instant statistics",
       "description": "Loads instantly, is continuous",
       "auto_load": true,
-      "tag_type": "delayed",
+      "tag_type": "statistics",
       "tag_location": "1_bottom_head",
       "tag_loading": "instant_load",
       "content": "<script>\n console.info('instant continuous')\n</script>"
@@ -42,49 +42,49 @@
     "model": "wagtail_tag_manager.tag",
     "pk": 4,
     "fields": {
-      "name": "Instant traceable",
-      "description": "Loads instantly, is traceable",
+      "name": "Instant marketing",
+      "description": "Loads instantly, is marketing",
       "auto_load": true,
-      "tag_type": "traceable",
+      "tag_type": "marketing",
       "tag_location": "1_bottom_head",
       "tag_loading": "instant_load",
-      "content": "<script>\n console.info('instant traceable')\n</script>"
+      "content": "<script>\n console.info('instant marketing')\n</script>"
     }
   },
   {
     "model": "wagtail_tag_manager.tag",
     "pk": 5,
     "fields": {
-      "name": "Lazy functional",
-      "description": "Loads lazily, is functional",
+      "name": "Lazy necessary",
+      "description": "Loads lazily, is necessary",
       "auto_load": true,
-      "tag_type": "functional",
+      "tag_type": "necessary",
       "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
-      "content": "<script>\n console.info('lazy functional')\n</script>"
+      "content": "<script>\n console.info('lazy necessary')\n</script>"
     }
   },
   {
     "model": "wagtail_tag_manager.tag",
     "pk": 6,
     "fields": {
-      "name": "Lazy analytical",
-      "description": "Loads lazily, is analytical",
+      "name": "Lazy preferences",
+      "description": "Loads lazily, is preferences",
       "auto_load": true,
-      "tag_type": "analytical",
+      "tag_type": "preferences",
       "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
-      "content": "<script>\n console.info('lazy analytical')\n</script>"
+      "content": "<script>\n console.info('lazy preferences')\n</script>"
     }
   },
   {
     "model": "wagtail_tag_manager.tag",
     "pk": 7,
     "fields": {
-      "name": "Lazy delayed",
+      "name": "Lazy statistics",
       "description": "Loads lazily, is continuous",
       "auto_load": true,
-      "tag_type": "delayed",
+      "tag_type": "statistics",
       "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
       "content": "<script>\n console.info('lazy continuous')\n</script>"
@@ -94,13 +94,13 @@
     "model": "wagtail_tag_manager.tag",
     "pk": 8,
     "fields": {
-      "name": "Lazy traceable",
-      "description": "Loads lazily, is traceable",
+      "name": "Lazy marketing",
+      "description": "Loads lazily, is marketing",
       "auto_load": true,
-      "tag_type": "traceable",
+      "tag_type": "marketing",
       "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
-      "content": "<script>\n console.info('lazy traceable')\n</script>"
+      "content": "<script>\n console.info('lazy marketing')\n</script>"
     }
   },
   {
@@ -110,7 +110,7 @@
       "name": "Thank You",
       "description": "This logs a \"thank you\" message using a constant.",
       "auto_load": true,
-      "tag_type": "functional",
+      "tag_type": "necessary",
       "tag_location": "3_bottom_body",
       "tag_loading": "instant_load",
       "content": "<script>\n console.log('{{ thnx }}')\n</script>"
@@ -123,7 +123,7 @@
       "name": "A random number",
       "description": "This will log a random number.",
       "auto_load": true,
-      "tag_type": "analytical",
+      "tag_type": "preferences",
       "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
       "content": "<script>\n console.log('Here you go: {{ rand }}')\n</script>"
@@ -136,7 +136,7 @@
       "name": "Passive lazy tag",
       "description": "",
       "auto_load": false,
-      "tag_type": "traceable",
+      "tag_type": "marketing",
       "tag_location": "0_top_head",
       "tag_loading": "lazy_load",
       "content": "<script>\n console.log(\"I'm a {{ state }} teapot.\")\n</script>"
@@ -149,7 +149,7 @@
       "name": "Passive instant tag",
       "description": "",
       "auto_load": false,
-      "tag_type": "traceable",
+      "tag_type": "marketing",
       "tag_location": "0_top_head",
       "tag_loading": "instant_load",
       "content": "<script>\n console.log(\"My state is {{ state }}\")\n</script>"
