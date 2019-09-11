@@ -2,12 +2,12 @@ import pytest
 
 from tests.factories.tag import (
     TagFactory,
-    tag_lazy_traceable,
-    tag_lazy_analytical,
-    tag_lazy_functional,
-    tag_instant_traceable,
-    tag_instant_analytical,
-    tag_instant_functional,
+    tag_lazy_marketing,
+    tag_lazy_necessary,
+    tag_lazy_preferences,
+    tag_instant_marketing,
+    tag_instant_necessary,
+    tag_instant_preferences,
 )
 from tests.factories.trigger import TriggerFactory, TriggerConditionFactory
 from tests.factories.constant import ConstantFactory
@@ -29,8 +29,8 @@ def get_expected_content(string):
 def test_tag_create():
     produced_tag = TagFactory()
     tag = Tag(
-        name="functional instant",
-        content='<script>console.log("functional instant")</script>',
+        name="necessary instant",
+        content='<script>console.log("necessary instant")</script>',
     )
 
     assert produced_tag.name == tag.name
@@ -39,11 +39,11 @@ def test_tag_create():
 
 
 @pytest.mark.django_db
-def test_tag_instant_functional():
-    produced_tag = tag_instant_functional()
+def test_tag_instant_necessary():
+    produced_tag = tag_instant_necessary()
     tag = Tag(
-        name="functional instant",
-        content='<script>console.log("functional instant")</script>',
+        name="necessary instant",
+        content='<script>console.log("necessary instant")</script>',
     )
 
     assert produced_tag.name == tag.name
@@ -52,12 +52,12 @@ def test_tag_instant_functional():
 
 
 @pytest.mark.django_db
-def test_tag_instant_analytical():
-    produced_tag = tag_instant_analytical()
+def test_tag_instant_preferences():
+    produced_tag = tag_instant_preferences()
     tag = Tag(
-        name="analytical instant",
-        tag_type="analytical",
-        content='<script>console.log("analytical instant")</script>',
+        name="preferences instant",
+        tag_type="preferences",
+        content='<script>console.log("preferences instant")</script>',
     )
 
     assert produced_tag.name == tag.name
@@ -66,12 +66,12 @@ def test_tag_instant_analytical():
 
 
 @pytest.mark.django_db
-def test_tag_instant_traceable():
-    produced_tag = tag_instant_traceable()
+def test_tag_instant_marketing():
+    produced_tag = tag_instant_marketing()
     tag = Tag(
-        name="traceable instant",
-        tag_type="traceable",
-        content='<script>console.log("traceable instant")</script>',
+        name="marketing instant",
+        tag_type="marketing",
+        content='<script>console.log("marketing instant")</script>',
     )
 
     assert produced_tag.name == tag.name
@@ -80,11 +80,10 @@ def test_tag_instant_traceable():
 
 
 @pytest.mark.django_db
-def test_tag_lazy_functional():
-    produced_tag = tag_lazy_functional()
+def test_tag_lazy_necessary():
+    produced_tag = tag_lazy_necessary()
     tag = Tag(
-        name="functional lazy",
-        content='<script>console.log("functional lazy")</script>',
+        name="necessary lazy", content='<script>console.log("necessary lazy")</script>'
     )
 
     assert produced_tag.name == tag.name
@@ -93,12 +92,12 @@ def test_tag_lazy_functional():
 
 
 @pytest.mark.django_db
-def test_tag_lazy_analytical():
-    produced_tag = tag_lazy_analytical()
+def test_tag_lazy_preferences():
+    produced_tag = tag_lazy_preferences()
     tag = Tag(
-        name="analytical lazy",
-        tag_type="analytical",
-        content='<script>console.log("analytical lazy")</script>',
+        name="preferences lazy",
+        tag_type="preferences",
+        content='<script>console.log("preferences lazy")</script>',
     )
 
     assert produced_tag.name == tag.name
@@ -107,12 +106,12 @@ def test_tag_lazy_analytical():
 
 
 @pytest.mark.django_db
-def test_tag_lazy_traceable():
-    produced_tag = tag_lazy_traceable()
+def test_tag_lazy_marketing():
+    produced_tag = tag_lazy_marketing()
     tag = Tag(
-        name="traceable lazy",
-        tag_type="traceable",
-        content='<script>console.log("traceable lazy")</script>',
+        name="marketing lazy",
+        tag_type="marketing",
+        content='<script>console.log("marketing lazy")</script>',
     )
 
     assert produced_tag.name == tag.name

@@ -13,9 +13,10 @@ SETTING_INITIAL = "initial"
 SETTING_DELAYED = "delayed"
 
 DEFAULT_SETTINGS = {
-    "functional": (_("Functional"), SETTING_REQUIRED),
-    "analytical": (_("Analytical"), SETTING_INITIAL),
-    "traceable": (_("Traceable"), SETTING_DEFAULT),
+    "necessary": (_("Necessary"), SETTING_REQUIRED),
+    "preferences": (_("Preferences"), SETTING_INITIAL),
+    "statistics": (_("Statistics"), SETTING_INITIAL),
+    "marketing": (_("Marketing"), SETTING_DEFAULT),
 }
 
 

@@ -8,14 +8,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
 from tests.factories.tag import (
-    tag_lazy_delayed,
-    tag_lazy_traceable,
-    tag_instant_delayed,
-    tag_lazy_analytical,
-    tag_lazy_functional,
-    tag_instant_traceable,
-    tag_instant_analytical,
-    tag_instant_functional,
+    tag_lazy_marketing,
+    tag_lazy_necessary,
+    tag_lazy_statistics,
+    tag_lazy_preferences,
+    tag_instant_marketing,
+    tag_instant_necessary,
+    tag_instant_statistics,
+    tag_instant_preferences,
 )
 from wagtail_tag_manager.utils import parse_consent_state
 
@@ -49,15 +49,15 @@ def get_consent_state(driver, iterations=5):
 
 
 @pytest.mark.django_db
-def test_default_functionality(driver, site, live_server):
-    tag_instant_analytical()
-    tag_instant_delayed()
-    tag_instant_functional()
-    tag_instant_traceable()
-    tag_lazy_analytical()
-    tag_lazy_delayed()
-    tag_lazy_functional()
-    tag_lazy_traceable()
+def test_default_necessaryity(driver, site, live_server):
+    tag_instant_preferences()
+    tag_instant_statistics()
+    tag_instant_necessary()
+    tag_instant_marketing()
+    tag_lazy_preferences()
+    tag_lazy_statistics()
+    tag_lazy_necessary()
+    tag_lazy_marketing()
 
     driver.get(live_server.url)
     try:
@@ -69,10 +69,10 @@ def test_default_functionality(driver, site, live_server):
 
     get_messages_for_log(driver, 4)
     consent_state = get_consent_state(driver)
-    assert consent_state.get("functional") == "true"
-    assert consent_state.get("analytical") == "unset"
-    assert consent_state.get("delayed") == "true"
-    assert consent_state.get("traceable") == "false"
+    assert consent_state.get("necessary") == "true"
+    assert consent_state.get("preferences") == "unset"
+    assert consent_state.get("statistics") == "true"
+    assert consent_state.get("marketing") == "false"
 
     driver.refresh()
     try:
@@ -84,12 +84,12 @@ def test_default_functionality(driver, site, live_server):
 
     get_messages_for_log(driver, 6)
     consent_state = get_consent_state(driver)
-    assert consent_state.get("functional") == "true"
-    assert consent_state.get("analytical") == "unset"
-    assert consent_state.get("delayed") == "true"
-    assert consent_state.get("traceable") == "false"
+    assert consent_state.get("necessary") == "true"
+    assert consent_state.get("preferences") == "unset"
+    assert consent_state.get("statistics") == "true"
+    assert consent_state.get("marketing") == "false"
 
-    checkbox = driver.find_element_by_id("id_traceable")
+    checkbox = driver.find_element_by_id("id_marketing")
     checkbox.click()
     submit = driver.find_element_by_css_selector("input[type=submit]")
     submit.click()
@@ -102,22 +102,22 @@ def test_default_functionality(driver, site, live_server):
 
     get_messages_for_log(driver, 8)
     consent_state = get_consent_state(driver)
-    assert consent_state.get("functional") == "true"
-    assert consent_state.get("analytical") == "true"
-    assert consent_state.get("delayed") == "true"
-    assert consent_state.get("traceable") == "true"
+    assert consent_state.get("necessary") == "true"
+    assert consent_state.get("preferences") == "true"
+    assert consent_state.get("statistics") == "true"
+    assert consent_state.get("marketing") == "true"
 
 
 @pytest.mark.django_db
-def test_functional_only(driver, site, live_server):
-    tag_instant_analytical()
-    tag_instant_delayed()
-    tag_instant_functional()
-    tag_instant_traceable()
-    tag_lazy_analytical()
-    tag_lazy_delayed()
-    tag_lazy_functional()
-    tag_lazy_traceable()
+def test_necessary_only(driver, site, live_server):
+    tag_instant_preferences()
+    tag_instant_statistics()
+    tag_instant_necessary()
+    tag_instant_marketing()
+    tag_lazy_preferences()
+    tag_lazy_statistics()
+    tag_lazy_necessary()
+    tag_lazy_marketing()
 
     driver.get(live_server.url)
     try:
@@ -136,14 +136,16 @@ def test_functional_only(driver, site, live_server):
     except TimeoutException:
         pass
 
-    check_analytical = driver.find_element_by_css_selector(".container #id_analytical")
-    check_analytical.click()
+    check_preferences = driver.find_element_by_css_selector(
+        ".container #id_preferences"
+    )
+    check_preferences.click()
 
-    check_delayed = driver.find_element_by_css_selector(".container #id_delayed")
-    check_delayed.click()
+    check_statistics = driver.find_element_by_css_selector(".container #id_statistics")
+    check_statistics.click()
 
-    # check_traceable = driver.find_element_by_css_selector(".container #id_traceable")
-    # check_traceable.click()
+    # check_marketing = driver.find_element_by_css_selector(".container #id_marketing")
+    # check_marketing.click()
 
     submit = driver.find_element_by_css_selector(".container input[type=submit]")
     submit.click()
@@ -155,22 +157,22 @@ def test_functional_only(driver, site, live_server):
         pass
 
     consent_state = get_consent_state(driver)
-    assert consent_state.get("functional") == "true"
-    assert consent_state.get("analytical") == "false"
-    assert consent_state.get("delayed") == "false"
-    assert consent_state.get("traceable") == "false"
+    assert consent_state.get("necessary") == "true"
+    assert consent_state.get("preferences") == "false"
+    assert consent_state.get("statistics") == "false"
+    assert consent_state.get("marketing") == "false"
 
 
 @pytest.mark.django_db
-def test_analytical_only(driver, site, live_server):
-    tag_instant_analytical()
-    tag_instant_delayed()
-    tag_instant_functional()
-    tag_instant_traceable()
-    tag_lazy_analytical()
-    tag_lazy_delayed()
-    tag_lazy_functional()
-    tag_lazy_traceable()
+def test_preferences_only(driver, site, live_server):
+    tag_instant_preferences()
+    tag_instant_statistics()
+    tag_instant_necessary()
+    tag_instant_marketing()
+    tag_lazy_preferences()
+    tag_lazy_statistics()
+    tag_lazy_necessary()
+    tag_lazy_marketing()
 
     driver.get(live_server.url)
     try:
@@ -189,14 +191,14 @@ def test_analytical_only(driver, site, live_server):
     except TimeoutException:
         pass
 
-    # check_analytical = driver.find_element_by_css_selector(".container #id_analytical")
-    # check_analytical.click()
+    # check_preferences = driver.find_element_by_css_selector(".container #id_preferences")
+    # check_preferences.click()
 
-    check_delayed = driver.find_element_by_css_selector(".container #id_delayed")
-    check_delayed.click()
+    check_statistics = driver.find_element_by_css_selector(".container #id_statistics")
+    check_statistics.click()
 
-    # check_traceable = driver.find_element_by_css_selector(".container #id_traceable")
-    # check_traceable.click()
+    # check_marketing = driver.find_element_by_css_selector(".container #id_marketing")
+    # check_marketing.click()
 
     submit = driver.find_element_by_css_selector(".container input[type=submit]")
     submit.click()
@@ -208,22 +210,22 @@ def test_analytical_only(driver, site, live_server):
         pass
 
     consent_state = get_consent_state(driver)
-    assert consent_state.get("functional") == "true"
-    assert consent_state.get("analytical") == "true"
-    assert consent_state.get("delayed") == "false"
-    assert consent_state.get("traceable") == "false"
+    assert consent_state.get("necessary") == "true"
+    assert consent_state.get("preferences") == "true"
+    assert consent_state.get("statistics") == "false"
+    assert consent_state.get("marketing") == "false"
 
 
 @pytest.mark.django_db
-def test_delayed_only(driver, site, live_server):
-    tag_instant_analytical()
-    tag_instant_delayed()
-    tag_instant_functional()
-    tag_instant_traceable()
-    tag_lazy_analytical()
-    tag_lazy_delayed()
-    tag_lazy_functional()
-    tag_lazy_traceable()
+def test_statistics_only(driver, site, live_server):
+    tag_instant_preferences()
+    tag_instant_statistics()
+    tag_instant_necessary()
+    tag_instant_marketing()
+    tag_lazy_preferences()
+    tag_lazy_statistics()
+    tag_lazy_necessary()
+    tag_lazy_marketing()
 
     driver.get(live_server.url)
     try:
@@ -242,14 +244,16 @@ def test_delayed_only(driver, site, live_server):
     except TimeoutException:
         pass
 
-    check_analytical = driver.find_element_by_css_selector(".container #id_analytical")
-    check_analytical.click()
+    check_preferences = driver.find_element_by_css_selector(
+        ".container #id_preferences"
+    )
+    check_preferences.click()
 
-    # check_delayed = driver.find_element_by_css_selector(".container #id_delayed")
-    # check_delayed.click()
+    # check_statistics = driver.find_element_by_css_selector(".container #id_statistics")
+    # check_statistics.click()
 
-    # check_traceable = driver.find_element_by_css_selector(".container #id_traceable")
-    # check_traceable.click()
+    # check_marketing = driver.find_element_by_css_selector(".container #id_marketing")
+    # check_marketing.click()
 
     submit = driver.find_element_by_css_selector(".container input[type=submit]")
     submit.click()
@@ -261,22 +265,22 @@ def test_delayed_only(driver, site, live_server):
         pass
 
     consent_state = get_consent_state(driver)
-    assert consent_state.get("functional") == "true"
-    assert consent_state.get("analytical") == "false"
-    assert consent_state.get("delayed") == "true"
-    assert consent_state.get("traceable") == "false"
+    assert consent_state.get("necessary") == "true"
+    assert consent_state.get("preferences") == "false"
+    assert consent_state.get("statistics") == "true"
+    assert consent_state.get("marketing") == "false"
 
 
 @pytest.mark.django_db
-def test_traceable_only(driver, site, live_server):
-    tag_instant_analytical()
-    tag_instant_delayed()
-    tag_instant_functional()
-    tag_instant_traceable()
-    tag_lazy_analytical()
-    tag_lazy_delayed()
-    tag_lazy_functional()
-    tag_lazy_traceable()
+def test_marketing_only(driver, site, live_server):
+    tag_instant_preferences()
+    tag_instant_statistics()
+    tag_instant_necessary()
+    tag_instant_marketing()
+    tag_lazy_preferences()
+    tag_lazy_statistics()
+    tag_lazy_necessary()
+    tag_lazy_marketing()
 
     driver.get(live_server.url)
     try:
@@ -295,14 +299,16 @@ def test_traceable_only(driver, site, live_server):
     except TimeoutException:
         pass
 
-    check_analytical = driver.find_element_by_css_selector(".container #id_analytical")
-    check_analytical.click()
+    check_preferences = driver.find_element_by_css_selector(
+        ".container #id_preferences"
+    )
+    check_preferences.click()
 
-    check_delayed = driver.find_element_by_css_selector(".container #id_delayed")
-    check_delayed.click()
+    check_statistics = driver.find_element_by_css_selector(".container #id_statistics")
+    check_statistics.click()
 
-    check_traceable = driver.find_element_by_css_selector(".container #id_traceable")
-    check_traceable.click()
+    check_marketing = driver.find_element_by_css_selector(".container #id_marketing")
+    check_marketing.click()
 
     submit = driver.find_element_by_css_selector(".container input[type=submit]")
     submit.click()
@@ -314,7 +320,7 @@ def test_traceable_only(driver, site, live_server):
         pass
 
     consent_state = get_consent_state(driver)
-    assert consent_state.get("functional") == "true"
-    assert consent_state.get("analytical") == "false"
-    assert consent_state.get("delayed") == "false"
-    assert consent_state.get("traceable") == "true"
+    assert consent_state.get("necessary") == "true"
+    assert consent_state.get("preferences") == "false"
+    assert consent_state.get("statistics") == "false"
+    assert consent_state.get("marketing") == "true"

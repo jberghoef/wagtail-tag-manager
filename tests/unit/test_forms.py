@@ -8,21 +8,21 @@ from wagtail_tag_manager.strategy import TagStrategy
 def test_consent_form():
     form = ConsentForm()
 
-    assert "functional" in form.fields
-    assert "analytical" in form.fields
-    assert "traceable" in form.fields
+    assert "necessary" in form.fields
+    assert "preferences" in form.fields
+    assert "marketing" in form.fields
 
-    assert form.fields["functional"].required is True
-    assert form.fields["functional"].disabled is True
-    assert form.fields["functional"].initial is True
+    assert form.fields["necessary"].required is True
+    assert form.fields["necessary"].disabled is True
+    assert form.fields["necessary"].initial is True
 
-    assert form.fields["analytical"].required is False
-    assert form.fields["analytical"].disabled is False
-    assert form.fields["analytical"].initial is True
+    assert form.fields["preferences"].required is False
+    assert form.fields["preferences"].disabled is False
+    assert form.fields["preferences"].initial is True
 
-    assert form.fields["traceable"].required is False
-    assert form.fields["traceable"].disabled is False
-    assert form.fields["traceable"].initial is False
+    assert form.fields["marketing"].required is False
+    assert form.fields["marketing"].disabled is False
+    assert form.fields["marketing"].initial is False
 
 
 @pytest.mark.django_db
@@ -30,16 +30,16 @@ def test_consent_form_initial(rf, site):
     request = rf.get(site.root_page.url)
     request.COOKIES = {
         **request.COOKIES,
-        "wtm": "functional:true|analytical:false|traceable:true",
+        "wtm": "necessary:true|preferences:false|marketing:true",
     }
 
     cookie_state = TagStrategy(request).cookie_state
     form = ConsentForm(initial=cookie_state)
 
-    assert "functional" in form.fields
-    assert "analytical" in form.fields
-    assert "traceable" in form.fields
+    assert "necessary" in form.fields
+    assert "preferences" in form.fields
+    assert "marketing" in form.fields
 
-    assert form.fields["functional"].initial is True
-    assert form.fields["analytical"].initial is False
-    assert form.fields["traceable"].initial is True
+    assert form.fields["necessary"].initial is True
+    assert form.fields["preferences"].initial is False
+    assert form.fields["marketing"].initial is True
