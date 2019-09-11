@@ -1,7 +1,6 @@
 import uuid
 import typing
 from datetime import datetime, timedelta
-from http.cookies import SimpleCookie
 
 import django
 from django.conf import settings
