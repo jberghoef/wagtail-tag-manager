@@ -83,10 +83,10 @@ to inject tags into a page before the response is send to a client.
 
 This package attempts to ease the implementation of tags by the new ePrivacy
 rules as defined by the European Union. I urge you to read about these new
-rules and ensure you are properly configuring your tags for both the analytical
-and traceable variants. This package is free and the author can not be held
-responsible for the correctness of your implementation, or the assumptions made
-in this package to comply with the new ePrivacy regulation.
+rules and ensure you are properly configuring your tags. This package is free
+and the author can not be held responsible for the correctness of your
+implementation, or the assumptions made in this package to comply with the new
+ePrivacy regulation.
 
 Read more about the [ePrivacy Regulation](https://ec.europa.eu/digital-single-market/en/proposal-eprivacy-regulation).
 
@@ -260,9 +260,9 @@ used as a way to load html, css or javascript files.
 
 <body>
     ...
-    {% wtm_include "functional" "css/style.css" %}
-    {% wtm_include "functional" "js/style.js" %}
-    {% wtm_include "functional" "content.html" %}
+    {% wtm_include "necessary" "css/style.css" %}
+    {% wtm_include "necessary" "js/style.js" %}
+    {% wtm_include "necessary" "content.html" %}
     ...
 </body>
 ```
@@ -274,7 +274,7 @@ Alternatively, you can use it as a block:
 
 <body>
     ...
-    {% wtm_include "analytical" %}
+    {% wtm_include "statistics" %}
         <script>
             console.log("Included conditionally");
         </script>
@@ -310,11 +310,13 @@ To enable the context processors, add the following to your settings:
 You can now use the following value in your templates:
 
 ```html+django
-{{ wtm_consent_state.functional }}
+{{ wtm_consent_state.necessary }}
 
-{{ wtm_consent_state.analytical }}
+{{ wtm_consent_state.preferences }}
 
-{{ wtm_consent_state.traceable }}
+{{ wtm_consent_state.statistics }}
+
+{{ wtm_consent_state.marketing }}
 ```
 
 These will return a boolean indicating wether or not tags specific to the
@@ -327,9 +329,10 @@ corresponding state should load.
 ```python
 WTM_TAG_TYPES = {
     # key, verbose name, setting
-    "functional": (_("Functional"), "required"),
-    "analytical": (_("Analytical"), "initial"),
-    "traceable": (_("Traceable"), ""),
+    "necessary": (_("Necessary"), "required"),
+    "preferences": (_("Preferences"), "initial"),
+    "statistics": (_("Statistics"), "initial"),
+    "marketing": (_("Marketing"), ""),
 }
 ```
 
@@ -474,7 +477,7 @@ Additionally, by selecting the "Include children" field, all descending pages
 of the configured page will also load the chosen tags.
 
 Note that the consent state is being applied to these tags. If the selected tag
-is marked as, for example, "traceable", the end-user still must allow this type
+is marked as, for example, "marketing", the end-user still must allow this type
 of tags before is is being injected.
 
 ```python
@@ -509,59 +512,70 @@ Check out the console in your browser to see them in action.
 
 ## Concept
 
-| State                                                        | Functional | Analytical | Continuous | Traceable |
-|--------------------------------------------------------------|------------|------------|------------|-----------|
-| No cookies accepted.                                         | yes        | no         | no         | no        |
-| Cookies implicitly accepted through browser settings.        | yes        | yes        | yes¹       | no        |
-| Cookies explicitly accepted, noting tracking functionality.² | yes        | yes        | yes¹       | yes       |
+WTM comes with the following tag types pre-configured:
+
+| Name        | Setting  |
+|-------------|----------|
+| Necessary   | Required |
+| Preferences | Initial  |
+| Statistics  | Initial  |
+| Marketing   | Default  |
+
+These types correspond to the segmentation made by the EU [here](https://gdpr.eu/cookies/).
+
+| State                                                        | Required | Initial | Delayed | Default |
+|--------------------------------------------------------------|----------|---------|---------|---------|
+| No cookies accepted.                                         | yes      | no      | no      | no      |
+| Cookies implicitly accepted through browser settings.        | yes      | yes     | yes¹    | no      |
+| Cookies explicitly accepted, noting tracking functionality.² | yes      | yes     | yes¹    | yes     |
 
 *¹ From the second page load onward.*
 
 *² According to the ePrivacy regulation, mentioning that you are using tracking functionality is mandatory.*
 
-Note that in the case of analytical cookies or local storage, you are obliged
+Note that in the case of Statistics cookies or local storage, you are obliged
 to still show a notification at least once, noting that you are using cookies
 for analytical and performance measurement purposes.
 
-When implementing tracking cookies, the user has to explicitly give permission
+When implementing Marketing cookies, the user has to explicitly give permission
 for you to enable them for their session. When asking for permission, you must
 explicitly state the tracking functionality of the script you are using.
 
 To ease the implementation by this concept, Wagtail Tag Manager allows you to
-define a tag as functional, analytical of traceable. When properly configured,
-it'll take care of loading the correct tag at the correct time, taking in
-account the following scenario's:
+define a tag as "Necessary", "Preferences", "Statistics" or "Marketing".
+When properly configured, it'll take care of loading the correct tag at
+the correct time, taking in account the following scenario's:
 
 1. The user has not accepted cookies.
 
-    |         | Functional | Analytical | Continuous | Traceable |
-    |---------|------------|------------|------------|-----------|
-    | Instant | yes        | no         | no         | no        |
-    | Lazy    | yes        | no         | no         | no        |
+    |         | Required | Initial | Delayed | Default |
+    |---------|----------|---------|---------|---------|
+    | Instant | yes      | no      | no      | no      |
+    | Lazy    | yes      | no      | no      | no      |
 
 2. The user has accepted cookies through browser settings.
 
-    |         | Functional | Analytical | Continuous | Traceable |
-    |---------|------------|------------|------------|-----------|
-    | Instant | yes        | yes¹       | yes²       | no        |
-    | Lazy    | yes        | yes        | yes²       | no        |
+    |         | Required  | Initial | Delayed | Default |
+    |---------|-----------|---------|---------|---------|
+    | Instant | yes       | yes¹    | yes²    | no      |
+    | Lazy    | yes       | yes     | yes²    | no      |
 
     *¹ Will be loaded lazily.*
 
     *² From the second page load onward.*
 
-    As the acceptance of analytical tags can only be verified client side, we'll
-    first load all the analytical tags lazy (whether they are instant or not).
+    As the acceptance of "Initial" tags can only be verified client side, we'll
+    first load all the "Initial" tags lazy (whether they are instant or not).
 
     Please note that we still have to show a message stating that we are using
-    analytical tags.
+    tags with analytical purposes.
 
 3. The user has explicitly accepted cookies for your site.
 
-    |         | Functional | Analytical | Continuous | Traceable |
-    |---------|------------|------------|------------|-----------|
-    | Instant | yes        | yes        | yes        | yes       |
-    | Lazy    | yes        | yes        | yes        | yes       |
+    |         | Required | Initial | Delayed | Default |
+    |---------|----------|---------|---------|---------|
+    | Instant | yes      | yes     | yes     | yes     |
+    | Lazy    | yes      | yes     | yes     | yes     |
 
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager?ref=badge_large)

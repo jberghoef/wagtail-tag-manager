@@ -31,7 +31,7 @@
         <link rel="shortcut icon" href="{% static 'wagtailadmin/images/favicon.ico' %}" />
 
         {% block extra_css %}
-            {% wtm_include "functional" "css/dummy.css" %}
+            {% wtm_include "necessary" "css/dummy.css" %}
         {% endblock %}
         {% wtm_instant_tags 'bottom_head' %}
     </head>
@@ -46,30 +46,30 @@
 
             <hr />
 
-            {% wtm_include "functional" %}
-                <p>Functional tags are being loaded.</p>
+            {% wtm_include "necessary" %}
+                <p>Necessary tags are being loaded.</p>
             {% wtm_endinclude %}
 
-            {% wtm_include "analytical" %}
-                <p>Analytical tags are being loaded.</p>
+            {% wtm_include "preferences" %}
+                <p>Preference tags are being loaded.</p>
             {% wtm_endinclude %}
 
-            {% wtm_include "delayed" %}
-                <p>Continuous tags are being loaded.</p>
+            {% wtm_include "statistics" %}
+                <p>Statistics tags are being loaded.</p>
             {% wtm_endinclude %}
 
-            {% wtm_include "traceable" %}
-                <p>Traceable tags are being loaded.</p>
+            {% wtm_include "marketing" %}
+                <p>Marketing tags are being loaded.</p>
             {% wtm_endinclude %}
         </div>
 
-        {% wtm_include "analytical" "dummy.html" %}
+        {% wtm_include "statistics" "dummy.html" %}
 
         {# Global javascript #}
         <script type="text/javascript" src="{% static 'js/sandbox.js' %}"></script>
 
         {% block extra_js %}
-            {% wtm_include "traceable" "js/dummy.js" %}
+            {% wtm_include "marketing" "js/dummy.js" %}
         {% endblock %}
 
         {% wtm_instant_tags 'bottom_body' %}

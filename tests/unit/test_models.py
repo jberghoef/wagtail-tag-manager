@@ -1,10 +1,10 @@
 import pytest
 
 from tests.factories.tag import (
-    tag_lazy_traceable,
-    tag_lazy_analytical,
-    tag_lazy_functional,
-    tag_instant_functional,
+    tag_lazy_marketing,
+    tag_lazy_necessary,
+    tag_lazy_preferences,
+    tag_instant_necessary,
 )
 from tests.factories.trigger import TriggerFactory, TriggerConditionFactory
 from wagtail_tag_manager.models import (
@@ -22,51 +22,51 @@ from wagtail_tag_manager.models import (
 def test_tag_type_settings():
     config = TagTypeSettings().all()
 
-    assert "functional" in config
-    assert "analytical" in config
-    assert "delayed" in config
-    assert "traceable" in config
+    assert "necessary" in config
+    assert "preferences" in config
+    assert "statistics" in config
+    assert "marketing" in config
 
     config = TagTypeSettings().include("required").result()
 
-    assert "functional" in config
-    assert "analytical" not in config
-    assert "delayed" not in config
-    assert "traceable" not in config
+    assert "necessary" in config
+    assert "preferences" not in config
+    assert "statistics" not in config
+    assert "marketing" not in config
 
     config = TagTypeSettings().include("initial").result()
 
-    assert "functional" not in config
-    assert "analytical" in config
-    assert "delayed" not in config
-    assert "traceable" not in config
+    assert "necessary" not in config
+    assert "preferences" in config
+    assert "statistics" not in config
+    assert "marketing" not in config
 
     config = TagTypeSettings().exclude("initial").result()
 
-    assert "functional" in config
-    assert "analytical" not in config
-    assert "delayed" in config
-    assert "traceable" in config
+    assert "necessary" in config
+    assert "preferences" not in config
+    assert "statistics" in config
+    assert "marketing" in config
 
     config = TagTypeSettings().exclude("required").exclude("initial").result()
 
-    assert "functional" not in config
-    assert "analytical" not in config
-    assert "delayed" in config
-    assert "traceable" in config
+    assert "necessary" not in config
+    assert "preferences" not in config
+    assert "statistics" in config
+    assert "marketing" in config
 
     config = TagTypeSettings().exclude("").result()
 
-    assert "functional" in config
-    assert "analytical" in config
-    assert "delayed" in config
-    assert "traceable" not in config
+    assert "necessary" in config
+    assert "preferences" in config
+    assert "statistics" in config
+    assert "marketing" not in config
 
 
 @pytest.mark.django_db
 def test_tag_queries():
-    tag_instant_functional()
-    tag_lazy_functional()
+    tag_instant_necessary()
+    tag_lazy_necessary()
 
     tags = Tag.objects.all()
     assert len(tags) == 2
@@ -80,17 +80,17 @@ def test_tag_queries():
 
 @pytest.mark.django_db
 def test_tag_create():
-    expected = '<script>\n console.log("functional instant")\n</script>'
+    expected = '<script>\n console.log("necessary instant")\n</script>'
 
     tag = Tag.objects.create(
-        name="functional instant 1",
-        content='<script>console.log("functional instant")</script>',
+        name="necessary instant 1",
+        content='<script>console.log("necessary instant")</script>',
     )
     assert tag.content == expected
     assert tag in Tag.objects.all()
 
     tag = Tag.objects.create(
-        name="functional instant 2", content='console.log("functional instant")'
+        name="necessary instant 2", content='console.log("necessary instant")'
     )
     assert tag.content == expected
     assert tag in Tag.objects.all()
@@ -98,7 +98,7 @@ def test_tag_create():
     expected = "<style>\n body { background-color: red; }\n</style>"
 
     tag = Tag.objects.create(
-        name="functional instant 3",
+        name="necessary instant 3",
         content="<style>body { background-color: red; }</style>",
     )
     assert tag.content == expected
@@ -150,17 +150,17 @@ def test_trigger_create():
 
     assert trigger_condition in trigger.conditions.all()
 
-    tag_functional = tag_lazy_functional()
-    tag_analytical = tag_lazy_analytical()
-    tag_traceable = tag_lazy_traceable()
+    tag_necessary = tag_lazy_necessary()
+    tag_preferences = tag_lazy_preferences()
+    tag_marketing = tag_lazy_marketing()
 
-    trigger.tags.add(tag_functional)
-    trigger.tags.add(tag_analytical)
-    trigger.tags.add(tag_traceable)
+    trigger.tags.add(tag_necessary)
+    trigger.tags.add(tag_preferences)
+    trigger.tags.add(tag_marketing)
 
-    assert tag_functional in trigger.tags.all().sorted()
-    assert tag_analytical in trigger.tags.all()
-    assert tag_traceable in trigger.tags.all()
+    assert tag_necessary in trigger.tags.all().sorted()
+    assert tag_preferences in trigger.tags.all()
+    assert tag_marketing in trigger.tags.all()
 
 
 @pytest.mark.django_db
@@ -176,8 +176,8 @@ def test_trigger_condition_create():
 @pytest.mark.django_db
 def test_cookie_declaration_create():
     cookie_declaration = CookieDeclaration.objects.create(
-        cookie_type="functional",
-        name="Functional cookie",
+        cookie_type="necessary",
+        name="Necessary cookie",
         domain="localhost",
         purpose="Lorem ipsum",
     )

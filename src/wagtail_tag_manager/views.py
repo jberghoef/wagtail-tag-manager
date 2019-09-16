@@ -52,8 +52,10 @@ class ManageView(SuccessURLAllowedHostsMixin, TemplateView):
         form = ConsentForm(request.POST)
         if form.is_valid():
             set_consent(
+                request,
                 response,
                 {key: str(value).lower() for key, value in form.cleaned_data.items()},
+                explicit=True,
             )
 
         return response

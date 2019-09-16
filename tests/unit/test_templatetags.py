@@ -5,9 +5,9 @@ from django.template.context import make_context
 from django.template.exceptions import TemplateDoesNotExist
 
 from tests.factories.tag import (
-    tag_instant_traceable,
-    tag_instant_analytical,
-    tag_instant_functional,
+    tag_instant_marketing,
+    tag_instant_necessary,
+    tag_instant_preferences,
 )
 from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.templatetags.wtm_tags import (
@@ -29,10 +29,10 @@ else:
 
 
 @pytest.mark.django_db
-def test_wtm_include_functional(rf, site):
+def test_wtm_include_necessary(rf, site):
     expected_result = '<link href="/static/test.css" rel="stylesheet" type="text/css"/>'
 
-    token = Token(token_type=TOKEN_TYPE, contents='wtm_include "functional" "test.css"')
+    token = Token(token_type=TOKEN_TYPE, contents='wtm_include "necessary" "test.css"')
     parser = Parser(tokens=[token])
     node = wtm_include(parser, token)
 
@@ -41,22 +41,22 @@ def test_wtm_include_functional(rf, site):
 
     assert result == expected_result
 
-    request.COOKIES = {"wtm": "functional:false"}
+    request.COOKIES = {"wtm": "necessary:false"}
     result = node.render(context=make_context({"request": request}))
 
     assert result == expected_result
 
-    request.COOKIES = {"wtm": "functional:true"}
+    request.COOKIES = {"wtm": "necessary:true"}
     result = node.render(context=make_context({"request": request}))
 
     assert result == expected_result
 
 
 @pytest.mark.django_db
-def test_wtm_include_analytical(rf, site):
+def test_wtm_include_preferences(rf, site):
     expected_result = '<script src="/static/test.js" type="text/javascript"></script>'
 
-    token = Token(token_type=TOKEN_TYPE, contents='wtm_include "analytical" "test.js"')
+    token = Token(token_type=TOKEN_TYPE, contents='wtm_include "preferences" "test.js"')
     parser = Parser(tokens=[token])
     node = wtm_include(parser, token)
 
@@ -65,20 +65,20 @@ def test_wtm_include_analytical(rf, site):
 
     assert result == expected_result
 
-    request.COOKIES = {"wtm": "analytical:false"}
+    request.COOKIES = {"wtm": "preferences:false"}
     result = node.render(context=make_context({"request": request}))
 
     assert result == ""
 
-    request.COOKIES = {"wtm": "analytical:true"}
+    request.COOKIES = {"wtm": "preferences:true"}
     result = node.render(context=make_context({"request": request}))
 
     assert result == expected_result
 
 
 @pytest.mark.django_db
-def test_wtm_include_traceable(rf, site):
-    token = Token(token_type=TOKEN_TYPE, contents='wtm_include "traceable" "test.html"')
+def test_wtm_include_marketing(rf, site):
+    token = Token(token_type=TOKEN_TYPE, contents='wtm_include "marketing" "test.html"')
     parser = Parser(tokens=[token])
     node = wtm_include(parser, token)
 
@@ -86,18 +86,18 @@ def test_wtm_include_traceable(rf, site):
         request = rf.get(site.root_page.url)
         node.render(context=make_context({"request": request}))
 
-        request.COOKIES = {"wtm": "traceable:false"}
+        request.COOKIES = {"wtm": "marketing:false"}
         node.render(context=make_context({"request": request}))
 
-        request.COOKIES = {"wtm": "traceable:true"}
+        request.COOKIES = {"wtm": "marketing:true"}
         node.render(context=make_context({"request": request}))
 
 
 @pytest.mark.django_db
 def test_wtm_instant_tags(rf, site):
-    tag_instant_functional(tag_location=Tag.TOP_HEAD)
-    tag_instant_analytical(tag_location=Tag.BOTTOM_HEAD)
-    tag_instant_traceable(tag_location=Tag.TOP_BODY)
+    tag_instant_necessary(tag_location=Tag.TOP_HEAD)
+    tag_instant_preferences(tag_location=Tag.BOTTOM_HEAD)
+    tag_instant_marketing(tag_location=Tag.TOP_BODY)
 
     request = rf.get(site.root_page.url)
 
@@ -105,12 +105,12 @@ def test_wtm_instant_tags(rf, site):
     assert "tags" in context
     assert len(context.get("tags")) == 1
 
-    request.COOKIES = {"wtm": "functional:true|analytical:true"}
+    request.COOKIES = {"wtm": "necessary:true|preferences:true"}
     context = wtm_instant_tags({"request": request})
     assert "tags" in context
     assert len(context.get("tags")) == 2
 
-    request.COOKIES = {"wtm": "functional:true|analytical:true|traceable:true"}
+    request.COOKIES = {"wtm": "necessary:true|preferences:true|marketing:true"}
     context = wtm_instant_tags({"request": request})
     assert "tags" in context
     assert len(context.get("tags")) == 3
@@ -118,17 +118,17 @@ def test_wtm_instant_tags(rf, site):
     context = wtm_instant_tags({"request": request}, location="top_head")
     assert "tags" in context
     assert len(context.get("tags")) == 1
-    assert "functional instant" in context.get("tags")[0]
+    assert "necessary instant" in context.get("tags")[0]
 
     context = wtm_instant_tags({"request": request}, location="bottom_head")
     assert "tags" in context
     assert len(context.get("tags")) == 1
-    assert "analytical instant" in context.get("tags")[0]
+    assert "preferences instant" in context.get("tags")[0]
 
     context = wtm_instant_tags({"request": request}, location="top_body")
     assert "tags" in context
     assert len(context.get("tags")) == 1
-    assert "traceable instant" in context.get("tags")[0]
+    assert "marketing instant" in context.get("tags")[0]
 
     with pytest.raises(KeyError):
         wtm_instant_tags({"request": request}, location="middle_body")

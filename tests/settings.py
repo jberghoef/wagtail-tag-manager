@@ -93,10 +93,10 @@ WAGTAIL_SITE_NAME = "wagtail-tag-manager test"
 
 WTM_TAG_TYPES = {
     # key, verbose name, setting
-    "functional": (_("Functional"), "required"),
-    "analytical": (_("Analytical"), "initial"),
-    "delayed": (_("Delayed"), "delayed"),
-    "traceable": (_("Traceable"), ""),
+    "necessary": (_("Necessary"), "required"),
+    "preferences": (_("Preferences"), "initial"),
+    "statistics": (_("Statistics"), "delayed"),
+    "marketing": (_("Marketing"), ""),
 }
 
 WTM_SUMMARY_PANELS = True

@@ -5,13 +5,13 @@ import pytest
 
 from tests.factories.tag import (
     TagFactory,
-    tag_lazy_delayed,
-    tag_lazy_traceable,
-    tag_instant_delayed,
-    tag_lazy_analytical,
-    tag_lazy_functional,
-    tag_instant_traceable,
-    tag_instant_analytical,
+    tag_lazy_marketing,
+    tag_lazy_necessary,
+    tag_lazy_statistics,
+    tag_lazy_preferences,
+    tag_instant_marketing,
+    tag_instant_statistics,
+    tag_instant_preferences,
 )
 from tests.factories.page import TaggableContentPageFactory
 from tests.factories.trigger import TriggerFactory
@@ -48,15 +48,15 @@ def test_lazy_cookies(client, site):
 
     assert "wtm" in response.cookies
     consent_state = get_consent(response)
-    assert consent_state.get("functional", "") == "true"
-    assert consent_state.get("analytical", "") == "unset"
-    assert consent_state.get("delayed", "") == "true"
-    assert consent_state.get("traceable", "") == "false"
+    assert consent_state.get("necessary", "") == "true"
+    assert consent_state.get("preferences", "") == "unset"
+    assert consent_state.get("statistics", "") == "true"
+    assert consent_state.get("marketing", "") == "false"
 
 
 @pytest.mark.django_db
 def test_required_lazy_cookies(client, site):
-    tag_lazy_functional()
+    tag_lazy_necessary()
 
     response = client.post(
         "/wtm/lazy/", json.dumps({}), content_type="application/json"
@@ -69,15 +69,15 @@ def test_required_lazy_cookies(client, site):
 
     assert "wtm" in response.cookies
     consent_state = get_consent(response)
-    assert consent_state.get("functional", "") == "true"
+    assert consent_state.get("necessary", "") == "true"
 
 
 @pytest.mark.django_db
 def test_initial_lazy_cookies(client, site):
-    tag_instant_analytical()
-    tag_lazy_analytical()
+    tag_instant_preferences()
+    tag_lazy_preferences()
 
-    client.cookies = SimpleCookie({"wtm": "analytical:unset"})
+    client.cookies = SimpleCookie({"wtm": "preferences:unset"})
 
     response = client.post(
         "/wtm/lazy/", json.dumps({}), content_type="application/json"
@@ -90,9 +90,9 @@ def test_initial_lazy_cookies(client, site):
 
 
 @pytest.mark.django_db
-def test_delayed_lazy_cookies(client, site):
-    tag_instant_delayed()
-    tag_lazy_delayed()
+def test_statistics_lazy_cookies(client, site):
+    tag_instant_statistics()
+    tag_lazy_statistics()
 
     client.cookies = SimpleCookie({"wtm": ""})
 
@@ -108,13 +108,13 @@ def test_delayed_lazy_cookies(client, site):
     assert "wtm" in response.cookies
     consent_state = get_consent(response)
 
-    assert consent_state.get("delayed", "") == "true"
+    assert consent_state.get("statistics", "") == "true"
 
 
 @pytest.mark.django_db
 def test_generic_lazy_cookies(client, site):
-    tag_instant_traceable()
-    tag_lazy_traceable()
+    tag_instant_marketing()
+    tag_lazy_marketing()
 
     response = client.post(
         "/wtm/lazy/", json.dumps({}), content_type="application/json"
@@ -128,44 +128,44 @@ def test_generic_lazy_cookies(client, site):
 
 @pytest.mark.django_db
 def test_passive_tags(client, site):
-    tag_functional = TagFactory(
-        name="functional lazy",
+    tag_necessary = TagFactory(
+        name="necessary lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
-        content='<script>console.log("functional: {{ trigger_value }}")</script>',
+        content='<script>console.log("necessary: {{ trigger_value }}")</script>',
     )
-    tag_analytical = TagFactory(
-        name="analytical lazy",
+    tag_preferences = TagFactory(
+        name="preferences lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
-        tag_type="analytical",
-        content='<script>console.log("analytical: {{ trigger_value }}")</script>',
+        tag_type="preferences",
+        content='<script>console.log("preferences: {{ trigger_value }}")</script>',
     )
-    tag_delayed = TagFactory(
-        name="delayed lazy",
+    tag_statistics = TagFactory(
+        name="statistics lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
-        tag_type="delayed",
-        content='<script>console.log("delayed: {{ trigger_value }}")</script>',
+        tag_type="statistics",
+        content='<script>console.log("statistics: {{ trigger_value }}")</script>',
     )
-    tag_traceable = TagFactory(
-        name="traceable lazy",
+    tag_marketing = TagFactory(
+        name="marketing lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
-        tag_type="traceable",
-        content='<script>console.log("traceable: {{ trigger_value }}")</script>',
+        tag_type="marketing",
+        content='<script>console.log("marketing: {{ trigger_value }}")</script>',
     )
 
-    assert tag_functional in Tag.objects.passive().sorted()
-    assert tag_analytical in Tag.objects.passive().sorted()
-    assert tag_delayed in Tag.objects.passive().sorted()
-    assert tag_traceable in Tag.objects.passive().sorted()
+    assert tag_necessary in Tag.objects.passive().sorted()
+    assert tag_preferences in Tag.objects.passive().sorted()
+    assert tag_statistics in Tag.objects.passive().sorted()
+    assert tag_marketing in Tag.objects.passive().sorted()
 
     trigger = TriggerFactory()
-    trigger.tags.add(tag_functional)
-    trigger.tags.add(tag_analytical)
-    trigger.tags.add(tag_delayed)
-    trigger.tags.add(tag_traceable)
+    trigger.tags.add(tag_necessary)
+    trigger.tags.add(tag_preferences)
+    trigger.tags.add(tag_statistics)
+    trigger.tags.add(tag_marketing)
 
     response = client.post(
         "/wtm/lazy/",
@@ -197,9 +197,9 @@ def test_passive_tags(client, site):
 
     assert response.status_code == 200
     assert "tags" in data
-    assert 'console.log("functional: 1")' in data["tags"][0]["string"]
+    assert 'console.log("necessary: 1")' in data["tags"][0]["string"]
 
-    client.cookies = SimpleCookie({"wtm": "analytical:true"})
+    client.cookies = SimpleCookie({"wtm": "preferences:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps(
@@ -219,9 +219,9 @@ def test_passive_tags(client, site):
 
     assert response.status_code == 200
     assert "tags" in data
-    assert 'console.log("analytical: 2")' in data["tags"][1]["string"]
+    assert 'console.log("preferences: 2")' in data["tags"][1]["string"]
 
-    client.cookies = SimpleCookie({"wtm": "analytical:false|delayed:true"})
+    client.cookies = SimpleCookie({"wtm": "preferences:false|statistics:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps(
@@ -241,9 +241,9 @@ def test_passive_tags(client, site):
 
     assert response.status_code == 200
     assert "tags" in data
-    assert 'console.log("delayed: 3")' in data["tags"][1]["string"]
+    assert 'console.log("statistics: 3")' in data["tags"][1]["string"]
 
-    client.cookies = SimpleCookie({"wtm": "analytical:false|traceable:true"})
+    client.cookies = SimpleCookie({"wtm": "preferences:false|marketing:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps(
@@ -263,49 +263,49 @@ def test_passive_tags(client, site):
 
     assert response.status_code == 200
     assert "tags" in data
-    assert 'console.log("traceable: 4")' in data["tags"][1]["string"]
+    assert 'console.log("marketing: 4")' in data["tags"][1]["string"]
 
 
 @pytest.mark.django_db
 def test_page_tags(client, site):
-    tag_functional = TagFactory(
-        name="functional lazy",
+    tag_necessary = TagFactory(
+        name="necessary lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
-        content='<script>console.log("functional")</script>',
+        content='<script>console.log("necessary")</script>',
     )
-    tag_analytical = TagFactory(
-        name="analytical lazy",
+    tag_preferences = TagFactory(
+        name="preferences lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
-        tag_type="analytical",
-        content='<script>console.log("analytical")</script>',
+        tag_type="preferences",
+        content='<script>console.log("preferences")</script>',
     )
-    tag_delayed = TagFactory(
-        name="delayed lazy",
+    tag_statistics = TagFactory(
+        name="statistics lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
-        tag_type="delayed",
-        content='<script>console.log("delayed")</script>',
+        tag_type="statistics",
+        content='<script>console.log("statistics")</script>',
     )
-    tag_traceable = TagFactory(
-        name="traceable lazy",
+    tag_marketing = TagFactory(
+        name="marketing lazy",
         auto_load=False,
         tag_loading=Tag.LAZY_LOAD,
-        tag_type="traceable",
-        content='<script>console.log("traceable")</script>',
+        tag_type="marketing",
+        content='<script>console.log("marketing")</script>',
     )
 
-    assert tag_functional in Tag.objects.passive().sorted()
-    assert tag_analytical in Tag.objects.passive().sorted()
-    assert tag_delayed in Tag.objects.passive().sorted()
-    assert tag_traceable in Tag.objects.passive().sorted()
+    assert tag_necessary in Tag.objects.passive().sorted()
+    assert tag_preferences in Tag.objects.passive().sorted()
+    assert tag_statistics in Tag.objects.passive().sorted()
+    assert tag_marketing in Tag.objects.passive().sorted()
 
     page = TaggableContentPageFactory(parent=site.root_page, slug="tagged-page")
-    page.wtm_tags.add(tag_functional)
-    page.wtm_tags.add(tag_analytical)
-    page.wtm_tags.add(tag_delayed)
-    page.wtm_tags.add(tag_traceable)
+    page.wtm_tags.add(tag_necessary)
+    page.wtm_tags.add(tag_preferences)
+    page.wtm_tags.add(tag_statistics)
+    page.wtm_tags.add(tag_marketing)
     page.save()
 
     assert len(page.wtm_tags.all()) == 4
@@ -319,11 +319,11 @@ def test_page_tags(client, site):
 
     assert response.status_code == 200
     assert "tags" in data
-    results = ['console.log("functional")', 'console.log("analytical")']
+    results = ['console.log("necessary")', 'console.log("preferences")']
     for tag in data.get("tags", []):
         assert tag["string"].strip() in results
 
-    client.cookies = SimpleCookie({"wtm": "analytical:true"})
+    client.cookies = SimpleCookie({"wtm": "preferences:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": page.get_url()}),
@@ -333,11 +333,11 @@ def test_page_tags(client, site):
 
     assert response.status_code == 200
     assert "tags" in data
-    results = ['console.log("functional")', 'console.log("analytical")']
+    results = ['console.log("necessary")', 'console.log("preferences")']
     for tag in data.get("tags", []):
         assert tag["string"].strip() in results
 
-    client.cookies = SimpleCookie({"wtm": "analytical:false|delayed:true"})
+    client.cookies = SimpleCookie({"wtm": "preferences:false|statistics:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": page.get_url()}),
@@ -347,11 +347,11 @@ def test_page_tags(client, site):
 
     assert response.status_code == 200
     assert "tags" in data
-    results = ['console.log("functional")', 'console.log("delayed")']
+    results = ['console.log("necessary")', 'console.log("statistics")']
     for tag in data.get("tags", []):
         assert tag["string"].strip() in results
 
-    client.cookies = SimpleCookie({"wtm": "analytical:false|traceable:true"})
+    client.cookies = SimpleCookie({"wtm": "preferences:false|marketing:true"})
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": page.get_url()}),
@@ -361,6 +361,6 @@ def test_page_tags(client, site):
 
     assert response.status_code == 200
     assert "tags" in data
-    results = ['console.log("functional")', 'console.log("traceable")']
+    results = ['console.log("necessary")', 'console.log("marketing")']
     for tag in data.get("tags", []):
         assert tag["string"].strip() in results

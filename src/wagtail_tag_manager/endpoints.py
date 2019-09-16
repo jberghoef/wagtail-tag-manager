@@ -21,7 +21,9 @@ def lazy_endpoint(request):
 
         strategy = TagStrategy(request, payload)
 
-        set_consent(response, {key: value for key, value in strategy.consent.items()})
+        set_consent(
+            request, response, {key: value for key, value in strategy.consent.items()}
+        )
 
         for tag in strategy.result:
             element = tag.get("element")

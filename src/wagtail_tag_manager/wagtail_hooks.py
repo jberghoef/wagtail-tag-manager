@@ -18,6 +18,7 @@ from wagtail_tag_manager.models import (
     Trigger,
     Constant,
     Variable,
+    CookieConsent,
     CookieDeclaration,
 )
 from wagtail_tag_manager.settings import TagTypeSettings
@@ -139,7 +140,7 @@ class TriggerModelAdmin(ModelAdmin):
 
 class CookieDeclarationModelAdmin(ModelAdmin):
     model = CookieDeclaration
-    menu_icon = "tick"
+    menu_icon = "help"
     list_display = ("cookie_type", "name", "domain", "duration", "security")
     list_filter = ("cookie_type", "domain", "security")
     search_fields = ("name", "purpose", "domain")
@@ -153,6 +154,20 @@ class CookieDeclarationModelAdmin(ModelAdmin):
     )
 
 
+class CookieConsentModelAdmin(ModelAdmin):
+    model = CookieConsent
+    menu_icon = "success"
+    list_display = ("identifier", "location", "consent_state", "timestamp")
+    list_filer = ("timestamp",)
+    search_fields = ("identifier", "location")
+    index_view_class = WTMIndexView
+    index_template_name = "wagtail_tag_manager/admin/cookie_consent_index.html"
+    help_text = _(
+        "Cookie consent records consent given by users by attaching an anonymous ID "
+        "to them and documenting the location, tag types, date and time of the consent given."
+    )
+
+
 class TagManagerAdminGroup(ModelAdminGroup):
     menu_label = _("Tag Manager")
     menu_icon = "code"
@@ -163,6 +178,7 @@ class TagManagerAdminGroup(ModelAdminGroup):
         VariableModelAdmin,
         TriggerModelAdmin,
         CookieDeclarationModelAdmin,
+        CookieConsentModelAdmin,
     )
 
 
@@ -225,7 +241,15 @@ class CookieDeclarationSummaryPanel(ModelCountSummaryItem):
     model = CookieDeclaration
     reverse = "wagtail_tag_manager_cookiedeclaration_modeladmin_index"
     title = _("Cookie declarations")
-    icon = "tick"
+    icon = "help"
+
+
+class CookieConsentSummaryPanel(ModelCountSummaryItem):
+    order = 3500
+    model = CookieConsent
+    reverse = "wagtail_tag_manager_cookieconsent_modeladmin_index"
+    title = _("Cookie consents")
+    icon = "success"
 
 
 @hooks.register("construct_homepage_summary_items")
@@ -236,3 +260,4 @@ def add_personalisation_summary_panels(request, items):
         items.append(VariableSummaryPanel(request))
         items.append(TriggerSummaryPanel(request))
         items.append(CookieDeclarationSummaryPanel(request))
+        items.append(CookieConsentSummaryPanel(request))

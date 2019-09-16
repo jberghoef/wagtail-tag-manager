@@ -8,9 +8,9 @@ def test_consent_state(rf, site):
     request = rf.get(site.root_page.url)
     assert consent_state(request) == {
         "wtm_consent_state": {
-            "analytical": True,
-            "delayed": True,
-            "functional": True,
-            "traceable": False,
+            "preferences": True,
+            "statistics": True,
+            "necessary": True,
+            "marketing": False,
         }
     }
