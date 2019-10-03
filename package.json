@@ -15,11 +15,11 @@
   "author": "Jasper Berghoef",
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "@babel/core": "^7.6.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
     "@babel/polyfill": "^7.6.0",
-    "@babel/preset-env": "^7.6.0",
-    "@types/codemirror": "^0.0.76",
+    "@babel/preset-env": "^7.6.2",
+    "@types/codemirror": "^0.0.78",
     "@types/js-cookie": "^2.2.2",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
@@ -28,14 +28,14 @@
     "prettier": "^1.17.1",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
-    "ts-loader": "^6.1.0",
+    "ts-loader": "^6.2.0",
     "typescript": "^3.6.3",
-    "webpack": "^4.39.3",
-    "webpack-cli": "^3.3.8"
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
   },
   "dependencies": {
     "@types/simmerjs": "^0.5.0",
-    "codemirror": "^5.48.4",
+    "codemirror": "^5.49.0",
     "js-cookie": "^2.2.1",
     "whatwg-fetch": "^3.0.0"
   }
