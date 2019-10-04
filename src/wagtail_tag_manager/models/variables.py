@@ -95,7 +95,7 @@ class Variable(models.Model):
             variable_type = variable_type[:-1]
 
         if variable_type.startswith("_"):
-            method = getattr(self, f"get{variable_type}")
+            method = getattr(self, "get{}".format(variable_type))
             return method(request)
 
         if "." in self.variable_type:
@@ -117,7 +117,7 @@ class Variable(models.Model):
 
         if Constant.objects.filter(key=self.key).exists():
             raise ValidationError(
-                f"A constant with the key '{ self.key }' already exists."
+                "A constant with the key '{}' already exists.".format(self.key)
             )
         else:
             super().clean()

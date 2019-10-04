@@ -1,6 +1,4 @@
-from typing import Dict, List
-
-from django.http import Http404, HttpRequest
+from django.http import Http404
 from django.db.models import Q
 from wagtail.core.views import serve as wagtail_serve
 
@@ -80,18 +78,18 @@ CONSENT_MAP = (
 
 
 class TagStrategy(object):
-    def __init__(self, request: HttpRequest, payload: dict = None):
+    def __init__(self, request, payload=None):
         self._request = request
         self._context = Tag.create_context(request)
         self._payload = payload or {}
 
         self._config = TagTypeSettings.all()
-        self._tags: List = []
+        self._tags = []
 
         from wagtail_tag_manager.utils import get_consent
 
         self.consent_state = get_consent(request)
-        self.consent: Dict = {}
+        self.consent = {}
 
         if request:
             self.define_strategy()

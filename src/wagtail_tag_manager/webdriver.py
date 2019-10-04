@@ -53,7 +53,9 @@ class CookieScanner(object):  # pragma: no cover
     def wtm_cookie(self):
         return {
             "name": "wtm",
-            "value": "|".join([f"{tag_type}:true" for tag_type in Tag.get_types()]),
+            "value": "|".join(
+                ["{}:true".format(tag_type) for tag_type in Tag.get_types()]
+            ),
             "path": "",
             "secure": False,
         }

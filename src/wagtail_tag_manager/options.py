@@ -15,7 +15,7 @@ class CustomVariable(object):
         for field in ["name", "description", "key"]:
             if not getattr(self, field, None):
                 raise ValueError(
-                    f"A CustomVariable class has to provide a '{field}' value."
+                    "A CustomVariable class has to provide a '{}' value.".format(field)
                 )
 
     def as_dict(self):

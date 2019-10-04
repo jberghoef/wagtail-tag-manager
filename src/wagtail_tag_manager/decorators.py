@@ -2,7 +2,7 @@ import inspect
 
 from wagtail_tag_manager.options import CustomVariable
 
-_variables: dict = {}
+_variables = {}
 
 
 def register_variable(cls=None):

@@ -19,14 +19,14 @@ def set_consent(request, response, consent, explicit=False):
     set_cookie(
         response,
         "wtm",
-        "|".join([f"{key}:{value}" for key, value in consent_state.items()]),
+        "|".join(["{}:{}".format(key, value) for key, value in consent_state.items()]),
     )
 
     if request is not None and explicit:
         cookie_consent = CookieConsent.objects.create(
             identifier=request.COOKIES.get("wtm_id", str(uuid.uuid4())),
             consent_state="\n".join(
-                [f"{key}: {value};" for key, value in consent_state.items()]
+                ["{}: {};".format(key, value) for key, value in consent_state.items()]
             ),
             location=request.META.get("HTTP_REFERER", request.build_absolute_uri()),
         )

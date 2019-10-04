@@ -22,7 +22,7 @@ from wagtail_tag_manager.models import (
 
 
 def get_expected_content(string):
-    return f'<script>\n console.log("{string}")\n</script>'
+    return '<script>\n console.log("{}")\n</script>'.format(string)
 
 
 @pytest.mark.django_db
