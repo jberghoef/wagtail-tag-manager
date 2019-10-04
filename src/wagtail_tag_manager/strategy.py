@@ -5,11 +5,7 @@ from wagtail.core.views import serve as wagtail_serve
 from wagtail_tag_manager.mixins import TagMixin
 from wagtail_tag_manager.models import Tag, Trigger, TagTypeSettings
 from wagtail_tag_manager.settings import (
-    SETTING_DEFAULT,
-    SETTING_DELAYED,
-    SETTING_INITIAL,
-    SETTING_REQUIRED,
-)
+    SETTING_DEFAULT, SETTING_DELAYED, SETTING_INITIAL, SETTING_REQUIRED)
 
 CONSENT_TRUE = "true"
 CONSENT_FALSE = "false"

@@ -8,15 +8,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
 from tests.factories.tag import (
-    tag_lazy_marketing,
-    tag_lazy_necessary,
-    tag_lazy_statistics,
-    tag_lazy_preferences,
-    tag_instant_marketing,
-    tag_instant_necessary,
-    tag_instant_statistics,
-    tag_instant_preferences,
-)
+    tag_lazy_marketing, tag_lazy_necessary, tag_lazy_statistics,
+    tag_lazy_preferences, tag_instant_marketing, tag_instant_necessary,
+    tag_instant_statistics, tag_instant_preferences)
 from wagtail_tag_manager.utils import parse_consent_state
 
 

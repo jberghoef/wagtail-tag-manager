@@ -21,7 +21,11 @@ retest:
 coverage:
 	py.test --nomigrations --reuse-db tests/ --cov=wagtail_tag_manager --cov-report=term-missing --cov-report=html
 
-lint: flake8 isort
+lint: flake8 isort mypy
+
+mypy:
+	pip install -U mypy
+	mypy src/ tests/
 
 flake8:
 	pip install -U flake8

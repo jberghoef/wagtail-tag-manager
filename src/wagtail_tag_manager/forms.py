@@ -1,10 +1,7 @@
 from django import forms
 
 from wagtail_tag_manager.settings import (
-    SETTING_INITIAL,
-    SETTING_REQUIRED,
-    TagTypeSettings,
-)
+    SETTING_INITIAL, SETTING_REQUIRED, TagTypeSettings)
 
 
 class ConsentForm(forms.Form):

@@ -5,17 +5,10 @@ from django.template.context import make_context
 from django.template.exceptions import TemplateDoesNotExist
 
 from tests.factories.tag import (
-    tag_instant_marketing,
-    tag_instant_necessary,
-    tag_instant_preferences,
-)
+    tag_instant_marketing, tag_instant_necessary, tag_instant_preferences)
 from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.templatetags.wtm_tags import (
-    wtm_include,
-    wtm_cookie_bar,
-    wtm_instant_tags,
-    wtm_lazy_manager,
-)
+    wtm_include, wtm_cookie_bar, wtm_instant_tags, wtm_lazy_manager)
 
 __version__ = django.get_version()
 if __version__.startswith("2.0"):

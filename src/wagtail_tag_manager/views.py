@@ -13,7 +13,8 @@ from wagtail.contrib.modeladmin.views import IndexView
 
 from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.utils import set_consent
-from wagtail_tag_manager.models import Trigger, Constant, Variable, TagTypeSettings
+from wagtail_tag_manager.models import (
+    Trigger, Constant, Variable, TagTypeSettings)
 from wagtail_tag_manager.webdriver import CookieScanner
 from wagtail_tag_manager.decorators import get_variables
 
