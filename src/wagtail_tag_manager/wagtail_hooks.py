@@ -40,7 +40,7 @@ class ConstantModelAdmin(ModelAdmin):
     def name_display(obj):
         if obj.description:
             description = truncatechars(obj.description, 64)
-            return mark_safe(f"{obj.name}<br/><small>{description}</small>")
+            return mark_safe("{}<br/><small>{}</small>".format(obj.name, description))
         return obj.name
 
     name_display.short_description = _("Name")
@@ -63,7 +63,7 @@ class VariableModelAdmin(ModelAdmin):
     def name_display(obj):
         if obj.description:
             description = truncatechars(obj.description, 64)
-            return mark_safe(f"{obj.name}<br/><small>{description}</small>")
+            return mark_safe("{}<br/><small>{}</small>".format(obj.name, description))
         return obj.name
 
     name_display.short_description = _("Name")
@@ -95,7 +95,7 @@ class TagModelAdmin(ModelAdmin):
     def name_display(obj):
         if obj.description:
             description = truncatechars(obj.description, 64)
-            return mark_safe(f"{obj.name}<br/><small>{description}</small>")
+            return mark_safe("{}<br/><small>{}</small>".format(obj.name, description))
         return obj.name
 
     name_display.short_description = _("Name")
@@ -126,14 +126,14 @@ class TriggerModelAdmin(ModelAdmin):
     def name_display(obj):
         if obj.description:
             description = truncatechars(obj.description, 64)
-            return mark_safe(f"{obj.name}<br/><small>{description}</small>")
+            return mark_safe("{}<br/><small>{}</small>".format(obj.name, description))
         return obj.name
 
     name_display.short_description = _("Name")
 
     @staticmethod
     def tags_count(obj):
-        return f"{obj.tags.count()} tag(s)"
+        return "{} tag(s)".format(obj.tags.count())
 
     tags_count.short_description = _("Tags")
 
@@ -197,10 +197,12 @@ class ModelCountSummaryItem(SummaryItem):
         count = self.model.objects.count()
         target_url = reverse(self.reverse)
         return mark_safe(
-            f"""
-            <li class="icon icon-{self.icon}">
-                <a href="{target_url}"><span>{count}</span>{self.title}</a>
-            </li>"""
+            """
+            <li class="icon icon-{0}">
+                <a href="{1}"><span>{2}</span>{3}</a>
+            </li>""".format(
+                self.icon, target_url, count, self.title
+            )
         )
 
 

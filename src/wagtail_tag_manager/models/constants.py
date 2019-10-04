@@ -64,7 +64,7 @@ class Constant(models.Model):
 
         if Variable.objects.filter(key=self.key).exists():
             raise ValidationError(
-                f"A variable with the key '{ self.key }' already exists."
+                "A variable with the key '{}' already exists.".format(self.key)
             )
         else:
             super().clean()

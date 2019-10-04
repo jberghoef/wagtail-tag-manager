@@ -93,7 +93,9 @@ def wtm_instant_tags(context, location=None):
 
         if not found:
             raise KeyError(
-                f"'{location}' is not an allowed location. Select one of {', '.join(location_choices)}"
+                "'{}' is not an allowed location. Select one of {}".format(
+                    location, ", ".join(location_choices)
+                )
             )
 
     if request is not None:
