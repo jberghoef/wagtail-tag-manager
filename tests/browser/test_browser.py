@@ -43,7 +43,7 @@ def get_consent_state(driver, iterations=5):
 
 
 @pytest.mark.django_db
-def test_default_necessaryity(driver, site, live_server):
+def test_default_necessary(driver, site, live_server):
     tag_instant_preferences()
     tag_instant_statistics()
     tag_instant_necessary()
