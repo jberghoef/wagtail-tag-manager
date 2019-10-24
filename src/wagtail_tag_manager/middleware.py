@@ -46,13 +46,13 @@ class TagManagerMiddleware:
                 obj = tag.get("object")
                 element = tag.get("element")
 
-                if obj.tag_location == Tag.TOP_HEAD:
+                if head and obj.tag_location == Tag.TOP_HEAD:
                     head.insert(1, element)
-                elif obj.tag_location == Tag.BOTTOM_HEAD:
+                elif head and obj.tag_location == Tag.BOTTOM_HEAD:
                     head.append(element)
-                elif obj.tag_location == Tag.TOP_BODY:
+                elif body and obj.tag_location == Tag.TOP_BODY:
                     body.insert(1, element)
-                elif obj.tag_location == Tag.BOTTOM_BODY:
+                elif body and obj.tag_location == Tag.BOTTOM_BODY:
                     body.append(element)
 
             doc.head = head
