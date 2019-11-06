@@ -1,3 +1,13 @@
+0.20.2 (2019.11.6)
+==================
+ - Feature/gdpr update (#59)
+ - Bump sandbox dependencies
+ - Update front-end dependencies
+ - Improve Python 3.5 compatability (#60)
+ - Add type checking
+ - Fix compatibility problem with Sitemap Generator (#62)
+
+
 0.20.1 (2019.9.2)
 =================
  - Optimize the tag manager client
