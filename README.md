@@ -97,10 +97,10 @@ change the text shown in the cookie bar.
 
 ## Requirements
 
-| Package  	|  Version(s)	            |
-|---------	|-----------------------	|
-| Django  	|  2.0, 2.1, 2.2 	        |
-| Wagtail 	|  2.1, 2.2, 2.3, 2.4, 2.5 	|
+| Package  	|  Version(s)	                        |
+|---------	|-------------------------------------- |
+| Django  	|  2.0, 2.1, 2.2 	                    |
+| Wagtail 	|  2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7    |
 
 ## Instructions
 
