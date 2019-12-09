@@ -1,3 +1,8 @@
+0.21.1 (2019.12.9)
+==================
+ - Upgrade front-end dependencies
+
+
 0.21.0 (2019.11.7)
 ==================
  - Add support for Wagtail 2.7 (#64)
