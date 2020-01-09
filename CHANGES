@@ -1,3 +1,9 @@
+0.21.2 (2020.1.9)
+=================
+ - Exclude migrations from code quality check
+ - Update dependencies
+
+
 0.21.1 (2019.12.9)
 ==================
  - Upgrade front-end dependencies
