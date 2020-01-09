@@ -7,11 +7,20 @@ from django.templatetags.static import static
 from wagtail.admin.site_summary import SummaryItem
 from django.template.defaultfilters import truncatechars
 from wagtail.contrib.modeladmin.options import (
-    ModelAdmin, ModelAdminGroup, modeladmin_register)
+    ModelAdmin,
+    ModelAdminGroup,
+    modeladmin_register,
+)
 
 from wagtail_tag_manager.views import WTMIndexView, CookieDeclarationIndexView
 from wagtail_tag_manager.models import (
-    Tag, Trigger, Constant, Variable, CookieConsent, CookieDeclaration)
+    Tag,
+    Trigger,
+    Constant,
+    Variable,
+    CookieConsent,
+    CookieDeclaration,
+)
 from wagtail_tag_manager.settings import TagTypeSettings
 
 

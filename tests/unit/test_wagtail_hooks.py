@@ -5,7 +5,11 @@ from tests.factories.trigger import TriggerFactory
 from tests.factories.constant import ConstantFactory
 from tests.factories.variable import VariableFactory
 from wagtail_tag_manager.wagtail_hooks import (
-    TagModelAdmin, TriggerModelAdmin, ConstantModelAdmin, VariableModelAdmin)
+    TagModelAdmin,
+    TriggerModelAdmin,
+    ConstantModelAdmin,
+    VariableModelAdmin,
+)
 
 
 @pytest.mark.django_db

@@ -23,7 +23,7 @@ interface VariableItem {
 
 interface Editor extends CodeMirror.EditorFromTextArea {
   doc: CodeMirror.Doc;
-  addPanel(el: HTMLElement, options: object): void;
+  addPanel(el: HTMLElement, options: object): CodeMirror.Panel;
 }
 
 class Codearea {
