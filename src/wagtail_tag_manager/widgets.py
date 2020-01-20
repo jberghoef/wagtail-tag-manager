@@ -1,5 +1,4 @@
 from django.forms import widgets
-from django.templatetags.static import static
 
 from wagtail_tag_manager.decorators import get_variables
 
@@ -17,10 +16,10 @@ class Codearea(widgets.Textarea):
     template_name = "admin/widgets/codearea.html"
 
     class Media:
-        css = {"all": (static("codearea.bundle.css"),)}
-        js = (static("codearea.bundle.js"),)
+        css = {"all": ("wagtail_tag_manager/codearea.bundle.css",)}
+        js = ("wagtail_tag_manager/codearea.bundle.js",)
 
 
 class HorizontalCheckboxSelectMultiple(widgets.CheckboxSelectMultiple):
     class Media:
-        css = {"all": (static("checkbox_select_multiple.bundle.css"),)}
+        css = {"all": ("wagtail_tag_manager/checkbox_select_multiple.bundle.css")}

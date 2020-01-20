@@ -71,13 +71,13 @@ class TagManagerMiddleware:
                     link = doc.new_tag("link")
                     link["rel"] = "stylesheet"
                     link["type"] = "text/css"
-                    link["href"] = static("wtm.bundle.css")
+                    link["href"] = static("wagtail_tag_manager/wtm.bundle.css")
                     doc.body.append(link)
 
                 if getattr(settings, "WTM_INJECT_SCRIPT", True):
                     script = doc.new_tag("script")
                     script["type"] = "text/javascript"
-                    script["src"] = static("wtm.bundle.js")
+                    script["src"] = static("wagtail_tag_manager/wtm.bundle.js")
                     doc.body.append(script)
 
             self.response.content = doc.decode()
