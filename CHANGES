@@ -1,3 +1,8 @@
+0.21.4 (2020.1.23)
+==================
+ - Move statics to wagtail_tag_manager folder, fix statics (#65)
+
+
 0.21.3 (2020.1.15)
 ==================
  - Fix exampledata
