@@ -3,7 +3,6 @@ from django.urls import reverse
 from wagtail.core import hooks
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
-from django.templatetags.static import static
 from wagtail.admin.site_summary import SummaryItem
 from django.template.defaultfilters import truncatechars
 from wagtail.contrib.modeladmin.options import (
@@ -52,7 +51,7 @@ class VariableModelAdmin(ModelAdmin):
     list_display = ("name_display", "key", "variable_type")
     list_filter = ("variable_type",)
     search_fields = ("name", "key", "description")
-    form_view_extra_js = [static("variable_form_view.bundle.js")]
+    form_view_extra_js = ["wagtail_tag_manager/variable_form_view.bundle.js"]
     index_view_class = WTMIndexView
     index_template_name = "wagtail_tag_manager/admin/variable_index.html"
     help_text = _(
@@ -82,7 +81,7 @@ class TagModelAdmin(ModelAdmin):
     )
     list_filter = ("auto_load", "tag_type", "tag_location", "tag_loading")
     search_fields = ("name", "description", "content")
-    form_view_extra_js = [static("tag_form_view.bundle.js")]
+    form_view_extra_js = ["wagtail_tag_manager/tag_form_view.bundle.js"]
     index_view_class = WTMIndexView
     index_template_name = "wagtail_tag_manager/admin/tag_index.html"
     help_text = _(
@@ -114,7 +113,7 @@ class TriggerModelAdmin(ModelAdmin):
     list_display = ("name_display", "tags_count", "active")
     list_filter = ("active",)
     search_fields = ("name", "description")
-    form_view_extra_js = [static("trigger_form_view.bundle.js")]
+    form_view_extra_js = ["wagtail_tag_manager/trigger_form_view.bundle.js"]
     index_view_class = WTMIndexView
     index_template_name = "wagtail_tag_manager/admin/trigger_index.html"
     help_text = _(

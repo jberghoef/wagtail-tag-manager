@@ -8,7 +8,6 @@ from django.utils.http import is_safe_url
 from django.views.generic import View, TemplateView
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.views import SuccessURLAllowedHostsMixin
-from django.templatetags.static import static
 from wagtail.contrib.modeladmin.views import IndexView
 
 from wagtail_tag_manager.forms import ConsentForm
@@ -124,11 +123,11 @@ class WTMIndexView(IndexView):
         return forms.Media(
             css={
                 "all": [
-                    static("index.bundle.css"),
+                    "wagtail_tag_manager/index.bundle.css",
                     *self.model_admin.get_index_view_extra_css(),
                 ]
             },
-            js=[static("index.bundle.js"), *self.model_admin.get_index_view_extra_js()],
+            js=["wagtail_tag_manager/index.bundle.js", *self.model_admin.get_index_view_extra_js()],
         )
 
 

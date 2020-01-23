@@ -12,7 +12,7 @@ module.exports = (env, options) => ({
     wtm: ["./frontend/client/wtm.ts"]
   },
   output: {
-    path: path.resolve(__dirname, "src/wagtail_tag_manager/static/"),
+    path: path.resolve(__dirname, "src/wagtail_tag_manager/static/wagtail_tag_manager"),
     filename: "[name].bundle.js",
     sourceMapFilename: "sourcemaps/[file].map"
   },
