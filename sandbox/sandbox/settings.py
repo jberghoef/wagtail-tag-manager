@@ -76,6 +76,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.core.middleware.SiteMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    "wagtail_tag_manager.middleware.CookieConsentMiddleware",
     "wagtail_tag_manager.middleware.TagManagerMiddleware",
 ]
 

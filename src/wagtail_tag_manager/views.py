@@ -71,7 +71,6 @@ class ConfigView(View):
                 "triggers": [trigger.as_dict() for trigger in Trigger.objects.active()],
             }
         )
-
         return response
 
 
@@ -127,7 +126,10 @@ class WTMIndexView(IndexView):
                     *self.model_admin.get_index_view_extra_css(),
                 ]
             },
-            js=["wagtail_tag_manager/index.bundle.js", *self.model_admin.get_index_view_extra_js()],
+            js=[
+                "wagtail_tag_manager/index.bundle.js",
+                *self.model_admin.get_index_view_extra_js(),
+            ],
         )
 
 

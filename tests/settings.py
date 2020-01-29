@@ -56,6 +56,7 @@ MIDDLEWARE = (
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.core.middleware.SiteMiddleware",
+    "wagtail_tag_manager.middleware.CookieConsentMiddleware",
     "wagtail_tag_manager.middleware.TagManagerMiddleware",
 )
 

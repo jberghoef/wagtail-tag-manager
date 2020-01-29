@@ -130,14 +130,16 @@ in the ``INSTALLED_APPS``.
 ```python
 MIDDLEWARE = [
     # ...
-    'wagtail_tag_manager.middleware.TagManagerMiddleware',
+    "wagtail_tag_manager.middleware.CookieConsentMiddleware",
+    'wagtail_tag_manager.middleware.TagManagerMiddleware', # optional
     # ...
 ]
 ```
 
 WTM offers two ways to implement it's functionality. You can either choose to
-use the middleware (which will rewrite the html on each request) or use the
-``{% wtm_instant_tags %}`` and ``{% wtm_lazy_manager %}`` template tags.
+use the ``TagManagerMiddleware`` (which will rewrite the html on each request)
+or use the ``{% wtm_instant_tags %}`` and ``{% wtm_lazy_manager %}`` template
+tags.
 
 If you prefer to use the template tags to inject tags into your templates,
 set the ``WTM_INJECT_TAGS`` and ``WTM_INJECT_SCRIPT`` settings to ``False``
@@ -177,8 +179,8 @@ urlpatterns = [
 ## Template tags
 
 As an alternative to using the middleware you can use the ``wtm_instant_tags``
-and ``wtm_lazy_manager`` template tags. Please be sure to use the middleware OR
-the template tags, never both.
+and ``wtm_lazy_manager`` template tags. Please be sure to use the
+``TagManagerMiddleware`` OR the template tags, never both.
 
 ### ``wtm_instant_tags``
 

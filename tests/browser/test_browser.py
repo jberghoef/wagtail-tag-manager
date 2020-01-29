@@ -59,6 +59,7 @@ def test_default_necessary(driver, site, live_server):
     tag_lazy_necessary()
     tag_lazy_marketing()
 
+    driver.delete_all_cookies()
     driver.get(live_server.url)
     try:
         WebDriverWait(driver, 30).until(
@@ -119,6 +120,7 @@ def test_necessary_only(driver, site, live_server):
     tag_lazy_necessary()
     tag_lazy_marketing()
 
+    driver.delete_all_cookies()
     driver.get(live_server.url)
     try:
         WebDriverWait(driver, 30).until(
@@ -174,6 +176,7 @@ def test_preferences_only(driver, site, live_server):
     tag_lazy_necessary()
     tag_lazy_marketing()
 
+    driver.delete_all_cookies()
     driver.get(live_server.url)
     try:
         WebDriverWait(driver, 30).until(
@@ -227,6 +230,7 @@ def test_statistics_only(driver, site, live_server):
     tag_lazy_necessary()
     tag_lazy_marketing()
 
+    driver.delete_all_cookies()
     driver.get(live_server.url)
     try:
         WebDriverWait(driver, 30).until(
@@ -282,6 +286,7 @@ def test_marketing_only(driver, site, live_server):
     tag_lazy_necessary()
     tag_lazy_marketing()
 
+    driver.delete_all_cookies()
     driver.get(live_server.url)
     try:
         WebDriverWait(driver, 30).until(

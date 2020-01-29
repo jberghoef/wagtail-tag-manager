@@ -9,6 +9,27 @@ from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.strategy import TagStrategy
 
 
+class CookieConsentMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        strategy = TagStrategy(request)
+
+        if (
+            getattr(request, "method", None) == "GET"
+            and getattr(response, "status_code", None) == 200
+        ):
+            set_consent(
+                request,
+                response,
+                {key: value for key, value in strategy.consent.items()},
+            )
+
+        return response
+
+
 class TagManagerMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -21,16 +42,10 @@ class TagManagerMiddleware:
         if (
             getattr(self.request, "method", None) == "GET"
             and getattr(self.response, "status_code", None) == 200
+            and isinstance(self.response, TemplateResponse)
         ):
-            set_consent(
-                self.request,
-                self.response,
-                {key: value for key, value in self.strategy.consent.items()},
-            )
-
-            if isinstance(self.response, TemplateResponse):
-                self._add_instant_tags()
-                self._add_lazy_manager()
+            self._add_instant_tags()
+            self._add_lazy_manager()
 
         return self.response
 
