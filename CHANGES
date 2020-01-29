@@ -1,3 +1,8 @@
+0.21.5 (2020.1.29)
+==================
+ - Split middleware to support non-rewriting implementation
+
+
 0.21.4 (2020.1.23)
 ==================
  - Move statics to wagtail_tag_manager folder, fix statics (#65)
