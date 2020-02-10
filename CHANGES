@@ -1,3 +1,9 @@
+0.22.0 (2020.2.10)
+==================
+ - Add support for Django 3.0 and Wagtail 2.8 (#66)
+ - Upgrade front-end dependencies
+
+
 0.21.5 (2020.1.29)
 ==================
  - Split middleware to support non-rewriting implementation
