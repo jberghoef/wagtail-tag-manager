@@ -1,11 +1,17 @@
+import django
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
 from django.core.cache import cache
 from django.utils.html import mark_safe
 from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, MultiFieldPanel
+
+__version__ = django.get_version()
+if __version__.startswith("2"):
+    from django.utils.translation import ugettext_lazy as _
+else:
+    from django.utils.translation import gettext_lazy as _
 
 
 class Constant(models.Model):

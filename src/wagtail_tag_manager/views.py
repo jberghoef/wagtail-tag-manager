@@ -4,9 +4,7 @@ import django
 from django import forms
 from django.conf import settings
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
-from django.utils.http import is_safe_url
 from django.views.generic import View, TemplateView
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.views import SuccessURLAllowedHostsMixin
 from wagtail.contrib.modeladmin.views import IndexView
 
@@ -17,6 +15,10 @@ from wagtail_tag_manager.webdriver import CookieScanner
 from wagtail_tag_manager.decorators import get_variables
 
 __version__ = django.get_version()
+if __version__.startswith("2"):
+    from django.utils.translation import ugettext_lazy as _
+else:
+    from django.utils.translation import gettext_lazy as _
 
 
 class ManageView(SuccessURLAllowedHostsMixin, TemplateView):
@@ -44,7 +46,15 @@ class ManageView(SuccessURLAllowedHostsMixin, TemplateView):
         else:
             args.append(allowed_hosts)
 
-        url_is_safe = is_safe_url(*args, **kwargs)
+        if __version__.startswith("2"):
+            from django.utils.http import is_safe_url
+
+            url_is_safe = is_safe_url(*args, **kwargs)
+        else:
+            from django.utils.http import url_has_allowed_host_and_scheme
+
+            url_is_safe = url_has_allowed_host_and_scheme(*args, **kwargs)
+
         if url_is_safe:
             response = HttpResponseRedirect(redirect_url)
 

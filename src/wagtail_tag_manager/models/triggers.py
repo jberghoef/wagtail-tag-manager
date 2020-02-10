@@ -1,5 +1,6 @@
 import re
 
+import django
 from django.db import models
 from django.utils.html import mark_safe
 from django.utils.text import slugify
@@ -7,7 +8,6 @@ from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from wagtail.core.models import Orderable
 from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel
 
 from wagtail_tag_manager.models import Tag
@@ -16,6 +16,12 @@ from wagtail_tag_manager.widgets import (
     HorizontalCheckboxSelectMultiple as CheckboxSelectMultiple,
 )
 from wagtail_tag_manager.managers import TriggerQuerySet
+
+__version__ = django.get_version()
+if __version__.startswith("2"):
+    from django.utils.translation import ugettext_lazy as _
+else:
+    from django.utils.translation import gettext_lazy as _
 
 
 class Trigger(ClusterableModel):

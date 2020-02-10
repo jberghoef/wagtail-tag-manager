@@ -1,13 +1,19 @@
+import django
 from django.db import models
 from modelcluster.fields import ParentalManyToManyField
 from modelcluster.models import ClusterableModel
-from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, PublishingPanel
 
 from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.widgets import (
     HorizontalCheckboxSelectMultiple as CheckboxSelectMultiple,
 )
+
+__version__ = django.get_version()
+if __version__.startswith("2"):
+    from django.utils.translation import ugettext_lazy as _
+else:
+    from django.utils.translation import gettext_lazy as _
 
 
 class TagMixin(ClusterableModel):
