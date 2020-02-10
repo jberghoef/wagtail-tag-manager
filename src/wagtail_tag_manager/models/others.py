@@ -1,12 +1,18 @@
 import uuid
 
+import django
 from django.db import models
 from django.utils.html import mark_safe
-from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, MultiFieldPanel
 
 from wagtail_tag_manager.managers import CookieDeclarationQuerySet
 from wagtail_tag_manager.settings import TagTypeSettings
+
+__version__ = django.get_version()
+if __version__.startswith("2"):
+    from django.utils.translation import ugettext_lazy as _
+else:
+    from django.utils.translation import gettext_lazy as _
 
 
 class CookieDeclaration(models.Model):
@@ -15,7 +21,7 @@ class CookieDeclaration(models.Model):
     SECURITY_CHOICES = ((INSECURE_COOKIE, _("HTTP")), (SECURE_COOKIE, _("HTTPS")))
 
     cookie_type = models.CharField(
-        max_length=10,
+        max_length=100,
         choices=[
             (tag_type, config.get("verbose_name"))
             for tag_type, config in TagTypeSettings.all().items()

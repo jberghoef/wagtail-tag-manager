@@ -1,11 +1,11 @@
 from datetime import datetime, timedelta
 
+import django
 import requests
 from selenium import webdriver
 from django.conf import settings
 from django.urls import reverse
 from django.contrib import messages
-from django.utils.translation import ugettext_lazy as _
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -13,6 +13,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from wagtail_tag_manager.models import Tag, CookieDeclaration
+
+__version__ = django.get_version()
+if __version__.startswith("2"):
+    from django.utils.translation import ugettext_lazy as _
+else:
+    from django.utils.translation import gettext_lazy as _
 
 
 class CookieScanner(object):  # pragma: no cover

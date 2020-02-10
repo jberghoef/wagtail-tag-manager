@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 
 install_requires = [
-    "wagtail>=2.1,<2.8",
+    "wagtail>=2.1,<2.9",
     "beautifulsoup4==4.6.0",
     "selenium>=3.141.0,<3.142.0",
 ]
@@ -25,7 +25,7 @@ tests_require = [
     "wagtail_factories==1.1.0",
 ]
 
-docs_require = ["sphinx>=1.4.0"]
+docs_require = ["sphinx>=2.4.0"]
 
 with open('README.md') as fh:
     long_description = fh.read()
@@ -55,8 +55,11 @@ setup(
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Framework :: Django :: 2.0",
         "Framework :: Django :: 2.1",
+        "Framework :: Django :: 2.2",
+        "Framework :: Django :: 3.0",
         "Framework :: Wagtail :: 2",
     ],
 )

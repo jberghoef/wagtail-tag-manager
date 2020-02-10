@@ -1,8 +1,8 @@
+import django
 from django.conf import settings
 from django.urls import reverse
 from wagtail.core import hooks
 from django.utils.html import mark_safe
-from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.site_summary import SummaryItem
 from django.template.defaultfilters import truncatechars
 from wagtail.contrib.modeladmin.options import (
@@ -21,6 +21,12 @@ from wagtail_tag_manager.models import (
     CookieDeclaration,
 )
 from wagtail_tag_manager.settings import TagTypeSettings
+
+__version__ = django.get_version()
+if __version__.startswith("2"):
+    from django.utils.translation import ugettext_lazy as _
+else:
+    from django.utils.translation import gettext_lazy as _
 
 
 class ConstantModelAdmin(ModelAdmin):

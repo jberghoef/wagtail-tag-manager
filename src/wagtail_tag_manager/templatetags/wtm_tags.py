@@ -1,10 +1,10 @@
+import django
 from bs4 import BeautifulSoup
 from django import template
 from django.conf import settings
 from django.urls import reverse
 from django.utils.html import mark_safe
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext_lazy as _
 from django.templatetags.static import static
 
 from wagtail_tag_manager.forms import ConsentForm
@@ -13,6 +13,12 @@ from wagtail_tag_manager.settings import TagTypeSettings, CookieBarSettings
 from wagtail_tag_manager.strategy import TagStrategy
 
 register = template.Library()
+
+__version__ = django.get_version()
+if __version__.startswith("2"):
+    from django.utils.translation import ugettext_lazy as _
+else:
+    from django.utils.translation import gettext_lazy as _
 
 
 class IncludeNode(template.Node):

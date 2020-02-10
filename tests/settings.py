@@ -1,6 +1,12 @@
 import os
 
-from django.utils.translation import ugettext_lazy as _
+import django
+
+__version__ = django.get_version()
+if __version__.startswith("2"):
+    from django.utils.translation import ugettext_lazy as _
+else:
+    from django.utils.translation import gettext_lazy as _
 
 DATABASES = {
     "default": {
