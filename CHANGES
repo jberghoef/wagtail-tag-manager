@@ -1,3 +1,8 @@
+0.22.1 (2020.3.16)
+==================
+ - Dependency updates
+
+
 0.22.0 (2020.2.10)
 ==================
  - Add support for Django 3.0 and Wagtail 2.8 (#66)
