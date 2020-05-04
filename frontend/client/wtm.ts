@@ -1,5 +1,5 @@
 import TagManager from "./components/tag_manager";
 
-(function() {
+(function () {
   new TagManager();
 })();

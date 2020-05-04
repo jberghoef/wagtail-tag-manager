@@ -30,6 +30,6 @@ class TriggerFormView {
   }
 }
 
-document.addEventListener("DOMContentLoaded", event => {
+document.addEventListener("DOMContentLoaded", (event) => {
   new TriggerFormView();
 });

@@ -45,10 +45,10 @@ export default class TagManager {
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        "X-CSRFToken": Cookies.get("csrftoken")
+        "X-CSRFToken": Cookies.get("csrftoken"),
       },
       redirect: "follow",
-      referrer: "no-referrer"
+      referrer: "no-referrer",
     };
 
     this.showCookiebar = false;
@@ -58,7 +58,7 @@ export default class TagManager {
   initialize() {
     this.loadConfig(() => {
       const items = Cookies.get("wtm").split("|");
-      items.map(item => {
+      items.map((item) => {
         const parts = item.split(":", 2);
         if (parts.length > 0) this.state[parts[0]] = parts[1];
       });
@@ -77,7 +77,7 @@ export default class TagManager {
     }
 
     if (enabled) {
-      Object.keys(this.config.tag_types).forEach(tagType => {
+      Object.keys(this.config.tag_types).forEach((tagType) => {
         if (this.state[tagType] === "unset" || this.state[tagType] == "none") {
           this.showCookiebar = true;
         }
@@ -96,8 +96,8 @@ export default class TagManager {
 
   loadConfig(callback?: Function) {
     fetch(this.configUrl, this.requestInit)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         this.config = json;
         if (callback) callback();
       });
@@ -107,10 +107,10 @@ export default class TagManager {
     fetch(this.lazyUrl, {
       ...this.requestInit,
       method: "POST",
-      body: JSON.stringify({ ...window.location, trigger })
+      body: JSON.stringify({ ...window.location, trigger }),
     })
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         this.data = json;
         this.handleLoad();
         if (callback) callback();

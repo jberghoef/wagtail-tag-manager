@@ -40,10 +40,10 @@ class Codearea {
     this.editor = CodeMirror.fromTextArea(this.el, { mode: "django" }) as Editor;
 
     fetch("/wtm/variables/")
-      .then(response => {
+      .then((response) => {
         return response.json();
       })
-      .then(data => {
+      .then((data) => {
         this.addPanel(data);
       });
   }
@@ -67,7 +67,7 @@ class Codearea {
         a.title = item.description;
         a.dataset.key = item.key;
 
-        a.addEventListener("click", event => {
+        a.addEventListener("click", (event) => {
           event.preventDefault();
           const target = event.currentTarget as HTMLElement;
           this.editor.doc.replaceSelection(`{{ ${target.dataset.key} }}`, "end");

@@ -32,6 +32,6 @@ class VariableFormView {
   }
 }
 
-document.addEventListener("DOMContentLoaded", event => {
+document.addEventListener("DOMContentLoaded", (event) => {
   new VariableFormView();
 });
