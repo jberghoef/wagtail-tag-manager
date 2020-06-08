@@ -40,6 +40,8 @@ matrix:
       env: TOXENV=py38-django22-wagtail27
     - python: 3.8
       env: TOXENV=py38-django30-wagtail28
+    - python: 3.8
+      env: TOXENV=py38-django30-wagtail29
 
 install:
   - pip install tox
