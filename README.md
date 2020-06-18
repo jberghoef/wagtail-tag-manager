@@ -54,6 +54,7 @@ to inject tags into a page before the response is send to a client.
 ## Table of content
 - [Disclaimer](#disclaimer)
 - [Requirements](#requirements)
+- [Who's using it](#whos-using-it)
 - [Instructions](#instructions)
 - [Template tags](#template-tags)
     - [``wtm_instant_tags``](#wtm_instant_tags)
@@ -78,6 +79,7 @@ to inject tags into a page before the response is send to a client.
 - [Lazy triggers](#lazy-triggers)
 - [Sandbox](#sandbox)
 - [Concept](#concept)
+- [License](#license)
 
 ## Disclaimer
 
@@ -101,6 +103,11 @@ change the text shown in the cookie bar.
 |---------	|---------------------------------------- |
 | Django  	|  2.0, 2.1, 2.2, 3.0                     |
 | Wagtail 	|  2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8 |
+
+## Who’s using it?
+
+I'd love to hear from sites and applications where WTM is being used. Please
+contact me if you'd like your implementation to be listed here!
 
 ## Instructions
 
@@ -579,5 +586,10 @@ the correct time, taking in account the following scenario's:
     | Instant | yes      | yes     | yes     | yes     |
     | Lazy    | yes      | yes     | yes     | yes     |
 
+## License
+
+To make Wagtail Tag Manager accesible, it's is published under the BSD 3-Clause
+"New" or "Revised" License. For more information, please refer to the
+[LICENSE](LICENSE) file in this repository.
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjberghoef%2Fwagtail-tag-manager?ref=badge_large)
