@@ -1,3 +1,10 @@
+0.22.3 (2020.6.18)
+==================
+ - Dependency updates
+ - Add Wagtail 2.9 to testing suite
+ - Update example data for Wagtail 2.9
+
+
 0.22.2 (2020.5.4)
 =================
  - Dependency updates
