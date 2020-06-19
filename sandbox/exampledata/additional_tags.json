@@ -1,0 +1,64 @@
+[
+    {
+      "model": "wagtail_tag_manager.tag",
+      "pk": 9,
+      "fields": {
+        "name": "Thank You",
+        "description": "This logs a \"thank you\" message using a constant.",
+        "auto_load": true,
+        "tag_type": "necessary",
+        "tag_location": "3_bottom_body",
+        "tag_loading": "instant_load",
+        "content": "<script>\n console.log('{{ thnx }}')\n</script>"
+      }
+    },
+    {
+      "model": "wagtail_tag_manager.tag",
+      "pk": 10,
+      "fields": {
+        "name": "A random number",
+        "description": "This will log a random number.",
+        "auto_load": true,
+        "tag_type": "preferences",
+        "tag_location": "0_top_head",
+        "tag_loading": "lazy_load",
+        "content": "<script>\n console.log('Here you go: {{ rand }}')\n</script>"
+      }
+    },
+    {
+      "model": "wagtail_tag_manager.tag",
+      "pk": 11,
+      "fields": {
+        "name": "Passive lazy tag",
+        "description": "",
+        "auto_load": false,
+        "tag_type": "marketing",
+        "tag_location": "0_top_head",
+        "tag_loading": "lazy_load",
+        "content": "<script>\n console.log(\"I'm a {{ state }} teapot.\")\n</script>"
+      }
+    },
+    {
+      "model": "wagtail_tag_manager.tag",
+      "pk": 12,
+      "fields": {
+        "name": "Passive instant tag",
+        "description": "",
+        "auto_load": false,
+        "tag_type": "marketing",
+        "tag_location": "0_top_head",
+        "tag_loading": "instant_load",
+        "content": "<script>\n console.log(\"My state is {{ state }}\")\n</script>"
+      }
+    },
+    {
+      "model": "wagtail_tag_manager.constant",
+      "pk": 1,
+      "fields": {
+        "name": "Thank You",
+        "description": "This is a thank you message!",
+        "key": "thnx",
+        "value": "Thank you for using WTM!"
+      }
+    }
+  ]

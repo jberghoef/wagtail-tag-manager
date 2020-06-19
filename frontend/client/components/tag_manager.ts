@@ -57,14 +57,17 @@ export default class TagManager {
 
   initialize() {
     this.loadConfig(() => {
-      const items = Cookies.get("wtm").split("|");
-      items.map((item) => {
-        const parts = item.split(":", 2);
-        if (parts.length > 0) this.state[parts[0]] = parts[1];
-      });
+      const cookie = Cookies.get("wtm");
+      if (cookie) {
+        const items = cookie.split("|");
+        items.map((item) => {
+          const parts = item.split(":", 2);
+          if (parts.length > 0) this.state[parts[0]] = parts[1];
+        });
 
-      this.validate();
-      this.loadData(null);
+        this.validate();
+        this.loadData(null);
+      }
     });
   }
 

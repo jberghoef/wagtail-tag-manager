@@ -1,0 +1,106 @@
+[
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 1,
+    "fields": {
+      "name": "Instant required",
+      "description": "Loads instantly, is required",
+      "auto_load": true,
+      "tag_type": "necessary",
+      "tag_location": "1_bottom_head",
+      "tag_loading": "instant_load",
+      "content": "<script>\n console.info('instant required')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 2,
+    "fields": {
+      "name": "Instant initial",
+      "description": "Loads instantly, is initial",
+      "auto_load": true,
+      "tag_type": "preferences",
+      "tag_location": "1_bottom_head",
+      "tag_loading": "instant_load",
+      "content": "<script>\n console.info('instant initial')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 3,
+    "fields": {
+      "name": "Instant delayed",
+      "description": "Loads instantly, is delayed",
+      "auto_load": true,
+      "tag_type": "statistics",
+      "tag_location": "1_bottom_head",
+      "tag_loading": "instant_load",
+      "content": "<script>\n console.info('instant delayed')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 4,
+    "fields": {
+      "name": "Instant regular",
+      "description": "Loads instantly, is regular",
+      "auto_load": true,
+      "tag_type": "marketing",
+      "tag_location": "1_bottom_head",
+      "tag_loading": "instant_load",
+      "content": "<script>\n console.info('instant regular')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 5,
+    "fields": {
+      "name": "Lazy required",
+      "description": "Loads lazily, is required",
+      "auto_load": true,
+      "tag_type": "necessary",
+      "tag_location": "0_top_head",
+      "tag_loading": "lazy_load",
+      "content": "<script>\n console.info('lazy required')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 6,
+    "fields": {
+      "name": "Lazy initial",
+      "description": "Loads lazily, is initial",
+      "auto_load": true,
+      "tag_type": "preferences",
+      "tag_location": "0_top_head",
+      "tag_loading": "lazy_load",
+      "content": "<script>\n console.info('lazy initial')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 7,
+    "fields": {
+      "name": "Lazy delayed",
+      "description": "Loads lazily, is delayed",
+      "auto_load": true,
+      "tag_type": "statistics",
+      "tag_location": "0_top_head",
+      "tag_loading": "lazy_load",
+      "content": "<script>\n console.info('lazy delayed')\n</script>"
+    }
+  },
+  {
+    "model": "wagtail_tag_manager.tag",
+    "pk": 8,
+    "fields": {
+      "name": "Lazy regular",
+      "description": "Loads lazily, is regular",
+      "auto_load": true,
+      "tag_type": "marketing",
+      "tag_location": "0_top_head",
+      "tag_loading": "lazy_load",
+      "content": "<script>\n console.info('lazy regular')\n</script>"
+    }
+  }
+]

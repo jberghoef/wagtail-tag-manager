@@ -10,6 +10,7 @@ clean:
 	find . -name '*.egg-info' |xargs rm -rf
 
 requirements:
+	yarn install
 	pip install -U -e .[docs,test]
 
 test:
@@ -50,11 +51,22 @@ prettier:
 
 sandbox: bundle
 	pip install -r sandbox/requirements.txt
+	rm -rf db.sqlite3
 	sandbox/manage.py migrate
 	sandbox/manage.py loaddata sandbox/exampledata/users.json
 	sandbox/manage.py loaddata sandbox/exampledata/cms.json
-	sandbox/manage.py loaddata sandbox/exampledata/wtm.json
+	sandbox/manage.py loaddata sandbox/exampledata/default_tags.json
+	sandbox/manage.py loaddata sandbox/exampledata/additional_tags.json
 	sandbox/manage.py runserver
+
+test_sandbox:
+	pip install -r sandbox/requirements.txt
+	rm -rf db.sqlite3
+	sandbox/manage.py migrate
+	sandbox/manage.py loaddata sandbox/exampledata/users.json
+	sandbox/manage.py loaddata sandbox/exampledata/cms.json
+	sandbox/manage.py loaddata sandbox/exampledata/default_tags.json
+	ENVIRONMENT=test sandbox/manage.py runserver
 
 bundle: prettier
 	yarn install --force

@@ -3,13 +3,21 @@ sudo: false
 dist: xenial
 language: python
 
-cache: pip
+node_js:
+  - 10
+
+cache:
+    pip: true
+    npm: true
+      directories:
+        - ~/.cache
 
 addons:
   chrome: stable
   apt:
     packages:
       - sqlite3
+      - libgconf-2-4
 
 matrix:
   include:
@@ -45,6 +53,11 @@ matrix:
 
 install:
   - pip install tox
+  - npm ci
 
-script:
-  - tox -- --nomigrations --reuse-db --ignore tests/browser/ tests/
+jobs:
+  include:
+    - stage: "unit-tests"
+      script: tox -- --nomigrations --reuse-db --ignore tests/browser/ tests/
+    - stage: "end to end tests"
+      script: $(npm bin)/cypress run --record
