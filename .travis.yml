@@ -1,50 +1,94 @@
----
-sudo: false
-dist: xenial
+dist: bionic
+os: linux
 language: python
-
-cache: pip
-
+cache: pip npm yarn
 addons:
-  chrome: stable
   apt:
     packages:
       - sqlite3
-
-matrix:
-  include:
-    - python: 3.6
-      env: TOXENV=lint
-
-    - python: 3.6
-      env: TOXENV=py36-django20-wagtail21
-    - python: 3.6
-      env: TOXENV=py36-django20-wagtail22
-    - python: 3.6
-      env: TOXENV=py36-django21-wagtail23
-    - python: 3.6
-      env: TOXENV=py36-django21-wagtail24
-    - python: 3.6
-      env: TOXENV=py36-django22-wagtail25
-
-    - python: 3.7
-      env: TOXENV=py37-django21-wagtail24
-    - python: 3.7
-      env: TOXENV=py37-django22-wagtail25
-    - python: 3.7
-      env: TOXENV=py37-django22-wagtail26
-    - python: 3.7
-      env: TOXENV=py37-django22-wagtail27
-
-    - python: 3.8
-      env: TOXENV=py38-django22-wagtail27
-    - python: 3.8
-      env: TOXENV=py38-django30-wagtail28
-    - python: 3.8
-      env: TOXENV=py38-django30-wagtail29
-
+      - libgconf-2-4
 install:
   - pip install tox
-
-script:
-  - tox -- --nomigrations --reuse-db --ignore tests/browser/ tests/
+jobs:
+  include:
+    - python: 3.6
+      name: Linting
+      env: TOXENV=lint
+      before_script:
+        - pip install -U flake8 isort
+      script:
+        - flake8 src tests setup.py
+        - isort -q --recursive --diff src/ tests/
+    - python: 3.8
+      node_js: 10
+      name: End to end test without recording
+      env: TOXENV=py38-django30-wagtail29
+      before_script:
+        - yarn install
+      script:
+        - make test_sandbox &
+        - yarn cypress:run
+        - kill $(jobs -p) || true
+    - name: Wagtail 2.1 & Django 2.0 running on Python 3.6
+      python: 3.6
+      env: TOXENV=py36-django20-wagtail21
+      script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.2 & Django 2.0 running on Python 3.6
+      python: 3.6
+      env: TOXENV=py36-django20-wagtail22
+      script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.3 & Django 2.1 running on Python 3.6
+      python: 3.6
+      env: TOXENV=py36-django21-wagtail23
+      script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.4 & Django 2.1 running on Python 3.6
+      python: 3.6
+      env: TOXENV=py36-django21-wagtail24
+      script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.5 & Django 2.2 running on Python 3.6
+      python: 3.6
+      env: TOXENV=py36-django22-wagtail25
+      script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.4 & Django 2.1 running on Python 3.7
+      python: 3.7
+      env: TOXENV=py37-django21-wagtail24
+      script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.5 & Django 2.2 running on Python 3.7
+      python: 3.7
+      env: TOXENV=py37-django22-wagtail25
+      script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.6 & Django 2.2 running on Python 3.7
+      python: 3.7
+      env: TOXENV=py37-django22-wagtail26
+      script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.7 & Django 2.2 running on Python 3.7
+      python: 3.7
+      env: TOXENV=py37-django22-wagtail27
+      script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.7 & Django 2.2 running on Python 3.8
+      python: 3.8
+      env: TOXENV=py38-django22-wagtail27
+      script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.8 & Django 3.0 running on Python 3.8
+      python: 3.8
+      env: TOXENV=py38-django30-wagtail28
+      script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.9 & Django 3.0 running on Python 3.8
+      python: 3.8
+      env: TOXENV=py38-django30-wagtail29
+      script: tox -- --nomigrations --reuse-db tests/
+  allow_failures:
+    - python: 3.8
+      node_js: 10
+      name: End to end test with recording
+      env: TOXENV=py38-django30-wagtail29 TEST_GROUP=other
+      before_script:
+        - yarn install
+      script:
+        - make test_sandbox &
+        - yarn cypress:run --record --key $CYPRESS_KEY
+        - kill $(jobs -p) || true
+env:
+  global:
+    - TEST_GROUP=other
+    - secure: WnTNkrAWPNWoBhDUH/I8qK+z5z+Tfo9tmC7SC4M1x82kmITnaq+p/thaUUiS53l9WCJftYimUb6ANjwQgI1SYJXDyIcXYpkEShmRChJxyje0KJzbU6o9qBBu/yNm0gG783vCYc74c/SOkSlyTXHdYwFiwap6fv5jS8IJglDrzO2xv9iDODbvpANhlms5z7uArf99ZKF9ykjl0WcBTZTqRPhz4DvWlCeIedG/V6FZhg40Qn8QUYF+5KdlxdHmqlvcrm5ByO1tFS6SXE62tdK+b5mzNexSkswXQnvyYzr9H3oM7NpCspwTv6MocMPh7EN9nHuh+waMdYF6R9kyLYeLgYQAcg6thXEU10b+vJ0ZCqyUFAVgQhPDbDl6W5FAhFwpCr17EYycGKyX+99jyTxbwhTK4YtLOcnSm6ieHsP09FIl+MHDVMxs9CgBYV0TPQocEROtVoDxGxoF7IIp7S1IIun5FoBmwtlSj1BSucxbf95tINRXj841aKb0LOnlL9rmzL3ZY5JcB7S9w+aVD+XU2ZXI2FUWgRxoKHZJXa3VeulNrpfudtdNWILVamqIh1iTjXHlFGNrNYKYv64MdbhKaS/JUQoQ3/C6XyOIDBlejN1BWsjh4yPXEh4L8bf3Xao4GLUqTipswd3jSvEQmGK98+uJev1yI7XOcgNvivy0nB4=

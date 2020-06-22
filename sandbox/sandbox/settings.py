@@ -65,13 +65,14 @@ INSTALLED_APPS = [
     "wagtail.contrib.settings",
     "modelcluster",
     "taggit",
-    "debug_toolbar",
     "wagtail_tag_manager",
     "sandbox.apps.home",
 ]
 
+if os.getenv("ENVIRONMENT") != "test":
+    INSTALLED_APPS += ("debug_toolbar",)
+
 MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.http.ConditionalGetMiddleware",
@@ -85,6 +86,9 @@ MIDDLEWARE = [
     "wagtail_tag_manager.middleware.CookieConsentMiddleware",
     "wagtail_tag_manager.middleware.TagManagerMiddleware",
 ]
+
+if os.getenv("ENVIRONMENT") != "test":
+    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
 
 # Wagtail Tag Manager
 WTM_MANAGE_VIEW = True
@@ -168,4 +172,4 @@ WAGTAIL_SITE_NAME = "sandbox"
 BASE_URL = "http://example.com"
 
 
-INTERNAL_IPS = ["127.0.0.1"]
+INTERNAL_IPS = ["127.0.0.1", "localhost"]

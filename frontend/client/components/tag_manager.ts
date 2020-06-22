@@ -57,14 +57,17 @@ export default class TagManager {
 
   initialize() {
     this.loadConfig(() => {
-      const items = Cookies.get("wtm").split("|");
-      items.map((item) => {
-        const parts = item.split(":", 2);
-        if (parts.length > 0) this.state[parts[0]] = parts[1];
-      });
+      const cookie = Cookies.get("wtm");
+      if (cookie) {
+        const items = cookie.split("|");
+        items.map((item) => {
+          const parts = item.split(":", 2);
+          if (parts.length > 0) this.state[parts[0]] = parts[1];
+        });
 
-      this.validate();
-      this.loadData(null);
+        this.validate();
+        this.loadData(null);
+      }
     });
   }
 
@@ -100,6 +103,9 @@ export default class TagManager {
       .then((json) => {
         this.config = json;
         if (callback) callback();
+      })
+      .catch((error) => {
+        console.error(error);
       });
   }
 
@@ -114,6 +120,9 @@ export default class TagManager {
         this.data = json;
         this.handleLoad();
         if (callback) callback();
+      })
+      .catch((error) => {
+        console.error(error);
       });
   }
 

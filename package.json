@@ -8,7 +8,8 @@
     "build": "webpack --mode production",
     "dev": "webpack --mode development",
     "watch": "webpack --mode development --watch",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "cypress:open": "CYPRESS_CRASH_REPORTS=0 cypress open",
+    "cypress:run": "CYPRESS_CRASH_REPORTS=0 wait-on http://127.0.0.1:8000/ && cypress run",
     "format": "prettier --write './frontend/**/*'"
   },
   "repository": "github.com/jberghoef/wagtail-tag-manager",
@@ -23,6 +24,7 @@
     "@types/js-cookie": "^2.2.6",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.6.0",
+    "cypress": "^4.8.0",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.14.1",
     "prettier": "^2.0.5",
@@ -31,11 +33,11 @@
     "style-loader": "^1.2.1",
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.5",
+    "wait-on": "^5.0.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "@types/simmerjs": "^0.5.1",
     "codemirror": "^5.54.0",
     "js-cookie": "^2.2.1",
     "whatwg-fetch": "^3.0.0"
