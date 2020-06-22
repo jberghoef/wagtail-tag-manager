@@ -13,6 +13,9 @@
 .tox/
 .vscode/
 
+cypress/screenshots/*
+cypress/videos/*
+
 build
 dist
 

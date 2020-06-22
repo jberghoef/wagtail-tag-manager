@@ -8,7 +8,7 @@ jobs:
     docker:
       # specify the version you desire here
       # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
-      - image: circleci/python:3.7.7-browsers
+      - image: circleci/python:3.7.7
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -18,19 +18,25 @@ jobs:
     working_directory: ~/repo
 
     steps:
-      - run: |
-          curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | bash
+      - run:
+          name: Setup environment
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+            curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | bash
+
       - checkout
 
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "setup.py" }}-{{ checksum "sandbox/requirements.txt" }}
+            - v1-deps-{{ .Branch }}-{{ checksum "setup.py" }}-{{ checksum "sandbox/requirements.txt" }}
+            - v1-deps-{{ .Branch }}
             # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+            - v1-deps-
 
       - run:
-          name: install dependencies
+          name: Install Dependencies
           command: |
             python3 -m venv venv
             . venv/bin/activate
@@ -39,7 +45,8 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: v1-dependencies-{{ checksum "setup.py" }}-{{ checksum "sandbox/requirements.txt" }}
+            - ~/.cache
+          key: v1-deps-{{ .Branch }}-{{ checksum "setup.py" }}-{{ checksum "sandbox/requirements.txt" }}
 
       # - run:
       #     command: |

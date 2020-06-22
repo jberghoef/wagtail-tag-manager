@@ -102,6 +102,7 @@ export default class TriggerMonitor {
             rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
             rect.right <= (window.innerWidth || document.documentElement.clientWidth);
 
+          if (element.wtm == undefined) element.wtm = {};
           if (in_view) {
             if (trigger.type === VISIBILITY_ONCE_PER_PAGE && !this.wtm[trigger.slug]) {
               this.wtm[trigger.slug] = true;
@@ -120,7 +121,7 @@ export default class TriggerMonitor {
       );
     };
 
-    window.addEventListener("load", handleEvent, { passive: true });
+    document.addEventListener("load", handleEvent, { passive: false });
     document.addEventListener("scroll", handleEvent, { passive: true });
     document.addEventListener("resize", handleEvent, { passive: true });
   }
@@ -134,7 +135,7 @@ export default class TriggerMonitor {
     };
 
     [].forEach.call(document.querySelectorAll("form"), (element: HTMLElement) => {
-      element.addEventListener("submit", handleEvent, { passive: true });
+      element.addEventListener("submit", handleEvent, { passive: false });
     });
   }
 
