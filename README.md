@@ -1,5 +1,6 @@
 # Wagtail Tag Manager
 
+[![CircleCI][circleci]](https://circleci.com/gh/jberghoef/wagtail-tag-manager)
 [![TravisCI][travis]](https://travis-ci.org/jberghoef/wagtail-tag-manager)
 [![CodeCov][codecov]](https://codecov.io/gh/jberghoef/wagtail-tag-manager)
 [![Codacy][codacy]](https://www.codacy.com/app/jberghoef/wagtail-tag-manager)
@@ -10,6 +11,7 @@
 [![Black][black]](https://github.com/ambv/black)
 [![Prettier][prettier]](https://github.com/prettier/prettier)
 
+[circleci]: https://circleci.com/gh/jberghoef/wagtail-tag-manager.svg?style=svg "Circle CI"
 [travis]: https://travis-ci.org/jberghoef/wagtail-tag-manager.svg?branch=master "Travis CI"
 [codecov]: https://codecov.io/gh/jberghoef/wagtail-tag-manager/branch/master/graph/badge.svg "Codecov"
 [codacy]: https://api.codacy.com/project/badge/Grade/2a59a006e69442bb809bf08f47028eb9 "Codacy"
@@ -28,11 +30,12 @@ in practice. Any part of the API may change without notice!**
 
 ![Screenshot](screenshots/screenshot.png "Screenshot")
 
-*In this package the term "tag" is being used for code snippets being injected
+_In this package the term "tag" is being used for code snippets being injected
 into HTML. This is not to be confused with tags used to identify content in the
-CMS, such as pictures and documents.*
+CMS, such as pictures and documents._
 
 ## Features
+
 Wagtail Tag Manager offers functionality similar to platforms like
 **Adobe Dynamic Tag Management**, **Google Tag Manager** and **Tealium iQ**
 without the need of a third party. It's fully integrated into Wagtail.
@@ -41,37 +44,40 @@ This approach comes with a couple of advantages, most prominently the ability
 to inject tags into a page before the response is send to a client.
 
 ### Administrators
+
 - Manage scripts and tags from within Wagtail, with powerful options to define load order.
 - Store reusable content in constants and variables and easily add them to your tags.
 - Create triggers to load tags based on events in the browser.
 - Create cookie declarations to provide end-users with a full picture of the tracking taking place.
 
 ### Developers
+
 - Create custom variables to give administrators functionality specific to your use-cases.
 
 ## Table of content
+
 - [Disclaimer](#disclaimer)
 - [Requirements](#requirements)
 - [Who's using it](#whos-using-it)
 - [Instructions](#instructions)
 - [Template tags](#template-tags)
-    - [``wtm_instant_tags``](#wtm_instant_tags)
-    - [``wtm_lazy_manager``](#wtm_lazy_manager)
-    - [``wtm_cookie_bar``](#wtm_cookie_bar)
-    - [``wtm_include``](#wtm_include)
+  - [`wtm_instant_tags`](#wtm_instant_tags)
+  - [`wtm_lazy_manager`](#wtm_lazy_manager)
+  - [`wtm_cookie_bar`](#wtm_cookie_bar)
+  - [`wtm_include`](#wtm_include)
 - [Preference management](#preference-management)
 - [Context processors](#context-processors)
 - [Settings](#settings)
-    - [``WTM_TAG_TYPES``](#wtm_tag_types)
-    - [``WTM_INJECT_TAGS``](#wtm_inject_tags)
-    - [``WTM_MANAGE_VIEW``](#wtm_manage_view)
-    - [``WTM_COOKIE_EXPIRE``](#wtm_cookie_expire)
-    - [``WTM_CACHE_TIMEOUT``](#wtm_cache_timeout)
-    - [``WTM_PRESERVE_VARIABLES``](#wtm_preserve_variables)
-    - [``WTM_INJECT_STYLE``](#wtm_inject_style)
-    - [``WTM_INJECT_SCRIPT``](#wtm_inject_script)
-    - [``WTM_SUMMARY_PANELS``](#wtm_summary_panels)
-    - [``WTM_CHROMEDRIVER_URL``](#wtm_chromedriver_url)
+  - [`WTM_TAG_TYPES`](#wtm_tag_types)
+  - [`WTM_INJECT_TAGS`](#wtm_inject_tags)
+  - [`WTM_MANAGE_VIEW`](#wtm_manage_view)
+  - [`WTM_COOKIE_EXPIRE`](#wtm_cookie_expire)
+  - [`WTM_CACHE_TIMEOUT`](#wtm_cache_timeout)
+  - [`WTM_PRESERVE_VARIABLES`](#wtm_preserve_variables)
+  - [`WTM_INJECT_STYLE`](#wtm_inject_style)
+  - [`WTM_INJECT_SCRIPT`](#wtm_inject_script)
+  - [`WTM_SUMMARY_PANELS`](#wtm_summary_panels)
+  - [`WTM_CHROMEDRIVER_URL`](#wtm_chromedriver_url)
 - [Custom variables](#custom-variables)
 - [Page tag mixin](#page-tag-mixin)
 - [Lazy triggers](#lazy-triggers)
@@ -92,15 +98,15 @@ Read more about the [ePrivacy Regulation](https://ec.europa.eu/digital-single-ma
 
 Included in this package is a cookie bar which admittedly provides too little
 information to end users regarding the purpose of the scripts you are placing
-on the website. For compliance, please use the ``cookie_bar.html`` template to
+on the website. For compliance, please use the `cookie_bar.html` template to
 change the text shown in the cookie bar.
 
 ## Requirements
 
-| Package  	|  Version(s)                                  |
-|---------	|--------------------------------------------- |
-| Django  	|  2.0, 2.1, 2.2, 3.0                          |
-| Wagtail 	|  2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9 |
+| Package | Version(s)                                  |
+| ------- | ------------------------------------------- |
+| Django  | 2.0, 2.1, 2.2, 3.0                          |
+| Wagtail | 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9 |
 
 ## Who’s using it?
 
@@ -115,7 +121,7 @@ contact me if you'd like your implementation to be listed here!
 pip install wagtail-tag-manager
 ```
 
-**Add the application to your ``INSTALLED_APPS``:**
+**Add the application to your `INSTALLED_APPS`:**
 
 ```python
 INSTALLED_APPS = [
@@ -127,8 +133,8 @@ INSTALLED_APPS = [
 ```
 
 If you wish to enable the cookie bar settings (allowing you to change to title
-and text displayed in the cookie bar), also include ``wagtail.contrib.settings``
-in the ``INSTALLED_APPS``.
+and text displayed in the cookie bar), also include `wagtail.contrib.settings`
+in the `INSTALLED_APPS`.
 
 **Include the middleware:**
 
@@ -142,27 +148,22 @@ MIDDLEWARE = [
 ```
 
 WTM offers two ways to implement it's functionality. You can either choose to
-use the ``TagManagerMiddleware`` (which will rewrite the html on each request)
-or use the ``{% wtm_instant_tags %}`` and ``{% wtm_lazy_manager %}`` template
+use the `TagManagerMiddleware` (which will rewrite the html on each request)
+or use the `{% wtm_instant_tags %}` and `{% wtm_lazy_manager %}` template
 tags.
 
 If you prefer to use the template tags to inject tags into your templates,
-set the ``WTM_INJECT_TAGS`` and ``WTM_INJECT_SCRIPT`` settings to ``False``
+set the `WTM_INJECT_TAGS` and `WTM_INJECT_SCRIPT` settings to `False`
 and implement the template tags as follows:
 
 ```html+django
 {% load wtm_tags %}
 
 <head>
-    {% wtm_instant_tags 'top_head' %}
-    ...
-    {% wtm_instant_tags 'bottom_head' %}
+  {% wtm_instant_tags 'top_head' %} ... {% wtm_instant_tags 'bottom_head' %}
 </head>
 <body>
-    {% wtm_instant_tags 'top_body' %}
-    ...
-    {% wtm_instant_tags 'bottom_body' %}
-    {% wtm_lazy_manager %}
+  {% wtm_instant_tags 'top_body' %} ... {% wtm_instant_tags 'bottom_body' %} {% wtm_lazy_manager %}
 </body>
 ```
 
@@ -183,11 +184,11 @@ urlpatterns = [
 
 ## Template tags
 
-As an alternative to using the middleware you can use the ``wtm_instant_tags``
-and ``wtm_lazy_manager`` template tags. Please be sure to use the
-``TagManagerMiddleware`` OR the template tags, never both.
+As an alternative to using the middleware you can use the `wtm_instant_tags`
+and `wtm_lazy_manager` template tags. Please be sure to use the
+`TagManagerMiddleware` OR the template tags, never both.
 
-### ``wtm_instant_tags``
+### `wtm_instant_tags`
 
 To load all instant tags at once:
 
@@ -195,8 +196,7 @@ To load all instant tags at once:
 {% load wtm_tags %}
 
 <head>
-    ...
-    {% wtm_instant_tags %}
+  ... {% wtm_instant_tags %}
 </head>
 ```
 
@@ -206,25 +206,20 @@ To load tags corresponding to a certain position:
 {% load wtm_tags %}
 
 <head>
-    {% wtm_instant_tags 'top_head' %}
-    ...
-    {% wtm_instant_tags 'bottom_head' %}
+  {% wtm_instant_tags 'top_head' %} ... {% wtm_instant_tags 'bottom_head' %}
 </head>
 <body>
-    {% wtm_instant_tags 'top_body' %}
-    ...
-    {% wtm_instant_tags 'bottom_body' %}
+  {% wtm_instant_tags 'top_body' %} ... {% wtm_instant_tags 'bottom_body' %}
 </body>
 ```
 
-### ``wtm_lazy_manager``
+### `wtm_lazy_manager`
 
 ```html+django
 {% load wtm_tags %}
 
 <body>
-    ...
-    {% wtm_lazy_manager %}
+  ... {% wtm_lazy_manager %}
 </body>
 ```
 
@@ -234,14 +229,13 @@ Optionally, you can disable either the script and/or the styling.
 {% load wtm_tags %}
 
 <body>
-    ...
-    {% wtm_lazy_manager include_style=False include_script=False %}
+  ... {% wtm_lazy_manager include_style=False include_script=False %}
 </body>
 ```
 
 ---
 
-### ``wtm_cookie_bar``
+### `wtm_cookie_bar`
 
 ![Cookie bar with form](screenshots/cookie-bar-with-form.png "Cookie bar with form")
 
@@ -251,12 +245,11 @@ Optionally, you can disable either the script and/or the styling.
 {% load wtm_tags %}
 
 <body>
-    {% wtm_cookie_bar %}
-    ...
+  {% wtm_cookie_bar %} ...
 </body>
 ```
 
-### ``wtm_include``
+### `wtm_include`
 
 WTM comes with the `wtm_include` template tag to accommodate loading of
 resources and markup based on the tag strategy and consent given. It can be
@@ -266,11 +259,8 @@ used as a way to load html, css or javascript files.
 {% load wtm_tags %}
 
 <body>
-    ...
-    {% wtm_include "necessary" "css/style.css" %}
-    {% wtm_include "necessary" "js/style.js" %}
-    {% wtm_include "necessary" "content.html" %}
-    ...
+  ... {% wtm_include "necessary" "css/style.css" %} {% wtm_include "necessary" "js/style.js" %} {%
+  wtm_include "necessary" "content.html" %} ...
 </body>
 ```
 
@@ -280,13 +270,11 @@ Alternatively, you can use it as a block:
 {% load wtm_tags %}
 
 <body>
-    ...
-    {% wtm_include "statistics" %}
-        <script>
-            console.log("Included conditionally");
-        </script>
-    {% wtm_endinclude %}
-    ...
+  ... {% wtm_include "statistics" %}
+  <script>
+    console.log("Included conditionally");
+  </script>
+  {% wtm_endinclude %} ...
 </body>
 ```
 
@@ -296,11 +284,7 @@ You can use the following provided template tags to render a tag status
 overview, a table with cookie declarations or a consent form.
 
 ```html+django
-{% wtm_tag_table %}
-
-{% wtm_declaration_table %}
-
-{% wtm_manage_form %}
+{% wtm_tag_table %} {% wtm_declaration_table %} {% wtm_manage_form %}
 ```
 
 ## Context processors
@@ -317,13 +301,8 @@ To enable the context processors, add the following to your settings:
 You can now use the following value in your templates:
 
 ```html+django
-{{ wtm_consent_state.necessary }}
-
-{{ wtm_consent_state.preferences }}
-
-{{ wtm_consent_state.statistics }}
-
-{{ wtm_consent_state.marketing }}
+{{ wtm_consent_state.necessary }} {{ wtm_consent_state.preferences }} {{
+wtm_consent_state.statistics }} {{ wtm_consent_state.marketing }}
 ```
 
 These will return a boolean indicating wether or not tags specific to the
@@ -331,7 +310,7 @@ corresponding state should load.
 
 ## Settings
 
-### ``WTM_TAG_TYPES``
+### `WTM_TAG_TYPES`
 
 ```python
 WTM_TAG_TYPES = {
@@ -345,30 +324,30 @@ WTM_TAG_TYPES = {
 
 Allows you to define the tag types available. This can be helpful if you'd like
 the change the terminology used, or when you'd prefer to split a type in
-multiple sections. Notice the two keywords (``required`` and ``initial``) used.
+multiple sections. Notice the two keywords (`required` and `initial`) used.
 
-Tags marked as ``required`` can not be disabled and will always be included on
+Tags marked as `required` can not be disabled and will always be included on
 every page.
 
-Tags marked as ``initial`` will be included as long as no explicit consent has
+Tags marked as `initial` will be included as long as no explicit consent has
 been given by the end user, provided the browser allows cookies. While no
 consent has been given, these tags will be loaded lazily to honor the browser
 settings (which we can only read using javascript).
 
-The third option is to mark a tag as ``delayed``. This will ensure the tag will
+The third option is to mark a tag as `delayed`. This will ensure the tag will
 not load on the first page load, but only from the second load forward.
 
-### ``WTM_INJECT_TAGS``
+### `WTM_INJECT_TAGS`
 
 ```python
 WTM_INJECT_TAGS = True
 ```
 
 Instructs the middleware to inject all tags marked "instant load" in the
-document. Disable this if you would rather use the ``{% wtm_instant_tags %}``
+document. Disable this if you would rather use the `{% wtm_instant_tags %}`
 template tags.
 
-### ``WTM_MANAGE_VIEW``
+### `WTM_MANAGE_VIEW`
 
 ```python
 WTM_MANAGE_VIEW = True
@@ -378,7 +357,7 @@ Allows you to enable or disable the included "manage" view allowing users to
 get insight in the tags running on your site and adjust their preferences.
 The view is enabled by default.
 
-### ``WTM_COOKIE_EXPIRE``
+### `WTM_COOKIE_EXPIRE`
 
 ```python
 WTM_COOKIE_EXPIRE = 365
@@ -387,7 +366,7 @@ WTM_COOKIE_EXPIRE = 365
 Sets the expiration time in days of WTM's cookies. Notice that this is only
 applicable to the consent cookies used by WTM, not any cookies placed by tags.
 
-### ``WTM_CACHE_TIMEOUT``
+### `WTM_CACHE_TIMEOUT`
 
 ```python
 WTM_CACHE_TIMEOUT = 1800
@@ -397,7 +376,7 @@ Sets the amount of seconds the cache will be preserved. At the moment,
 caching is only applied to constants, which will refresh when a constant is
 saved. Default is 30 minutes.
 
-### ``WTM_PRESERVE_VARIABLES``
+### `WTM_PRESERVE_VARIABLES`
 
 ```python
 WTM_PRESERVE_VARIABLES = True
@@ -407,7 +386,7 @@ Configures whether the variables are preserved for each request, or refreshed
 for each tag applied to a response. When set to `False`, a query will be done
 for each single tag which will add up quickly.
 
-### ``WTM_INJECT_STYLE``
+### `WTM_INJECT_STYLE`
 
 ```python
 WTM_INJECT_STYLE = True
@@ -416,7 +395,7 @@ WTM_INJECT_STYLE = True
 Change to `False` to prevent WTM's included styles from loading. This is useful
 if you wish to style the cookiebar yourself.
 
-### ``WTM_INJECT_SCRIPT``
+### `WTM_INJECT_SCRIPT`
 
 ```python
 WTM_INJECT_SCRIPT = True
@@ -426,7 +405,7 @@ Change to `False` to prevent WTM's included scripts from loading. This is
 useful if you don't want to use the inlcuded lazy loading and cookie bar
 functionality.
 
-### ``WTM_SUMMARY_PANELS``
+### `WTM_SUMMARY_PANELS`
 
 ```python
 WTM_SUMMARY_PANELS = False
@@ -436,7 +415,7 @@ Disables or enables the summary panels visible on the Wagtail admin dashboard.
 
 ![Admin summary panels](screenshots/summary-panels-admin.png "Summary panels on the dashboard")
 
-### ``WTM_CHROMEDRIVER_URL``
+### `WTM_CHROMEDRIVER_URL`
 
 **This is an experimental feature.**
 
@@ -445,7 +424,7 @@ WTM_CHROMEDRIVER_URL = "http://0.0.0.0:4444/wd/hub"
 ```
 
 Allows configuration of the docker container running an instance of
-``selenium/standalone-chrome``.
+`selenium/standalone-chrome`.
 
 When developing, use the following command to run the docker container and
 ensure that your site is configured be accessible over your computer's public
@@ -456,7 +435,7 @@ https://hub.docker.com/r/selenium/standalone-chrome/
 ## Custom variables
 
 In addition to managing variables in the admin interface, variables can also be
-created in your source code by registering a ``CustomVariable``.
+created in your source code by registering a `CustomVariable`.
 
 ```python
 from wagtail_tag_manager.decorators import register_variable
@@ -476,7 +455,7 @@ class Variable(CustomVariable):
 
 ## Page tag mixin
 
-If you would like to include tags on a page, include the ``TagMixin`` mixin.
+If you would like to include tags on a page, include the `TagMixin` mixin.
 Under the "Settings" tab of the corresponding page type a list of tags will be
 shown. By selecting these, these tags will be included when the page loads.
 
@@ -509,10 +488,10 @@ the conditions that you specified.
 
 To experiment with the package you can use the sandbox provided in this
 repository. To install this you will need to create and activate a
-virtualenv and then run ``make sandbox``. This will start a fresh Wagtail
+virtualenv and then run `make sandbox`. This will start a fresh Wagtail
 install, with the tag manager module enabled, on http://localhost:8000
 and http://localhost:8000/cms/. The superuser credentials are
-``superuser`` with the password ``testing``.
+`superuser` with the password `testing`.
 
 Various types of tags, constants and variables are enabled out of the box.
 Check out the console in your browser to see them in action.
@@ -522,7 +501,7 @@ Check out the console in your browser to see them in action.
 WTM comes with the following tag types pre-configured:
 
 | Name        | Setting  |
-|-------------|----------|
+| ----------- | -------- |
 | Necessary   | Required |
 | Preferences | Initial  |
 | Statistics  | Initial  |
@@ -531,14 +510,14 @@ WTM comes with the following tag types pre-configured:
 These types correspond to the segmentation made by the EU [here](https://gdpr.eu/cookies/).
 
 | State                                                        | Required | Initial | Delayed | Default |
-|--------------------------------------------------------------|----------|---------|---------|---------|
+| ------------------------------------------------------------ | -------- | ------- | ------- | ------- |
 | No cookies accepted.                                         | yes      | no      | no      | no      |
 | Cookies implicitly accepted through browser settings.        | yes      | yes     | yes¹    | no      |
 | Cookies explicitly accepted, noting tracking functionality.² | yes      | yes     | yes¹    | yes     |
 
-*¹ From the second page load onward.*
+_¹ From the second page load onward._
 
-*² According to the ePrivacy regulation, mentioning that you are using tracking functionality is mandatory.*
+_² According to the ePrivacy regulation, mentioning that you are using tracking functionality is mandatory._
 
 Note that in the case of Statistics cookies or local storage, you are obliged
 to still show a notification at least once, noting that you are using cookies
@@ -555,34 +534,34 @@ the correct time, taking in account the following scenario's:
 
 1. The user has not accepted cookies.
 
-    |         | Required | Initial | Delayed | Default |
-    |---------|----------|---------|---------|---------|
-    | Instant | yes      | no      | no      | no      |
-    | Lazy    | yes      | no      | no      | no      |
+   |         | Required | Initial | Delayed | Default |
+   | ------- | -------- | ------- | ------- | ------- |
+   | Instant | yes      | no      | no      | no      |
+   | Lazy    | yes      | no      | no      | no      |
 
 2. The user has accepted cookies through browser settings.
 
-    |         | Required  | Initial | Delayed | Default |
-    |---------|-----------|---------|---------|---------|
-    | Instant | yes       | yes¹    | yes²    | no      |
-    | Lazy    | yes       | yes     | yes²    | no      |
+   |         | Required | Initial | Delayed | Default |
+   | ------- | -------- | ------- | ------- | ------- |
+   | Instant | yes      | yes¹    | yes²    | no      |
+   | Lazy    | yes      | yes     | yes²    | no      |
 
-    *¹ Will be loaded lazily.*
+   _¹ Will be loaded lazily._
 
-    *² From the second page load onward.*
+   _² From the second page load onward._
 
-    As the acceptance of "Initial" tags can only be verified client side, we'll
-    first load all the "Initial" tags lazy (whether they are instant or not).
+   As the acceptance of "Initial" tags can only be verified client side, we'll
+   first load all the "Initial" tags lazy (whether they are instant or not).
 
-    Please note that we still have to show a message stating that we are using
-    tags with analytical purposes.
+   Please note that we still have to show a message stating that we are using
+   tags with analytical purposes.
 
 3. The user has explicitly accepted cookies for your site.
 
-    |         | Required | Initial | Delayed | Default |
-    |---------|----------|---------|---------|---------|
-    | Instant | yes      | yes     | yes     | yes     |
-    | Lazy    | yes      | yes     | yes     | yes     |
+   |         | Required | Initial | Delayed | Default |
+   | ------- | -------- | ------- | ------- | ------- |
+   | Instant | yes      | yes     | yes     | yes     |
+   | Lazy    | yes      | yes     | yes     | yes     |
 
 ## License
 
