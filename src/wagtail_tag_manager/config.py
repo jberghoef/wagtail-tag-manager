@@ -20,10 +20,10 @@ class WagtailTagManagerConfig(AppConfig):
 
     @staticmethod
     def register_variables():
-        from wagtail_tag_manager.decorators import register_variable
+        from wagtail_tag_manager.utils import get_consent
         from wagtail_tag_manager.options import CustomVariable
         from wagtail_tag_manager.settings import TagTypeSettings
-        from wagtail_tag_manager.utils import get_consent
+        from wagtail_tag_manager.decorators import register_variable
 
         class TagConsentVariable(CustomVariable):
             group = _("Consent")

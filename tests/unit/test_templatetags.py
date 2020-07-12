@@ -19,7 +19,7 @@ from wagtail_tag_manager.templatetags.wtm_tags import (
 
 __version__ = django.get_version()
 if __version__.startswith("2.0"):
-    from django.template.base import TOKEN_MAPPING, TOKEN_TEXT
+    from django.template.base import TOKEN_TEXT, TOKEN_MAPPING
 
     TOKEN_TYPE = TOKEN_MAPPING[TOKEN_TEXT]
 else:
