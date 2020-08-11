@@ -22,7 +22,7 @@ jobs:
     - python: 3.8
       node_js: 10
       name: End to end test without recording
-      env: TOXENV=py38-django30-wagtail29
+      env: TOXENV=py38-django31-wagtail210
       before_script:
         - yarn install
       script:
@@ -77,11 +77,15 @@ jobs:
       python: 3.8
       env: TOXENV=py38-django30-wagtail29
       script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.10 & Django 3.1 running on Python 3.8
+      python: 3.8
+      env: TOXENV=py38-django31-wagtail210
+      script: tox -- --nomigrations --reuse-db tests/
   allow_failures:
     - python: 3.8
       node_js: 10
       name: End to end test with recording
-      env: TOXENV=py38-django30-wagtail29 TEST_GROUP=other
+      env: TOXENV=py38-django31-wagtail210 TEST_GROUP=other
       before_script:
         - yarn install
       script:
