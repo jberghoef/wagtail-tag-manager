@@ -54,7 +54,7 @@ describe("The website", () => {
 describe("The API", () => {
   it("returns a valid config", () => {
     cy.server();
-    cy.route("GET", "/wtm/config/").as("config");
+    cy.route("GET", "/wtm/config/*").as("config");
     cy.visit("/");
 
     cy.wait("@config").should((xhr) => {
