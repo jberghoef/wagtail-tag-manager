@@ -5,14 +5,14 @@
     "fields": {
       "hostname": "localhost",
       "port": 8000,
-      "site_name": null,
+      "site_name": "Wagtail Tag Manager",
       "root_page": 2,
       "is_default_site": true
     }
   },
   {
     "model": "contenttypes.contenttype",
-    "pk": 37,
+    "pk": 45,
     "fields": {
       "app_label": "home",
       "model": "homepage"
@@ -28,7 +28,7 @@
       "title": "Wagtail Tag Manager",
       "draft_title": "Wagtail Tag Manager",
       "slug": "wagtail-tag-manager",
-      "content_type": 37,
+      "content_type": 45,
       "live": true,
       "has_unpublished_changes": false,
       "url_path": "/wagtail-tag-manager/",
