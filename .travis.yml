@@ -19,16 +19,6 @@ jobs:
       script:
         - flake8 src tests setup.py
         - isort -q --recursive --diff src/ tests/
-    - python: 3.8
-      node_js: 10
-      name: End to end test without recording
-      env: TOXENV=py38-django31-wagtail210
-      before_script:
-        - yarn install
-      script:
-        - make test_sandbox &
-        - yarn cypress:run
-        - kill $(jobs -p) || true
     - name: Wagtail 2.1 & Django 2.0 running on Python 3.6
       python: 3.6
       env: TOXENV=py36-django20-wagtail21
@@ -82,6 +72,16 @@ jobs:
       env: TOXENV=py38-django31-wagtail210
       script: tox -- --nomigrations --reuse-db tests/
   allow_failures:
+    - python: 3.8
+      node_js: 10
+      name: End to end test without recording
+      env: TOXENV=py38-django31-wagtail210 TEST_GROUP=other
+      before_script:
+        - yarn install
+      script:
+        - make test_sandbox &
+        - yarn cypress:run
+        - kill $(jobs -p) || true
     - python: 3.8
       node_js: 10
       name: End to end test with recording
