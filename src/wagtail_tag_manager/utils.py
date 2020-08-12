@@ -87,12 +87,20 @@ def set_cookie(response, key, value, days_expire=None):
 
 
 def get_page_for_request(request):
-    if request and hasattr(request, "site"):
+    site = get_site_for_request(request)
+    if site:
         path = request.path
         path_components = [component for component in path.split("/") if component]
-        page, args, kwargs = request.site.root_page.specific.route(
-            request, path_components
-        )
+        page, args, kwargs = site.root_page.specific.route(request, path_components)
         return page
 
     return None
+
+
+def get_site_for_request(request):
+    try:
+        from wagtail.core.models import Site
+
+        return Site.find_for_request(request)
+    except:  # noqa: E722
+        return getattr(request, "site")
