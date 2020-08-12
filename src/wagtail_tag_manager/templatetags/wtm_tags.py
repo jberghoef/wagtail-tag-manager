@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.templatetags.static import static
 
 from wagtail_tag_manager.forms import ConsentForm
+from wagtail_tag_manager.utils import get_site_for_request
 from wagtail_tag_manager.models import Tag, CookieDeclaration
 from wagtail_tag_manager.settings import TagTypeSettings, CookieBarSettings
 from wagtail_tag_manager.strategy import TagStrategy
@@ -135,10 +136,11 @@ def wtm_lazy_manager(include_style=True, include_script=True):
 )
 def wtm_cookie_bar(context):
     request = context.get("request", None)
-    if request:
+    site = get_site_for_request(request)
+
+    if request and site:
         cookie_bar_settings = {}
-        if getattr(request, "site", None):
-            cookie_bar_settings = CookieBarSettings.for_site(request.site)
+        cookie_bar_settings = CookieBarSettings.for_site(site)
 
         manage_view = getattr(settings, "WTM_MANAGE_VIEW", True)
         if manage_view and hasattr(request, "resolver_match"):

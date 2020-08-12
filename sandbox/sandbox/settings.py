@@ -81,7 +81,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "wagtail.core.middleware.SiteMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "wagtail_tag_manager.middleware.CookieConsentMiddleware",
     "wagtail_tag_manager.middleware.TagManagerMiddleware",
@@ -94,7 +93,8 @@ if os.getenv("ENVIRONMENT") != "test":
 WTM_MANAGE_VIEW = True
 WTM_SUMMARY_PANELS = True
 
-WTM_INJECT_TAGS = False
+WTM_INJECT_TAGS = True
+WTM_INJECT_SCRIPT = True
 
 WTM_TAG_TYPES = {
     # key, verbose name, setting

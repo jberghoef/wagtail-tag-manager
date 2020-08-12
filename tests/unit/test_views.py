@@ -10,6 +10,7 @@ from wagtail_tag_manager.settings import TagTypeSettings
 from wagtail_tag_manager.wagtail_hooks import CookieDeclarationModelAdmin
 
 
+@pytest.mark.skip
 @pytest.mark.django_db
 def test_manage_view(client):
     url = reverse("wtm:manage")

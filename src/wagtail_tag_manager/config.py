@@ -132,8 +132,11 @@ class WagtailTagManagerConfig(AppConfig):
             group = _("Wagtail")
 
             def get_value(self, request):
-                if hasattr(request, "site"):
-                    return getattr(request.site, "pk", "")
+                from wagtail_tag_manager.utils import get_site_for_request
+
+                site = get_site_for_request(request)
+                if site:
+                    return getattr(site, "pk", "")
                 return super().get_value(request)
 
         @register_variable
