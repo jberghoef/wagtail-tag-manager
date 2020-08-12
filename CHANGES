@@ -1,3 +1,12 @@
+0.23.0 (2020.8.12)
+==================
+ - Update README
+ - Update front-end dependencies
+ - Bump elliptic from 6.5.2 to 6.5.3 (#71)
+ - Support for Wagtail 2.10 (#73)
+ - Update usage of request.site (#72)
+
+
 0.22.4 (2020.6.22)
 ==================
  - Implement end 2 end testing (#69)
