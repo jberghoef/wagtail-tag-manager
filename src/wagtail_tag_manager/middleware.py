@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 from django.conf import settings
 from django.urls import reverse
-from django.template.response import TemplateResponse
 from django.templatetags.static import static
 
 from wagtail_tag_manager.utils import set_consent
@@ -35,29 +34,35 @@ class TagManagerMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        self.request = request
-        self.response = self.get_response(request)
-        self.strategy = TagStrategy(request)
-
-        if (
-            getattr(self.request, "method", None) == "GET"
-            and getattr(self.response, "status_code", None) == 200
-            and isinstance(self.response, TemplateResponse)
+        response = self.get_response(request)
+        content_encoding = response.get("Content-Encoding", "")
+        content_type = response.get("Content-Type", "").split(";")[0]
+        if any(
+            (
+                getattr(response, "streaming", False),
+                "gzip" in content_encoding,
+                content_type not in ("text/html", "application/xhtml+xml"),
+            )
         ):
-            self._add_instant_tags()
-            self._add_lazy_manager()
+            return response
 
-        return self.response
+        response = self._add_instant_tags(request, response)
+        response = self._add_lazy_manager(response)
 
-    def _add_instant_tags(self):
-        if hasattr(self.response, "content") and getattr(
-            settings, "WTM_INJECT_TAGS", True
-        ):
-            doc = BeautifulSoup(self.response.content, "html.parser")
+        if "Content-Length" in response:
+            response["Content-Length"] = len(response.content)
+
+        return response
+
+    def _add_instant_tags(self, request, response):
+        if hasattr(response, "content") and getattr(settings, "WTM_INJECT_TAGS", True):
+            strategy = TagStrategy(request)
+            content = response.content.decode(response.charset)
+            doc = BeautifulSoup(content, "html.parser")
             head = getattr(doc, "head", [])
             body = getattr(doc, "body", [])
 
-            for tag in self.strategy.result:
+            for tag in strategy.result:
                 obj = tag.get("object")
                 element = tag.get("element")
 
@@ -72,11 +77,15 @@ class TagManagerMiddleware:
 
             doc.head = head
             doc.body = body
-            self.response.content = doc.decode()
+            response.content = doc.encode(formatter=None)
+            return response
 
-    def _add_lazy_manager(self):
-        if hasattr(self.response, "content"):
-            doc = BeautifulSoup(self.response.content, "html.parser")
+        return response
+
+    def _add_lazy_manager(self, response):
+        if hasattr(response, "content"):
+            content = response.content.decode(response.charset)
+            doc = BeautifulSoup(content, "html.parser")
 
             if doc.body:
                 doc.body["data-wtm-config"] = reverse("wtm:config")
@@ -95,4 +104,7 @@ class TagManagerMiddleware:
                     script["src"] = static("wagtail_tag_manager/wtm.bundle.js")
                     doc.body.append(script)
 
-            self.response.content = doc.decode()
+            response.content = doc.encode(formatter=None)
+            return response
+
+        return response
