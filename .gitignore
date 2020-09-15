@@ -12,6 +12,7 @@
 .idea/
 .tox/
 .vscode/
+.nova/
 
 cypress/screenshots/*
 cypress/videos/*

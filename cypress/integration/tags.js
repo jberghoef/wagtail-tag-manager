@@ -23,7 +23,7 @@ describe("Necessary tags", () => {
     cy.getCookie("wtm").should(
       "have.property",
       "value",
-      "necessary:true|preferences:unset|statistics:true|marketing:false"
+      "necessary:true|preferences:unset|statistics:pending|marketing:false"
     );
 
     cy.setCookie("wtm", "necessary:false|preferences:false|statistics:false|marketing:false");
@@ -126,7 +126,7 @@ describe("Statistical tags", () => {
     cy.get("@consoleInfo").should("not.be.calledWith", "instant initial");
     cy.get("@consoleInfo").should("not.be.calledWith", "lazy initial");
 
-    cy.reload()
+    cy.reload();
 
     cy.get("@consoleInfo").should("be.calledWith", "instant initial");
     cy.get("@consoleInfo").should("be.calledWith", "lazy initial");

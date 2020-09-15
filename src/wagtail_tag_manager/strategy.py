@@ -14,6 +14,7 @@ from wagtail_tag_manager.settings import (
 CONSENT_TRUE = "true"
 CONSENT_FALSE = "false"
 CONSENT_UNSET = "unset"
+CONSENT_PENDING = "pending"
 
 CONSENT_MAP = (
     # Method, tag config
@@ -37,7 +38,8 @@ CONSENT_MAP = (
         "GET",
         SETTING_DELAYED,
         (
-            (lambda c: c == CONSENT_UNSET, CONSENT_UNSET, False, False),
+            (lambda c: c == CONSENT_UNSET, CONSENT_PENDING, False, False),
+            (lambda c: c == CONSENT_PENDING, CONSENT_TRUE, True, False),
             (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, True, False),
         ),
     ),
@@ -62,7 +64,8 @@ CONSENT_MAP = (
         "POST",
         SETTING_DELAYED,
         (
-            (lambda c: c == CONSENT_UNSET, CONSENT_TRUE, False, False),
+            (lambda c: c == CONSENT_UNSET, CONSENT_UNSET, False, False),
+            (lambda c: c == CONSENT_PENDING, CONSENT_PENDING, False, False),
             (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, False, True),
         ),
     ),

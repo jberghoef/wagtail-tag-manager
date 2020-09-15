@@ -81,7 +81,11 @@ export default class TagManager {
 
     if (enabled) {
       Object.keys(this.config.tag_types).forEach((tagType) => {
-        if (this.state[tagType] === "unset" || this.state[tagType] == "none") {
+        if (
+          this.state[tagType] === "unset" ||
+          this.state[tagType] == "none" ||
+          this.state[tagType] == "pending"
+        ) {
           this.showCookiebar = true;
         }
       });
