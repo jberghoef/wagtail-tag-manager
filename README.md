@@ -10,6 +10,7 @@
 [![Downloads][downloads]](https://pepy.tech/project/wagtail-tag-manager)
 [![Black][black]](https://github.com/ambv/black)
 [![Prettier][prettier]](https://github.com/prettier/prettier)
+[![Gitpod ready-to-code][gitpod]](https://gitpod.io/#https://github.com/jberghoef/wagtail-tag-manager)
 
 [circleci]: https://circleci.com/gh/jberghoef/wagtail-tag-manager.svg?style=svg "Circle CI"
 [travis]: https://travis-ci.org/jberghoef/wagtail-tag-manager.svg?branch=master "Travis CI"
@@ -21,8 +22,8 @@
 [downloads]: https://pepy.tech/badge/wagtail-tag-manager "Downloads"
 [black]: https://img.shields.io/badge/code%20style-black-000000.svg "Black"
 [prettier]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg "Prettier"
+[gitpod]: https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod "Gitpod"
 
-[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/jberghoef/wagtail-tag-manager)
 
 Wagtail Tag Manager (WTM for short) is a [Wagtail](https://wagtail.io/) addon
 that allows for easier and GDPR compliant administration of scripts and tags.
