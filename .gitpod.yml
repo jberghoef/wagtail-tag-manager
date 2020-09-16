@@ -1,0 +1,6 @@
+tasks:
+  - init: make install
+    command: make sandbox
+ports:
+  - port: 8000
+    onOpen: open-preview
