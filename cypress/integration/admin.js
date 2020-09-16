@@ -70,15 +70,15 @@ describe("Tag management", () => {
     cy.get("#id_description").type("Lorem ipsum");
     cy.get(".CodeMirror").click().type("console.info('test')");
     cy.get(".actions button[type='submit']").click();
-    cy.get(".messages .success").contains("Tag 'A new tag' created.");
+    cy.get(".field-name_display").first().contains("A new tag");
   });
 
   it("can update a tag", () => {
     cy.visit("/cms/wagtail_tag_manager/tag/");
     cy.get("[data-object-pk]").first().find("a").contains("Edit").click({ force: true });
-    cy.get("#id_priority").type("{backspace}1");
+    cy.get("#id_name").type("{selectall}{del}An updated tag");
     cy.get(".actions button[type='submit']").click();
-    cy.get(".messages .success").contains("Tag 'A new tag' updated.");
+    cy.get(".field-name_display").first().contains("An updated tag");
   });
 
   it("can't select the location when loaded lazily", () => {
@@ -93,7 +93,7 @@ describe("Tag management", () => {
     cy.visit("/cms/wagtail_tag_manager/tag/");
     cy.get("[data-object-pk]").first().find("a").contains("Delete").click({ force: true });
     cy.get("input[type='submit']").click();
-    cy.get(".messages .success").contains("tag 'A new tag' deleted.");
+    cy.get(".messages .success").contains("tag 'An updated tag' deleted.");
   });
 });
 
@@ -121,7 +121,7 @@ describe("Constants management", () => {
     cy.get("#id_key").type("test");
     cy.get("#id_value").type("Some cool test");
     cy.get(".actions button[type='submit']").click();
-    cy.get(".messages .success").contains("Constant 'A new constant' created.");
+    cy.get(".field-name_display").first().contains("A new constant");
   });
 
   it("can use the constant", () => {
@@ -132,16 +132,16 @@ describe("Constants management", () => {
   it("can update a constant", () => {
     cy.visit("/cms/wagtail_tag_manager/constant/");
     cy.get("[data-object-pk]").first().find("a").contains("Edit").click({ force: true });
-    cy.get("#id_description").type(" dolor sit amet");
+    cy.get("#id_name").type("{selectall}{del}An updated constant");
     cy.get(".actions button[type='submit']").click();
-    cy.get(".messages .success").contains("Constant 'A new constant' updated.");
+    cy.get(".field-name_display").first().contains("An updated constant");
   });
 
   it("can delete a constant", () => {
     cy.visit("/cms/wagtail_tag_manager/constant/");
     cy.get("[data-object-pk]").first().find("a").contains("Delete").click({ force: true });
     cy.get("input[type='submit']").click();
-    cy.get(".messages .success").contains("constant 'A new constant' deleted.");
+    cy.get(".messages .success").contains("constant 'An updated constant' deleted.");
   });
 });
 
@@ -170,7 +170,7 @@ describe("Variable management", () => {
     cy.get("#id_variable_type").select("_repath+", { force: true });
     cy.get("#id_value").type("/wtm/is/cool/");
     cy.get(".actions button[type='submit']").click();
-    cy.get(".messages .success").contains("Variable 'A new variable' created.");
+    cy.get(".field-name_display").first().contains("A new variable");
   });
 
   it("can use the variable", () => {
@@ -181,17 +181,18 @@ describe("Variable management", () => {
   it("can update a variable", () => {
     cy.visit("/cms/wagtail_tag_manager/variable/");
     cy.get("[data-object-pk]").first().find("a").contains("Edit").click({ force: true });
+    cy.get("#id_name").type("{selectall}{del}An updated variable");
     cy.get("#id_variable_type").select("_cookie+", { force: true });
     cy.get("#id_value").type("{selectall}{del}wtm_id");
     cy.get(".actions button[type='submit']").click();
-    cy.get(".messages .success").contains("Variable 'A new variable' updated.");
+    cy.get(".field-name_display").first().contains("An updated variable");
   });
 
   it("can delete a variable", () => {
     cy.visit("/cms/wagtail_tag_manager/variable/");
     cy.get("[data-object-pk]").first().find("a").contains("Delete").click({ force: true });
     cy.get("input[type='submit']").click();
-    cy.get(".messages .success").contains("variable 'A new variable' deleted.");
+    cy.get(".messages .success").contains("variable 'An updated variable' deleted.");
   });
 });
 
