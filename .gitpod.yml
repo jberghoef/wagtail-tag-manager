@@ -1,6 +1,6 @@
 tasks:
-  - init: make install
-    command: make sandbox
+  - init: make clean && make requirements && pip install -r sandbox/requirements.txt
+    command: sandbox/manage.py migrate && sandbox/manage.py loaddata sandbox/exampledata/users.json && sandbox/manage.py loaddata sandbox/exampledata/cms.json && sandbox/manage.py loaddata sandbox/exampledata/default_tags.json && sandbox/manage.py loaddata sandbox/exampledata/additional_tags.json && sandbox/manage.py runserver
 ports:
   - port: 8000
     onOpen: open-preview
