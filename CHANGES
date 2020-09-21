@@ -1,3 +1,13 @@
+0.24.0 (2020.9.21)
+ - Correct admin and trigger tests for missing success messages
+ - Add page tags related E2E tests
+ - Fully automate dev setup with Gitpod (#76)
+ - Fix Cypress integration test for triggers
+ - Update front-end dependencies
+ - Make cookie scanner functionality optional
+ - Update README
+
+
 0.23.2 (2020.9.15)
 ==================
  - Update middleware to prevent unnecessary loads
