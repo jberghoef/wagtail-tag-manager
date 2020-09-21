@@ -144,8 +144,17 @@ class WTMIndexView(IndexView):
 
 
 class CookieDeclarationIndexView(WTMIndexView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["scanner_enabled"] = getattr(settings, "WTM_ENABLE_SCANNER", False)
+        return context
+
     def post(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.is_staff:
+        if (
+            getattr(settings, "WTM_ENABLE_SCANNER", False)
+            and request.user.is_authenticated
+            and request.user.is_staff
+        ):
             response = HttpResponseRedirect("")
             CookieScanner(request).scan()
             return response

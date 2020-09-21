@@ -31,17 +31,16 @@ class CookieScanner(object):  # pragma: no cover
 
     def scan(self):
         self.now = datetime.utcnow()
+        self.init_browser()
 
-        try:
-            self.init_browser()
+        if hasattr(self, "browser"):
             self.scan_webdriver()
-        except Exception as e:
+        else:
             self.scan_requests()
             messages.warning(
                 self.request,
-                _("WebDriver scan failed. Falling back to GET request method."),
+                _("WebDriver not available. Falling back to GET request method."),
             )
-            messages.error(self.request, e)
 
         messages.success(
             self.request,
@@ -77,6 +76,10 @@ class CookieScanner(object):  # pragma: no cover
             self.updated = self.updated + 1
 
     def init_browser(self):
+        chromedriver_url = getattr(settings, "WTM_CHROMEDRIVER_URL", None)
+        if chromedriver_url is None:
+            return
+
         options = webdriver.ChromeOptions()
         options.add_argument("disable-gpu")
         options.add_argument("headless")
@@ -85,7 +88,7 @@ class CookieScanner(object):  # pragma: no cover
         options.add_argument("no-sandbox")
 
         self.browser = webdriver.Remote(
-            getattr(settings, "WTM_CHROMEDRIVER_URL", "http://0.0.0.0:4444/wd/hub"),
+            chromedriver_url,
             DesiredCapabilities.CHROME,
             options=options,
         )

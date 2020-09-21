@@ -418,6 +418,18 @@ Disables or enables the summary panels visible on the Wagtail admin dashboard.
 
 ![Admin summary panels](screenshots/summary-panels-admin.png "Summary panels on the dashboard")
 
+### `WTM_ENABLE_SCANNER`
+
+**This is an experimental feature.**
+
+```python
+WTM_ENABLE_SCANNER = False
+```
+
+When enabled, allows scanning of cookies placed on the website. Use this to
+automatically generate cookie declarations. Will attempt to use Chrome Driver
+when available, and will fall back to regular requests if not.
+
 ### `WTM_CHROMEDRIVER_URL`
 
 **This is an experimental feature.**

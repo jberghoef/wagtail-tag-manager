@@ -104,6 +104,8 @@ WTM_TAG_TYPES = {
     "marketing": (_("Marketing"), ""),
 }
 
+WTM_ENABLE_SCANNER = True
+
 ROOT_URLCONF = "sandbox.urls"
 
 TEMPLATES = [
