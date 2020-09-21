@@ -144,6 +144,6 @@ describe("Trigger management", () => {
     cy.visit("/cms/wagtail_tag_manager/trigger/");
     cy.get("[data-object-pk]").first().find("a").contains("Delete").click({ force: true });
     cy.get("input[type='submit']").click();
-    cy.get(".messages .success").contains("trigger 'A new trigger' deleted.");
+    cy.get(".messages .success").contains("trigger 'An updated trigger' deleted.");
   });
 });
