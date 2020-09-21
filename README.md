@@ -80,6 +80,7 @@ to inject tags into a page before the response is send to a client.
   - [`WTM_INJECT_STYLE`](#wtm_inject_style)
   - [`WTM_INJECT_SCRIPT`](#wtm_inject_script)
   - [`WTM_SUMMARY_PANELS`](#wtm_summary_panels)
+  - [`WTM_ENABLE_SCANNER`](#wtm_enable_scanner)
   - [`WTM_CHROMEDRIVER_URL`](#wtm_chromedriver_url)
 - [Custom variables](#custom-variables)
 - [Page tag mixin](#page-tag-mixin)
