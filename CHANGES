@@ -1,4 +1,10 @@
+0.24.1 (2020.10.27)
+===================
+ - Remove duplicate response functions from middleware
+
+
 0.24.0 (2020.9.21)
+==================
  - Correct admin and trigger tests for missing success messages
  - Add page tags related E2E tests
  - Fully automate dev setup with Gitpod (#76)
