@@ -12,8 +12,7 @@ class BaseMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
-    def is_valid_response(self, request):
-        response = self.get_response(request)
+    def is_valid_response(self, response):
         content_encoding = response.get("Content-Encoding", "")
         content_type = response.get("Content-Type", "").split(";")[0]
         if any(
@@ -31,7 +30,7 @@ class BaseMiddleware:
 class CookieConsentMiddleware(BaseMiddleware):
     def __call__(self, request):
         response = self.get_response(request)
-        if not self.is_valid_response(request):
+        if not self.is_valid_response(response):
             return response
 
         if (
@@ -51,7 +50,7 @@ class CookieConsentMiddleware(BaseMiddleware):
 class TagManagerMiddleware(BaseMiddleware):
     def __call__(self, request):
         response = self.get_response(request)
-        if not self.is_valid_response(request):
+        if not self.is_valid_response(response):
             return response
 
         response = self._add_instant_tags(request, response)
