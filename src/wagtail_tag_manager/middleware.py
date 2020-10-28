@@ -12,30 +12,16 @@ class BaseMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
-    def is_valid_response(self, response):
-        content_encoding = response.get("Content-Encoding", "")
-        content_type = response.get("Content-Type", "").split(";")[0]
-        if any(
-            (
-                getattr(response, "streaming", False),
-                "gzip" in content_encoding,
-                content_type not in ("text/html", "application/xhtml+xml"),
-            )
-        ):
-            return False
-
-        return True
-
 
 class CookieConsentMiddleware(BaseMiddleware):
     def __call__(self, request):
-        response = self.get_response(request)
-        if not self.is_valid_response(response):
-            return response
+        return self.get_response(request)
 
+    def process_template_response(self, request, response):
         if (
             getattr(request, "method", None) == "GET"
             and getattr(response, "status_code", None) == 200
+            and not getattr(response, "streaming", False)
         ):
             strategy = TagStrategy(request)
             set_consent(
@@ -50,15 +36,14 @@ class CookieConsentMiddleware(BaseMiddleware):
 class TagManagerMiddleware(BaseMiddleware):
     def __call__(self, request):
         response = self.get_response(request)
-        if not self.is_valid_response(response):
-            return response
+        if "Content-Length" in response and not getattr(response, "streaming", False):
+            response["Content-Length"] = len(response.content)
+        return response
 
+    def process_template_response(self, request, response):
+        response.render()
         response = self._add_instant_tags(request, response)
         response = self._add_lazy_manager(response)
-
-        if "Content-Length" in response:
-            response["Content-Length"] = len(response.content)
-
         return response
 
     def _add_instant_tags(self, request, response):
@@ -85,7 +70,6 @@ class TagManagerMiddleware(BaseMiddleware):
             doc.head = head
             doc.body = body
             response.content = doc.encode(formatter=None)
-            return response
 
         return response
 
@@ -112,6 +96,5 @@ class TagManagerMiddleware(BaseMiddleware):
                     doc.body.append(script)
 
             response.content = doc.encode(formatter=None)
-            return response
 
         return response
