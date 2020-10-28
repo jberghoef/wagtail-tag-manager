@@ -85,5 +85,5 @@ class CookieDeclaration(models.Model):
 class CookieConsent(models.Model):
     identifier = models.UUIDField(default=uuid.uuid4, editable=False)
     consent_state = models.TextField(editable=False)
-    location = models.URLField(editable=False)
+    location = models.URLField(editable=False, max_length=2048)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True, editable=False)
