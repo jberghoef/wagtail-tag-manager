@@ -70,7 +70,6 @@ class TagManagerMiddleware(BaseMiddleware):
             doc.head = head
             doc.body = body
             response.content = doc.encode(formatter=None)
-            return response
 
         return response
 
@@ -97,6 +96,5 @@ class TagManagerMiddleware(BaseMiddleware):
                     doc.body.append(script)
 
             response.content = doc.encode(formatter=None)
-            return response
 
         return response
