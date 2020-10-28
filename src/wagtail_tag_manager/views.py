@@ -1,10 +1,13 @@
+import io
 from itertools import groupby
 
 import django
 from django import forms
 from django.conf import settings
-from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect, HttpResponseBadRequest
 from django.views.generic import View, TemplateView
+from rest_framework.parsers import JSONParser
+from rest_framework.renderers import JSONRenderer
 from django.contrib.auth.views import SuccessURLAllowedHostsMixin
 from wagtail.contrib.modeladmin.views import IndexView
 
@@ -13,6 +16,7 @@ from wagtail_tag_manager.utils import set_consent
 from wagtail_tag_manager.models import Trigger, Constant, Variable, TagTypeSettings
 from wagtail_tag_manager.webdriver import CookieScanner
 from wagtail_tag_manager.decorators import get_variables
+from wagtail_tag_manager.serializers import ConsentSerializer
 
 __version__ = django.get_version()
 if __version__.startswith("2"):
@@ -33,41 +37,63 @@ class ManageView(SuccessURLAllowedHostsMixin, TemplateView):
         return HttpResponseNotFound()
 
     def post(self, request, *args, **kwargs):
-        response = HttpResponseRedirect("/")
+        if getattr(request, "content_type") == "application/json":
+            stream = io.BytesIO(request.body)
+            data = JSONParser().parse(stream)
+            serializer = ConsentSerializer(data=data)
+            if serializer.is_valid():
+                response = JsonResponse(serializer.validated_data)
+                set_consent(
+                    request,
+                    response,
+                    {
+                        key: str(value).lower()
+                        for key, value in serializer.validated_data.items()
+                    },
+                    explicit=True,
+                )
+                return response
 
-        redirect_url = request.META.get("HTTP_REFERER", request.build_absolute_uri())
-
-        args = [redirect_url]
-        kwargs = {"require_https": request.is_secure()}
-
-        allowed_hosts = self.get_success_url_allowed_hosts()
-        if __version__.startswith("2.0"):
-            kwargs["allowed_hosts"] = allowed_hosts
-        else:
-            args.append(allowed_hosts)
-
-        if __version__.startswith("2"):
-            from django.utils.http import is_safe_url
-
-            url_is_safe = is_safe_url(*args, **kwargs)
-        else:
-            from django.utils.http import url_has_allowed_host_and_scheme
-
-            url_is_safe = url_has_allowed_host_and_scheme(*args, **kwargs)
-
-        if url_is_safe:
-            response = HttpResponseRedirect(redirect_url)
-
-        form = ConsentForm(request.POST)
-        if form.is_valid():
-            set_consent(
-                request,
-                response,
-                {key: str(value).lower() for key, value in form.cleaned_data.items()},
-                explicit=True,
+        elif getattr(request, "content_type") == "application/x-www-form-urlencoded":
+            redirect_url = request.META.get(
+                "HTTP_REFERER", request.build_absolute_uri()
             )
+            args = [redirect_url]
+            kwargs = {"require_https": request.is_secure()}
 
-        return response
+            allowed_hosts = self.get_success_url_allowed_hosts()
+            if __version__.startswith("2.0"):
+                kwargs["allowed_hosts"] = allowed_hosts
+            else:
+                args.append(allowed_hosts)
+
+            if __version__.startswith("2"):
+                from django.utils.http import is_safe_url
+
+                url_is_safe = is_safe_url(*args, **kwargs)
+            else:
+                from django.utils.http import url_has_allowed_host_and_scheme
+
+                url_is_safe = url_has_allowed_host_and_scheme(*args, **kwargs)
+
+            if url_is_safe:
+                response = HttpResponseRedirect(redirect_url)
+
+            form = ConsentForm(request.POST)
+            if form.is_valid():
+                response = HttpResponseRedirect("/")
+                set_consent(
+                    request,
+                    response,
+                    {
+                        key: str(value).lower()
+                        for key, value in form.cleaned_data.items()
+                    },
+                    explicit=True,
+                )
+                return response
+
+        return HttpResponseBadRequest()
 
 
 class ConfigView(View):

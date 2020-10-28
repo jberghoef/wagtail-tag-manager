@@ -24,7 +24,6 @@
 [prettier]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg "Prettier"
 [gitpod]: https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod "Gitpod"
 
-
 Wagtail Tag Manager (WTM for short) is a [Wagtail](https://wagtail.io/) addon
 that allows for easier and GDPR compliant administration of scripts and tags.
 
@@ -311,6 +310,44 @@ wtm_consent_state.statistics }} {{ wtm_consent_state.marketing }}
 
 These will return a boolean indicating wether or not tags specific to the
 corresponding state should load.
+
+## Setting consent using JavaScript
+
+When building a custom cookie bar or other method of requesting consent, using a
+form might not be the most straightforward solution. Use the code example below
+to configure cookie consent as an AJAX request.
+
+```javascript
+axios({
+  method: "POST",
+  url: "/wtm/manage/",
+  headers: {
+    "X-CSRFToken": "[CSRF token]",
+    "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+  },
+  data: "necessary=true&preferences=true&statistics=true&marketing=false",
+});
+```
+
+```javascript
+axios({
+  method: "POST",
+  url: "/wtm/manage/",
+  headers: {
+    "X-CSRFToken": "[CSRF token]",
+    "Content-Type": "application/json; charset=utf-8",
+  },
+  data: {
+    statistics: "true",
+    preferences: "true",
+    necessary: "true",
+    marketing: "false",
+  },
+});
+```
+
+In the resulting response, the correct cookie with the consent state will be
+returned.
 
 ## Settings
 
