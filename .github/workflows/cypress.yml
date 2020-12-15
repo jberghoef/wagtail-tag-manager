@@ -36,6 +36,8 @@ jobs:
         uses: cypress-io/github-action@v1.16.1
         with:
           record: false
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
       # Kills the sandbox
       - name: Kill sandbox
