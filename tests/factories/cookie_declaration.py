@@ -3,7 +3,7 @@ import factory
 from wagtail_tag_manager.models import CookieDeclaration
 
 
-class CookieDeclarationFactory(factory.DjangoModelFactory):
+class CookieDeclarationFactory(factory.django.DjangoModelFactory):
     cookie_type = "necessary"
     name = "Necessary cookie"
     domain = "localhost"

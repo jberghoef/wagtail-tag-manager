@@ -3,7 +3,7 @@ import factory
 from wagtail_tag_manager import models
 
 
-class ConstantFactory(factory.DjangoModelFactory):
+class ConstantFactory(factory.django.DjangoModelFactory):
     name = "Constant"
     key = "key"
     value = "value"

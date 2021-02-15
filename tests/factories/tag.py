@@ -3,7 +3,7 @@ import factory
 from wagtail_tag_manager.models import Tag
 
 
-class TagFactory(factory.DjangoModelFactory):
+class TagFactory(factory.django.DjangoModelFactory):
     name = "necessary instant"
     content = '<script>console.log("necessary instant")</script>'
 

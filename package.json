@@ -5,8 +5,8 @@
   "main": "webpack.config.js",
   "browserslist": "> 0.25%, not dead",
   "scripts": {
-    "build": "webpack --mode production",
-    "dev": "webpack --mode development",
+    "build": "webpack --mode production --progress",
+    "dev": "webpack --mode development --progress",
     "watch": "webpack --mode development --watch",
     "cypress:open": "CYPRESS_CRASH_REPORTS=0 cypress open",
     "cypress:run": "CYPRESS_CRASH_REPORTS=0 wait-on http://127.0.0.1:8000/ && cypress run",

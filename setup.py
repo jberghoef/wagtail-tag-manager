@@ -2,26 +2,26 @@ from setuptools import find_packages, setup
 
 
 install_requires = [
-    "wagtail>=2.1,<2.12",
+    "wagtail>=2.1,<2.13",
     "selenium>=3.141.0,<3.142.0",
 ]
 
 tests_require = [
-    "factory_boy==2.11.1",
-    "Faker==1.0.7",
+    "factory_boy==3.2.0",
+    "Faker==6.1.1",
     "flake8-blind-except",
     "flake8-debugger",
     "flake8-imports",
-    "flake8==3.7.7",
-    "freezegun==0.3.12",
-    "pycodestyle==2.5.0",
-    "pytest-cov==2.7.1",
-    "pytest-django==3.5.1",
+    "flake8",
+    "freezegun==1.1.0",
+    "pycodestyle==2.6.0",
+    "pytest-cov==2.11.1",
+    "pytest-django==4.1.0",
     "pytest-pythonpath==0.7.3",
-    "pytest-randomly==3.0.0",
-    "pytest-sugar==0.9.2",
-    "pytest==5.0.1",
-    "wagtail_factories==1.1.0",
+    "pytest-randomly==3.5.0",
+    "pytest-sugar==0.9.4",
+    "pytest==6.2.2",
+    "wagtail_factories==2.0.1",
 ]
 
 docs_require = ["sphinx>=2.4.0"]

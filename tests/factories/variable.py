@@ -3,7 +3,7 @@ import factory
 from wagtail_tag_manager import models
 
 
-class VariableFactory(factory.DjangoModelFactory):
+class VariableFactory(factory.django.DjangoModelFactory):
     name = "Variable"
     key = "key"
     variable_type = "_cookie+"
