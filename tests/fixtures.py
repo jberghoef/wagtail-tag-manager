@@ -6,14 +6,20 @@ from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.messages.storage.fallback import FallbackStorage
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-from tests.factories.locale import LocaleFactory
 from tests.factories.page import ContentPageFactory, TaggableContentPageFactory
 from tests.factories.site import SiteFactory
 
 
 @pytest.fixture(scope="function")
 def site():
-    LocaleFactory()
+    try:
+        from wagtail.core.models import Locale
+        from tests.factories.locale import LocaleFactory
+
+        LocaleFactory()
+    except:  # noqa: E722
+        pass
+
     root_page = ContentPageFactory(parent=None, slug="")
     site = SiteFactory(is_default_site=True, root_page=root_page)
 
