@@ -34,7 +34,7 @@ setup(
     version="0.25.0",
     description="A Wagtail add-on for managing tags.",
     author="Jasper Berghoef",
-    author_email="jasper.berghoef@gmail.com",
+    author_email="j.berghoef@me.com",
     url="https://github.com/jberghoef/wagtail-tag-manager",
     install_requires=install_requires,
     tests_require=tests_require,

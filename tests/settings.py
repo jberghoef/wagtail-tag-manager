@@ -63,15 +63,17 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-if __version__.startswith("3"):
+try:
+    from wagtail.core.middleware import SiteMiddleware
+
     MIDDLEWARE = MIDDLEWARE + [
-        "wagtail.contrib.legacy.sitemiddleware.SiteMiddleware",
+        "wagtail.core.middleware.SiteMiddleware",
         "wagtail_tag_manager.middleware.CookieConsentMiddleware",
         "wagtail_tag_manager.middleware.TagManagerMiddleware",
     ]
-else:
+except:  # noqa: E722
     MIDDLEWARE = MIDDLEWARE + [
-        "wagtail.core.middleware.SiteMiddleware",
+        "wagtail.contrib.legacy.sitemiddleware.SiteMiddleware",
         "wagtail_tag_manager.middleware.CookieConsentMiddleware",
         "wagtail_tag_manager.middleware.TagManagerMiddleware",
     ]
