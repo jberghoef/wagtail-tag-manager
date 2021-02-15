@@ -54,17 +54,27 @@ TEMPLATES = [
     }
 ]
 
-MIDDLEWARE = (
+MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "wagtail.contrib.legacy.sitemiddleware.SiteMiddleware",
-    "wagtail_tag_manager.middleware.CookieConsentMiddleware",
-    "wagtail_tag_manager.middleware.TagManagerMiddleware",
-)
+]
+
+if __version__.startswith("3"):
+    MIDDLEWARE = MIDDLEWARE + [
+        "wagtail.contrib.legacy.sitemiddleware.SiteMiddleware",
+        "wagtail_tag_manager.middleware.CookieConsentMiddleware",
+        "wagtail_tag_manager.middleware.TagManagerMiddleware",
+    ]
+else:
+    MIDDLEWARE = MIDDLEWARE + [
+        "wagtail.core.middleware.SiteMiddleware",
+        "wagtail_tag_manager.middleware.CookieConsentMiddleware",
+        "wagtail_tag_manager.middleware.TagManagerMiddleware",
+    ]
 
 INSTALLED_APPS = (
     "django.contrib.admin",
