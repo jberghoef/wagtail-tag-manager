@@ -64,7 +64,7 @@ MIDDLEWARE = [
 ]
 
 try:
-    from wagtail.core.middleware import SiteMiddleware
+    from wagtail.core.middleware import SiteMiddleware  # noqa
 
     MIDDLEWARE = MIDDLEWARE + [
         "wagtail.core.middleware.SiteMiddleware",
