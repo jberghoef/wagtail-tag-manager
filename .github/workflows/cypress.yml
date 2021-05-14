@@ -27,14 +27,12 @@ jobs:
         with:
           python-version: 3.8
 
-      # Runs the sandbox
-      - name: Run sandbox
-        run: make test_sandbox &
-
-      # Runs the Cypress test
-      - name: Cypress.io
-        uses: cypress-io/github-action@v1.16.1
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
         with:
+          install: true
+          start: make test_sandbox
+          wait-on: "http://localhost:8000"
           record: false
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
