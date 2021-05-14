@@ -27,9 +27,6 @@
 Wagtail Tag Manager (WTM for short) is a [Wagtail](https://wagtail.io/) addon
 that allows for easier and GDPR compliant administration of scripts and tags.
 
-**Please note that this software is in beta and has not been extensively tested
-in practice. Any part of the API may change without notice!**
-
 ![Screenshot](screenshots/screenshot.png "Screenshot")
 
 _In this package the term "tag" is being used for code snippets being injected
@@ -60,7 +57,6 @@ to inject tags into a page before the response is send to a client.
 
 - [Disclaimer](#disclaimer)
 - [Requirements](#requirements)
-- [Who's using it](#whos-using-it)
 - [Instructions](#instructions)
 - [Template tags](#template-tags)
   - [`wtm_instant_tags`](#wtm_instant_tags)
@@ -86,6 +82,7 @@ to inject tags into a page before the response is send to a client.
 - [Lazy triggers](#lazy-triggers)
 - [Sandbox](#sandbox)
 - [Concept](#concept)
+- [Who's using it](#whos-using-it)
 - [License](#license)
 
 ## Disclaimer
@@ -110,11 +107,6 @@ change the text shown in the cookie bar.
 | ------- | ------------------ |
 | Django  | 2.2, 3.0, 3.1, 3.2 |
 | Wagtail | 2.11, 2.12, 2.13   |
-
-## Who’s using it?
-
-I'd love to hear from sites and applications where WTM is being used. Please
-contact me if you'd like your implementation to be listed here!
 
 ## Instructions
 
@@ -577,6 +569,11 @@ the correct time, taking in account the following scenario's:
    | ------- | -------- | ------- | ------- | ------- |
    | Instant | yes      | yes     | yes     | yes     |
    | Lazy    | yes      | yes     | yes     | yes     |
+
+## Who’s using it?
+
+I'd love to hear from sites and applications where WTM is being used. Please
+contact me if you'd like your implementation to be listed here!
 
 ## License
 
