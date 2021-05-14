@@ -57,8 +57,6 @@ setup(
         "Framework :: Django :: 2.2",
         "Framework :: Django :: 3.0",
         "Framework :: Django :: 3.1",
-        "Framework :: Wagtail :: 2.11",
-        "Framework :: Wagtail :: 2.12",
-        "Framework :: Wagtail :: 2.13",
+        "Framework :: Wagtail :: 2",
     ],
 )
