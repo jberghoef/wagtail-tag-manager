@@ -21,7 +21,7 @@ def register_variable(cls=None):
 
 
 def get_variables(lazy=None):
-    """ Return the variables function sorted by their order. """
+    """Return the variables function sorted by their order."""
     variables = []
 
     for key, cls in _variables.items():

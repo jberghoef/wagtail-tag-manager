@@ -14,6 +14,7 @@ from tests.factories.site import SiteFactory
 def site():
     try:
         from wagtail.core.models import Locale  # noqa
+
         from tests.factories.locale import LocaleFactory
 
         LocaleFactory()
