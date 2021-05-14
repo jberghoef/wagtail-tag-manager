@@ -1,4 +1,3 @@
-import django
 import pytest
 from django.template.base import Token, Parser, TokenType
 from django.template.context import make_context
