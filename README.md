@@ -24,7 +24,6 @@
 [prettier]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg "Prettier"
 [gitpod]: https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod "Gitpod"
 
-
 Wagtail Tag Manager (WTM for short) is a [Wagtail](https://wagtail.io/) addon
 that allows for easier and GDPR compliant administration of scripts and tags.
 
@@ -107,10 +106,10 @@ change the text shown in the cookie bar.
 
 ## Requirements
 
-| Package | Version(s)                                        |
-| ------- | ------------------------------------------------- |
-| Django  | 2.0, 2.1, 2.2, 3.0, 3.1                           |
-| Wagtail | 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 2.10 |
+| Package | Version(s)         |
+| ------- | ------------------ |
+| Django  | 2.2, 3.0, 3.1, 3.2 |
+| Wagtail | 2.11, 2.12, 2.13   |
 
 ## Who’s using it?
 
