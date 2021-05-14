@@ -41,10 +41,7 @@ class ManageView(SuccessURLAllowedHostsMixin, TemplateView):
         kwargs = {"require_https": request.is_secure()}
 
         allowed_hosts = self.get_success_url_allowed_hosts()
-        if __version__.startswith("2.0"):
-            kwargs["allowed_hosts"] = allowed_hosts
-        else:
-            args.append(allowed_hosts)
+        args.append(allowed_hosts)
 
         if __version__.startswith("2"):
             from django.utils.http import is_safe_url

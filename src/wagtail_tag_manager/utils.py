@@ -74,11 +74,9 @@ def set_cookie(response, key, value, days_expire=None):
         "expires": expires,
         "domain": getattr(settings, "SESSION_COOKIE_DOMAIN"),
         "secure": getattr(settings, "SESSION_COOKIE_SECURE", None),
+        "samesite": "Lax",
         "httponly": False,
     }
-
-    if not __version__.startswith("2.0"):
-        kwargs["samesite"] = "Lax"
 
     response.set_cookie(key, value, **kwargs)
     patch_vary_headers(response, ("Cookie",))
