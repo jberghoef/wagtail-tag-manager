@@ -50,7 +50,7 @@ prettier:
 	yarn format
 
 sandbox: bundle
-	pip install -r sandbox/requirements.txt
+	pip install -U -r sandbox/requirements.txt
 	rm -rf db.sqlite3
 	sandbox/manage.py migrate
 	sandbox/manage.py loaddata sandbox/exampledata/users.json
@@ -60,7 +60,7 @@ sandbox: bundle
 	sandbox/manage.py runserver
 
 test_sandbox:
-	pip install -r sandbox/requirements.txt
+	pip install -U -r sandbox/requirements.txt
 	rm -rf db.sqlite3
 	sandbox/manage.py migrate
 	sandbox/manage.py loaddata sandbox/exampledata/users.json

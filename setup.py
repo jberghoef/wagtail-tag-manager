@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 
 install_requires = [
-    "wagtail>=2.11,<2.14",
+    "wagtail>=2.11,<2.15",
     "selenium>=3.141.0,<3.142.0",
 ]
 
@@ -57,6 +57,7 @@ setup(
         "Framework :: Django :: 2.2",
         "Framework :: Django :: 3.0",
         "Framework :: Django :: 3.1",
+        "Framework :: Django :: 3.2",
         "Framework :: Wagtail :: 2",
     ],
 )

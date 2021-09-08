@@ -21,5 +21,5 @@ import "./commands";
 
 beforeEach("configure cookies", () => {
   cy.clearCookies();
-  cy.setCookie("djdt", "hide");
+  window.localStorage.setItem("djdt.show", "false");
 });
