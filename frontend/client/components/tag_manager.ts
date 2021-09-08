@@ -1,4 +1,4 @@
-import * as Cookies from "js-cookie";
+import Cookies from "js-cookie";
 import "whatwg-fetch";
 import CookieBar from "./cookie_bar";
 import TriggerMonitor from "./trigger_monitor";
