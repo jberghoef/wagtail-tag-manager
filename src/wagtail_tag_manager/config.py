@@ -14,6 +14,7 @@ class WagtailTagManagerConfig(AppConfig):
     label = "wagtail_tag_manager"
     name = "wagtail_tag_manager"
     verbose_name = _("Wagtail Tag Manager")
+    default_auto_field = 'django.db.models.BigAutoField'
 
     def ready(self):
         self.register_variables()

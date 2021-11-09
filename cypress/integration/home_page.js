@@ -10,10 +10,10 @@ describe("The home page", () => {
 		cy.visit("/cms/pages/2/edit/");
 		cy.get("a[href='#tab-settings']").click();
 		
-		cy.get("[for='id_wtm_tags_8']").click();
-		cy.get("[for='id_wtm_tags_9']").click();
-		cy.get("[for='id_wtm_tags_10']").click();
-		cy.get("[for='id_wtm_tags_11']").click();
+		cy.contains("Lazy passive required").click();
+		cy.contains("Lazy passive initial").click();
+		cy.contains("Lazy passive delayed").click();
+		cy.contains("Lazy passive regular").click();
 		
 		cy.get(".dropdown-toggle").click();
 		cy.get("[name='action-publish']").click();
@@ -73,10 +73,10 @@ describe("The home page", () => {
 		cy.visit("/cms/pages/2/edit/");
 		cy.get("a[href='#tab-settings']").click();
 		
-		cy.get("[for='id_wtm_tags_8']").click();
-		cy.get("[for='id_wtm_tags_9']").click();
-		cy.get("[for='id_wtm_tags_10']").click();
-		cy.get("[for='id_wtm_tags_11']").click();
+		cy.contains("Lazy passive required").click();
+		cy.contains("Lazy passive initial").click();
+		cy.contains("Lazy passive delayed").click();
+		cy.contains("Lazy passive regular").click();
 		
 		cy.get(".dropdown-toggle").click();
 		cy.get("[name='action-publish']").click();

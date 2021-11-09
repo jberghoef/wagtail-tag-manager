@@ -49,22 +49,26 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.sites",
     "django.contrib.staticfiles",
-    "wagtail.contrib.forms",
-    "wagtail.contrib.redirects",
+
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
     "wagtail.contrib.styleguide",
-    "wagtail.embeds",
-    "wagtail.sites",
-    "wagtail.users",
-    "wagtail.snippets",
-    "wagtail.documents",
-    "wagtail.images",
-    "wagtail.search",
-    "wagtail.admin",
-    "wagtail.core",
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+
     "wagtail.contrib.modeladmin",
     "wagtail.contrib.settings",
+
     "modelcluster",
     "taggit",
+
     "wagtail_tag_manager",
     "sandbox.apps.home",
 ]
@@ -168,6 +172,7 @@ MEDIA_URL = "/media/"
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "sandbox"
+WAGTAILADMIN_COMMENTS_ENABLED = True
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
