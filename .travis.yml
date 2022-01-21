@@ -29,11 +29,19 @@ jobs:
       script: tox -- --nomigrations --reuse-db tests/
     - name: Wagtail 2.13 & Django 3.2 running on Python 3.8
       python: 3.8
-      env: TOXENV=py38-django32-wagtail214
+      env: TOXENV=py38-django32-wagtail213
+      script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.14 & Django 3.2 running on Python 3.9
+      python: 3.9
+      env: TOXENV=py39-django32-wagtail214
+      script: tox -- --nomigrations --reuse-db tests/
+    - name: Wagtail 2.15 & Django 4.0 running on Python 3.10
+      python: 3.10
+      env: TOXENV=py310-django40-wagtail215
       script: tox -- --nomigrations --reuse-db tests/
   allow_failures:
-    - python: 3.8
-      node_js: 10
+    - python: 3.10
+      node_js: 14
       name: End to end test without recording
       env: TOXENV=py38-django32-wagtail214 TEST_GROUP=other
       before_script:
@@ -42,8 +50,8 @@ jobs:
         - make test_sandbox &
         - yarn cypress:run
         - kill $(jobs -p) || true
-    - python: 3.8
-      node_js: 10
+    - python: 3.10
+      node_js: 14
       name: End to end test with recording
       env: TOXENV=py38-django32-wagtail214 TEST_GROUP=other
       before_script:
