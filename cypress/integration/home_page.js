@@ -6,7 +6,11 @@ describe("The home page", () => {
 	  cy.get("button[type='submit']").click();
 	});
 	
-  it("can enable page tags", () => {
+  it("can enable page tags", () => {	
+		cy.on('uncaught:exception', (err, runnable) => {
+			return false
+		})
+
 		cy.visit("/cms/pages/2/edit/");
 		cy.get("a[href='#tab-settings']").click();
 		
@@ -70,6 +74,10 @@ describe("The home page", () => {
 	});
 	
 	it("can disable page tags", () => {
+		cy.on('uncaught:exception', (err, runnable) => {
+			return false
+		})
+
 		cy.visit("/cms/pages/2/edit/");
 		cy.get("a[href='#tab-settings']").click();
 		
