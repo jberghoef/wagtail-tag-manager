@@ -13,7 +13,7 @@ tests_require = [
     "flake8-debugger",
     "flake8-imports",
     "flake8",
-    "freezegun==1.2.0",
+    "freezegun==1.1.0",
     "pycodestyle==2.6.0",
     "pytest-cov==2.11.1",
     "pytest-django==4.1.0",
