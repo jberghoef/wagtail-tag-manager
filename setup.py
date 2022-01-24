@@ -13,7 +13,7 @@ tests_require = [
     "flake8-debugger",
     "flake8-imports",
     "flake8",
-    "freezegun==1.1.0",
+    "freezegun==1.2.0",
     "pycodestyle==2.6.0",
     "pytest-cov==2.11.1",
     "pytest-django==4.1.0",
@@ -31,7 +31,7 @@ with open('README.md') as fh:
 
 setup(
     name="wagtail-tag-manager",
-    version="1.1.0",
+    version="1.2.0",
     description="A Wagtail add-on for managing tags.",
     author="Jasper Berghoef",
     author_email="j.berghoef@me.com",
