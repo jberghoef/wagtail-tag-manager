@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 
 install_requires = [
-    "wagtail>=2.11,<2.15",
+    "wagtail>=2.11,<2.16",
     "selenium>=3.141.0,<3.142.0",
 ]
 
@@ -31,7 +31,7 @@ with open('README.md') as fh:
 
 setup(
     name="wagtail-tag-manager",
-    version="1.1.0",
+    version="1.2.1",
     description="A Wagtail add-on for managing tags.",
     author="Jasper Berghoef",
     author_email="j.berghoef@me.com",

@@ -1,7 +1,6 @@
 # Wagtail Tag Manager
 
 [![CircleCI][circleci]](https://circleci.com/gh/jberghoef/wagtail-tag-manager)
-[![TravisCI][travis]](https://travis-ci.org/jberghoef/wagtail-tag-manager)
 [![CodeCov][codecov]](https://codecov.io/gh/jberghoef/wagtail-tag-manager)
 [![Codacy][codacy]](https://www.codacy.com/app/jberghoef/wagtail-tag-manager)
 [![License][license]](https://opensource.org/licenses/BSD-3-Clause)
@@ -13,7 +12,6 @@
 [![Gitpod ready-to-code][gitpod]](https://gitpod.io/#https://github.com/jberghoef/wagtail-tag-manager)
 
 [circleci]: https://circleci.com/gh/jberghoef/wagtail-tag-manager.svg?style=svg "Circle CI"
-[travis]: https://travis-ci.org/jberghoef/wagtail-tag-manager.svg?branch=master "Travis CI"
 [codecov]: https://codecov.io/gh/jberghoef/wagtail-tag-manager/branch/master/graph/badge.svg "Codecov"
 [codacy]: https://api.codacy.com/project/badge/Grade/2a59a006e69442bb809bf08f47028eb9 "Codacy"
 [license]: https://img.shields.io/badge/license-BSD-blue.svg "License"
