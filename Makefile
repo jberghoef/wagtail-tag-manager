@@ -42,8 +42,8 @@ BLACK_EXCLUDE="/(\.git|\.hg|\.mypy_cache|\.tox|\.venv|_build|buck-out|build|dist
 
 black: isort
 	pip install -U black
-	black --target-version py36 --verbose --exclude $(BLACK_EXCLUDE) ./src
-	black --target-version py36 --verbose --exclude $(BLACK_EXCLUDE) ./tests
+	black --target-version py37 --verbose --exclude $(BLACK_EXCLUDE) ./src
+	black --target-version py37 --verbose --exclude $(BLACK_EXCLUDE) ./tests
 
 prettier:
 	yarn install
