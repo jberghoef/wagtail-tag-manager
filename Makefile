@@ -66,7 +66,7 @@ test_sandbox:
 	sandbox/manage.py loaddata sandbox/exampledata/users.json
 	sandbox/manage.py loaddata sandbox/exampledata/cms.json
 	sandbox/manage.py loaddata sandbox/exampledata/default_tags.json
-	ENVIRONMENT=test sandbox/manage.py runserver --verbosity 0 >> log.log 2>&1
+	ENVIRONMENT=test sandbox/manage.py runserver --verbosity 0
 
 bundle: prettier
 	yarn install --force
