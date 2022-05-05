@@ -22,4 +22,4 @@ class Codearea(widgets.Textarea):
 
 class HorizontalCheckboxSelectMultiple(widgets.CheckboxSelectMultiple):
     class Media:
-        css = {"all": ("wagtail_tag_manager/checkbox_select_multiple.bundle.css")}
+        css = {"all": ("wagtail_tag_manager/checkbox_select_multiple.bundle.css",)}

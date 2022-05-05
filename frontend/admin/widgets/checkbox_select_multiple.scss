@@ -1,9 +1,13 @@
-.field.horizontal_checkbox_select_multiple ul {
+.field.horizontal_checkbox_select_multiple .field-content .input > div {
   display: flex;
   flex-wrap: wrap;
 
-  li {
+  div {
     width: 25%;
     min-width: 280px;
+
+    label {
+      width: 100%;
+    }
   }
 }
