@@ -198,7 +198,7 @@ class ModelCountSummaryItem(SummaryItem):
     title = "Placeholder"
     icon = "placeholder"
 
-    def render(self):
+    def render_html(self, parent_context):
         count = self.model.objects.count()
         target_url = reverse(self.reverse)
         return mark_safe(
