@@ -3,6 +3,5 @@
   "defaultCommandTimeout": 8000,
   "requestTimeout": 10000,
   "chromeWebSecurity": false,
-  "video": false,
   "projectId": "zprv4r"
 }
