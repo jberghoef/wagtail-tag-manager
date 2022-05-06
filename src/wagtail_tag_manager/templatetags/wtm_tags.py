@@ -5,6 +5,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.utils.html import mark_safe
 from django.template.loader import render_to_string
+from django.template.context import make_context
 from django.templatetags.static import static
 
 from wagtail_tag_manager.forms import ConsentForm
@@ -37,11 +38,12 @@ class IncludeNode(template.Node):
             tag_config = TagTypeSettings().get(self.tag_type)
 
             if TagStrategy(request=request).should_include(self.tag_type, tag_config):
-                ctx = Tag.create_context(request=request, context=context)
+                ctx_dict = Tag.create_context(request=request, context=context)
+                ctx = make_context(ctx_dict, request)
 
                 if self.src:
                     if self.src.endswith(".html"):
-                        return render_to_string(self.src, ctx)
+                        return render_to_string(self.src, ctx.flatten())
 
                     elif self.src.endswith(".css"):
                         tag = BeautifulSoup("", "html.parser").new_tag("link")
