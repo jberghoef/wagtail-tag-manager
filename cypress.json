@@ -3,5 +3,9 @@
   "defaultCommandTimeout": 8000,
   "requestTimeout": 10000,
   "chromeWebSecurity": false,
-  "projectId": "zprv4r"
+  "projectId": "zprv4r",
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
+  }
 }
