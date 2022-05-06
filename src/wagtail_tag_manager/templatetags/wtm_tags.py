@@ -40,7 +40,6 @@ class IncludeNode(template.Node):
             if TagStrategy(request=request).should_include(self.tag_type, tag_config):
                 ctx_dict = Tag.create_context(request=request, context=context)
                 ctx = make_context(ctx_dict, request)
-                print(ctx)
 
                 if self.src:
                     if self.src.endswith(".html"):
