@@ -160,18 +160,3 @@ describe("Variable management", () => {
     cy.get(".messages .success").contains("variable 'An updated variable' deleted.");
   });
 });
-
-describe("Cookie consent", () => {
-  it("will be registered", () => {
-    cy.visit("/");
-
-    cy.get("#wtm_cookie_bar").should("be.visible");
-    cy.get("#wtm_cookie_bar input#id_marketing").click();
-    cy.get("#wtm_cookie_bar input[type='submit']").click();
-
-    cy.visit("/cms/reports/cookie-consent/");
-    cy.getCookie("wtm_id").then((cookie) => {
-      cy.get(".listing tbody tr:first td > b").contains(cookie.value);
-    });
-  });
-});
