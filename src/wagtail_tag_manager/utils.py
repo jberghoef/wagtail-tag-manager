@@ -7,16 +7,16 @@ from django.conf import settings
 from django.http import HttpRequest, HttpResponse
 from django.utils.cache import patch_vary_headers
 
-from wagtail_tag_manager.settings import TagTypeSettings
+from wagtail_tag_manager.models import CookieConsent
+from wagtail_tag_manager.settings import TagTypeSettings, CookieConsentSettings
 from wagtail_tag_manager.strategy import CONSENT_UNSET
-from wagtail_tag_manager.models.others import CookieConsent
 
 __version__ = django.get_version()
 
 
 def set_consent(request, response, consent, explicit=False):
     consent_state = {**get_consent(response), **consent}
-    set_cookie(
+    _set_cookie(
         response,
         "wtm",
         "|".join(["{}:{}".format(key, value) for key, value in consent_state.items()]),
@@ -30,7 +30,7 @@ def set_consent(request, response, consent, explicit=False):
             ),
             location=request.META.get("HTTP_REFERER", request.build_absolute_uri()),
         )
-        set_cookie(response, "wtm_id", cookie_consent.identifier)
+        _set_cookie(response, "wtm_id", cookie_consent.identifier)
 
 
 def get_consent(r: typing.Union[HttpResponse, HttpRequest]):
@@ -42,12 +42,34 @@ def get_consent(r: typing.Union[HttpResponse, HttpRequest]):
         }
 
     wtm_cookie = cookies.get("wtm", "")
-    consent_state = parse_consent_state(wtm_cookie)
+    consent_state = _parse_consent_state(wtm_cookie)
+
+    wtm_id_cookie = cookies.get("wtm_id", "")
+    if not _validate_given_consent(wtm_id_cookie, r):
+        consent_state = _parse_consent_state("")
 
     return consent_state
 
 
-def parse_consent_state(cookie_value: str) -> dict:
+def _validate_given_consent(
+    consent_id: str, r: typing.Union[HttpResponse, HttpRequest]
+):
+    if consent_id:
+        settings = CookieConsentSettings.for_request(r)
+        consent = (
+            CookieConsent.objects.filter(identifier=consent_id)
+            .order_by("timestamp")
+            .last()
+        )
+
+        invalidation_timestamp = settings.get_timestamp()
+        if consent and invalidation_timestamp:
+            return consent.timestamp > invalidation_timestamp
+
+    return True
+
+
+def _parse_consent_state(cookie_value: str) -> dict:
     consent_state = {tag_type: CONSENT_UNSET for tag_type in TagTypeSettings.all()}
     consent_state.update(
         {
@@ -59,7 +81,7 @@ def parse_consent_state(cookie_value: str) -> dict:
     return consent_state
 
 
-def set_cookie(response, key, value, days_expire=None):
+def _set_cookie(response, key, value, days_expire=None):
     if days_expire is None:
         expires = getattr(settings, "WTM_COOKIE_EXPIRE", 365)
         max_age = expires * 24 * 60 * 60  # one year
