@@ -1,11 +1,4 @@
 describe("The admin dashboard", () => {
-  beforeEach("login to admin", () => {
-    cy.visit("/cms/");
-    cy.get("#id_username").type("superuser");
-    cy.get("#id_password").type("testing");
-    cy.get("button[type='submit']").click();
-  });
-
   it("shows the summary panels", () => {
     cy.visit("/cms/");
 
@@ -19,13 +12,6 @@ describe("The admin dashboard", () => {
 });
 
 describe("The cookie bar settings", () => {
-  beforeEach("configure cookies", () => {
-    cy.visit("/cms/");
-    cy.get("#id_username").type("superuser");
-    cy.get("#id_password").type("testing");
-    cy.get("button[type='submit']").click();
-  });
-
   it("allows changeing of the title", () => {
     cy.visit("/cms/settings/wagtail_tag_manager/cookiebarsettings/1/");
 
@@ -48,13 +34,6 @@ describe("The cookie bar settings", () => {
 });
 
 describe("Tag management", () => {
-  beforeEach("configure cookies", () => {
-    cy.visit("/cms/");
-    cy.get("#id_username").type("superuser");
-    cy.get("#id_password").type("testing");
-    cy.get("button[type='submit']").click();
-  });
-
   it("can close the help block", () => {
     cy.visit("/cms/wagtail_tag_manager/tag/");
     cy.get("#wtm_help_block a").click();
@@ -98,13 +77,6 @@ describe("Tag management", () => {
 });
 
 describe("Constants management", () => {
-  beforeEach("configure cookies", () => {
-    cy.visit("/cms/");
-    cy.get("#id_username").type("superuser");
-    cy.get("#id_password").type("testing");
-    cy.get("button[type='submit']").click();
-  });
-
   it("can close the help block", () => {
     cy.visit("/cms/wagtail_tag_manager/constant/");
     cy.get("#wtm_help_block a").click();
@@ -146,13 +118,6 @@ describe("Constants management", () => {
 });
 
 describe("Variable management", () => {
-  beforeEach("configure cookies", () => {
-    cy.visit("/cms/");
-    cy.get("#id_username").type("superuser");
-    cy.get("#id_password").type("testing");
-    cy.get("button[type='submit']").click();
-  });
-
   it("can close the help block", () => {
     cy.visit("/cms/wagtail_tag_manager/variable/");
     cy.get("#wtm_help_block a").click();
@@ -197,13 +162,6 @@ describe("Variable management", () => {
 });
 
 describe("Cookie consent", () => {
-  beforeEach("configure cookies", () => {
-    cy.visit("/cms/");
-    cy.get("#id_username").type("superuser");
-    cy.get("#id_password").type("testing");
-    cy.get("button[type='submit']").click();
-  });
-
   it("will be registered", () => {
     cy.visit("/");
 

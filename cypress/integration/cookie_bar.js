@@ -1,8 +1,9 @@
-describe("The cookie bar", () => {
-  beforeEach("configure cookies", () => {
-    cy.clearCookie("wtm");
-  });
+beforeEach("clear wtm cookies", () => {
+  cy.clearCookie("wtm");
+  cy.clearCookie("wtm_id");
+});
 
+describe("The cookie bar", () => {
   it("can save default cookies", () => {
     cy.visit("/");
 

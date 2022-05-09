@@ -1,11 +1,4 @@
 describe("Trigger management", () => {
-  beforeEach("login to admin", () => {
-    cy.visit("/cms/");
-    cy.get("#id_username").type("superuser");
-    cy.get("#id_password").type("testing");
-    cy.get("button[type='submit']").click();
-  });
-
   it("can close the help block", () => {
     cy.visit("/cms/wagtail_tag_manager/trigger/");
     cy.get("#wtm_help_block a").click();

@@ -1,8 +1,9 @@
-describe("The manage page", () => {
-  beforeEach("clear wtm cookie", () => {
-    cy.clearCookie("wtm");
-  });
+beforeEach("clear wtm cookies", () => {
+  cy.clearCookie("wtm");
+  cy.clearCookie("wtm_id");
+});
 
+describe("The manage page", () => {
   it("has a form", () => {
     cy.visit("/wtm/manage/");
 

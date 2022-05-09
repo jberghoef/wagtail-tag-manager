@@ -19,7 +19,17 @@ import "./commands";
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-beforeEach("configure cookies", () => {
+Cypress.Cookies.debug(true, { verbose: false });
+
+before("login to admin", () => {
   cy.clearCookies();
+  cy.visit("/cms/");
+  cy.get("#id_username").type("superuser");
+  cy.get("#id_password").type("testing");
+  cy.get("button[type='submit']").click();
+});
+
+beforeEach("configure cookies", () => {
   window.localStorage.setItem("djdt.show", "false");
+  Cypress.Cookies.preserveOnce("csrftoken", "sessionid");
 });
