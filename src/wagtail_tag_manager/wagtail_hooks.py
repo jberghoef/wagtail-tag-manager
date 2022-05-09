@@ -1,9 +1,11 @@
 import django
 from django.conf import settings
-from django.urls import reverse
+from django.urls import path, reverse
 from wagtail.core import hooks
 from django.utils.html import mark_safe
+from wagtail.admin.menu import AdminOnlyMenuItem
 from wagtail.admin.site_summary import SummaryItem
+from wagtail.admin.views.reports import ReportView
 from django.template.defaultfilters import truncatechars
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin,
@@ -159,20 +161,6 @@ class CookieDeclarationModelAdmin(ModelAdmin):
     )
 
 
-class CookieConsentModelAdmin(ModelAdmin):
-    model = CookieConsent
-    menu_icon = "success"
-    list_display = ("identifier", "location", "consent_state", "timestamp")
-    list_filer = ("timestamp",)
-    search_fields = ("identifier", "location")
-    index_view_class = WTMIndexView
-    index_template_name = "wagtail_tag_manager/admin/cookie_consent_index.html"
-    help_text = _(
-        "Cookie consent records consent given by users by attaching an anonymous ID "
-        "to them and documenting the location, tag types, date and time of the consent given."
-    )
-
-
 class TagManagerAdminGroup(ModelAdminGroup):
     menu_label = _("Tag Manager")
     menu_icon = "code"
@@ -183,11 +171,41 @@ class TagManagerAdminGroup(ModelAdminGroup):
         VariableModelAdmin,
         TriggerModelAdmin,
         CookieDeclarationModelAdmin,
-        CookieConsentModelAdmin,
     )
 
 
 modeladmin_register(TagManagerAdminGroup)
+
+# Reports
+class CookieConsentReportView(ReportView):
+    header_icon = "success"
+    title = _("Cookie consents")
+    template_name = "reports/cookie_consent_report.html"
+    list_export = ["identifier", "location", "consent_state", "timestamp"]
+
+    def get_queryset(self):
+        return CookieConsent.objects.all()
+
+
+@hooks.register("register_reports_menu_item")
+def register_unpublished_changes_report_menu_item():
+    return AdminOnlyMenuItem(
+        _("Cookie consents"),
+        reverse("cookie_consent_report"),
+        classnames="icon icon-" + CookieConsentReportView.header_icon,
+        order=700,
+    )
+
+
+@hooks.register("register_admin_urls")
+def register_unpublished_changes_report_url():
+    return [
+        path(
+            "reports/cookie-consent/",
+            CookieConsentReportView.as_view(),
+            name="cookie_consent_report",
+        ),
+    ]
 
 
 # Summary panels

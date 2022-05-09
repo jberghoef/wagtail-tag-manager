@@ -1,0 +1,45 @@
+{% extends 'wagtailadmin/reports/base_report.html' %}
+{% load i18n %}
+
+{% block results %}
+	{% if object_list %}
+		<table class="listing">
+			<thead>
+				<tr>
+					<th>
+						{% trans 'Identifier' %}
+					</th>
+					<th>
+						{% trans 'Location' %}
+					</th>
+					<th>
+						{% trans 'Consent state' %}
+					</th>
+					<th>
+						{% trans 'Timestamp' %}
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for cookie_consent in object_list %}
+					<tr>
+						<td>
+							<b>{{cookie_consent.identifier}}</b>
+						</td>
+						<td>
+							{{cookie_consent.location}}
+						</td>
+						<td>
+							{{cookie_consent.consent_state}}
+						</td>
+						<td>
+							{{cookie_consent.timestamp}}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<p>{% trans "No consent has been registered yet." %}</p>
+	{% endif %}
+{% endblock %}
