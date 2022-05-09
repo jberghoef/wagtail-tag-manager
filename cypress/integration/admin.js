@@ -169,9 +169,9 @@ describe("Cookie consent", () => {
     cy.get("#wtm_cookie_bar input#id_marketing").click();
     cy.get("#wtm_cookie_bar input[type='submit']").click();
 
-    cy.visit("/cms/wagtail_tag_manager/cookieconsent/");
-    cy.get("[data-object-pk]").first().find("a").contains("Delete").click({ force: true });
-    cy.get("input[type='submit']").click();
-    cy.get(".messages .success").should("exist");
+    cy.visit("/cms/reports/cookie-consent/");
+    cy.getCookie("wtm_id").then((cookie) => {
+      cy.get(".listing tbody tr:first td > b").contains(cookie.value);
+    });
   });
 });

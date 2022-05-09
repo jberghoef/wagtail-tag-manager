@@ -184,7 +184,7 @@ class CookieConsentReportView(ReportView):
     list_export = ["identifier", "location", "consent_state", "timestamp"]
 
     def get_queryset(self):
-        return CookieConsent.objects.all()
+        return CookieConsent.objects.all().order_by("-timestamp")
 
 
 @hooks.register("register_reports_menu_item")
@@ -272,7 +272,7 @@ class CookieDeclarationSummaryPanel(ModelCountSummaryItem):
 class CookieConsentSummaryPanel(ModelCountSummaryItem):
     order = 3500
     model = CookieConsent
-    reverse = "wagtail_tag_manager_cookieconsent_modeladmin_index"
+    reverse = "cookie_consent_report"
     title = _("Cookie consents")
     icon = "success"
 
