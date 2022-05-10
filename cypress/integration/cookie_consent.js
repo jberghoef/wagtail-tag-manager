@@ -36,8 +36,8 @@ describe("Cookie consent", () => {
 
     // Change homepage
     cy.visit("/cms/pages/2/edit/");
-    cy.get(".dropdown-toggle").click();
-    cy.get("[name='action-publish']").click();
+    cy.get(".dropdown-toggle").click({force: true});
+    cy.get("[name='action-publish']").click({force: true});
 
     // Visit homepage
     cy.visit("/");
@@ -55,7 +55,7 @@ describe("Cookie consent", () => {
 
     // Remove condition page
     cy.visit("/cms/settings/wagtail_tag_manager/cookieconsentsettings/1/");
-    cy.get("button.action-clear").click();
+    cy.get("button.action-clear").click({force: true});
     cy.get(".actions button[type='submit']").click();
 
     // Register consent
@@ -70,8 +70,8 @@ describe("Cookie consent", () => {
 
     // Change homepage
     cy.visit("/cms/pages/2/edit/");
-    cy.get(".dropdown-toggle").click();
-    cy.get("[name='action-publish']").click();
+    cy.get(".dropdown-toggle").click({force: true});
+    cy.get("[name='action-publish']").click({force: true});
 
     // Visit homepage
     cy.visit("/");
