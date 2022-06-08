@@ -23,7 +23,7 @@ describe("Necessary tags", () => {
     cy.getCookie("wtm").should(
       "have.property",
       "value",
-      "necessary:true|preferences:unset|statistics:pending|marketing:false"
+      "necessary:true|preferences:unset|statistics:pending|marketing:unset"
     );
 
     cy.setCookie("wtm", "necessary:false|preferences:false|statistics:false|marketing:false");
@@ -183,7 +183,7 @@ describe("Marketing tags", () => {
     cy.getCookie("wtm").should(
       "have.property",
       "value",
-      "necessary:true|preferences:false|statistics:false|marketing:false"
+      "necessary:true|preferences:false|statistics:false|marketing:unset"
     );
   });
 

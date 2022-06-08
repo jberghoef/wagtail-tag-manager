@@ -5,7 +5,7 @@ describe("The website", () => {
     cy.getCookie("wtm").should(
       "have.property",
       "value",
-      "necessary:true|preferences:unset|statistics:pending|marketing:false"
+      "necessary:true|preferences:unset|statistics:pending|marketing:unset"
     );
 
     cy.get("body")
