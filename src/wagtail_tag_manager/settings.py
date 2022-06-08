@@ -4,7 +4,7 @@ from django.apps import apps
 from django.conf import settings
 from django.utils.text import slugify
 from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel
 from wagtail.contrib.settings.models import BaseSetting, register_setting
 
 __version__ = django.get_version()
@@ -94,5 +94,32 @@ class CookieBarSettings(BaseSetting):
     panels = [FieldPanel("title", classname="full title"), FieldPanel("text")]
 
 
+class CookieConsentSettings(BaseSetting):
+    select_related = ["conditions_page"]
+
+    conditions_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_(
+            "Set the page describing your privacy policy. "
+            "Every time it changes, the consent given before will be invalidated."
+        ),
+    )
+
+    panels = [
+        PageChooserPanel("conditions_page"),
+    ]
+
+    def get_timestamp(self):
+        if self.conditions_page:
+            return self.conditions_page.last_published_at
+
+        return None
+
+
 if apps.is_installed("wagtail.contrib.settings"):
     register_setting(model=CookieBarSettings)
+    register_setting(model=CookieConsentSettings)

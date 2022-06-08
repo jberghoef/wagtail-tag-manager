@@ -60,6 +60,7 @@ jobs:
         spec:
           - cypress/integration/admin.js
           - cypress/integration/cookie_bar.js
+          - cypress/integration/cookie_consent.js
           - cypress/integration/home_page.js
           - cypress/integration/manage_page.js
           - cypress/integration/sandbox.js

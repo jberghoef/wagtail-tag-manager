@@ -127,7 +127,7 @@ class TagStrategy(object):
 
         return consent, False, False
 
-    def should_include(self, tag_type, tag_config):
+    def should_include(self, tag_type: str, tag_config: dict):
         consent = self.consent_state.get(tag_type, CONSENT_UNSET)
         config = tag_config.get("value")
 
