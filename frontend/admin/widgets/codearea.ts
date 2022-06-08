@@ -1,5 +1,6 @@
 import "./codearea.scss";
 
+import "whatwg-fetch";
 import * as CodeMirror from "codemirror";
 import "codemirror/mode/django/django";
 import "codemirror/addon/display/panel";

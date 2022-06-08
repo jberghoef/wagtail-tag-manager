@@ -101,11 +101,11 @@ change the text shown in the cookie bar.
 
 ## Requirements
 
-| Package | Version(s)                         |
-| ------- | ---------------------------------- |
-| Django  | 2.2, 3.0, 3.1, 3.2, 4.0            |
-| Wagtail | 2.11, 2.12, 2.13, 2.14, 2.15, 2.16 |
-| Python  | 3.7, 3.8, 3.9, 3.10                |
+| Package | Version(s)                              |
+| ------- | --------------------------------------- |
+| Django  | 2.2, 3.0, 3.1, 3.2, 4.0                 |
+| Wagtail | 2.11, 2.12, 2.13, 2.14, 2.15, 2.16, 3.0 |
+| Python  | 3.7, 3.8, 3.9, 3.10                     |
 
 ## Instructions
 
