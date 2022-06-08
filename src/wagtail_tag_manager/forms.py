@@ -14,7 +14,7 @@ class ConsentForm(forms.Form):
             value = config.get("value")
             initial = value == SETTING_INITIAL or value == SETTING_REQUIRED
 
-            if SETTING_INITIAL in kwargs:
+            if "initial" in kwargs:
                 initial = kwargs.get(SETTING_INITIAL)[tag_type]
 
             self.fields[tag_type] = forms.BooleanField(

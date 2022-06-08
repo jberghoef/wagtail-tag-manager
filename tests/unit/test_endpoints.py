@@ -51,7 +51,7 @@ def test_lazy_cookies(client, site):
     assert consent_state.get("necessary", "") == "true"
     assert consent_state.get("preferences", "") == "unset"
     assert consent_state.get("statistics", "") == "unset"
-    assert consent_state.get("marketing", "") == "false"
+    assert consent_state.get("marketing", "") == "unset"
 
 
 @pytest.mark.django_db
