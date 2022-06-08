@@ -26,7 +26,7 @@ jobs:
           cache: 'pip'
 
       - name: Cypress install
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           runTests: false
 
@@ -88,7 +88,7 @@ jobs:
           name: database
 
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           install: false
           start: make run_test_sandbox
