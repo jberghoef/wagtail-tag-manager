@@ -23,6 +23,7 @@ CONSENT_MAP = (
         SETTING_REQUIRED,
         (
             # Consent validator, consent value, include instant tags, include lazy tags
+            (lambda c: c != CONSENT_TRUE, CONSENT_UNSET, True, False),
             (lambda c: True, CONSENT_TRUE, True, False),
         ),
     ),
@@ -47,11 +48,18 @@ CONSENT_MAP = (
         "GET",
         SETTING_DEFAULT,
         (
-            (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, True, False),
             (lambda c: c == CONSENT_UNSET, CONSENT_UNSET, False, False),
+            (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, True, False),
         ),
     ),
-    ("POST", SETTING_REQUIRED, ((lambda c: True, CONSENT_TRUE, False, True),)),
+    (
+        "POST",
+        SETTING_REQUIRED,
+        (
+            (lambda c: c != CONSENT_TRUE, CONSENT_UNSET, False, True),
+            (lambda c: True, CONSENT_TRUE, False, True),
+        ),
+    ),
     (
         "POST",
         SETTING_INITIAL,
@@ -73,8 +81,8 @@ CONSENT_MAP = (
         "POST",
         SETTING_DEFAULT,
         (
-            (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, False, True),
             (lambda c: c == CONSENT_UNSET, CONSENT_UNSET, False, False),
+            (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, False, True),
         ),
     ),
 )
@@ -260,7 +268,9 @@ class TagStrategy(object):
             state = self.consent.get(tag_type, CONSENT_FALSE)
             setting = config.get("value", SETTING_DEFAULT)
 
-            if setting in (SETTING_DEFAULT):
+            if setting == SETTING_REQUIRED:
+                cookie_state[tag_type] = True
+            elif setting == SETTING_DEFAULT:
                 cookie_state[tag_type] = self.consent.get(
                     tag_type, CONSENT_UNSET
                 ) not in (CONSENT_FALSE, CONSENT_UNSET)
