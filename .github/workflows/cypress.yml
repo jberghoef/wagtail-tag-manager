@@ -26,7 +26,7 @@ jobs:
           cache: 'pip'
 
       - name: Cypress install
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           runTests: false
 
@@ -58,14 +58,14 @@ jobs:
           - chrome
           - firefox
         spec:
-          - cypress/integration/admin.js
-          - cypress/integration/cookie_bar.js
-          - cypress/integration/cookie_consent.js
-          - cypress/integration/home_page.js
-          - cypress/integration/manage_page.js
-          - cypress/integration/sandbox.js
-          - cypress/integration/tags.js
-          - cypress/integration/triggers.js
+          - cypress/e2e/admin.js
+          - cypress/e2e/cookie_bar.js
+          - cypress/e2e/cookie_consent.js
+          - cypress/e2e/home_page.js
+          - cypress/e2e/manage_page.js
+          - cypress/e2e/sandbox.js
+          - cypress/e2e/tags.js
+          - cypress/e2e/triggers.js
 
     steps:
       - name: Checkout
@@ -88,7 +88,7 @@ jobs:
           name: database
 
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           install: false
           start: make run_test_sandbox

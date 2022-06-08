@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 
 install_requires = [
-    "wagtail>=2.11,<2.17",
+    "wagtail>=2.11,<3.1",
     "selenium>=3.141.0,<3.142.0",
 ]
 
@@ -46,7 +46,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
@@ -62,5 +62,6 @@ setup(
         "Framework :: Django :: 3.2",
         "Framework :: Django :: 4.0",
         "Framework :: Wagtail :: 2",
+        "Framework :: Wagtail :: 3",
     ],
 )

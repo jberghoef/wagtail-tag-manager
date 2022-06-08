@@ -1,6 +1,6 @@
 from django.http import Http404
 from django.db.models import Q
-from wagtail.core.views import serve as wagtail_serve
+from wagtail.views import serve as wagtail_serve
 
 from wagtail_tag_manager.mixins import TagMixin
 from wagtail_tag_manager.models import Tag, Trigger, TagTypeSettings

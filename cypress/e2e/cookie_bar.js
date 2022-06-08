@@ -1,6 +1,6 @@
 beforeEach("clear wtm cookies", () => {
-  cy.clearCookie("wtm");
-  cy.clearCookie("wtm_id");
+  cy.clearCookie("wtm", { timeout: 1000 });
+  cy.clearCookie("wtm_id", { timeout: 1000 });
 });
 
 describe("The cookie bar", () => {
@@ -22,7 +22,7 @@ describe("The cookie bar", () => {
   it("can set only necesarry cookies", () => {
     cy.visit("/");
 
-    cy.get("#wtm_cookie_bar").should('be.visible');
+    cy.get("#wtm_cookie_bar").should("be.visible");
     cy.get("#wtm_cookie_bar input#id_preferences").click();
     cy.get("#wtm_cookie_bar input#id_statistics").click();
     cy.get("#wtm_cookie_bar input[type='submit']").click();
@@ -40,7 +40,7 @@ describe("The cookie bar", () => {
   it("can set only preference cookies", () => {
     cy.visit("/");
 
-    cy.get("#wtm_cookie_bar").should('be.visible');
+    cy.get("#wtm_cookie_bar").should("be.visible");
     cy.get("#wtm_cookie_bar input#id_statistics").click();
     cy.get("#wtm_cookie_bar input[type='submit']").click();
 
@@ -57,7 +57,7 @@ describe("The cookie bar", () => {
   it("can set only statistical cookies", () => {
     cy.visit("/");
 
-    cy.get("#wtm_cookie_bar").should('be.visible');
+    cy.get("#wtm_cookie_bar").should("be.visible");
     cy.get("#wtm_cookie_bar input#id_preferences").click();
     cy.get("#wtm_cookie_bar input[type='submit']").click();
 
@@ -74,7 +74,7 @@ describe("The cookie bar", () => {
   it("can set only marketing cookies", () => {
     cy.visit("/");
 
-    cy.get("#wtm_cookie_bar").should('be.visible');
+    cy.get("#wtm_cookie_bar").should("be.visible");
     cy.get("#wtm_cookie_bar input#id_preferences").click();
     cy.get("#wtm_cookie_bar input#id_statistics").click();
     cy.get("#wtm_cookie_bar input#id_marketing").click();
@@ -93,7 +93,7 @@ describe("The cookie bar", () => {
   it("can enable all cookies", () => {
     cy.visit("/");
 
-    cy.get("#wtm_cookie_bar").should('be.visible');
+    cy.get("#wtm_cookie_bar").should("be.visible");
     cy.get("#wtm_cookie_bar input#id_marketing").click();
     cy.get("#wtm_cookie_bar input[type='submit']").click();
 
