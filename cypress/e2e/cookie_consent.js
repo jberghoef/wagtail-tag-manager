@@ -44,7 +44,7 @@ describe("Cookie consent", () => {
     cy.getCookie("wtm").should(
       "have.property",
       "value",
-      "necessary:true|preferences:unset|statistics:pending|marketing:unset"
+      "necessary:unset|preferences:unset|statistics:pending|marketing:unset"
     );
   });
 
