@@ -1,3 +1,6 @@
+/*!**********************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/codemirror/lib/codemirror.css ***!
+  \**********************************************************************************************/
 /* BASICS */
 
 .CodeMirror {
@@ -343,5 +346,40 @@ div.CodeMirror-dragcursors {
 /* Help users use markselection to safely style text background */
 span.CodeMirror-selectedtext { background: none; }
 
-.object .codearea .field-content .input .CodeMirror{height:auto;min-height:240px;width:100%;padding:2em 30px;background-color:#fafafa;border-right:1px solid #e6e6e6;border-left:1px solid #e6e6e6;transition:background-color 0.2s ease;overflow:hidden}.object .codearea .field-content .input .CodeMirror-focused{background-color:#f4fcfc;border-color:#54d0d0;outline:none}.object .codearea .field-content .input .CodeMirror *{font-size:0.9rem;line-height:1.4rem}@media screen and (max-width: 799px){.object .codearea .field-content .input .CodeMirror{border:1px solid #e6e6e6}}.object.code .object-layout_big-part fieldset{width:100% !important;max-width:unset !important}.object.code .object-layout_big-part fieldset .input>div{display:flex;width:100%}.object.code .object-layout_big-part fieldset .input>div .panel{width:200px;height:100%;padding:10px;overflow-x:scroll}
+/*!*******************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./frontend/admin/widgets/codearea.scss ***!
+  \*******************************************************************************************************************************/
+.w-panel.code .w-field--codearea .w-field__input > div {
+  display: flex;
+  width: 100%;
+  height: 280px; }
+  .w-panel.code .w-field--codearea .w-field__input > div ul.panel {
+    width: 200px;
+    height: 100%;
+    padding: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: 1px solid var(--w-color-grey-150);
+    border-right: unset; }
+    .w-panel.code .w-field--codearea .w-field__input > div ul.panel h3 {
+      margin: 0.5em 0; }
+    .w-panel.code .w-field--codearea .w-field__input > div ul.panel .listing {
+      margin-bottom: 1em; }
+      .w-panel.code .w-field--codearea .w-field__input > div ul.panel .listing li {
+        padding: 0.5em 0; }
 
+.w-panel.code .w-field--codearea .CodeMirror {
+  height: 280px;
+  min-height: 280px;
+  width: 100%;
+  padding: 1em 20px;
+  background-color: var(--w-color-grey-50);
+  border: 1px solid var(--w-color-grey-150);
+  transition: background-color 0.2s ease;
+  overflow: hidden; }
+  .w-panel.code .w-field--codearea .CodeMirror-focused {
+    border-color: var(--w-color-grey-200);
+    outline: none; }
+
+
+/*# sourceMappingURL=sourcemaps/codearea.bundle.css.map*/

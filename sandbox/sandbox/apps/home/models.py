@@ -1,4 +1,4 @@
-from wagtail.admin.edit_handlers import RichTextFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 
@@ -11,7 +11,7 @@ class HomePage(TagMixin, Page):
     content = RichTextField()
 
     content_panels = Page.content_panels + [
-        RichTextFieldPanel('content'),
+        FieldPanel('content'),
     ]
 
 

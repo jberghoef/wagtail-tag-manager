@@ -2,12 +2,12 @@ describe("The admin dashboard", () => {
   it("shows the summary panels", () => {
     cy.visit("/cms/");
 
-    cy.get(".icon-code").contains("Tags");
-    cy.get(".icon-snippet").contains("Constants");
-    cy.get(".icon-snippet").contains("Variables");
-    cy.get(".icon-media").contains("Triggers");
-    cy.get(".icon-help").contains("Cookie declarations");
-    cy.get(".icon-success").contains("Cookie consents");
+    cy.get(".w-summary__list").contains("Tags");
+    cy.get(".w-summary__list").contains("Constants");
+    cy.get(".w-summary__list").contains("Variables");
+    cy.get(".w-summary__list").contains("Triggers");
+    cy.get(".w-summary__list").contains("Cookie declarations");
+    cy.get(".w-summary__list").contains("Cookie consents");
   });
 });
 

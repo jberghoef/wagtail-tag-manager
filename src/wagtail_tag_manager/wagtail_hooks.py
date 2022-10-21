@@ -221,7 +221,10 @@ class ModelCountSummaryItem(SummaryItem):
         target_url = reverse(self.reverse)
         return mark_safe(
             """
-            <li class="icon icon-{0}">
+            <li>
+                <svg class="icon icon-{0} icon">
+                    <use href="#icon-{0}"></use>
+                </svg>
                 <a href="{1}"><span>{2}</span>{3}</a>
             </li>""".format(
                 self.icon, target_url, count, self.title

@@ -1,52 +1,50 @@
 @import "~codemirror/lib/codemirror.css";
 
-.object .codearea .field-content .input {
-  .CodeMirror {
-    height: auto;
-    min-height: 240px;
-    width: 100%;
-    padding: 2em 30px;
-    background-color: #fafafa;
-    border-right: 1px solid #e6e6e6;
-    border-left: 1px solid #e6e6e6;
-    transition: background-color 0.2s ease;
-    overflow: hidden;
+.w-panel.code {
+  .w-field--codearea {
+    .w-field__input {
+      & > div {
+        display: flex;
+        width: 100%;
+        height: 280px;
 
-    &-focused {
-      background-color: #f4fcfc;
-      border-color: #54d0d0;
-      outline: none;
-    }
+        ul.panel {
+          width: 200px;
+          height: 100%;
+          padding: 10px;
+          overflow-x: hidden;
+          overflow-y: auto;
+          border: 1px solid var(--w-color-grey-150);
+          border-right: unset;
 
-    * {
-      font-size: 0.9rem;
-      line-height: 1.4rem;
-    }
+          h3 {
+            margin: 0.5em 0;
+          }
 
-    @media screen and (max-width: 799px) {
-      border: 1px solid #e6e6e6;
-    }
-  }
-}
+          .listing {
+            margin-bottom: 1em;
 
-.object.code {
-  .object-layout {
-    &_big-part {
-      fieldset {
-        width: 100% !important;
-        max-width: unset !important;
-
-        .input > div {
-          display: flex;
-          width: 100%;
-
-          .panel {
-            width: 200px;
-            height: 100%;
-            padding: 10px;
-            overflow-x: scroll;
+            li {
+              padding: 0.5em 0;
+            }
           }
         }
+      }
+    }
+
+    .CodeMirror {
+      height: 280px;
+      min-height: 280px;
+      width: 100%;
+      padding: 1em 20px;
+      background-color: var(--w-color-grey-50);
+      border: 1px solid var(--w-color-grey-150);
+      transition: background-color 0.2s ease;
+      overflow: hidden;
+
+      &-focused {
+        border-color: var(--w-color-grey-200);
+        outline: none;
       }
     }
   }

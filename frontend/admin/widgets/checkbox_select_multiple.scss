@@ -1,10 +1,11 @@
-.field.horizontal_checkbox_select_multiple .field-content .input > div {
+.w-field--horizontal_checkbox_select_multiple .w-field__input > div {
   display: flex;
   flex-wrap: wrap;
 
   div {
-    width: 25%;
-    min-width: 280px;
+    width: calc(100% / 3);
+    min-width: 200px;
+    margin-bottom: 6px;
 
     label {
       width: 100%;
