@@ -1,12 +1,2 @@
-/*!********************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./frontend/admin/index.scss ***!
-  \********************************************************************************************************************/
-#wtm_help_block {
-  padding-right: 6em; }
-  #wtm_help_block .close-link {
-    position: absolute;
-    right: 2em;
-    top: 1em; }
+#wtm_help_block{padding-right:6em}#wtm_help_block .close-link{position:absolute;right:2em;top:1em}
 
-
-/*# sourceMappingURL=sourcemaps/index.bundle.css.map*/

@@ -1,15 +1,2 @@
-/*!***********************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./frontend/admin/widgets/checkbox_select_multiple.scss ***!
-  \***********************************************************************************************************************************************/
-.w-field--horizontal_checkbox_select_multiple .w-field__input > div {
-  display: flex;
-  flex-wrap: wrap; }
-  .w-field--horizontal_checkbox_select_multiple .w-field__input > div div {
-    width: calc(100% / 3);
-    min-width: 200px;
-    margin-bottom: 6px; }
-    .w-field--horizontal_checkbox_select_multiple .w-field__input > div div label {
-      width: 100%; }
+.w-field--horizontal_checkbox_select_multiple .w-field__input>div{display:flex;flex-wrap:wrap}.w-field--horizontal_checkbox_select_multiple .w-field__input>div div{width:calc(100% / 3);min-width:200px;margin-bottom:6px}.w-field--horizontal_checkbox_select_multiple .w-field__input>div div label{width:100%}
 
-
-/*# sourceMappingURL=sourcemaps/checkbox_select_multiple.bundle.css.map*/

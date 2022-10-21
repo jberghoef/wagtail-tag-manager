@@ -1,6 +1,3 @@
-/*!**********************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/codemirror/lib/codemirror.css ***!
-  \**********************************************************************************************/
 /* BASICS */
 
 .CodeMirror {
@@ -346,40 +343,5 @@ div.CodeMirror-dragcursors {
 /* Help users use markselection to safely style text background */
 span.CodeMirror-selectedtext { background: none; }
 
-/*!*******************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./frontend/admin/widgets/codearea.scss ***!
-  \*******************************************************************************************************************************/
-.w-panel.code .w-field--codearea .w-field__input > div {
-  display: flex;
-  width: 100%;
-  height: 280px; }
-  .w-panel.code .w-field--codearea .w-field__input > div ul.panel {
-    width: 200px;
-    height: 100%;
-    padding: 10px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    border: 1px solid var(--w-color-grey-150);
-    border-right: unset; }
-    .w-panel.code .w-field--codearea .w-field__input > div ul.panel h3 {
-      margin: 0.5em 0; }
-    .w-panel.code .w-field--codearea .w-field__input > div ul.panel .listing {
-      margin-bottom: 1em; }
-      .w-panel.code .w-field--codearea .w-field__input > div ul.panel .listing li {
-        padding: 0.5em 0; }
+.w-panel.code .w-field--codearea .w-field__input>div{display:flex;width:100%;height:280px}.w-panel.code .w-field--codearea .w-field__input>div ul.panel{width:200px;height:100%;padding:10px;overflow-x:hidden;overflow-y:auto;border:1px solid var(--w-color-grey-150);border-right:unset}.w-panel.code .w-field--codearea .w-field__input>div ul.panel h3{margin:0.5em 0}.w-panel.code .w-field--codearea .w-field__input>div ul.panel .listing{margin-bottom:1em}.w-panel.code .w-field--codearea .w-field__input>div ul.panel .listing li{padding:0.5em 0}.w-panel.code .w-field--codearea .CodeMirror{height:280px;min-height:280px;width:100%;padding:1em 20px;background-color:var(--w-color-grey-50);border:1px solid var(--w-color-grey-150);transition:background-color 0.2s ease;overflow:hidden}.w-panel.code .w-field--codearea .CodeMirror-focused{border-color:var(--w-color-grey-200);outline:none}
 
-.w-panel.code .w-field--codearea .CodeMirror {
-  height: 280px;
-  min-height: 280px;
-  width: 100%;
-  padding: 1em 20px;
-  background-color: var(--w-color-grey-50);
-  border: 1px solid var(--w-color-grey-150);
-  transition: background-color 0.2s ease;
-  overflow: hidden; }
-  .w-panel.code .w-field--codearea .CodeMirror-focused {
-    border-color: var(--w-color-grey-200);
-    outline: none; }
-
-
-/*# sourceMappingURL=sourcemaps/codearea.bundle.css.map*/
