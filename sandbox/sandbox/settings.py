@@ -34,6 +34,8 @@ SECRET_KEY = "^anfvx$i7%wts8j=7u1h5ua$w6c76*333(@h)rrjlak1c&x0r+"
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 

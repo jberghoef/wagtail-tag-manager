@@ -1,6 +1,6 @@
 beforeEach("clear wtm cookies", () => {
-  cy.clearCookie("wtm", {timeout: 1000});
-  cy.clearCookie("wtm_id", {timeout: 1000});
+  cy.clearCookie("wtm", { timeout: 1000 });
+  cy.clearCookie("wtm_id", { timeout: 1000 });
 });
 
 describe("The manage page", () => {

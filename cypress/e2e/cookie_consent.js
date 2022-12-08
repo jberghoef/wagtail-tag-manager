@@ -19,9 +19,12 @@ describe("Cookie consent", () => {
 
     // Configure condition page
     cy.visit("/cms/settings/wagtail_tag_manager/cookieconsentsettings/1/");
-    cy.get("button.action-choose").click({ force: true, multiple: true });
+    cy.get("button.action-choose > svg").click({ force: true, multiple: true });
     cy.get(".modal-content").should("be.visible");
-    cy.get("a[data-title='Wagtail Tag Manager']").click({ force: true, multiple: true });
+    cy.get("a[data-title='Wagtail Tag Manager']").click({
+      force: true,
+      multiple: true,
+    });
     cy.get(".actions button[type='submit']").click();
 
     // Register consent
@@ -36,8 +39,8 @@ describe("Cookie consent", () => {
 
     // Change homepage
     cy.visit("/cms/pages/2/edit/");
-    cy.get(".dropdown-toggle").click({force: true});
-    cy.get("[name='action-publish']").click({force: true});
+    cy.get(".dropdown-toggle").click({ force: true });
+    cy.get("[name='action-publish']").click({ force: true });
 
     // Visit homepage
     cy.visit("/");
@@ -55,7 +58,7 @@ describe("Cookie consent", () => {
 
     // Remove condition page
     cy.visit("/cms/settings/wagtail_tag_manager/cookieconsentsettings/1/");
-    cy.get("button.action-clear").click({force: true});
+    cy.get("button.action-clear").click({ force: true });
     cy.get(".actions button[type='submit']").click();
 
     // Register consent
@@ -70,8 +73,8 @@ describe("Cookie consent", () => {
 
     // Change homepage
     cy.visit("/cms/pages/2/edit/");
-    cy.get(".dropdown-toggle").click({force: true});
-    cy.get("[name='action-publish']").click({force: true});
+    cy.get(".dropdown-toggle").click({ force: true });
+    cy.get("[name='action-publish']").click({ force: true });
 
     // Visit homepage
     cy.visit("/");

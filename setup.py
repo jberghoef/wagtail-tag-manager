@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 
 install_requires = [
-    "wagtail>=2.11,<4.1",
+    "wagtail>=2.11,<4.2",
     "selenium>=3.141.0,<3.142.0",
 ]
 

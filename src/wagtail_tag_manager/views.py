@@ -5,7 +5,7 @@ from django import forms
 from django.conf import settings
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.views.generic import View, TemplateView
-from django.contrib.auth.views import SuccessURLAllowedHostsMixin
+from django.contrib.auth.views import RedirectURLMixin
 from wagtail.contrib.modeladmin.views import IndexView
 
 from wagtail_tag_manager.forms import ConsentForm
@@ -21,7 +21,7 @@ else:
     from django.utils.translation import gettext_lazy as _
 
 
-class ManageView(SuccessURLAllowedHostsMixin, TemplateView):
+class ManageView(RedirectURLMixin, TemplateView):
     template_name = "wagtail_tag_manager/manage.html"
 
     def get(self, request, *args, **kwargs):
