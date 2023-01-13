@@ -1,6 +1,6 @@
 from django.http import Http404
-from django.db.models import Q
 from wagtail.views import serve as wagtail_serve
+from django.db.models import Q
 
 from wagtail_tag_manager.mixins import TagMixin
 from wagtail_tag_manager.models import Tag, Trigger, TagTypeSettings
@@ -23,6 +23,7 @@ CONSENT_MAP = (
         SETTING_REQUIRED,
         (
             # Consent validator, consent value, include instant tags, include lazy tags
+            (lambda c: c != CONSENT_TRUE, CONSENT_UNSET, True, False),
             (lambda c: True, CONSENT_TRUE, True, False),
         ),
     ),
@@ -47,11 +48,18 @@ CONSENT_MAP = (
         "GET",
         SETTING_DEFAULT,
         (
+            (lambda c: c == CONSENT_UNSET, CONSENT_UNSET, False, False),
             (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, True, False),
-            (lambda c: c != CONSENT_TRUE, CONSENT_FALSE, False, False),
         ),
     ),
-    ("POST", SETTING_REQUIRED, ((lambda c: True, CONSENT_TRUE, False, True),)),
+    (
+        "POST",
+        SETTING_REQUIRED,
+        (
+            (lambda c: c != CONSENT_TRUE, CONSENT_UNSET, False, True),
+            (lambda c: True, CONSENT_TRUE, False, True),
+        ),
+    ),
     (
         "POST",
         SETTING_INITIAL,
@@ -73,8 +81,8 @@ CONSENT_MAP = (
         "POST",
         SETTING_DEFAULT,
         (
+            (lambda c: c == CONSENT_UNSET, CONSENT_UNSET, False, False),
             (lambda c: c == CONSENT_TRUE, CONSENT_TRUE, False, True),
-            (lambda c: c != CONSENT_TRUE, CONSENT_FALSE, False, False),
         ),
     ),
 )
@@ -249,10 +257,27 @@ class TagStrategy(object):
 
     @property
     def cookie_state(self):
-        return {
-            tag_type: self.consent.get(tag_type, CONSENT_FALSE) != CONSENT_FALSE
-            for tag_type in Tag.get_types()
-        }
+        """
+        Returns the consent state mapped to simple True and False booleans
+        instead of the in-between consent states that might exist.
+        """
+
+        cookie_state = {}
+
+        for tag_type, config in TagTypeSettings.all().items():
+            state = self.consent.get(tag_type, CONSENT_FALSE)
+            setting = config.get("value", SETTING_DEFAULT)
+
+            if setting == SETTING_REQUIRED:
+                cookie_state[tag_type] = True
+            elif setting == SETTING_DEFAULT:
+                cookie_state[tag_type] = self.consent.get(
+                    tag_type, CONSENT_UNSET
+                ) not in (CONSENT_FALSE, CONSENT_UNSET)
+            else:
+                cookie_state[tag_type] = state != CONSENT_FALSE
+
+        return cookie_state
 
     @property
     def is_debug(self):
