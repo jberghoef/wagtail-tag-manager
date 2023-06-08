@@ -6,9 +6,9 @@ from django.utils.html import mark_safe
 from django.utils.text import slugify
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
-from wagtail.core.models import Orderable
+from wagtail.models import Orderable
 from django.core.exceptions import ValidationError
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 
 from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.widgets import VariableSelect

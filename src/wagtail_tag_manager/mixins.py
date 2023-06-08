@@ -2,7 +2,7 @@ import django
 from django.db import models
 from modelcluster.fields import ParentalManyToManyField
 from modelcluster.models import ClusterableModel
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, PublishingPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, PublishingPanel
 
 from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.widgets import (

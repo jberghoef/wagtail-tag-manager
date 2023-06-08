@@ -1,7 +1,7 @@
 import django
 from django.conf import settings
 from django.urls import path, reverse
-from wagtail.core import hooks
+from wagtail import hooks
 from django.utils.html import mark_safe
 from wagtail.admin.menu import AdminOnlyMenuItem
 from wagtail.admin.site_summary import SummaryItem

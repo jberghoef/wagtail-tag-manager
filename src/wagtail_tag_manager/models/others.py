@@ -3,7 +3,7 @@ import uuid
 import django
 from django.db import models
 from django.utils.html import mark_safe
-from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel, FieldRowPanel, MultiFieldPanel
 
 from wagtail_tag_manager.managers import CookieDeclarationQuerySet
 from wagtail_tag_manager.settings import TagTypeSettings

@@ -119,7 +119,7 @@ def get_page_for_request(request):
 
 def get_site_for_request(request):
     try:
-        from wagtail.core.models import Site
+        from wagtail.models import Site
 
         return Site.find_for_request(request)
     except:  # noqa: E722
