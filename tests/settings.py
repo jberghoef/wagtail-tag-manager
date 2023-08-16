@@ -64,10 +64,10 @@ MIDDLEWARE = [
 ]
 
 try:
-    from wagtail.core.middleware import SiteMiddleware  # noqa
+    from wagtail.middleware import SiteMiddleware  # noqa
 
     MIDDLEWARE = MIDDLEWARE + [
-        "wagtail.core.middleware.SiteMiddleware",
+        "wagtail.middleware.SiteMiddleware",
         "wagtail_tag_manager.middleware.CookieConsentMiddleware",
         "wagtail_tag_manager.middleware.TagManagerMiddleware",
     ]
@@ -96,7 +96,7 @@ INSTALLED_APPS = (
     "wagtail.images",
     "wagtail.search",
     "wagtail.admin",
-    "wagtail.core",
+    "wagtail",
     "wagtail.contrib.modeladmin",
     "modelcluster",
     "taggit",

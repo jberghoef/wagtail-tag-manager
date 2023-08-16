@@ -5,7 +5,7 @@ import django
 from django.db import models
 from django.utils.html import mark_safe
 from django.core.exceptions import ValidationError
-from wagtail.admin.edit_handlers import FieldPanel, FieldRowPanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel, FieldRowPanel, MultiFieldPanel
 
 from wagtail_tag_manager.decorators import get_variables
 

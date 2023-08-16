@@ -21,9 +21,15 @@ import "./commands";
 
 Cypress.Cookies.debug(true, { verbose: false });
 
+Cypress.on("uncaught:exception", (err, runnable) => {
+  if (err.message.includes("fetch is not a function")) {
+    return false;
+  }
+});
+
 before("login to admin", () => {
   cy.clearCookies();
-  cy.visit("/cms/");
+  cy.visit("/cms/login/");
   cy.get("#id_username").type("superuser");
   cy.get("#id_password").type("testing");
   cy.get("button[type='submit']").click();

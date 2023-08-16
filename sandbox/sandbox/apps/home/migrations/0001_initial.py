@@ -3,7 +3,7 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import modelcluster.fields
-import wagtail.core.fields
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
                 ('wtm_include_children', models.BooleanField(default=False, help_text='Also include these tags on all children of this page.', verbose_name='Include children')),
-                ('content', wagtail.core.fields.RichTextField()),
+                ('content', wagtail.fields.RichTextField()),
                 ('wtm_tags', modelcluster.fields.ParentalManyToManyField(blank=True, help_text='The tags to include when this page is loaded.', related_name='pages', to='wagtail_tag_manager.Tag', verbose_name='Tags')),
             ],
             options={

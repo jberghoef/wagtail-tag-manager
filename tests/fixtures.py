@@ -13,7 +13,7 @@ from tests.factories.site import SiteFactory
 @pytest.fixture(scope="function")
 def site():
     try:
-        from wagtail.core.models import Locale  # noqa
+        from wagtail.models import Locale  # noqa
 
         from tests.factories.locale import LocaleFactory
 

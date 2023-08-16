@@ -19,7 +19,7 @@ describe("Cookie consent", () => {
 
     // Configure condition page
     cy.visit("/cms/settings/wagtail_tag_manager/cookieconsentsettings/1/");
-    cy.get("button.action-choose > svg").click({ force: true, multiple: true });
+    cy.get("button[data-chooser-action-choose]").click({ force: true, multiple: true });
     cy.get(".modal-content").should("be.visible");
     cy.get("a[data-title='Wagtail Tag Manager']").click({
       force: true,
@@ -33,7 +33,7 @@ describe("Cookie consent", () => {
     cy.getCookie("wtm").should(
       "have.property",
       "value",
-      "necessary:true|preferences:true|statistics:true|marketing:false"
+      "necessary:true|preferences:true|statistics:true|marketing:false",
     );
     cy.getCookie("wtm_id").should("exist");
 
@@ -47,7 +47,7 @@ describe("Cookie consent", () => {
     cy.getCookie("wtm").should(
       "have.property",
       "value",
-      "necessary:true|preferences:unset|statistics:pending|marketing:false"
+      "necessary:true|preferences:unset|statistics:pending|marketing:false",
     );
   });
 
@@ -58,7 +58,8 @@ describe("Cookie consent", () => {
 
     // Remove condition page
     cy.visit("/cms/settings/wagtail_tag_manager/cookieconsentsettings/1/");
-    cy.get("button.action-clear").click({ force: true });
+    cy.get("button[aria-label='Actions']").click({ force: true });
+    cy.get("button[data-chooser-action-clear]").click({ force: true });
     cy.get(".actions button[type='submit']").click();
 
     // Register consent
@@ -67,7 +68,7 @@ describe("Cookie consent", () => {
     cy.getCookie("wtm").should(
       "have.property",
       "value",
-      "necessary:true|preferences:true|statistics:true|marketing:false"
+      "necessary:true|preferences:true|statistics:true|marketing:false",
     );
     cy.getCookie("wtm_id").should("exist");
 
@@ -81,7 +82,7 @@ describe("Cookie consent", () => {
     cy.getCookie("wtm").should(
       "have.property",
       "value",
-      "necessary:true|preferences:true|statistics:true|marketing:false"
+      "necessary:true|preferences:true|statistics:true|marketing:false",
     );
   });
 });

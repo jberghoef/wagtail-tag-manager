@@ -1,5 +1,5 @@
 import factory
-from wagtail.core.models import Locale
+from wagtail.models import Locale
 
 
 class LocaleFactory(factory.django.DjangoModelFactory):

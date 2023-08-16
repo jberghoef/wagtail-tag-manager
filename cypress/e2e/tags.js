@@ -1,6 +1,9 @@
 describe("Necessary tags", () => {
   it("will be loaded", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:false|statistics:false|marketing:false");
+    cy.setCookie(
+      "wtm",
+      "necessary:true|preferences:false|statistics:false|marketing:false",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.console, "info").as("consoleInfo");
@@ -23,10 +26,13 @@ describe("Necessary tags", () => {
     cy.getCookie("wtm").should(
       "have.property",
       "value",
-      "necessary:true|preferences:unset|statistics:pending|marketing:false"
+      "necessary:true|preferences:unset|statistics:pending|marketing:false",
     );
 
-    cy.setCookie("wtm", "necessary:false|preferences:false|statistics:false|marketing:false");
+    cy.setCookie(
+      "wtm",
+      "necessary:false|preferences:false|statistics:false|marketing:false",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.console, "info").as("consoleInfo");
@@ -37,10 +43,13 @@ describe("Necessary tags", () => {
     cy.getCookie("wtm").should(
       "have.property",
       "value",
-      "necessary:true|preferences:false|statistics:false|marketing:false"
+      "necessary:true|preferences:false|statistics:false|marketing:false",
     );
 
-    cy.setCookie("wtm", "necessary:unset|preferences:false|statistics:false|marketing:false");
+    cy.setCookie(
+      "wtm",
+      "necessary:unset|preferences:false|statistics:false|marketing:false",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.console, "info").as("consoleInfo");
@@ -51,12 +60,15 @@ describe("Necessary tags", () => {
     cy.getCookie("wtm").should(
       "have.property",
       "value",
-      "necessary:true|preferences:false|statistics:false|marketing:false"
+      "necessary:true|preferences:false|statistics:false|marketing:false",
     );
   });
 
   it("will be loaded instantly and lazy", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:false|statistics:false|marketing:false");
+    cy.setCookie(
+      "wtm",
+      "necessary:true|preferences:false|statistics:false|marketing:false",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.document.head, "appendChild").as("headAppendChild");
@@ -69,7 +81,10 @@ describe("Necessary tags", () => {
 
 describe("Preference tags", () => {
   it("will be loaded", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:unset|statistics:false|marketing:false");
+    cy.setCookie(
+      "wtm",
+      "necessary:true|preferences:unset|statistics:false|marketing:false",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.console, "info").as("consoleInfo");
@@ -81,7 +96,10 @@ describe("Preference tags", () => {
   });
 
   it("will not be loaded", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:false|statistics:false|marketing:false");
+    cy.setCookie(
+      "wtm",
+      "necessary:true|preferences:false|statistics:false|marketing:false",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.console, "info").as("consoleInfo");
@@ -93,7 +111,10 @@ describe("Preference tags", () => {
   });
 
   it("will be loaded lazy", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:unset|statistics:false|marketing:false");
+    cy.setCookie(
+      "wtm",
+      "necessary:true|preferences:unset|statistics:false|marketing:false",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.document.head, "appendChild").as("headAppendChild");
@@ -104,7 +125,10 @@ describe("Preference tags", () => {
   });
 
   it("will be loaded instantly and lazy", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:true|statistics:false|marketing:false");
+    cy.setCookie(
+      "wtm",
+      "necessary:true|preferences:true|statistics:false|marketing:false",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.document.head, "appendChild").as("headAppendChild");
@@ -133,7 +157,10 @@ describe("Statistical tags", () => {
   });
 
   it("will not be loaded at the second visit", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:false|statistics:false|marketing:false");
+    cy.setCookie(
+      "wtm",
+      "necessary:true|preferences:false|statistics:false|marketing:false",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.console, "info").as("consoleInfo");
@@ -154,7 +181,10 @@ describe("Statistical tags", () => {
   });
 
   it("will be loaded lazy", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:unset|statistics:false|marketing:false");
+    cy.setCookie(
+      "wtm",
+      "necessary:true|preferences:unset|statistics:false|marketing:false",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.document.head, "appendChild").as("headAppendChild");
@@ -165,7 +195,10 @@ describe("Statistical tags", () => {
   });
 
   it("will be loaded instantly and lazy", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:true|statistics:false|marketing:false");
+    cy.setCookie(
+      "wtm",
+      "necessary:true|preferences:true|statistics:false|marketing:false",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.document.head, "appendChild").as("headAppendChild");
@@ -178,17 +211,23 @@ describe("Statistical tags", () => {
 
 describe("Marketing tags", () => {
   it("can't be unset", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:false|statistics:false|marketing:unset");
+    cy.setCookie(
+      "wtm",
+      "necessary:true|preferences:false|statistics:false|marketing:unset",
+    );
     cy.visit("/");
     cy.getCookie("wtm").should(
       "have.property",
       "value",
-      "necessary:true|preferences:false|statistics:false|marketing:false"
+      "necessary:true|preferences:false|statistics:false|marketing:false",
     );
   });
 
   it("will not be loaded", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:false|statistics:false|marketing:false");
+    cy.setCookie(
+      "wtm",
+      "necessary:true|preferences:false|statistics:false|marketing:false",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.console, "info").as("consoleInfo");
@@ -200,7 +239,10 @@ describe("Marketing tags", () => {
   });
 
   it("will be loaded", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:false|statistics:false|marketing:true");
+    cy.setCookie(
+      "wtm",
+      "necessary:true|preferences:false|statistics:false|marketing:true",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.console, "info").as("consoleInfo");
@@ -212,7 +254,10 @@ describe("Marketing tags", () => {
   });
 
   it("will be loaded instantly and lazy", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:false|statistics:false|marketing:true");
+    cy.setCookie(
+      "wtm",
+      "necessary:true|preferences:false|statistics:false|marketing:true",
+    );
     cy.visit("/", {
       onBeforeLoad(win) {
         cy.stub(win.document.head, "appendChild").as("headAppendChild");
