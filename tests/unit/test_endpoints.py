@@ -15,9 +15,9 @@ from tests.factories.tag import (
 )
 from tests.factories.page import TaggableContentPageFactory
 from tests.factories.trigger import TriggerFactory
-from wagtail_tag_manager.consent import ResponseConsent
-from wagtail_tag_manager.models import Tag, Trigger
 from wagtail_tag_manager.utils import dict_to_base64
+from wagtail_tag_manager.models import Tag, Trigger
+from wagtail_tag_manager.consent import ResponseConsent
 
 
 @pytest.mark.django_db

@@ -1,8 +1,8 @@
 import pytest
 
 from wagtail_tag_manager.forms import ConsentForm
-from wagtail_tag_manager.strategy import TagStrategy
 from wagtail_tag_manager.utils import dict_to_base64
+from wagtail_tag_manager.strategy import TagStrategy
 
 
 @pytest.mark.django_db

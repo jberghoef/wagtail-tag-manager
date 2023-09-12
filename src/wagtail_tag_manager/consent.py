@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 from django.http import HttpRequest, HttpResponse
 
-from wagtail_tag_manager.utils import dict_to_base64, base64_to_dict
+from wagtail_tag_manager.utils import base64_to_dict, dict_to_base64
 
 
 class Consent(object):
@@ -133,8 +133,8 @@ class Consent(object):
         """
         This function will check if the CookieConsentSettings have been changed since the last time the user has given consent.
         """
-        from wagtail_tag_manager.settings import CookieConsentSettings
         from wagtail_tag_manager.models import CookieConsent
+        from wagtail_tag_manager.settings import CookieConsentSettings
 
         if id:
             settings = CookieConsentSettings.for_request(self._request)

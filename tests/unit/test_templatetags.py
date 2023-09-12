@@ -1,5 +1,6 @@
-import pytest
 import json
+
+import pytest
 from django.template.base import Token, Parser, TokenType
 from django.template.context import make_context
 from django.template.exceptions import TemplateDoesNotExist
@@ -9,6 +10,7 @@ from tests.factories.tag import (
     tag_instant_necessary,
     tag_instant_preferences,
 )
+from wagtail_tag_manager.utils import dict_to_base64
 from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.templatetags.wtm_tags import (
     wtm_include,
@@ -16,7 +18,6 @@ from wagtail_tag_manager.templatetags.wtm_tags import (
     wtm_instant_tags,
     wtm_lazy_manager,
 )
-from wagtail_tag_manager.utils import dict_to_base64
 
 
 @pytest.mark.django_db

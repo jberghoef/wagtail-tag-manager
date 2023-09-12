@@ -3,8 +3,8 @@ from django.conf import settings
 from django.urls import reverse
 from django.templatetags.static import static
 
-from wagtail_tag_manager.consent import Consent
 from wagtail_tag_manager.models import Tag
+from wagtail_tag_manager.consent import Consent
 from wagtail_tag_manager.strategy import TagStrategy
 
 

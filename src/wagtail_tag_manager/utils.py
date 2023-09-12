@@ -1,6 +1,6 @@
-import binascii
-import base64
 import json
+import base64
+import binascii
 from urllib.parse import quote, unquote
 
 from django.http import HttpRequest

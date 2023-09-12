@@ -10,8 +10,8 @@ from tests.factories.tag import (
     tag_instant_preferences,
 )
 from tests.factories.page import TaggableContentPageFactory
-from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.utils import dict_to_base64
+from wagtail_tag_manager.models import Tag
 
 
 @pytest.mark.django_db
