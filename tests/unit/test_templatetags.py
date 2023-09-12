@@ -1,4 +1,5 @@
 import pytest
+import json
 from django.template.base import Token, Parser, TokenType
 from django.template.context import make_context
 from django.template.exceptions import TemplateDoesNotExist
@@ -15,6 +16,7 @@ from wagtail_tag_manager.templatetags.wtm_tags import (
     wtm_instant_tags,
     wtm_lazy_manager,
 )
+from wagtail_tag_manager.utils import dict_to_base64
 
 
 @pytest.mark.django_db
@@ -32,12 +34,30 @@ def test_wtm_include_necessary(rf, site):
 
     assert result == expected_result
 
-    request.COOKIES = {"wtm": "necessary:false"}
+    request.COOKIES = {
+        "wtm": dict_to_base64(
+            {
+                "meta": {},
+                "state": {
+                    "necessary": "false",
+                },
+            }
+        )
+    }
     result = node.render(context=make_context({"request": request}))
 
     assert result == expected_result
 
-    request.COOKIES = {"wtm": "necessary:true"}
+    request.COOKIES = {
+        "wtm": dict_to_base64(
+            {
+                "meta": {},
+                "state": {
+                    "necessary": "true",
+                },
+            }
+        )
+    }
     result = node.render(context=make_context({"request": request}))
 
     assert result == expected_result
@@ -58,12 +78,30 @@ def test_wtm_include_preferences(rf, site):
 
     assert result == expected_result
 
-    request.COOKIES = {"wtm": "preferences:false"}
+    request.COOKIES = {
+        "wtm": dict_to_base64(
+            {
+                "meta": {},
+                "state": {
+                    "preferences": "false",
+                },
+            }
+        )
+    }
     result = node.render(context=make_context({"request": request}))
 
     assert result == ""
 
-    request.COOKIES = {"wtm": "preferences:true"}
+    request.COOKIES = {
+        "wtm": dict_to_base64(
+            {
+                "meta": {},
+                "state": {
+                    "preferences": "true",
+                },
+            }
+        )
+    }
     result = node.render(context=make_context({"request": request}))
 
     assert result == expected_result
@@ -81,10 +119,28 @@ def test_wtm_include_marketing(rf, site):
         request = rf.get(site.root_page.url)
         node.render(context=make_context({"request": request}))
 
-        request.COOKIES = {"wtm": "marketing:false"}
+        request.COOKIES = {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "marketing": "false",
+                    },
+                }
+            )
+        }
         node.render(context=make_context({"request": request}))
 
-        request.COOKIES = {"wtm": "marketing:true"}
+        request.COOKIES = {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "marketing": "true",
+                    },
+                }
+            )
+        }
         node.render(context=make_context({"request": request}))
 
 
@@ -100,12 +156,33 @@ def test_wtm_instant_tags(rf, site):
     assert "tags" in context
     assert len(context.get("tags")) == 1
 
-    request.COOKIES = {"wtm": "necessary:true|preferences:true"}
+    request.COOKIES = {
+        "wtm": dict_to_base64(
+            {
+                "meta": {},
+                "state": {
+                    "necessary": "true",
+                    "preferences": "true",
+                },
+            }
+        )
+    }
     context = wtm_instant_tags({"request": request})
     assert "tags" in context
     assert len(context.get("tags")) == 2
 
-    request.COOKIES = {"wtm": "necessary:true|preferences:true|marketing:true"}
+    request.COOKIES = {
+        "wtm": dict_to_base64(
+            {
+                "meta": {},
+                "state": {
+                    "necessary": "true",
+                    "preferences": "true",
+                    "marketing": "true",
+                },
+            }
+        )
+    }
     context = wtm_instant_tags({"request": request})
     assert "tags" in context
     assert len(context.get("tags")) == 3

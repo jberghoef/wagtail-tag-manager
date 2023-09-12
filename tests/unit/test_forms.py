@@ -2,6 +2,7 @@ import pytest
 
 from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.strategy import TagStrategy
+from wagtail_tag_manager.utils import dict_to_base64
 
 
 @pytest.mark.django_db
@@ -30,7 +31,16 @@ def test_consent_form_initial(rf, site):
     request = rf.get(site.root_page.url)
     request.COOKIES = {
         **request.COOKIES,
-        "wtm": "necessary:true|preferences:false|marketing:true",
+        "wtm": dict_to_base64(
+            {
+                "meta": {},
+                "state": {
+                    "necessary": "true",
+                    "preferences": "false",
+                    "marketing": "true",
+                },
+            }
+        ),
     }
 
     cookie_state = TagStrategy(request).cookie_state

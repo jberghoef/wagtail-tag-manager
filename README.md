@@ -31,6 +31,40 @@ _In this package the term "tag" is being used for code snippets being injected
 into HTML. This is not to be confused with tags used to identify content in the
 CMS, such as pictures and documents._
 
+## ‼️ Breaking changes
+
+As of version 2.0, consent is stored differently in the `wtm` cookie. The reason for this change is
+to prevent so-called "cache-busting" and only refresh the WTM cookie after a certain period of time
+(specified in [`WTM_COOKIE_REFRESH`](#wtm_cookie_refresh)).
+The cookie will now contain a `base64` and `uri` encoded JSON string which stores both the consent state
+and additional information. Old versions of the cookie
+(e.g. `necessary:true|preferences:unset|statistics:pending|marketing:false`) will automatically be
+upgraded when detected. Once decoded, it will look something like this:
+
+```json
+{
+  "meta": {
+    "id": "b402114a-352f-488f-8481-834cd91a1b2b",
+    "refresh_timestamp": 1694520568.531865,
+    "set_timestamp": 1694520573.685324
+  },
+  "state": {
+    "necessary": "true",
+    "preferences": "unset",
+    "statistics": "pending",
+    "marketing": "false"
+  }
+}
+```
+
+To easily parse the cookie using JavaScript, you can use this code snippet:
+
+```js
+const { meta, state } = JSON.parse(atob(decodeURIComponent(cookie_content_goes_here)));
+```
+
+You can ready more on how to easily access this state from your front-end [here](#wtm_inject_script).
+
 ## Features
 
 Wagtail Tag Manager offers functionality similar to platforms like
@@ -68,6 +102,7 @@ to inject tags into a page before the response is send to a client.
   - [`WTM_INJECT_TAGS`](#wtm_inject_tags)
   - [`WTM_MANAGE_VIEW`](#wtm_manage_view)
   - [`WTM_COOKIE_EXPIRE`](#wtm_cookie_expire)
+  - [`WTM_COOKIE_REFRESH`](#wtm_cookie_refresh)
   - [`WTM_CACHE_TIMEOUT`](#wtm_cache_timeout)
   - [`WTM_PRESERVE_VARIABLES`](#wtm_preserve_variables)
   - [`WTM_INJECT_STYLE`](#wtm_inject_style)
@@ -101,11 +136,11 @@ change the text shown in the cookie bar.
 
 ## Requirements
 
-| Package | Version(s)                                        |
-| ------- | ------------------------------------------------- |
-| Django  | 2.2, 3.0, 3.1, 3.2, 4.0, 4.1                      |
-| Wagtail | 2.11, 2.12, 2.13, 2.14, 2.15, 2.16, 3.0, 4.0, 4.1 |
-| Python  | 3.7, 3.8, 3.9, 3.10, 3.11                         |
+| Package | Version(s)           |
+| ------- | -------------------- |
+| Django  | 3.2, 4.0, 4.1, 4.2   |
+| Wagtail | 4.1, 4.2, 5.0. 5.1   |
+| Python  | 3.8, 3.9, 3.10, 3.11 |
 
 ## Instructions
 
@@ -360,6 +395,15 @@ WTM_COOKIE_EXPIRE = 365
 Sets the expiration time in days of WTM's cookies. Notice that this is only
 applicable to the consent cookies used by WTM, not any cookies placed by tags.
 
+### `WTM_COOKIE_REFRESH`
+
+```python
+WTM_COOKIE_REFRESH = 30
+```
+
+Sets the refresh time in days of WTM's cookies. Notice that this is only
+applicable to the consent cookies used by WTM, not any cookies placed by tags.
+
 ### `WTM_CACHE_TIMEOUT`
 
 ```python
@@ -397,7 +441,25 @@ WTM_INJECT_SCRIPT = True
 
 Change to `False` to prevent WTM's included scripts from loading. This is
 useful if you don't want to use the inlcuded lazy loading and cookie bar
-functionality.
+functionality. While enabled, the script will expose the `window.wtm.consent()`
+function. When called, the function will retrieve the current consent state
+and information from the `wtm` cookie. This will like something like this:
+
+```json
+{
+  "meta": {
+    "id": "b402114a-352f-488f-8481-834cd91a1b2b",
+    "refresh_timestamp": 1694520568.531865,
+    "set_timestamp": 1694520573.685324
+  },
+  "state": {
+    "marketing": "false",
+    "necessary": "true",
+    "preferences": "true",
+    "statistics": "true"
+  }
+}
+```
 
 ### `WTM_SUMMARY_PANELS`
 

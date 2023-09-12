@@ -11,6 +11,7 @@ from tests.factories.tag import (
 )
 from tests.factories.page import TaggableContentPageFactory
 from wagtail_tag_manager.models import Tag
+from wagtail_tag_manager.utils import dict_to_base64
 
 
 @pytest.mark.django_db
@@ -19,18 +20,51 @@ def test_view_necessary(client, site):
     assert response.status_code == 200
 
     tag_instant_necessary(tag_location=Tag.TOP_HEAD)
-    client.cookies = SimpleCookie({"wtm": "necessary:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "necessary": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("necessary instant")' in response.content
 
     tag_instant_necessary(name="instant necessary 2", tag_location=Tag.BOTTOM_HEAD)
-    client.cookies = SimpleCookie({"wtm": "necessary:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "necessary": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("necessary instant")' in response.content
 
-    client.cookies = SimpleCookie({"wtm": "necessary:false"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "necessary": "false",
+                    },
+                }
+            )
+        }
+    )
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("necessary instant")' in response.content
@@ -39,7 +73,18 @@ def test_view_necessary(client, site):
 @pytest.mark.django_db
 def test_view_preferences(client, site):
     tag_instant_preferences(tag_location=Tag.TOP_BODY)
-    client.cookies = SimpleCookie({"wtm": "preferences:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "preferences": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("preferences instant")' in response.content
@@ -48,7 +93,18 @@ def test_view_preferences(client, site):
 @pytest.mark.django_db
 def test_view_statistics(client, site):
     tag_instant_statistics(tag_location=Tag.TOP_BODY)
-    client.cookies = SimpleCookie({"wtm": "statistics:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "statistics": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("statistics instant")' in response.content
@@ -57,7 +113,18 @@ def test_view_statistics(client, site):
 @pytest.mark.django_db
 def test_view_marketing(client, site):
     tag_instant_marketing(tag_location=Tag.BOTTOM_BODY)
-    client.cookies = SimpleCookie({"wtm": "marketing:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "marketing": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.get(site.root_page.url)
     assert response.status_code == 200
     assert b'console.log("marketing instant")' in response.content
@@ -108,22 +175,66 @@ def test_page_tags(client, site):
     page.wtm_tags.add(tag_marketing)
     page.save()
 
-    client.cookies = SimpleCookie({"wtm": "necessary:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "necessary": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.get(page.get_url())
     assert response.status_code == 200
     assert b'console.log("necessary")' in response.content
 
-    client.cookies = SimpleCookie({"wtm": "preferences:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "preferences": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.get(page.get_url())
     assert response.status_code == 200
     assert b'console.log("preferences")' in response.content
 
-    client.cookies = SimpleCookie({"wtm": "statistics:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "statistics": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.get(page.get_url())
     assert response.status_code == 200
     assert b'console.log("statistics")' in response.content
 
-    client.cookies = SimpleCookie({"wtm": "marketing:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "marketing": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.get(page.get_url())
     assert response.status_code == 200
     assert b'console.log("marketing")' in response.content

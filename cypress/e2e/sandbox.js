@@ -1,12 +1,21 @@
+beforeEach("clear wtm cookies", () => {
+  cy.clearCookie("wtm", { timeout: 1000 });
+});
+
 describe("The website", () => {
   it("contains base configuration", () => {
     cy.visit("/");
 
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:unset|statistics:pending|marketing:false"
-    );
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "unset",
+          statistics: "pending",
+          marketing: "false",
+        },
+      });
+    });
 
     cy.get("body")
       .should("have.attr", "data-wtm-config", "/wtm/config/")

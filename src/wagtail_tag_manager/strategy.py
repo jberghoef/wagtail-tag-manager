@@ -89,10 +89,10 @@ class TagStrategy(object):
         self._config = TagTypeSettings.all()
         self._tags = []
 
-        from wagtail_tag_manager.utils import get_consent
+        from wagtail_tag_manager.consent import Consent
 
-        self.consent_state = get_consent(request)
-        self.consent = {}
+        self.consent = Consent(request)
+        self.consent_state = self.consent.get_state()
 
         if request:
             self.define_strategy()
@@ -107,7 +107,7 @@ class TagStrategy(object):
                     method, tag_type, tag_config
                 )
 
-                self.consent[tag_type] = consent_value
+                self.consent_state[tag_type] = consent_value
 
                 if include_instant:
                     self._tags.append((Tag.INSTANT_LOAD, tag_type))
@@ -250,7 +250,7 @@ class TagStrategy(object):
     @property
     def cookie_state(self):
         return {
-            tag_type: self.consent.get(tag_type, CONSENT_FALSE) != CONSENT_FALSE
+            tag_type: self.consent_state.get(tag_type, CONSENT_FALSE) != CONSENT_FALSE
             for tag_type in Tag.get_types()
         }
 

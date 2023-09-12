@@ -3,6 +3,8 @@ import random
 import django
 from django.apps import AppConfig
 
+from wagtail_tag_manager.consent import Consent
+
 __version__ = django.get_version()
 if __version__.startswith("2"):
     from django.utils.translation import ugettext_lazy as _
@@ -21,7 +23,6 @@ class WagtailTagManagerConfig(AppConfig):
 
     @staticmethod
     def register_variables():
-        from wagtail_tag_manager.utils import get_consent
         from wagtail_tag_manager.options import CustomVariable
         from wagtail_tag_manager.settings import TagTypeSettings
         from wagtail_tag_manager.decorators import register_variable
@@ -30,8 +31,9 @@ class WagtailTagManagerConfig(AppConfig):
             group = _("Consent")
 
             def get_value(self, request):
-                consent_state = get_consent(request)
-                return consent_state.get(self.key[8:])
+                consent = Consent(request)
+                state = consent.get_state()
+                return state.get(self.key[8:])
 
         for tag_type, config in TagTypeSettings.all().items():
             instance = TagConsentVariable(

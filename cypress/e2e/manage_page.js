@@ -1,6 +1,5 @@
 beforeEach("clear wtm cookies", () => {
   cy.clearCookie("wtm", { timeout: 1000 });
-  cy.clearCookie("wtm_id", { timeout: 1000 });
 });
 
 describe("The manage page", () => {
@@ -36,12 +35,16 @@ describe("The manage page", () => {
     cy.get("form:not(.form)").scrollIntoView();
     cy.get("form:not(.form) input[type='submit']").click();
 
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:true|statistics:true|marketing:false"
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "true",
+          statistics: "true",
+          marketing: "false",
+        },
+      });
+    });
   });
 
   it("can set only necesarry cookies", () => {
@@ -52,12 +55,16 @@ describe("The manage page", () => {
     cy.get("form:not(.form) input#id_statistics").click();
     cy.get("form:not(.form) input[type='submit']").click();
 
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:false|statistics:false|marketing:false"
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "false",
+          statistics: "false",
+          marketing: "false",
+        },
+      });
+    });
   });
 
   it("can set only preference cookies", () => {
@@ -67,12 +74,16 @@ describe("The manage page", () => {
     cy.get("form:not(.form) input#id_statistics").click();
     cy.get("form:not(.form) input[type='submit']").click();
 
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:true|statistics:false|marketing:false"
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "true",
+          statistics: "false",
+          marketing: "false",
+        },
+      });
+    });
   });
 
   it("can set only statistical cookies", () => {
@@ -82,12 +93,16 @@ describe("The manage page", () => {
     cy.get("form:not(.form) input#id_preferences").click();
     cy.get("form:not(.form) input[type='submit']").click();
 
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:false|statistics:true|marketing:false"
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "false",
+          statistics: "true",
+          marketing: "false",
+        },
+      });
+    });
   });
 
   it("can set only marketing cookies", () => {
@@ -99,12 +114,16 @@ describe("The manage page", () => {
     cy.get("form:not(.form) input#id_marketing").click();
     cy.get("form:not(.form) input[type='submit']").click();
 
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:false|statistics:false|marketing:true"
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "false",
+          statistics: "false",
+          marketing: "true",
+        },
+      });
+    });
   });
 
   it("can enable all cookies", () => {
@@ -114,11 +133,15 @@ describe("The manage page", () => {
     cy.get("form:not(.form) input#id_marketing").click();
     cy.get("form:not(.form) input[type='submit']").click();
 
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:true|statistics:true|marketing:true"
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "true",
+          statistics: "true",
+          marketing: "true",
+        },
+      });
+    });
   });
 });

@@ -1,6 +1,5 @@
 beforeEach("clear wtm cookies", () => {
   cy.clearCookie("wtm", { timeout: 1000 });
-  cy.clearCookie("wtm_id", { timeout: 1000 });
 });
 
 describe("The cookie bar", () => {
@@ -11,15 +10,19 @@ describe("The cookie bar", () => {
 
     cy.get("#wtm_cookie_bar").should("have.class", "hidden").should("not.be.visible");
 
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:true|statistics:true|marketing:false"
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "true",
+          statistics: "true",
+          marketing: "false",
+        },
+      });
+    });
   });
 
-  it("can set only necesarry cookies", () => {
+  it("can set only necessary cookies", () => {
     cy.visit("/");
 
     cy.get("#wtm_cookie_bar").should("be.visible");
@@ -29,12 +32,16 @@ describe("The cookie bar", () => {
 
     cy.get("#wtm_cookie_bar").should("have.class", "hidden").should("not.be.visible");
 
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:false|statistics:false|marketing:false"
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "false",
+          statistics: "false",
+          marketing: "false",
+        },
+      });
+    });
   });
 
   it("can set only preference cookies", () => {
@@ -46,12 +53,16 @@ describe("The cookie bar", () => {
 
     cy.get("#wtm_cookie_bar").should("have.class", "hidden").should("not.be.visible");
 
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:true|statistics:false|marketing:false"
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "true",
+          statistics: "false",
+          marketing: "false",
+        },
+      });
+    });
   });
 
   it("can set only statistical cookies", () => {
@@ -63,12 +74,16 @@ describe("The cookie bar", () => {
 
     cy.get("#wtm_cookie_bar").should("have.class", "hidden").should("not.be.visible");
 
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:false|statistics:true|marketing:false"
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "false",
+          statistics: "true",
+          marketing: "false",
+        },
+      });
+    });
   });
 
   it("can set only marketing cookies", () => {
@@ -82,12 +97,16 @@ describe("The cookie bar", () => {
 
     cy.get("#wtm_cookie_bar").should("have.class", "hidden").should("not.be.visible");
 
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:false|statistics:false|marketing:true"
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "false",
+          statistics: "false",
+          marketing: "true",
+        },
+      });
+    });
   });
 
   it("can enable all cookies", () => {
@@ -99,34 +118,66 @@ describe("The cookie bar", () => {
 
     cy.get("#wtm_cookie_bar").should("have.class", "hidden").should("not.be.visible");
 
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:true|statistics:true|marketing:true"
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "true",
+          statistics: "true",
+          marketing: "true",
+        },
+      });
+    });
   });
 
   it("is displayed when preference cookies are 'unset'", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:unset|statistics:false|marketing:false");
+    cy.setConsent({
+      state: {
+        necessary: "true",
+        preferences: "unset",
+        statistics: "false",
+        marketing: "false",
+      },
+    });
     cy.visit("/");
     cy.get("#wtm_cookie_bar").should("not.have.class", "hidden").should("be.visible");
   });
 
   it("is displayed when statistical cookies are 'unset'", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:false|statistics:unset|marketing:false");
+    cy.setConsent({
+      state: {
+        necessary: "true",
+        preferences: "false",
+        statistics: "unset",
+        marketing: "false",
+      },
+    });
     cy.visit("/");
     cy.get("#wtm_cookie_bar").should("not.have.class", "hidden").should("be.visible");
   });
 
   it("is hidden when all cookies are 'false'", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:false|statistics:false|marketing:false");
+    cy.setConsent({
+      state: {
+        necessary: "true",
+        preferences: "false",
+        statistics: "false",
+        marketing: "false",
+      },
+    });
     cy.visit("/");
     cy.get("#wtm_cookie_bar").should("have.class", "hidden").should("not.be.visible");
   });
 
   it("is hidden when all cookies are 'true'", () => {
-    cy.setCookie("wtm", "necessary:true|preferences:true|statistics:true|marketing:true");
+    cy.setConsent({
+      state: {
+        necessary: "true",
+        preferences: "true",
+        statistics: "true",
+        marketing: "true",
+      },
+    });
     cy.visit("/");
     cy.get("#wtm_cookie_bar").should("have.class", "hidden").should("not.be.visible");
   });

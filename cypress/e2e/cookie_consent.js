@@ -7,8 +7,8 @@ describe("Cookie consent", () => {
     cy.get("#wtm_cookie_bar input[type='submit']").click();
 
     cy.visit("/cms/reports/cookie-consent/");
-    cy.getCookie("wtm_id").then((cookie) => {
-      cy.get(".listing tbody tr:first td > b").contains(cookie.value);
+    cy.getConsent().should((consent) => {
+      cy.get(".listing tbody tr:first td > b").contains(consent.meta.id);
     });
   });
 
@@ -30,12 +30,16 @@ describe("Cookie consent", () => {
     // Register consent
     cy.visit("/");
     cy.get("#wtm_cookie_bar input[type='submit']").click();
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:true|statistics:true|marketing:false",
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "true",
+          statistics: "true",
+          marketing: "false",
+        },
+      });
+    });
 
     // Change homepage
     cy.visit("/cms/pages/2/edit/");
@@ -44,11 +48,16 @@ describe("Cookie consent", () => {
 
     // Visit homepage
     cy.visit("/");
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:unset|statistics:pending|marketing:false",
-    );
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "unset",
+          statistics: "pending",
+          marketing: "false",
+        },
+      });
+    });
   });
 
   it("will not be invalidated", () => {
@@ -65,12 +74,16 @@ describe("Cookie consent", () => {
     // Register consent
     cy.visit("/");
     cy.get("#wtm_cookie_bar input[type='submit']").click();
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:true|statistics:true|marketing:false",
-    );
-    cy.getCookie("wtm_id").should("exist");
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "true",
+          statistics: "true",
+          marketing: "false",
+        },
+      });
+    });
 
     // Change homepage
     cy.visit("/cms/pages/2/edit/");
@@ -79,10 +92,15 @@ describe("Cookie consent", () => {
 
     // Visit homepage
     cy.visit("/");
-    cy.getCookie("wtm").should(
-      "have.property",
-      "value",
-      "necessary:true|preferences:true|statistics:true|marketing:false",
-    );
+    cy.getConsent().should((consent) => {
+      expect(consent).to.deep.contain({
+        state: {
+          necessary: "true",
+          preferences: "true",
+          statistics: "true",
+          marketing: "false",
+        },
+      });
+    });
   });
 });
