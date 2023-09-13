@@ -6,7 +6,7 @@ from django.conf import settings
 from django.http import JsonResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.views.generic import View, TemplateView
 from django.contrib.auth.views import RedirectURLMixin
-from wagtail.contrib.modeladmin.views import IndexView
+from wagtail_modeladmin.views import IndexView
 
 from wagtail_tag_manager.forms import ConsentForm
 from wagtail_tag_manager.models import Trigger, Constant, Variable, TagTypeSettings

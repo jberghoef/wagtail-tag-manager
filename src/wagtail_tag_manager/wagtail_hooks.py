@@ -7,7 +7,7 @@ from wagtail.admin.menu import AdminOnlyMenuItem
 from wagtail.admin.site_summary import SummaryItem
 from wagtail.admin.views.reports import ReportView
 from django.template.defaultfilters import truncatechars
-from wagtail.contrib.modeladmin.options import (
+from wagtail_modeladmin.options import (
     ModelAdmin,
     ModelAdminGroup,
     modeladmin_register,

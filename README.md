@@ -155,7 +155,7 @@ pip install wagtail-tag-manager
 ```python
 INSTALLED_APPS = [
     # ...
-    'wagtail.contrib.modeladmin',
+    'wagtail_modeladmin',
     'wagtail_tag_manager',
     # ...
 ]
