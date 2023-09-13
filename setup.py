@@ -32,7 +32,7 @@ with open('README.md') as fh:
 
 setup(
     name="wagtail-tag-manager",
-    version="1.6.0",
+    version="2.0.0",
     description="A Wagtail add-on for managing tags.",
     author="Jasper Berghoef",
     author_email="j.berghoef@me.com",
