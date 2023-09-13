@@ -6,8 +6,8 @@ from django.db import models
 from django.conf import settings
 from django.template import Context, Template
 from django.utils.html import mark_safe
-from django.core.exceptions import ValidationError
 from wagtail.admin.panels import FieldPanel, FieldRowPanel, MultiFieldPanel
+from django.core.exceptions import ValidationError
 
 from wagtail_tag_manager.models import constants, variables
 from wagtail_tag_manager.widgets import Codearea

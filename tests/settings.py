@@ -97,7 +97,7 @@ INSTALLED_APPS = (
     "wagtail.search",
     "wagtail.admin",
     "wagtail",
-    "wagtail.contrib.modeladmin",
+    "wagtail_modeladmin",
     "modelcluster",
     "taggit",
     "wagtail_tag_manager",

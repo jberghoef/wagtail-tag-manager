@@ -2,7 +2,7 @@ import json
 
 from django.http import JsonResponse, HttpResponseBadRequest
 
-from wagtail_tag_manager.utils import set_consent
+from wagtail_tag_manager.consent import Consent
 from wagtail_tag_manager.strategy import TagStrategy
 
 
@@ -20,10 +20,11 @@ def lazy_endpoint(request):
         request.META["QUERY_STRING"] = payload.get("search", "")
 
         strategy = TagStrategy(request, payload)
-
-        set_consent(
-            request, response, {key: value for key, value in strategy.consent.items()}
+        consent = Consent(request)
+        consent.apply_state(
+            {key: value for key, value in strategy.consent_state.items()}
         )
+        consent.refresh_consent(response)
 
         for tag in strategy.result:
             element = tag.get("element")

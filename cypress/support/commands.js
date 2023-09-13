@@ -27,3 +27,16 @@
 Cypress.on("window:before:load", (win) => {
   win.fetch = null;
 });
+
+Cypress.Commands.add("setConsent", (content) => {
+  return cy.setCookie("wtm", encodeURIComponent(btoa(JSON.stringify(content))));
+});
+
+Cypress.Commands.add("getConsent", () => {
+  return cy.getCookie("wtm").then((cookie) => {
+    if (cookie && cookie.value) {
+      return JSON.parse(atob(decodeURIComponent(cookie.value)));
+    }
+    return {};
+  });
+});

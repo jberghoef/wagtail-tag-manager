@@ -1,24 +1,11 @@
 import Cookies from "js-cookie";
 import "whatwg-fetch";
+
 import CookieBar from "./cookie_bar";
 import TriggerMonitor from "./trigger_monitor";
 
 import { Trigger } from "./trigger_monitor";
-
-export interface WTMWindow extends Window {
-  wtm: {
-    config_url: string;
-    lazy_url: string;
-  };
-}
-
-export interface Tag {
-  name: string;
-  attributes: {
-    [s: string]: string;
-  };
-  string: string;
-}
+import type { WTMWindow, Tag, Meta, Cookie } from "../../types";
 
 export default class TagManager {
   window: WTMWindow = window as WTMWindow;
@@ -30,6 +17,7 @@ export default class TagManager {
   requestInit: RequestInit;
   data: { [s: string]: any } = {};
   config: { [s: string]: any } = {};
+  meta: Meta = {};
   state: { [s: string]: any } = {};
 
   constructor() {
@@ -59,11 +47,9 @@ export default class TagManager {
     this.loadConfig(() => {
       const cookie = Cookies.get("wtm");
       if (cookie) {
-        const items = cookie.split("|");
-        items.map((item) => {
-          const parts = item.split(":", 2);
-          if (parts.length > 0) this.state[parts[0]] = parts[1];
-        });
+        const { meta, state } = window.wtm.consent() as Cookie;
+        this.meta = meta;
+        this.state = state;
 
         this.validate();
         this.loadData(null);

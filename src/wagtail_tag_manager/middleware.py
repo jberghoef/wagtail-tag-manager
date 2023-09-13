@@ -3,8 +3,8 @@ from django.conf import settings
 from django.urls import reverse
 from django.templatetags.static import static
 
-from wagtail_tag_manager.utils import set_consent
 from wagtail_tag_manager.models import Tag
+from wagtail_tag_manager.consent import Consent
 from wagtail_tag_manager.strategy import TagStrategy
 
 
@@ -24,11 +24,11 @@ class CookieConsentMiddleware(BaseMiddleware):
             and not getattr(response, "streaming", False)
         ):
             strategy = TagStrategy(request)
-            set_consent(
-                request,
-                response,
-                {key: value for key, value in strategy.consent.items()},
+            consent = Consent(request)
+            consent.apply_state(
+                {key: value for key, value in strategy.consent_state.items()}
             )
+            consent.refresh_consent(response)
 
         return response
 

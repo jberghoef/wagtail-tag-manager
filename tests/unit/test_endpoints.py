@@ -15,8 +15,9 @@ from tests.factories.tag import (
 )
 from tests.factories.page import TaggableContentPageFactory
 from tests.factories.trigger import TriggerFactory
-from wagtail_tag_manager.utils import get_consent
+from wagtail_tag_manager.utils import dict_to_base64
 from wagtail_tag_manager.models import Tag, Trigger
+from wagtail_tag_manager.consent import ResponseConsent
 
 
 @pytest.mark.django_db
@@ -47,7 +48,9 @@ def test_lazy_cookies(client, site):
     assert "tags" in data
 
     assert "wtm" in response.cookies
-    consent_state = get_consent(response)
+
+    consent = ResponseConsent(response)
+    consent_state = consent.get_state()
     assert consent_state.get("necessary", "") == "true"
     assert consent_state.get("preferences", "") == "unset"
     assert consent_state.get("statistics", "") == "unset"
@@ -68,7 +71,9 @@ def test_required_lazy_cookies(client, site):
     assert len(data["tags"]) == 1
 
     assert "wtm" in response.cookies
-    consent_state = get_consent(response)
+
+    consent = ResponseConsent(response)
+    consent_state = consent.get_state()
     assert consent_state.get("necessary", "") == "true"
 
 
@@ -77,7 +82,18 @@ def test_initial_lazy_cookies(client, site):
     tag_instant_preferences()
     tag_lazy_preferences()
 
-    client.cookies = SimpleCookie({"wtm": "preferences:unset"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "preferences": "unset",
+                    },
+                }
+            )
+        }
+    )
 
     response = client.post(
         "/wtm/lazy/", json.dumps({}), content_type="application/json"
@@ -106,8 +122,9 @@ def test_statistics_lazy_cookies(client, site):
     assert len(data["tags"]) == 0
 
     assert "wtm" in response.cookies
-    consent_state = get_consent(response)
 
+    consent = ResponseConsent(response)
+    consent_state = consent.get_state()
     assert consent_state.get("statistics", "") == "unset"
 
 
@@ -199,7 +216,18 @@ def test_passive_tags(client, site):
     assert "tags" in data
     assert 'console.log("necessary: 1")' in data["tags"][0]["string"]
 
-    client.cookies = SimpleCookie({"wtm": "preferences:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "preferences": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.post(
         "/wtm/lazy/",
         json.dumps(
@@ -221,7 +249,19 @@ def test_passive_tags(client, site):
     assert "tags" in data
     assert 'console.log("preferences: 2")' in data["tags"][1]["string"]
 
-    client.cookies = SimpleCookie({"wtm": "preferences:false|statistics:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "preferences": "false",
+                        "statistics": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.post(
         "/wtm/lazy/",
         json.dumps(
@@ -243,7 +283,19 @@ def test_passive_tags(client, site):
     assert "tags" in data
     assert 'console.log("statistics: 3")' in data["tags"][1]["string"]
 
-    client.cookies = SimpleCookie({"wtm": "preferences:false|marketing:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "preferences": "false",
+                        "marketing": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.post(
         "/wtm/lazy/",
         json.dumps(
@@ -323,7 +375,18 @@ def test_page_tags(client, site):
     for tag in data.get("tags", []):
         assert tag["string"].strip() in results
 
-    client.cookies = SimpleCookie({"wtm": "preferences:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "preferences": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": page.get_url()}),
@@ -337,7 +400,19 @@ def test_page_tags(client, site):
     for tag in data.get("tags", []):
         assert tag["string"].strip() in results
 
-    client.cookies = SimpleCookie({"wtm": "preferences:false|statistics:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "preferences": "false",
+                        "statistics": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": page.get_url()}),
@@ -351,7 +426,19 @@ def test_page_tags(client, site):
     for tag in data.get("tags", []):
         assert tag["string"].strip() in results
 
-    client.cookies = SimpleCookie({"wtm": "preferences:false|marketing:true"})
+    client.cookies = SimpleCookie(
+        {
+            "wtm": dict_to_base64(
+                {
+                    "meta": {},
+                    "state": {
+                        "preferences": "false",
+                        "marketing": "true",
+                    },
+                }
+            )
+        }
+    )
     response = client.post(
         "/wtm/lazy/",
         json.dumps({"pathname": page.get_url()}),

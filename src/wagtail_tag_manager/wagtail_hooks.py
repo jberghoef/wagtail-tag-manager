@@ -1,13 +1,13 @@
 import django
+from wagtail import hooks
 from django.conf import settings
 from django.urls import path, reverse
-from wagtail import hooks
 from django.utils.html import mark_safe
 from wagtail.admin.menu import AdminOnlyMenuItem
 from wagtail.admin.site_summary import SummaryItem
 from wagtail.admin.views.reports import ReportView
 from django.template.defaultfilters import truncatechars
-from wagtail.contrib.modeladmin.options import (
+from wagtail_modeladmin.options import (
     ModelAdmin,
     ModelAdminGroup,
     modeladmin_register,
@@ -175,6 +175,7 @@ class TagManagerAdminGroup(ModelAdminGroup):
 
 
 modeladmin_register(TagManagerAdminGroup)
+
 
 # Reports
 class CookieConsentReportView(ReportView):

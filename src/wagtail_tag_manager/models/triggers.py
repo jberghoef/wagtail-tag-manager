@@ -2,13 +2,13 @@ import re
 
 import django
 from django.db import models
+from wagtail.models import Orderable
 from django.utils.html import mark_safe
 from django.utils.text import slugify
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
-from wagtail.models import Orderable
-from django.core.exceptions import ValidationError
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from django.core.exceptions import ValidationError
 
 from wagtail_tag_manager.models import Tag
 from wagtail_tag_manager.widgets import VariableSelect
