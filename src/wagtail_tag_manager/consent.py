@@ -131,7 +131,8 @@ class Consent(object):
 
     def _has_valid_consent(self, id: str) -> bool:
         """
-        This function will check if the CookieConsentSettings have been changed since the last time the user has given consent.
+        This function will check if the CookieConsentSettings have been
+        changed since the last time the user has given consent.
         """
         from wagtail_tag_manager.models import CookieConsent
         from wagtail_tag_manager.settings import CookieConsentSettings
