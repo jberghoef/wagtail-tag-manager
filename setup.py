@@ -18,7 +18,6 @@ tests_require = [
     "pycodestyle",
     "pytest-cov",
     "pytest-django",
-    "pytest-pythonpath",
     "pytest-randomly",
     "pytest-sugar",
     "pytest",
