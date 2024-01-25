@@ -12,7 +12,6 @@ tests_require = [
     "Faker",
     "flake8-blind-except",
     "flake8-debugger",
-    "flake8-imports",
     "flake8",
     "freezegun",
     "pycodestyle",
