@@ -131,7 +131,7 @@ class Tag(models.Model):
         try:
             template = Template(self.content)
             template.render(Context())
-        except Exception as error:
+        except Exception as error:  # noqa
             raise ValidationError({"content": error})
 
         return self

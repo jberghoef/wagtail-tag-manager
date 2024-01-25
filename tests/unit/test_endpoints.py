@@ -20,7 +20,7 @@ from wagtail_tag_manager.models import Tag, Trigger
 from wagtail_tag_manager.consent import ResponseConsent
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_lazy_endpoint(client, site):
     response = client.get("/wtm/lazy/")
     assert response.status_code == 400
@@ -37,7 +37,7 @@ def test_lazy_endpoint(client, site):
     assert "tags" in data
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_lazy_cookies(client, site):
     response = client.post(
         "/wtm/lazy/", json.dumps({}), content_type="application/json"
@@ -57,7 +57,7 @@ def test_lazy_cookies(client, site):
     assert consent_state.get("marketing", "") == "false"
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_required_lazy_cookies(client, site):
     tag_lazy_necessary()
 
@@ -77,7 +77,7 @@ def test_required_lazy_cookies(client, site):
     assert consent_state.get("necessary", "") == "true"
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_initial_lazy_cookies(client, site):
     tag_instant_preferences()
     tag_lazy_preferences()
@@ -105,7 +105,7 @@ def test_initial_lazy_cookies(client, site):
     assert len(data["tags"]) == 2
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_statistics_lazy_cookies(client, site):
     tag_instant_statistics()
     tag_lazy_statistics()
@@ -128,7 +128,7 @@ def test_statistics_lazy_cookies(client, site):
     assert consent_state.get("statistics", "") == "unset"
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_generic_lazy_cookies(client, site):
     tag_instant_marketing()
     tag_lazy_marketing()
@@ -143,7 +143,7 @@ def test_generic_lazy_cookies(client, site):
     assert len(data["tags"]) == 0
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_passive_tags(client, site):
     tag_necessary = TagFactory(
         name="necessary lazy",
@@ -318,7 +318,7 @@ def test_passive_tags(client, site):
     assert 'console.log("marketing: 4")' in data["tags"][1]["string"]
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_page_tags(client, site):
     tag_necessary = TagFactory(
         name="necessary lazy",

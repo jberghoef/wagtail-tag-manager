@@ -14,7 +14,7 @@ from wagtail_tag_manager.utils import dict_to_base64
 from wagtail_tag_manager.models import Tag
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_view_necessary(client, site):
     response = client.get(site.root_page.url)
     assert response.status_code == 200
@@ -70,7 +70,7 @@ def test_view_necessary(client, site):
     assert b'console.log("necessary instant")' in response.content
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_view_preferences(client, site):
     tag_instant_preferences(tag_location=Tag.TOP_BODY)
     client.cookies = SimpleCookie(
@@ -90,7 +90,7 @@ def test_view_preferences(client, site):
     assert b'console.log("preferences instant")' in response.content
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_view_statistics(client, site):
     tag_instant_statistics(tag_location=Tag.TOP_BODY)
     client.cookies = SimpleCookie(
@@ -110,7 +110,7 @@ def test_view_statistics(client, site):
     assert b'console.log("statistics instant")' in response.content
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_view_marketing(client, site):
     tag_instant_marketing(tag_location=Tag.BOTTOM_BODY)
     client.cookies = SimpleCookie(
@@ -130,7 +130,7 @@ def test_view_marketing(client, site):
     assert b'console.log("marketing instant")' in response.content
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_page_tags(client, site):
     response = client.get(site.root_page.url)
     assert response.status_code == 200

@@ -26,7 +26,7 @@ def test_consent_form():
     assert form.fields["marketing"].initial is False
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_consent_form_initial(rf, site):
     request = rf.get(site.root_page.url)
     request.COOKIES = {
