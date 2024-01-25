@@ -20,7 +20,7 @@ from wagtail_tag_manager.templatetags.wtm_tags import (
 )
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_wtm_include_necessary(rf, site):
     expected_result = '<link href="/static/test.css" rel="stylesheet" type="text/css"/>'
 
@@ -64,7 +64,7 @@ def test_wtm_include_necessary(rf, site):
     assert result == expected_result
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_wtm_include_preferences(rf, site):
     expected_result = '<script src="/static/test.js" type="text/javascript"></script>'
 
@@ -108,7 +108,7 @@ def test_wtm_include_preferences(rf, site):
     assert result == expected_result
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_wtm_include_marketing(rf, site):
     token = Token(
         token_type=TokenType.TEXT, contents='wtm_include "marketing" "test.html"'
@@ -145,7 +145,7 @@ def test_wtm_include_marketing(rf, site):
         node.render(context=make_context({"request": request}))
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_wtm_instant_tags(rf, site):
     tag_instant_necessary(tag_location=Tag.TOP_HEAD)
     tag_instant_preferences(tag_location=Tag.BOTTOM_HEAD)
@@ -216,7 +216,7 @@ def test_wtm_lazy_manager():
     assert "lazy_url" in context.get("config")
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_wtm_cookie_bar(rf, site):
     request = rf.get(site.root_page.url)
     context = wtm_cookie_bar(context={"request": request})

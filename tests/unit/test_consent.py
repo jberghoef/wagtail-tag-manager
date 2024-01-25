@@ -6,7 +6,7 @@ import pytest
 from wagtail_tag_manager.consent import ResponseConsent
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_handles_malformed_consent(client, site):
     client.cookies = SimpleCookie({"wtm": "malformed"})
 
@@ -29,7 +29,7 @@ def test_handles_malformed_consent(client, site):
     assert consent_state.get("marketing", "") == "false"
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_upgrades_legacy_consent_state(client, site):
     client.cookies = SimpleCookie(
         {"wtm": "necessary:true|preferences:unset|statistics:pending|marketing:false"},
@@ -54,7 +54,7 @@ def test_upgrades_legacy_consent_state(client, site):
     assert consent_state.get("marketing", "") == "false"
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_upgrades_legacy_consent_meta(client, site):
     client.cookies = SimpleCookie(
         {
