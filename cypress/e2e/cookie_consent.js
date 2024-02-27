@@ -43,7 +43,7 @@ describe("Cookie consent", () => {
 
     // Change homepage
     cy.visit("/cms/pages/2/edit/");
-    cy.get(".dropdown-toggle").click({ force: true });
+    cy.get("[data-w-dropdown-target='toggle']").click({ force: true, multiple: true });
     cy.get("[name='action-publish']").click({ force: true });
 
     // Visit homepage
@@ -87,7 +87,7 @@ describe("Cookie consent", () => {
 
     // Change homepage
     cy.visit("/cms/pages/2/edit/");
-    cy.get(".dropdown-toggle").click({ force: true });
+    cy.get("[data-w-dropdown-target='toggle']").click({ force: true, multiple: true });
     cy.get("[name='action-publish']").click({ force: true });
 
     // Visit homepage

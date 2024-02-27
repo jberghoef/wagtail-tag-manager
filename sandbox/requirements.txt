@@ -1,4 +1,4 @@
-Django>=4.2,<4.3
-wagtail>=5.1,<5.2
+Django>=5.0,<5.1
+wagtail>=6.0,<6.1
 django-debug-toolbar
 -e .[docs,test]

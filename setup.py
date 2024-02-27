@@ -2,8 +2,8 @@ from setuptools import find_packages, setup
 
 
 install_requires = [
-    "wagtail>=4.0,<6.0",
-    "wagtail_modeladmin>=1.0.0,<1.1.0",
+    "wagtail>=4.0,<7.0",
+    "wagtail_modeladmin>=2.0.0,<2.1.0",
     "selenium>=3.141.0,<3.142.0",
 ]
 
@@ -52,18 +52,10 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Framework :: Django :: 2.2",
-        "Framework :: Django :: 3.0",
-        "Framework :: Django :: 3.1",
-        "Framework :: Django :: 3.2",
+        "Programming Language :: Python :: 3.11",
         "Framework :: Django :: 4.0",
-        "Framework :: Wagtail :: 2",
-        "Framework :: Wagtail :: 3",
-        "Framework :: Wagtail :: 4",
+        "Framework :: Django :: 5.0",
+        "Framework :: Wagtail :: 5",
+        "Framework :: Wagtail :: 6",
     ],
 )
