@@ -16,7 +16,7 @@ describe("The home page", () => {
     cy.contains("Lazy passive delayed").click();
     cy.contains("Lazy passive regular").click();
 
-    cy.get(".dropdown-toggle").click();
+    cy.get("[data-w-dropdown-target='toggle']").click({ force: true, multiple: true });
     cy.get("[name='action-publish']").click();
 
     cy.setConsent({
@@ -111,7 +111,7 @@ describe("The home page", () => {
     cy.contains("Lazy passive delayed").click();
     cy.contains("Lazy passive regular").click();
 
-    cy.get(".dropdown-toggle").click();
+    cy.get("[data-w-dropdown-target='toggle']").click({ force: true, multiple: true });
     cy.get("[name='action-publish']").click();
 
     cy.setConsent({
