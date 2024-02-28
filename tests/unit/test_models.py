@@ -80,7 +80,7 @@ def test_tag_queries():
 
 @pytest.mark.django_db
 def test_tag_create():
-    expected = '<script>\n console.log("necessary instant")\n</script>'
+    expected = '<script>\n console.log("necessary instant")\n</script>\n'
 
     tag = Tag.objects.create(
         name="necessary instant 1",
@@ -95,7 +95,7 @@ def test_tag_create():
     assert tag.content == expected
     assert tag in Tag.objects.all()
 
-    expected = "<style>\n body { background-color: red; }\n</style>"
+    expected = "<style>\n body { background-color: red; }\n</style>\n"
 
     tag = Tag.objects.create(
         name="necessary instant 3",
