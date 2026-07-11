@@ -40,5 +40,7 @@ def base64_to_dict(input: str) -> dict:
         decoded_bytes = base64.b64decode(encoded_bytes)
         decoded_string = decoded_bytes.decode("utf-8")
         return json.loads(decoded_string)
-    except binascii.Error:
+    except (binascii.Error, json.JSONDecodeError, UnicodeDecodeError):
+        # A malformed wtm cookie (garbage, non-JSON, or non-UTF8) must degrade to
+        # defaults, not 500 every request via the consent middleware.
         return {}

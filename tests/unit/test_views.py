@@ -6,20 +6,36 @@ from django.urls import reverse
 from tests.factories.constant import ConstantFactory
 from tests.factories.variable import VariableFactory
 from wagtail_tag_manager.views import CookieDeclarationIndexView
+from wagtail_tag_manager.models import CookieConsent
+from wagtail_tag_manager.consent import ResponseConsent
 from wagtail_tag_manager.settings import TagTypeSettings
 from wagtail_tag_manager.wagtail_hooks import CookieDeclarationModelAdmin
 
 
-@pytest.mark.skip
 @pytest.mark.django_db
-def test_manage_view(client):
-    url = reverse("wtm:manage")
-
-    response = client.get(url)
+def test_manage_view_renders(client, site):
+    # Previously skipped: the manage template needs a configured Site to render.
+    response = client.get(reverse("wtm:manage"))
     assert response.status_code == 200
 
-    response = client.post(url)
+
+@pytest.mark.django_db
+def test_manage_view_post_persists_consent(client, site):
+    # Submitting the preference form must (a) redirect, (b) durably record the
+    # choice as a CookieConsent audit row, and (c) write the wtm cookie.
+    response = client.post(
+        reverse("wtm:manage"), {"preferences": "on", "statistics": "on"}
+    )
+
     assert response.status_code == 302
+    assert "wtm" in response.cookies
+
+    assert CookieConsent.objects.count() == 1
+    consent_state = ResponseConsent(response).get_state()
+    assert consent_state["necessary"] == "true"  # required -> always on
+    assert consent_state["preferences"] == "true"  # checked
+    assert consent_state["statistics"] == "true"  # checked
+    assert consent_state["marketing"] == "false"  # unchecked
 
 
 @pytest.mark.django_db

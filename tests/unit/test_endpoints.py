@@ -36,6 +36,12 @@ def test_lazy_endpoint(client, site):
     assert response.status_code == 200
     assert "tags" in data
 
+    # A body that is present but not valid JSON must be rejected, not 500.
+    response = client.post(
+        "/wtm/lazy/", "this is not json", content_type="application/json"
+    )
+    assert response.status_code == 400
+
 
 @pytest.mark.django_db
 def test_lazy_cookies(client, site):
